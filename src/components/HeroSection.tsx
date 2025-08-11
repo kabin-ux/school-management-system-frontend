@@ -4,7 +4,7 @@ import MobileAppMockups from './MobileAppMockups';
 
 const HeroSection: React.FC = () => {
     return (
-        <section className="bg-gradient-to-b from-white to-[#CBD72B] pt-16 pb-8 rounded-b-4xl">
+        <section className="bg-gradient-to-b from-white from-15% to-[#CBD72B] pt-16 pb-8 rounded-b-4xl">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center ">
                 <h1 className="text-4xl md:text-4xl font-bold text-[#A7AE45] mb-8 leading-tight">
                     Whether you're a <span className="text-[#E7F15E]">student, teacher, or parent</span> — manage<br />

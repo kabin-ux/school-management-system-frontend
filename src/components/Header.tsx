@@ -18,7 +18,7 @@ const Header: FC = () => {
             <a href="#" className="text-[#CBD72B] hover:text-[#A8B122]">Testimonials</a>
             <a href="#" className="text-[#CBD72B] hover:text-[#A8B122]">FAQ</a>
           </nav>
-          <button className="bg-[#CBD72B] text-white font-bold px-6 py-2 rounded-full hover:bg-lime-600 transition-colors">
+          <button className="bg-[#CBD72B] text-white font-bold px-6 py-2 rounded-full hover:bg-[#A8B122] transition-colors">
             Get Started
           </button>
         </div>

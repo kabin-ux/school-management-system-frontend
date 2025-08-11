@@ -9,7 +9,7 @@ interface TestimonialCardProps {
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ rating, text, name, position }) => {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg">
+    <div className="bg-white p-6 rounded-lg hover:shadow-lg transition-shadow">
       <div className="flex mb-4">
         {Array.from({ length: rating }, (_, i) => (
           <div key={i} className="w-4 h-4 rounded-3xl mr-1">⭐</div>

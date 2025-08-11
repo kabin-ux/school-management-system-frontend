@@ -10,7 +10,7 @@ interface LoginCardProps {
 
 const LoginCard: React.FC<LoginCardProps> = ({ icon: Icon, title, description, buttonText }) => {
   return (
-    <div className="bg-white p-8 rounded-3xl shadow-sm border-[#CBD72B] border-2 ">
+    <div className="bg-white px-8 py-16 rounded-3xl hover:shadow-lg transition-shadow border-[#CBD72B] border-2 cursor-pointer">
       <div className="w-16 h-16 bg-[#CBD72B] rounded-lg flex items-center justify-center mx-auto mb-4">
         <Icon className="w-8 h-8 text-white" />
       </div>

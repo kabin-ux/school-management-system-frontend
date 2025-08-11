@@ -12,7 +12,7 @@ const WebPortalSection: React.FC = () => {
         },
         {
             icon: BookOpen,
-            title: "Login as Super Admin",
+            title: "Login as Admin",
             description: "The Principal Schools are Admin who manage all the features.",
             buttonText: "Login as Admin"
         },

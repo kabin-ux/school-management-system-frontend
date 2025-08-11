@@ -1,16 +1,16 @@
 import React from 'react';
-import { Grid3X3, Shield, Calculator } from 'lucide-react';
+import {  Calculator, ShieldUser, Atom } from 'lucide-react';
 import PlatformCard from './PlatformCard';
 
 const WebPlatformSection: React.FC = () => {
   const platforms = [
     {
-      icon: Grid3X3,
+      icon: Atom,
       title: "Website Based Super Admin Portal",
       description: "Full control center for managing schools, users, system settings, and configurations with powerful analytics and user tracking."
     },
     {
-      icon: Shield,
+      icon: ShieldUser,
       title: "Website Based Admin Portal",
       description: "Designed for individual schools to manage students, teachers, classes, schedules, attendance, and internal communication easily."
     },
@@ -30,7 +30,7 @@ const WebPlatformSection: React.FC = () => {
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Designed for different user roles with tailored interfaces for<br />
-            <strong>PRODUCTIVITY EFFICIENCY</strong>
+            <strong>MAXIMUM EFFICIENCY</strong>
           </p>
         </div>
 

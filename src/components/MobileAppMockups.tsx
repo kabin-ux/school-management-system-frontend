@@ -9,18 +9,18 @@ const MobileAppMockups: React.FC = () => {
             {/* Phones */}
             <div className="flex justify-center items-end space-x-16">
                 {/* Left Phone */}
-                <div className="w-44 h-80">
-                    <img src={image2} alt="Left Mockup" className="w-full h-full object-contain" />
+                <div className="w-56 h-80">
+                    <img src={image2} alt="Left Mockup" className="w-full h-full object-contain mt-6" />
                 </div>
 
                 {/* Middle Phone (Bigger) */}
-                <div className="w-56 h-96">
-                    <img src={image} alt="Middle Mockup" className="w-64 h-full object-contain" />
+                <div className="w-56 h-100">
+                    <img src={image} alt="Middle Mockup" className="w-68 h-full object-contain mt-2" />
                 </div>
 
                 {/* Right Phone */}
-                <div className="w-44 h-80">
-                    <img src={image3} alt="Right Mockup" className="w-full h-full object-contain" />
+                <div className="w-56 h-80">
+                    <img src={image3} alt="Right Mockup" className="w-full h-full object-contain mt-6" />
                 </div>
             </div>
 

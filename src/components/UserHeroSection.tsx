@@ -1,14 +1,14 @@
 import React from 'react';
-import { Play } from 'lucide-react';
+import { CirclePlay } from 'lucide-react';
 import HeroMockup from './HeroMockup';
 import PartnerLogos from './PartnerLogos';
 
 const UserHeroSection: React.FC = () => {
     return (
         <>
-            <section className="bg-gradient-to-b from-white to-[#CBD72B] pt-16 pb-8 rounded-b-xl">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid lg:grid-cols-2 gap-64 items-center">
+            <section className="bg-gradient-to-b from-white from-30% via-white/20 via-20% to-[#CBD72B] pt-8 pb-8 rounded-b-xl">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-2">
+                    <div className="flex gap-12 items-center">
                         <div>
                             <h1 className="text-4xl md:text-5xl font-bold text-[#A7AE45] mb-6 leading-tight">
                                 Empowering Partnered Schools
@@ -16,22 +16,25 @@ const UserHeroSection: React.FC = () => {
                             </h1>
                             <p className="text-[#A7AE45] text-lg mb-8 opacity-90">
                                 Connect administrators, teachers, students, and parents with one<br />
-                                comprehensive platform for seamless education management.
+                                intelligent platform.
                             </p>
 
                             <div className="flex items-center space-x-4 mb-8">
+                                <button className="bg-[#CBD72B] text-white font-semibold text-xl px-8 py-3 rounded-xl hover:bg-[#A8B122] transition-colors">
+                                    Get Started
+                                </button>
                                 <button className="bg-white text-lime-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors flex items-center space-x-2">
-                                    <Play className="w-5 h-5" />
+                                    <CirclePlay className="w-6 h-6" />
                                     <span>Watch Video</span>
                                 </button>
-                                <div className="flex items-center space-x-2">
-                                    <div className="flex -space-x-2">
-                                        <div className="w-8 h-8 bg-orange-400 rounded-full border-2 border-white"></div>
-                                        <div className="w-8 h-8 bg-blue-400 rounded-full border-2 border-white"></div>
-                                        <div className="w-8 h-8 bg-purple-400 rounded-full border-2 border-white"></div>
-                                    </div>
-                                    <span className="text-white text-sm">1000+ users</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <div className="flex -space-x-2">
+                                    <div className="w-8 h-8 bg-orange-400 rounded-full border-2 border-white"></div>
+                                    <div className="w-8 h-8 bg-blue-400 rounded-full border-2 border-white"></div>
+                                    <div className="w-8 h-8 bg-purple-400 rounded-full border-2 border-white"></div>
                                 </div>
+                                <span className="text-[#888888] text-sm">1000+ Downloads</span>
                             </div>
                         </div>
 
