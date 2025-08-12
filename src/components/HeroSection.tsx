@@ -1,6 +1,6 @@
 import React from 'react';
-import { Download } from 'lucide-react';
 import MobileAppMockups from './MobileAppMockups';
+import { FaApple, FaGooglePlay } from 'react-icons/fa';
 
 const HeroSection: React.FC = () => {
     return (
@@ -16,13 +16,19 @@ const HeroSection: React.FC = () => {
                 <h2 className="text-3xl font-bold text-white mb-6">Download The Education App</h2>
 
                 <div className="flex justify-center space-x-4">
-                    <button className="bg-black text-white px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-gray-800 transition-colors">
-                        <Download className="w-5 h-5" />
-                        <span>Google Play</span>
+                    <button className="bg-black text-white px-8 py-4 rounded-lg flex items-center space-x-3 hover:bg-gray-900 transition-colors">
+                        <FaGooglePlay className="w-8 h-8" />
+                        <div className="text-left">
+                            <div className="text-xs opacity-75">GET IT ON</div>
+                            <div className="font-semibold">Google Play</div>
+                        </div>
                     </button>
-                    <button className="bg-black text-white px-6 py-3 rounded-lg flex items-center space-x-2 hover:bg-gray-800 transition-colors">
-                        <Download className="w-5 h-5" />
-                        <span>App Store</span>
+                    <button className="bg-black text-white px-8 py-4 rounded-lg flex items-center space-x-3 hover:bg-gray-900 transition-colors">
+                        <FaApple className="w-8 h-8" />
+                        <div className="text-left">
+                            <div className="text-xs opacity-75">Download on the</div>
+                            <div className="font-semibold">App Store</div>
+                        </div>
                     </button>
                 </div>
             </div>

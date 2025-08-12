@@ -19,7 +19,7 @@ const MobileAppMockups: React.FC = () => {
                 </div>
 
                 {/* Right Phone */}
-                <div className="w-56 h-80">
+                <div className="w-56 h-80 ml-4">
                     <img src={image3} alt="Right Mockup" className="w-full h-full object-contain mt-6" />
                 </div>
             </div>

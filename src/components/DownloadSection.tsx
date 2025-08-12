@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download } from 'lucide-react';
+import { FaApple, FaGooglePlay } from 'react-icons/fa';
 
 const DownloadSection: React.FC = () => {
   return (
@@ -14,14 +14,14 @@ const DownloadSection: React.FC = () => {
         
         <div className="flex justify-center space-x-4">
           <button className="bg-black text-white px-8 py-4 rounded-lg flex items-center space-x-3 hover:bg-gray-800 transition-colors">
-            <Download className="w-6 h-6" />
+            <FaGooglePlay className="w-8 h-8" />
             <div className="text-left">
               <div className="text-xs opacity-75">GET IT ON</div>
               <div className="font-semibold">Google Play</div>
             </div>
           </button>
           <button className="bg-black text-white px-8 py-4 rounded-lg flex items-center space-x-3 hover:bg-gray-800 transition-colors">
-            <Download className="w-6 h-6" />
+            <FaApple className="w-8 h-8" />
             <div className="text-left">
               <div className="text-xs opacity-75">Download on the</div>
               <div className="font-semibold">App Store</div>

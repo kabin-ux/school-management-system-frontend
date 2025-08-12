@@ -1,6 +1,7 @@
 import React from 'react';
 import footer1 from '../assets/footer1.png';
 import footer2 from '../assets/footer2.png';
+import { FaApple, FaGooglePlay } from 'react-icons/fa';
 
 const FinalCTASection: React.FC = () => {
   return (
@@ -16,12 +17,20 @@ const FinalCTASection: React.FC = () => {
             <p className="text-white text-lg md:text-xl mb-6 max-w-md mx-auto lg:mx-0">
               Transform your learning experience with our innovative platform
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <button className="bg-black text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition">
-                Download Now
+            <div className="flex justify-left space-x-4">
+              <button className="bg-black text-white px-8 py-4 rounded-lg flex items-center space-x-3 hover:bg-gray-800 transition-colors">
+                <FaGooglePlay className="w-8 h-8" />
+                <div className="text-left">
+                  <div className="text-xs opacity-75">GET IT ON</div>
+                  <div className="font-semibold">Google Play</div>
+                </div>
               </button>
-              <button className="bg-white text-[#CBD72B] px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition">
-                Learn More
+              <button className="bg-black text-white px-8 py-4 rounded-lg flex items-center space-x-3 hover:bg-gray-800 transition-colors">
+                <FaApple className="w-8 h-8" />
+                <div className="text-left">
+                  <div className="text-xs opacity-75">Download on the</div>
+                  <div className="font-semibold">App Store</div>
+                </div>
               </button>
             </div>
           </div>
