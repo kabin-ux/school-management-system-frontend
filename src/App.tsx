@@ -9,6 +9,9 @@ import { PartnerSchools } from './pages/SuperAdmin/PartnerSchools';
 import NotificationCenter from './pages/SuperAdmin/Notifications';
 import PermissionManagement from './pages/SuperAdmin/PermissionManagement';
 import SchoolPermissionDetailPage from './pages/SuperAdmin/SchoolPermissionDetail';
+import SupportConsole from './pages/SuperAdmin/SupportConsole';
+import SupportTicketDetailPage from './pages/SuperAdmin/SupportTicketDetail';
+import Settings from './pages/SuperAdmin/Settings';
 
 function App() {
   return (
@@ -21,11 +24,15 @@ function App() {
           <Route path='/admin-login' element={<AdminLoginPage />} />
           <Route path='/accountant-login' element={<AccountantLoginPage />} />
 
+          {/* Super Admin */}
           <Route path='/super-admin' element={<SuperAdminDashboard />} />
           <Route path='/super-admin/partner-schools' element={<PartnerSchools />} />
           <Route path='/super-admin/notifications' element={<NotificationCenter />} />
           <Route path='/super-admin/permissions' element={<PermissionManagement />} />
-          <Route path='/super-admin/permissions/details' element={<SchoolPermissionDetailPage />} />
+          <Route path='/super-admin/permissions/details/:id' element={<SchoolPermissionDetailPage />} />
+          <Route path='/super-admin/support' element={<SupportConsole />} />
+          <Route path='/super-admin/support/details/:id' element={<SupportTicketDetailPage />} />
+          <Route path='/super-admin/settings' element={<Settings />} />
         </Routes>
       </Router>
     </>

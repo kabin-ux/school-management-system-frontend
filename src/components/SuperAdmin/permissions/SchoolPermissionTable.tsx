@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface SchoolData {
   id: string;
@@ -14,6 +15,7 @@ interface SchoolData {
 export default function SchoolPermissionTable() {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
 
   const schoolData: SchoolData[] = [
     { id: '1', schoolCode: 'TIC-001', schoolName: 'Springfield High School', totalAdmins: '2/2 max', totalAccountants: '2/2 max', lastModified: '2024-01-15 14:30', status: 'Active' },
@@ -36,11 +38,10 @@ export default function SchoolPermissionTable() {
 
   const getStatusBadge = (status: string) => {
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-        status === 'Active' 
-          ? 'bg-green-100 text-green-800' 
+      <span className={`px-2 py-1 rounded-full text-xs font-medium ${status === 'Active'
+          ? 'bg-green-100 text-green-800'
           : 'bg-red-100 text-red-800'
-      }`}>
+        }`}>
         {status}
       </span>
     );
@@ -57,7 +58,7 @@ export default function SchoolPermissionTable() {
             <p className="text-sm text-gray-600">View and manage all the permission of partnered school Staff</p>
           </div>
         </div>
-        
+
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
@@ -69,6 +70,7 @@ export default function SchoolPermissionTable() {
           />
         </div>
       </div>
+
 
       <div className="overflow-x-auto">
         <table className="w-full">
@@ -99,7 +101,10 @@ export default function SchoolPermissionTable() {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {schoolData.map((school, index) => (
-              <tr key={school.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+              <tr
+                key={school.id}
+                className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
+              >
                 <td className="px-6 py-4 text-sm font-medium text-blue-600">
                   {school.schoolCode}
                 </td>
@@ -115,11 +120,14 @@ export default function SchoolPermissionTable() {
                 <td className="px-6 py-4 text-sm text-gray-500">
                   {school.lastModified}
                 </td>
-                <td className="px-6 py-4">
-                  {getStatusBadge(school.status)}
-                </td>
+                <td className="px-6 py-4">{getStatusBadge(school.status)}</td>
                 <td className="px-6 py-4 text-sm">
-                  <button className="text-blue-600 hover:text-blue-800 font-medium">
+                  <button
+                    className="text-blue-600 hover:text-blue-800 font-medium"
+                    onClick={() =>
+                      navigate(`/super-admin/permissions/details/${school.id}`)
+                    }
+                  >
                     View and edit
                   </button>
                 </td>
