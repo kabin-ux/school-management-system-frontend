@@ -37,7 +37,7 @@ export const Sidebar: React.FC = () => {
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
             <LayoutDashboard className="w-5 h-5 text-white" />
           </div>
-          <span className="font-semibold text-gray-900">Admin Panel</span>
+          <span className="font-semibold text-gray-900">Super Admin</span>
         </div>
       </div>
 

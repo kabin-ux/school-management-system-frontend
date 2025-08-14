@@ -12,6 +12,9 @@ import SchoolPermissionDetailPage from './pages/SuperAdmin/SchoolPermissionDetai
 import SupportConsole from './pages/SuperAdmin/SupportConsole';
 import SupportTicketDetailPage from './pages/SuperAdmin/SupportTicketDetail';
 import Settings from './pages/SuperAdmin/Settings';
+import PaymentsOverview from './pages/SuperAdmin/PaymentsOverview';
+import SchoolWisePayment from './pages/SuperAdmin/SchoolWisePayment';
+import PaymentDetails from './pages/SuperAdmin/PaymentDetails';
 
 function App() {
   return (
@@ -27,6 +30,9 @@ function App() {
           {/* Super Admin */}
           <Route path='/super-admin' element={<SuperAdminDashboard />} />
           <Route path='/super-admin/partner-schools' element={<PartnerSchools />} />
+          <Route path='/super-admin/payments' element={<PaymentsOverview />} />
+          <Route path='/super-admin/payments/schools' element={<SchoolWisePayment />} />
+          <Route path='/super-admin/payments/schools/details' element={<PaymentDetails />} />
           <Route path='/super-admin/notifications' element={<NotificationCenter />} />
           <Route path='/super-admin/permissions' element={<PermissionManagement />} />
           <Route path='/super-admin/permissions/details/:id' element={<SchoolPermissionDetailPage />} />

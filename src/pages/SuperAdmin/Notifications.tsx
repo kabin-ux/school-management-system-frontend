@@ -19,7 +19,7 @@ function NotificationCenter() {
                 <div className="flex flex-1 overflow-hidden">
                     <div className="flex-1 overflow-auto">
 
-                        <div className="max-w-7xl mx-auto space-y-6 p-8">
+                        <div className="max-w-7xl mx-auto space-y-4 py-8">
                             {/* Header */}
                             <div className="flex justify-between items-center">
                                 <div>
