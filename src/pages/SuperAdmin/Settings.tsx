@@ -6,8 +6,8 @@ import PermissionDefaults from '../../components/SuperAdmin/settings/PermissionD
 import SupportConsoleSettings from '../../components/SuperAdmin/settings/SupportConsoleSettings';
 import BackupDataSettings from '../../components/SuperAdmin/settings/BackUpDataSettings';
 import SettingsTabs from '../../components/SuperAdmin/settings/SettingsTabs';
-import { DashboardHeader } from '../../components/SuperAdmin/DashboardHeadert';
-import { Sidebar } from '../../components/SuperAdmin/Sidebar';
+import { DashboardHeader } from '../../components/SuperAdmin/layout/DashboardHeader';
+import { Sidebar } from '../../components/SuperAdmin/layout/Sidebar';
 export default function Settings() {
     const [activeTab, setActiveTab] = useState('general');
 

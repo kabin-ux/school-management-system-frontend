@@ -1,7 +1,7 @@
-import { DashboardHeader } from "../../components/SuperAdmin/DashboardHeadert";
+import { DashboardHeader } from "../../components/SuperAdmin/layout/DashboardHeader";
 import PermissionStats from "../../components/SuperAdmin/permissions/PermissionStats";
 import SchoolPermissionTable from "../../components/SuperAdmin/permissions/SchoolPermissionTable";
-import { Sidebar } from "../../components/SuperAdmin/Sidebar";
+import { Sidebar } from "../../components/SuperAdmin/layout/Sidebar";
 
 
 export default function PermissionManagement() {

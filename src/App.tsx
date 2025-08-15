@@ -4,9 +4,9 @@ import UserLandingPage from './pages/UserLandingPage';
 import SuperAdminLoginPage from './pages/SuperAdminLoginPage';
 import AdminLoginPage from './pages/AdminLoginPage';
 import AccountantLoginPage from './pages/AccountantLoginPage';
-import SuperAdminDashboard from './pages/SuperAdmin/Dashboard';
+import SuperAdminDashboard from './components/SuperAdmin/dashboard/Dashboard';
 import { PartnerSchools } from './pages/SuperAdmin/PartnerSchools';
-import NotificationCenter from './pages/SuperAdmin/Notifications';
+import NotificationCenter from './components/SuperAdmin/notifications/Notifications';
 import PermissionManagement from './pages/SuperAdmin/PermissionManagement';
 import SchoolPermissionDetailPage from './pages/SuperAdmin/SchoolPermissionDetail';
 import SupportConsole from './pages/SuperAdmin/SupportConsole';
@@ -15,6 +15,7 @@ import Settings from './pages/SuperAdmin/Settings';
 import PaymentsOverview from './pages/SuperAdmin/PaymentsOverview';
 import SchoolWisePayment from './pages/SuperAdmin/SchoolWisePayment';
 import PaymentDetails from './pages/SuperAdmin/PaymentDetails';
+import PartnerSchoolDetails from './pages/SuperAdmin/PartnerSchoolDetails';
 
 function App() {
   return (
@@ -28,8 +29,9 @@ function App() {
           <Route path='/accountant-login' element={<AccountantLoginPage />} />
 
           {/* Super Admin */}
-          <Route path='/super-admin' element={<SuperAdminDashboard />} />
+          <Route path='/super-admin/dashboard' element={<SuperAdminDashboard />} />
           <Route path='/super-admin/partner-schools' element={<PartnerSchools />} />
+          <Route path='/super-admin/partner-schools/details/:id' element={<PartnerSchoolDetails />} />
           <Route path='/super-admin/payments' element={<PaymentsOverview />} />
           <Route path='/super-admin/payments/schools' element={<SchoolWisePayment />} />
           <Route path='/super-admin/payments/schools/details' element={<PaymentDetails />} />

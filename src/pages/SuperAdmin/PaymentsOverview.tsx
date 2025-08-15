@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 import FeeCollectionChart from "../../components/SuperAdmin/payments/FeeCollectionChart";
 import PaymentInsights from "../../components/SuperAdmin/payments/PaymentInsights";
 import PaymentStats from "../../components/SuperAdmin/payments/PaymentStats";
-import { DashboardHeader } from "../../components/SuperAdmin/DashboardHeadert";
-import { Sidebar } from "../../components/SuperAdmin/Sidebar";
+import { DashboardHeader } from "../../components/SuperAdmin/layout/DashboardHeader";
+import { Sidebar } from "../../components/SuperAdmin/layout/Sidebar";
 
 
 export default function PaymentsOverview() {

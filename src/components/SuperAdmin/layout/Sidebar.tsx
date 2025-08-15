@@ -17,7 +17,7 @@ interface SidebarItem {
 }
 
 const sidebarItems: SidebarItem[] = [
-  { icon: LayoutDashboard, label: "Dashboard", path: "/super-admin" },
+  { icon: LayoutDashboard, label: "Dashboard", path: "/super-admin/dashboard" },
   { icon: School, label: "Partner Schools", path: "/super-admin/partner-schools" },
   { icon: CreditCard, label: "Payments", path: "/super-admin/payments" },
   { icon: Bell, label: "Notifications Log", path: "/super-admin/notifications" },
@@ -44,7 +44,7 @@ export const Sidebar: React.FC = () => {
       <nav className="px-6 space-y-6">
         {sidebarItems.map((item, index) => {
           const Icon = item.icon;
-          const isActive = location.pathname === item.path;
+          const isActive = location.pathname.startsWith(item.path);
 
           return (
             <div

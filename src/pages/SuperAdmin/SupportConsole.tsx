@@ -2,8 +2,8 @@ import { useState } from 'react';
 import SupportFilters from '../../components/SuperAdmin/support/SupportFilters';
 import SupportStats from '../../components/SuperAdmin/support/SupportStats';
 import SupportTicketsTable from '../../components/SuperAdmin/support/SupportTicketsTable';
-import { Sidebar } from '../../components/SuperAdmin/Sidebar';
-import { DashboardHeader } from '../../components/SuperAdmin/DashboardHeadert';
+import { Sidebar } from '../../components/SuperAdmin/layout/Sidebar';
+import { DashboardHeader } from '../../components/SuperAdmin/layout/DashboardHeader';
 import { useNavigate } from 'react-router-dom';
 
 export default function SupportConsole() {

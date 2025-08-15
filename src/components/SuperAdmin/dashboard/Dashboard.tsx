@@ -1,12 +1,12 @@
-import { DashboardHeader } from "../../components/SuperAdmin/DashboardHeadert";
-import { FeeCollectionTrend } from "../../components/SuperAdmin/FeeCollectionTrend";
-import { FeesCollected } from "../../components/SuperAdmin/FeesCollected";
-import { QuickActions } from "../../components/SuperAdmin/QuickActions";
-import { RecentNotifications } from "../../components/SuperAdmin/RecentNotifications";
-import { Sidebar } from "../../components/SuperAdmin/Sidebar";
-import { StatsCard } from "../../components/SuperAdmin/StatsCard";
-import { SupportTickets } from "../../components/SuperAdmin/SupportTickets";
-import { statsCards } from "../../data/statsData";
+import { DashboardHeader } from "../layout/DashboardHeader";
+import { statsCards } from "../../../data/statsData";
+import { Sidebar } from "../layout/Sidebar";
+import { StatsCard } from "./StatsCard";
+import { FeesCollected } from "./FeesCollected";
+import { RecentNotifications } from "./RecentNotifications";
+import SupportTickets from "../partnerschools/SupportTickets";
+import { FeeCollectionTrend } from "./FeeCollectionTrend";
+import { QuickActions } from "./QuickActions";
 
 
 function SuperAdminDashboard() {

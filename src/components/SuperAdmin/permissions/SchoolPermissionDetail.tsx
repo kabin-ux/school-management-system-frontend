@@ -3,8 +3,8 @@ import { ArrowLeft, Plus, Users, GraduationCap, DollarSign, BarChart3, FileText,
 import UserCard from './UserCard';
 import PermissionSection from './PermissionSection';
 import { useNavigate } from 'react-router-dom';
-import { Sidebar } from '../Sidebar';
-import { DashboardHeader } from '../DashboardHeadert';
+import { Sidebar } from '../layout/Sidebar';
+import { DashboardHeader } from '../layout/DashboardHeader';
 
 export default function SchoolPermissionDetail() {
   //   const [activeTab, setActiveTab] = useState('users');

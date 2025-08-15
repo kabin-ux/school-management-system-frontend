@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { DashboardHeader } from "../../components/SuperAdmin/DashboardHeadert";
+import { DashboardHeader } from "../../components/SuperAdmin/layout/DashboardHeader";
 import SchoolPaymentTable from "../../components/SuperAdmin/payments/SchoolPaymentTable";
-import { Sidebar } from "../../components/SuperAdmin/Sidebar";
+import { Sidebar } from "../../components/SuperAdmin/layout/Sidebar";
 
 interface SchoolPaymentsProps {
     onViewSchool?: (schoolCode: string) => void;

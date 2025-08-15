@@ -1,9 +1,9 @@
-import AnalyticsOverview from "../../components/SuperAdmin/AnalyticsOverview";
-import { DashboardHeader } from "../../components/SuperAdmin/DashboardHeadert";
-import NotificationForm from "../../components/SuperAdmin/NotificationForm";
-import NotificationInsights from "../../components/SuperAdmin/NotificationInsights";
-import NotificationLog from "../../components/SuperAdmin/NotificationLog";
-import { Sidebar } from "../../components/SuperAdmin/Sidebar";
+import { DashboardHeader } from "../layout/DashboardHeader";
+import { Sidebar } from "../layout/Sidebar";
+import AnalyticsOverview from "./AnalyticsOverview";
+import NotificationForm from "./NotificationForm";
+import NotificationInsights from "./NotificationInsights";
+import NotificationLog from "./NotificationLog";
 
 function NotificationCenter() {
     return (
