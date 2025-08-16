@@ -16,6 +16,11 @@ import PaymentsOverview from './pages/SuperAdmin/PaymentsOverview';
 import SchoolWisePayment from './pages/SuperAdmin/SchoolWisePayment';
 import PaymentDetails from './pages/SuperAdmin/PaymentDetails';
 import PartnerSchoolDetails from './pages/SuperAdmin/PartnerSchoolDetails';
+import AdminDashboard from './pages/Admin/dashboard/Dashboard';
+import TeacherManagement from './pages/Admin/teachers/TeacherManagement';
+import StudentManagement from './pages/Admin/students/StudentManagement';
+import ParentsManagement from './pages/Admin/parents/ParentManagement';
+import TimetableManagement from './pages/Admin/timetable/TimetableManagement';
 
 function App() {
   return (
@@ -41,6 +46,14 @@ function App() {
           <Route path='/super-admin/support' element={<SupportConsole />} />
           <Route path='/super-admin/support/details/:id' element={<SupportTicketDetailPage />} />
           <Route path='/super-admin/settings' element={<Settings />} />
+
+          {/* Admin */}
+          <Route path='/admin/dashboard' element={<AdminDashboard />} />
+          <Route path='/admin/student-management' element={<StudentManagement />} />
+          <Route path='/admin/parent-management' element={<ParentsManagement />} />
+          <Route path='/admin/teacher-management' element={<TeacherManagement />} />
+          <Route path='/admin/timetable-management' element={<TimetableManagement />} />
+
         </Routes>
       </Router>
     </>
