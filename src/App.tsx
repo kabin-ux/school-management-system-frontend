@@ -21,6 +21,11 @@ import TeacherManagement from './pages/Admin/teachers/TeacherManagement';
 import StudentManagement from './pages/Admin/students/StudentManagement';
 import ParentsManagement from './pages/Admin/parents/ParentManagement';
 import TimetableManagement from './pages/Admin/timetable/TimetableManagement';
+import ClassManagement from './pages/Admin/class/ClassManagement';
+import AttendanceMonitoring from './pages/Admin/attendance/AttendanceMonitoring';
+import Communication from './pages/Admin/communication/Communication';
+import Events from './pages/Admin/events/Events';
+import AttendanceHistory from './pages/Admin/attendance/history/AttendanceHistory';
 
 function App() {
   return (
@@ -53,6 +58,11 @@ function App() {
           <Route path='/admin/parent-management' element={<ParentsManagement />} />
           <Route path='/admin/teacher-management' element={<TeacherManagement />} />
           <Route path='/admin/timetable-management' element={<TimetableManagement />} />
+          <Route path='/admin/class-management' element={<ClassManagement />} />
+          <Route path='/admin/attendance-monitoring' element={<AttendanceMonitoring />} />
+                    <Route path='/admin/attendance-monitoring/history' element={<AttendanceHistory />} />
+          <Route path='/admin/communication' element={<Communication />} />
+          <Route path='/admin/event' element={<Events />} />
 
         </Routes>
       </Router>
