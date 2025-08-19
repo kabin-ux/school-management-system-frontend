@@ -1,12 +1,18 @@
 import React from "react";
 import {
   LayoutDashboard,
-  School,
-  CreditCard,
-  Bell,
-  Shield,
   HeadphonesIcon,
   Settings,
+  GraduationCap,
+  Users,
+  User,
+  CalendarClock,
+  BookOpen,
+  ClipboardList,
+  MessageSquare,
+  Calendar,
+  Wallet,
+  UserCog,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -18,16 +24,16 @@ interface SidebarItem {
 
 const sidebarItems: SidebarItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/admin/dashboard" },
-  { icon: School, label: "Student Management", path: "/admin/student-management" },
-  { icon: School, label: "Teacher Management", path: "/admin/teacher-management" },
-  { icon: School, label: "Parents Management", path: "/admin/parent-management" },
-  { icon: CreditCard, label: "Timetable", path: "/admin/timetable-management" },
-  { icon: School, label: "Class Management", path: "/admin/class-management" },
-  { icon: Bell, label: "Attendance Monitoring", path: "/admin/attendance-monitoring" },
-  { icon: Shield, label: "Communication", path: "/admin/communication" },
-  { icon: School, label: "Event", path: "/admin/event" },
-  { icon: School, label: "Fee Overview", path: "/admin/fee-overview" },
-  { icon: Shield, label: "Account Management", path: "/admin/account-management" },
+  { icon: GraduationCap, label: "Student Management", path: "/admin/student-management" },
+  { icon: Users, label: "Teacher Management", path: "/admin/teacher-management" },
+  { icon: User, label: "Parents Management", path: "/admin/parent-management" },
+  { icon: CalendarClock, label: "Timetable", path: "/admin/timetable-management" },
+  { icon: BookOpen, label: "Class Management", path: "/admin/class-management" },
+  { icon: ClipboardList, label: "Attendance Monitoring", path: "/admin/attendance-monitoring" },
+  { icon: MessageSquare, label: "Communication", path: "/admin/communication" },
+  { icon: Calendar, label: "Event", path: "/admin/event" },
+  { icon: Wallet, label: "Fee Overview", path: "/admin/fee-overview" },
+  { icon: UserCog, label: "Account Management", path: "/admin/account-management" },
   { icon: HeadphonesIcon, label: "Support Console", path: "/admin/support" },
   { icon: Settings, label: "Settings", path: "/admin/settings" },
 ];

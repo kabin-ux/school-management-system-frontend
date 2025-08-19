@@ -13,6 +13,7 @@ const AttendanceMonitoring: React.FC = () => {
     const [selectedSection, setSelectedSection] = useState('Select Section');
 
     const attendanceData = Array.from({ length: 10 }, () => ({
+        id:1,
         name: 'Biswas Poudel',
         classSection: 'Class: 12, A',
         date: '12th July 2025',
@@ -20,7 +21,7 @@ const AttendanceMonitoring: React.FC = () => {
     }));
 
     return (
-        <div className="flex h-screen bg-gray-50">
+        <div className="flex h-full bg-gray-50">
             {/* Sidebar */}
             <Sidebar />
 

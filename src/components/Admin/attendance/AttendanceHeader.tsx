@@ -1,7 +1,8 @@
 import React from 'react';
-import { Download } from 'lucide-react';
+import {Download } from 'lucide-react';
 
 export const AttendanceHeader: React.FC = () => {
+
   return (
     <div className="flex justify-between items-start mb-8">
       <div>

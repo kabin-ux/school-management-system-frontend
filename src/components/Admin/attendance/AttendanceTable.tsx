@@ -1,6 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface AttendanceRecord {
+    id:number
     name: string;
     classSection: string;
     date: string;
@@ -12,6 +14,12 @@ interface AttendanceTableProps {
 }
 
 export const AttendanceTable: React.FC<AttendanceTableProps> = ({ attendanceData }) => {
+      const navigate = useNavigate();
+
+  const handleViewAttendance = (id: number) => {
+
+    navigate(`/admin/attendance-monitoring/history/${id}`)
+  };
     return (
         <div className="bg-white rounded-lg shadow-sm border-gray-200">
             <div className="p-6 border-gray-600">
@@ -30,7 +38,9 @@ export const AttendanceTable: React.FC<AttendanceTableProps> = ({ attendanceData
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                         {attendanceData.map((record, index) => (
-                            <tr key={index} className="hover:bg-gray-50">
+                            <tr key={index} className="hover:bg-gray-50 cursor-pointer"
+                            onClick={() => handleViewAttendance(record.id)}
+                            >
                                 <td className="p-4 border-r border-gray-200">{record.name}</td>
                                 <td className="p-4 border-r border-gray-200">{record.classSection}</td>
                                 <td className="p-4 border-r border-gray-200">{record.date}</td>

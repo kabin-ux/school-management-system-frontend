@@ -26,6 +26,12 @@ import AttendanceMonitoring from './pages/Admin/attendance/AttendanceMonitoring'
 import Communication from './pages/Admin/communication/Communication';
 import Events from './pages/Admin/events/Events';
 import AttendanceHistory from './pages/Admin/attendance/history/AttendanceHistory';
+import FeeOverview from './pages/Admin/feeoverview/FeeOverview';
+import FeeDetails from './pages/Admin/feeoverview/feedetails/FeeDetails';
+import AdminSettings from './pages/Admin/settings/Settings';
+import AdminSupportConsole from './pages/Admin/support/SupportConsole';
+import AccountantManagement from './pages/Admin/accounts/AccountsManagement';
+import AdminSupportTicketDetailPage from './pages/Admin/support/details/SupportConsoleDetails';
 
 function App() {
   return (
@@ -60,9 +66,15 @@ function App() {
           <Route path='/admin/timetable-management' element={<TimetableManagement />} />
           <Route path='/admin/class-management' element={<ClassManagement />} />
           <Route path='/admin/attendance-monitoring' element={<AttendanceMonitoring />} />
-                    <Route path='/admin/attendance-monitoring/history' element={<AttendanceHistory />} />
+          <Route path='/admin/attendance-monitoring/history/:id' element={<AttendanceHistory />} />
           <Route path='/admin/communication' element={<Communication />} />
           <Route path='/admin/event' element={<Events />} />
+          <Route path='/admin/fee-overview' element={<FeeOverview />} />
+          <Route path='/admin/fee-overview/details/:id' element={<FeeDetails />} />
+          <Route path='/admin/account-management' element={<AccountantManagement />} />
+          <Route path='/admin/support' element={<AdminSupportConsole />} />
+          <Route path='/admin/support/details/:id' element={<AdminSupportTicketDetailPage />} />
+          <Route path='/admin/settings' element={<AdminSettings />} />
 
         </Routes>
       </Router>

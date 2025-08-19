@@ -1,5 +1,5 @@
 import React from 'react';
-import { AttendanceHistoryHeader } from '../../../../components/Admin/attendance/history/AttendanceHistoryHeadet';
+import { AttendanceHistoryHeader } from '../../../../components/Admin/attendance/history/AttendanceHistoryHeader';
 import { SubjectWiseTable } from '../../../../components/Admin/attendance/history/SubjectWiseTable';
 import { AttendanceHistoryStats } from '../../../../components/Admin/attendance/history/AttendanceHistoryStats';
 import { MonthlyCalendar } from '../../../../components/Admin/attendance/history/MonthlyCalendar';
@@ -17,7 +17,7 @@ const AttendanceHistory: React.FC = () => {
     ];
 
     return (
-        <div className="flex h-screen bg-gray-50">
+        <div className="flex h-full bg-gray-50">
             {/* Sidebar */}
             <Sidebar />
 
