@@ -1,7 +1,7 @@
 import React from 'react';
 import { Smartphone, Mail, MoreHorizontal } from 'lucide-react';
 import StatusBadge from './StatusBadge';
-import type { NotificationLog } from '../../../interfaces/Notification';
+import type { NotificationLog } from '../../../types/Notification';
 
 interface NotificationTableProps {
   logs: NotificationLog[];

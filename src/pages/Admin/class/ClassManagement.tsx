@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { Grade } from '../../../interfaces/types';
+import type { Grade } from '../../../types/types';
 import { ClassHeader } from '../../../components/Admin/class/ClassHeader';
 import { ClassStats } from '../../../components/Admin/class/ClassStats';
 import { ClassTable } from '../../../components/Admin/class/ClassTable';

@@ -32,6 +32,9 @@ import AdminSettings from './pages/Admin/settings/Settings';
 import AdminSupportConsole from './pages/Admin/support/SupportConsole';
 import AccountantManagement from './pages/Admin/accounts/AccountsManagement';
 import AdminSupportTicketDetailPage from './pages/Admin/support/details/SupportConsoleDetails';
+import AccountantDashboard from './pages/Accountant/dashboard/Dashboard';
+import InvoicesPage from './pages/Accountant/invoices/InvoicePage';
+import SettingsPage from './pages/Accountant/settings/SettingsPage';
 
 function App() {
   return (
@@ -76,6 +79,10 @@ function App() {
           <Route path='/admin/support/details/:id' element={<AdminSupportTicketDetailPage />} />
           <Route path='/admin/settings' element={<AdminSettings />} />
 
+          {/* Accountant */}
+          <Route path='/accountant/dashboard' element={<AccountantDashboard />} />
+          <Route path='/accountant/invoices' element={<InvoicesPage />} />
+          <Route path='/accountant/settings' element={<SettingsPage />} />
         </Routes>
       </Router>
     </>
