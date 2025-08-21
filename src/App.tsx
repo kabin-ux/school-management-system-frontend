@@ -1,9 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AdminLandingPage from './pages/AdminLandingPage';
 import UserLandingPage from './pages/UserLandingPage';
-import SuperAdminLoginPage from './pages/SuperAdminLoginPage';
-import AdminLoginPage from './pages/AdminLoginPage';
-import AccountantLoginPage from './pages/AccountantLoginPage';
 import SuperAdminDashboard from './components/SuperAdmin/dashboard/Dashboard';
 import { PartnerSchools } from './pages/SuperAdmin/PartnerSchools';
 import NotificationCenter from './components/SuperAdmin/notifications/Notifications';
@@ -35,6 +32,10 @@ import AdminSupportTicketDetailPage from './pages/Admin/support/details/SupportC
 import AccountantDashboard from './pages/Accountant/dashboard/Dashboard';
 import InvoicesPage from './pages/Accountant/invoices/InvoicePage';
 import SettingsPage from './pages/Accountant/settings/SettingsPage';
+import SuperAdminLoginPage from './pages/SuperAdmin/login/SuperAdminLoginPage';
+import AdminLoginPage from './pages/Admin/login/AdminLoginPage';
+import AccountantLoginPage from './pages/Accountant/login/AccountantLoginPage';
+import FeeAndSalaryPage from './pages/Accountant/feeandsalary/FeeAndSalaryPage';
 
 function App() {
   return (
@@ -81,6 +82,7 @@ function App() {
 
           {/* Accountant */}
           <Route path='/accountant/dashboard' element={<AccountantDashboard />} />
+          <Route path='/accountant/fee-salary' element={<FeeAndSalaryPage />} />
           <Route path='/accountant/invoices' element={<InvoicesPage />} />
           <Route path='/accountant/settings' element={<SettingsPage />} />
         </Routes>

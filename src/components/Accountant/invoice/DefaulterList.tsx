@@ -9,6 +9,7 @@ interface DefaulterListProps {
     onSendReminder: (studentId: string) => void;
     onMarkPaid: (studentId: string) => void;
     onSendAllReminders: () => void;
+    viewType: 'Student' | 'Teacher'; // Add this prop
 }
 
 export const DefaulterList: React.FC<DefaulterListProps> = ({
@@ -16,14 +17,19 @@ export const DefaulterList: React.FC<DefaulterListProps> = ({
     summaryData,
     onSendReminder,
     onMarkPaid,
-    onSendAllReminders
+    onSendAllReminders,
+    viewType
 }) => {
     return (
         <div className="bg-white rounded-lg shadow-sm border border-gray-100">
             <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                 <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Defaulter List</h3>
-                    <p className="text-gray-600 text-sm">{defaulterData.length} students with unpaid fees</p>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                        {viewType === 'Student' ? 'Student Defaulter List' : 'Teacher Payment Due List'}
+                    </h3>
+                    <p className="text-gray-600 text-sm">
+                        {defaulterData.length} {viewType === 'Student' ? 'students with unpaid fees' : 'teachers with pending salaries'}
+                    </p>
                 </div>
                 <button
                     onClick={onSendAllReminders}
@@ -41,13 +47,13 @@ export const DefaulterList: React.FC<DefaulterListProps> = ({
                     <thead className="bg-gray-50">
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Student ID
+                                {viewType === 'Student' ? 'Student ID' : 'Teacher ID'}
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Student Name
+                                {viewType === 'Student' ? 'Student Name' : 'Teacher Name'}
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Class
+                                {viewType === 'Student' ? 'Class' : 'Department'}
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Date Pending

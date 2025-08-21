@@ -16,7 +16,7 @@ export interface DefaulterSummary {
 }
 
 export interface FilterValues {
-  viewType: 'Invoice Management' | 'Teacher';
+  viewType: 'Student' | 'Teacher';
   search: string;
   paymentStatus: string;
   class: string;

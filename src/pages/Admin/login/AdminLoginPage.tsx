@@ -1,9 +1,9 @@
 import React from 'react';
 import { Mail, Lock } from 'lucide-react';
-import MobileAppMockups from '../components/MobileAppMockups';
 import { FaApple, FaGooglePlay } from 'react-icons/fa';
+import MobileAppMockups from '../../../components/MobileAppMockups';
 
-const SuperAdminLoginPage: React.FC = () => {
+const AdminLoginPage: React.FC = () => {
     return (
         <section className="min-h-screen bg-gray-50 flex">
             {/* Left Side - Login Form */}
@@ -15,14 +15,14 @@ const SuperAdminLoginPage: React.FC = () => {
                             LOGO
                         </div>
                         <h1 className="text-3xl text-center font-bold text-gray-900 mb-2">EDU SANSTHA</h1>
-                        <p className="text-gray-600 text-center font-semibold">Login as Super-Admin</p>
+                        <p className="text-gray-600 text-center font-semibold">Login as Admin</p>
                     </div>
 
                     {/* Login Form */}
                     <form className="space-y-6">
                         <div>
                             <label className="block text-gray-700 text-sm font-medium mb-2">
-                                Super Address
+                                School Email ID
                             </label>
                             <div className="relative">
                                 <input
@@ -95,14 +95,14 @@ const SuperAdminLoginPage: React.FC = () => {
 
                     <div className="flex justify-center space-x-4">
                         <button className="bg-black text-white px-8 py-4 rounded-lg flex items-center space-x-3 hover:bg-gray-800 transition-colors">
-                                <span className="text-white font-bold text-xs"><FaGooglePlay className='w-8 h-8'/></span>
+                            <span className="text-white font-bold text-xs"><FaGooglePlay className='w-8 h-8' /></span>
                             <div className="text-left">
                                 <div className="text-xs opacity-75">GET IT ON</div>
                                 <div className="font-semibold">Google Play</div>
                             </div>
                         </button>
                         <button className="bg-black text-white px-8 py-4 rounded-lg flex items-center space-x-3 hover:bg-gray-800 transition-colors">
-                                <span className="text-white font-bold text-xs"><FaApple className='w-8 h-8'/></span>
+                            <span className="text-white font-bold text-xs"><FaApple className='w-8 h-8' /></span>
                             <div className="text-left">
                                 <div className="text-xs opacity-75">Download on the</div>
                                 <div className="font-semibold">App Store</div>
@@ -115,4 +115,4 @@ const SuperAdminLoginPage: React.FC = () => {
     );
 };
 
-export default SuperAdminLoginPage;
+export default AdminLoginPage;

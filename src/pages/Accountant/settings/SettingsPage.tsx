@@ -1,3 +1,5 @@
+import { AccountantDashboardHeader } from "../../../components/Accountant/layout/DashboardHeader";
+import { Sidebar } from "../../../components/Accountant/layout/Sidebar";
 import { AccountActionsSection } from "../../../components/Accountant/settings/AccountActionsSection";
 import { NotificationsSection } from "../../../components/Accountant/settings/NotificationsSection";
 import { ProfileSection } from "../../../components/Accountant/settings/ProfileSection";
@@ -30,34 +32,45 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-        <p className="text-gray-600 mt-1">Manage your account preferences and system configuration</p>
-      </div>
+    <div className="flex h-full bg-gray-50">
+      {/* Sidebar */}
+      <Sidebar />
 
-      <div className="space-y-6">
-        <ProfileSection
-          profileData={profileData}
-          isEditing={isEditing}
-          onToggleEdit={() => setIsEditing(!isEditing)}
-          onUpdateProfile={updateProfile}
-        />
+      {/* Main Content Area */}
+      <div className="flex flex-col flex-1">
+        {/* Header */}
+        <AccountantDashboardHeader />
+        {/* Scrollable Content */}
+        <main className="flex-1 p-6 overflow-y-auto">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
+            <p className="text-gray-600 mt-1">Manage your account preferences and system configuration</p>
+          </div>
 
-        <NotificationsSection
-          notifications={notifications}
-          onToggleNotification={toggleNotification}
-        />
+          <div className="space-y-6">
+            <ProfileSection
+              profileData={profileData}
+              isEditing={isEditing}
+              onToggleEdit={() => setIsEditing(!isEditing)}
+              onUpdateProfile={updateProfile}
+            />
 
-        <SecuritySection
-          onSecurityAction={handleSecurityAction}
-        />
+            <NotificationsSection
+              notifications={notifications}
+              onToggleNotification={toggleNotification}
+            />
 
-        <AccountActionsSection
-          accountStats={accountStats}
-          onLogout={handleLogout}
-          onSafeLogout={handleSafeLogout}
-        />
+            <SecuritySection
+              onSecurityAction={handleSecurityAction}
+            />
+
+            <AccountActionsSection
+              accountStats={accountStats}
+              onLogout={handleLogout}
+              onSafeLogout={handleSafeLogout}
+            />
+          </div>
+        </main>
       </div>
     </div>
   );

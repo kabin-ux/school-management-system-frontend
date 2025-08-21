@@ -15,8 +15,8 @@ interface SidebarItem {
 
 const sidebarItems: SidebarItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/accountant/dashboard" },
-  { icon: GraduationCap, label: "Fee and Salary", path: "/accountant/fee" },
-  { icon: Users, label: "Invoices", path: "/accountant/invoice" },
+  { icon: GraduationCap, label: "Fee and Salary", path: "/accountant/fee-salary" },
+  { icon: Users, label: "Invoices", path: "/accountant/invoices" },
   { icon: User, label: "Settings", path: "/accountant/settings" }
 ];
 
