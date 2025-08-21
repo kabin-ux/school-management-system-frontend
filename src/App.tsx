@@ -1,18 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import AdminLandingPage from './pages/AdminLandingPage';
-import UserLandingPage from './pages/UserLandingPage';
-import SuperAdminDashboard from './components/SuperAdmin/dashboard/Dashboard';
-import { PartnerSchools } from './pages/SuperAdmin/PartnerSchools';
+import AdminLandingPage from './pages/LandingPage/AdminLandingPage';
+import UserLandingPage from './pages/LandingPage/UserLandingPage';
 import NotificationCenter from './components/SuperAdmin/notifications/Notifications';
-import PermissionManagement from './pages/SuperAdmin/PermissionManagement';
-import SchoolPermissionDetailPage from './pages/SuperAdmin/SchoolPermissionDetail';
-import SupportConsole from './pages/SuperAdmin/SupportConsole';
-import SupportTicketDetailPage from './pages/SuperAdmin/SupportTicketDetail';
-import Settings from './pages/SuperAdmin/Settings';
-import PaymentsOverview from './pages/SuperAdmin/PaymentsOverview';
-import SchoolWisePayment from './pages/SuperAdmin/SchoolWisePayment';
-import PaymentDetails from './pages/SuperAdmin/PaymentDetails';
-import PartnerSchoolDetails from './pages/SuperAdmin/PartnerSchoolDetails';
+import PermissionManagement from './pages/SuperAdmin/permissions/PermissionManagement';
+import SupportConsole from './pages/SuperAdmin/support/SupportConsole';
+import SupportTicketDetailPage from './pages/SuperAdmin/support/details/SupportTicketDetail';
+import Settings from './pages/SuperAdmin/settings/Settings';
+import PaymentsOverview from './pages/SuperAdmin/payments/PaymentsOverview';
+import SchoolWisePayment from './pages/SuperAdmin/payments/details/SchoolWisePayment';
+import PaymentDetails from './pages/SuperAdmin/payments/details/PaymentDetails';
 import AdminDashboard from './pages/Admin/dashboard/Dashboard';
 import TeacherManagement from './pages/Admin/teachers/TeacherManagement';
 import StudentManagement from './pages/Admin/students/StudentManagement';
@@ -36,59 +32,63 @@ import SuperAdminLoginPage from './pages/SuperAdmin/login/SuperAdminLoginPage';
 import AdminLoginPage from './pages/Admin/login/AdminLoginPage';
 import AccountantLoginPage from './pages/Accountant/login/AccountantLoginPage';
 import FeeAndSalaryPage from './pages/Accountant/feeandsalary/FeeAndSalaryPage';
+import SuperAdminDashboard from './pages/SuperAdmin/dashboard/Dashboard';
+import { PartnerSchools } from './pages/SuperAdmin/partnerschools/PartnerSchools';
+import PartnerSchoolDetails from './pages/SuperAdmin/partnerschools/details/PartnerSchoolDetails';
+import SchoolPermissionDetailPage from './pages/SuperAdmin/permissions/details/SchoolPermissionDetail';
 
 function App() {
-  return (
-    <>
-      <Router>
-        <Routes>
-          <Route path='/' element={<UserLandingPage />} />
-          <Route path='/admin' element={<AdminLandingPage />} />
-          <Route path='/super-admin-login' element={<SuperAdminLoginPage />} />
-          <Route path='/admin-login' element={<AdminLoginPage />} />
-          <Route path='/accountant-login' element={<AccountantLoginPage />} />
+    return (
+        <>
+            <Router>
+                <Routes>
+                    <Route path='/' element={<UserLandingPage />} />
+                    <Route path='/admin' element={<AdminLandingPage />} />
+                    <Route path='/super-admin-login' element={<SuperAdminLoginPage />} />
+                    <Route path='/admin-login' element={<AdminLoginPage />} />
+                    <Route path='/accountant-login' element={<AccountantLoginPage />} />
 
-          {/* Super Admin */}
-          <Route path='/super-admin/dashboard' element={<SuperAdminDashboard />} />
-          <Route path='/super-admin/partner-schools' element={<PartnerSchools />} />
-          <Route path='/super-admin/partner-schools/details/:id' element={<PartnerSchoolDetails />} />
-          <Route path='/super-admin/payments' element={<PaymentsOverview />} />
-          <Route path='/super-admin/payments/schools' element={<SchoolWisePayment />} />
-          <Route path='/super-admin/payments/schools/details' element={<PaymentDetails />} />
-          <Route path='/super-admin/notifications' element={<NotificationCenter />} />
-          <Route path='/super-admin/permissions' element={<PermissionManagement />} />
-          <Route path='/super-admin/permissions/details/:id' element={<SchoolPermissionDetailPage />} />
-          <Route path='/super-admin/support' element={<SupportConsole />} />
-          <Route path='/super-admin/support/details/:id' element={<SupportTicketDetailPage />} />
-          <Route path='/super-admin/settings' element={<Settings />} />
+                    {/* Super Admin */}
+                    <Route path='/super-admin/dashboard' element={<SuperAdminDashboard />} />
+                    <Route path='/super-admin/partner-schools' element={<PartnerSchools />} />
+                    <Route path='/super-admin/partner-schools/details/:id' element={<PartnerSchoolDetails />} />
+                    <Route path='/super-admin/payments' element={<PaymentsOverview />} />
+                    <Route path='/super-admin/payments/schools' element={<SchoolWisePayment />} />
+                    <Route path='/super-admin/payments/schools/details' element={<PaymentDetails />} />
+                    <Route path='/super-admin/notifications' element={<NotificationCenter />} />
+                    <Route path='/super-admin/permissions' element={<PermissionManagement />} />
+                    <Route path='/super-admin/permissions/details/:id' element={<SchoolPermissionDetailPage />} />
+                    <Route path='/super-admin/support' element={<SupportConsole />} />
+                    <Route path='/super-admin/support/details/:id' element={<SupportTicketDetailPage />} />
+                    <Route path='/super-admin/settings' element={<Settings />} />
 
-          {/* Admin */}
-          <Route path='/admin/dashboard' element={<AdminDashboard />} />
-          <Route path='/admin/student-management' element={<StudentManagement />} />
-          <Route path='/admin/parent-management' element={<ParentsManagement />} />
-          <Route path='/admin/teacher-management' element={<TeacherManagement />} />
-          <Route path='/admin/timetable-management' element={<TimetableManagement />} />
-          <Route path='/admin/class-management' element={<ClassManagement />} />
-          <Route path='/admin/attendance-monitoring' element={<AttendanceMonitoring />} />
-          <Route path='/admin/attendance-monitoring/history/:id' element={<AttendanceHistory />} />
-          <Route path='/admin/communication' element={<Communication />} />
-          <Route path='/admin/event' element={<Events />} />
-          <Route path='/admin/fee-overview' element={<FeeOverview />} />
-          <Route path='/admin/fee-overview/details/:id' element={<FeeDetails />} />
-          <Route path='/admin/account-management' element={<AccountantManagement />} />
-          <Route path='/admin/support' element={<AdminSupportConsole />} />
-          <Route path='/admin/support/details/:id' element={<AdminSupportTicketDetailPage />} />
-          <Route path='/admin/settings' element={<AdminSettings />} />
+                    {/* Admin */}
+                    <Route path='/admin/dashboard' element={<AdminDashboard />} />
+                    <Route path='/admin/student-management' element={<StudentManagement />} />
+                    <Route path='/admin/parent-management' element={<ParentsManagement />} />
+                    <Route path='/admin/teacher-management' element={<TeacherManagement />} />
+                    <Route path='/admin/timetable-management' element={<TimetableManagement />} />
+                    <Route path='/admin/class-management' element={<ClassManagement />} />
+                    <Route path='/admin/attendance-monitoring' element={<AttendanceMonitoring />} />
+                    <Route path='/admin/attendance-monitoring/history/:id' element={<AttendanceHistory />} />
+                    <Route path='/admin/communication' element={<Communication />} />
+                    <Route path='/admin/event' element={<Events />} />
+                    <Route path='/admin/fee-overview' element={<FeeOverview />} />
+                    <Route path='/admin/fee-overview/details/:id' element={<FeeDetails />} />
+                    <Route path='/admin/account-management' element={<AccountantManagement />} />
+                    <Route path='/admin/support' element={<AdminSupportConsole />} />
+                    <Route path='/admin/support/details/:id' element={<AdminSupportTicketDetailPage />} />
+                    <Route path='/admin/settings' element={<AdminSettings />} />
 
-          {/* Accountant */}
-          <Route path='/accountant/dashboard' element={<AccountantDashboard />} />
-          <Route path='/accountant/fee-salary' element={<FeeAndSalaryPage />} />
-          <Route path='/accountant/invoices' element={<InvoicesPage />} />
-          <Route path='/accountant/settings' element={<SettingsPage />} />
-        </Routes>
-      </Router>
-    </>
-  );
+                    {/* Accountant */}
+                    <Route path='/accountant/dashboard' element={<AccountantDashboard />} />
+                    <Route path='/accountant/fee-salary' element={<FeeAndSalaryPage />} />
+                    <Route path='/accountant/invoices' element={<InvoicesPage />} />
+                    <Route path='/accountant/settings' element={<SettingsPage />} />
+                </Routes>
+            </Router>
+        </>
+    );
 }
 
 export default App;

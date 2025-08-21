@@ -1,7 +1,7 @@
 import React from 'react';
-import image from '../assets/image.png';
-import image2 from '../assets/image2.png';
-import image3 from '../assets/image3.png';
+import image from '../../assets/image.png';
+import image2 from '../../assets/image2.png';
+import image3 from '../../assets/image3.png';
 
 const MobileAppMockups: React.FC = () => {
     return (

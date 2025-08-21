@@ -1,8 +1,8 @@
 import { ArrowLeft, Plus } from "lucide-react";
-import { DashboardHeader } from "../../components/SuperAdmin/layout/DashboardHeader";
-import PaymentDetailView from "../../components/SuperAdmin/payments/PaymentDetailView";
-import { Sidebar } from "../../components/SuperAdmin/layout/Sidebar";
 import { useNavigate } from "react-router-dom";
+import { Sidebar } from "../../../../components/SuperAdmin/layout/Sidebar";
+import { DashboardHeader } from "../../../../components/SuperAdmin/layout/DashboardHeader";
+import PaymentDetailView from "../../../../components/SuperAdmin/payments/PaymentDetailView";
 
 interface PaymentDetailsProps {
   onBack?: () => void;

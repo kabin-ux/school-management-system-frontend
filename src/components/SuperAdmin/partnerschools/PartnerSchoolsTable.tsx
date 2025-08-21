@@ -15,7 +15,7 @@ interface School {
 
 
 interface PartnerSchoolTableProps {
-  onViewPartnerSchoolDetails?: (schoolCode: string) => void;
+  onViewPartnerSchoolDetails: (schoolCode: string) => void;
 }
 
 const schoolsData: School[] = [
@@ -202,7 +202,7 @@ const schoolsData: School[] = [
 ];
 
 
-export const PartnerSchoolsTable: React.FC = ({ onViewPartnerSchoolDetails }: PartnerSchoolTableProps) => {
+export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({ onViewPartnerSchoolDetails }) => {
   const [subscription, setSubscription] = useState('All Status');
   const [payment, setPayment] = useState('Payment');
 

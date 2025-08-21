@@ -1,8 +1,8 @@
 import React from 'react';
-import { Sidebar } from '../../components/SuperAdmin/layout/Sidebar';
-import { DashboardHeader } from '../../components/SuperAdmin/layout/DashboardHeader';
 import { useNavigate } from 'react-router-dom';
-import { PartnerSchoolsTable } from '../../components/SuperAdmin/partnerschools/PartnerSchoolsTable';
+import { Sidebar } from '../../../components/SuperAdmin/layout/Sidebar';
+import { DashboardHeader } from '../../../components/SuperAdmin/layout/DashboardHeader';
+import { PartnerSchoolsTable } from '../../../components/SuperAdmin/partnerschools/PartnerSchoolsTable';
 
 export const PartnerSchools: React.FC = () => {
   const navigate = useNavigate();

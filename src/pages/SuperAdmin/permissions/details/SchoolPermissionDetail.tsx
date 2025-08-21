@@ -1,4 +1,4 @@
-import SchoolPermissionDetail from "../../components/SuperAdmin/permissions/SchoolPermissionDetail";
+import SchoolPermissionDetail from "../../../../components/SuperAdmin/permissions/SchoolPermissionDetail";
 
 export default function SchoolPermissionDetailPage() {
   return (

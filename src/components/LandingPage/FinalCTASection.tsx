@@ -1,6 +1,6 @@
 import React from 'react';
-import footer1 from '../assets/footer1.png';
-import footer2 from '../assets/footer2.png';
+import footer1 from '../../assets/footer1.png';
+import footer2 from '../../assets/footer2.png';
 import { FaApple, FaGooglePlay } from 'react-icons/fa';
 
 const FinalCTASection: React.FC = () => {

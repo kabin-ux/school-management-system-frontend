@@ -1,11 +1,11 @@
-import { DashboardHeader } from "../../components/SuperAdmin/layout/DashboardHeader";
-import FinancialOverview from "../../components/SuperAdmin/partnerschools/FinancialOverview";
-import SchoolHeader from "../../components/SuperAdmin/partnerschools/SchoolHeader";
-import SchoolPlan from "../../components/SuperAdmin/partnerschools/SchoolPlan";
-import SchoolStats from "../../components/SuperAdmin/partnerschools/SchoolStats";
-import SupportTickets from "../../components/SuperAdmin/partnerschools/SupportTickets";
-import SystemInformation from "../../components/SuperAdmin/partnerschools/SystemInformation";
-import { Sidebar } from "../../components/SuperAdmin/layout/Sidebar";
+import { DashboardHeader } from "../../../../components/SuperAdmin/layout/DashboardHeader";
+import { Sidebar } from "../../../../components/SuperAdmin/layout/Sidebar";
+import FinancialOverview from "../../../../components/SuperAdmin/partnerschools/FinancialOverview";
+import SchoolHeader from "../../../../components/SuperAdmin/partnerschools/SchoolHeader";
+import SchoolPlan from "../../../../components/SuperAdmin/partnerschools/SchoolPlan";
+import SchoolStats from "../../../../components/SuperAdmin/partnerschools/SchoolStats";
+import SupportTickets from "../../../../components/SuperAdmin/partnerschools/SupportTickets";
+import SystemInformation from "../../../../components/SuperAdmin/partnerschools/SystemInformation";
 
 
 export default function PartnerSchoolDetails() {

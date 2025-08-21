@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import GeneralSettings from '../../components/SuperAdmin/settings/GeneralSettings';
-import PaymentSettings from '../../components/SuperAdmin/settings/PaymentSettings';
-import NotificationSettings from '../../components/SuperAdmin/settings/NotificationSettings';
-import PermissionDefaults from '../../components/SuperAdmin/settings/PermissionDefaults';
-import SupportConsoleSettings from '../../components/SuperAdmin/settings/SupportConsoleSettings';
-import BackupDataSettings from '../../components/SuperAdmin/settings/BackUpDataSettings';
-import SettingsTabs from '../../components/SuperAdmin/settings/SettingsTabs';
-import { DashboardHeader } from '../../components/SuperAdmin/layout/DashboardHeader';
-import { Sidebar } from '../../components/SuperAdmin/layout/Sidebar';
+import GeneralSettings from '../../../components/SuperAdmin/settings/GeneralSettings';
+import PaymentSettings from '../../../components/SuperAdmin/settings/PaymentSettings';
+import NotificationSettings from '../../../components/SuperAdmin/settings/NotificationSettings';
+import PermissionDefaults from '../../../components/SuperAdmin/settings/PermissionDefaults';
+import SupportConsoleSettings from '../../../components/SuperAdmin/settings/SupportConsoleSettings';
+import BackupDataSettings from '../../../components/SuperAdmin/settings/BackUpDataSettings';
+import { Sidebar } from '../../../components/SuperAdmin/layout/Sidebar';
+import { DashboardHeader } from '../../../components/SuperAdmin/layout/DashboardHeader';
+import SettingsTabs from '../../../components/SuperAdmin/settings/SettingsTabs';
 export default function Settings() {
     const [activeTab, setActiveTab] = useState('general');
 

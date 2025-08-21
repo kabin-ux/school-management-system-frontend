@@ -1,5 +1,5 @@
 import React from 'react';
-import image from '../assets/image4.png'
+import image from '../../assets/image4.png'
 const ParentMockup: React.FC = () => {
     return (
         <div className="w-116 h-full bg-white-200 p-16 rounded-4xl">

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import TicketDetail from '../../components/SuperAdmin/support/TicketDetail';
-import { Sidebar } from '../../components/SuperAdmin/layout/Sidebar';
-import { DashboardHeader } from '../../components/SuperAdmin/layout/DashboardHeader';
+import TicketDetail from '../../../../components/SuperAdmin/support/TicketDetail';
+import { Sidebar } from '../../../../components/SuperAdmin/layout/Sidebar';
+import { DashboardHeader } from '../../../../components/SuperAdmin/layout/DashboardHeader';
 
 export default function SupportTicketDetailPage() {
     const navigate = useNavigate();

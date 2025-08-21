@@ -1,7 +1,7 @@
 import React from 'react';
 import { Mail, Lock } from 'lucide-react';
 import { FaApple, FaGooglePlay } from 'react-icons/fa';
-import MobileAppMockups from '../../../components/MobileAppMockups';
+import MobileAppMockups from '../../../components/LandingPage/MobileAppMockups';
 
 const AdminLoginPage: React.FC = () => {
     return (

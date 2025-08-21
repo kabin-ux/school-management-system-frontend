@@ -1,5 +1,5 @@
 import React from 'react';
-import image from '../assets/image.png';
+import image from '../../assets/image.png';
 
 const HeroMockup: React.FC = () => {
     return (
