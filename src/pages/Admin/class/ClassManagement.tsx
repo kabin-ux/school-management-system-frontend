@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import type { Grade } from '../../../types/types';
+import type { Grade } from '../../../types/class.types';
 import { ClassHeader } from '../../../components/Admin/class/ClassHeader';
 import { ClassStats } from '../../../components/Admin/class/ClassStats';
 import { ClassTable } from '../../../components/Admin/class/ClassTable';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+
 const ClassManagement: React.FC = () => {
     const [expandedGrades, setExpandedGrades] = useState<number[]>([1]);
     const [searchTerm, setSearchTerm] = useState('');

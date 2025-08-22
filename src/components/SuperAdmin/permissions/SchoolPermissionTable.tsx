@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
-interface SchoolData {
-  id: string;
-  schoolCode: string;
-  schoolName: string;
-  totalAdmins: string;
-  totalAccountants: string;
-  lastModified: string;
-  status: 'Active' | 'Inactive';
-}
+import type { SchoolData } from '../../../types/permission.types';
 
 export default function SchoolPermissionTable() {
   const [searchTerm, setSearchTerm] = useState('');

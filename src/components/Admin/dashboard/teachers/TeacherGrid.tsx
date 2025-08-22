@@ -1,16 +1,5 @@
 import { Mail, Phone, BookOpen, GraduationCap } from 'lucide-react';
-
-interface Teacher {
-  id: string;
-  name: string;
-  teacherId: string;
-  email: string;
-  phone: string;
-  subjects: string[];
-  classes: string[];
-  status: 'Active' | 'Inactive';
-  avatar: string;
-}
+import type { Teacher } from '../../../../types/admin-dashboard.types';
 
 export default function TeacherGrid() {
   const teachers: Teacher[] = Array.from({ length: 12 }, (_, i) => ({

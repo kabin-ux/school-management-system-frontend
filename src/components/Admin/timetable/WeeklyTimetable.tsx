@@ -1,14 +1,4 @@
-interface TimeSlot {
-  time: string;
-  subject?: string;
-  teacher?: string;
-  color?: string;
-}
-
-interface TimetableDay {
-  day: string;
-  slots: TimeSlot[];
-}
+import type { TimetableDay } from "../../../types/timetable.types";
 
 export default function WeeklyTimetable() {
   const timeSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 AM', '1:00 AM', '2:00 AM', '3:00 AM', '4:00 AM'];

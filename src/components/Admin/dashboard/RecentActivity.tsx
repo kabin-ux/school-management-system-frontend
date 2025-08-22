@@ -1,12 +1,5 @@
 import { UserPlus, Calendar, FileText, HelpCircle, Users } from 'lucide-react';
-
-interface Activity {
-  id: string;
-  type: 'student' | 'timetable' | 'exam' | 'support' | 'teacher';
-  description: string;
-  performedBy: string;
-  time: string;
-}
+import type { Activity } from '../../../types/admin-dashboard.types';
 
 export default function RecentActivity() {
   const activities: Activity[] = [

@@ -4,6 +4,7 @@ import { CommunicationTabs } from '../../../components/Admin/communication/Commu
 import { ChatInterface } from '../../../components/Admin/communication/ChatInterface';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+
 const Communication: React.FC = () => {
     const [activeTab, setActiveTab] = useState('Students');
     const [message, setMessage] = useState('');

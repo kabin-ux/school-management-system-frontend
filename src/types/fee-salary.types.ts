@@ -52,5 +52,16 @@ export interface FilterOptions {
   classOrDepartment: string;
 }
 
+export interface FeeRecord {
+  code: string,
+  id: number;
+  name: string;
+  classSection: string;
+  totalFee: number;
+  paidAmount: number;
+  dueAmount: number;
+  status: string;
+}
+
 export type ViewType = 'Student' | 'Teacher';
 export type TabType = 'Fee Structure' | 'Payment History' | 'Add Payment';

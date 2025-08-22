@@ -1,13 +1,5 @@
 import React from 'react';
-
-interface SupportTicket {
-  id: string;
-  school: string;
-  issue: string;
-  status: 'Open' | 'In Progress' | 'Closed';
-  priority: 'High' | 'Medium' | 'Low';
-  created: string;
-}
+import type { SupportTicket } from '../../../types/super-admin-dashboard.types';
 
 const supportTickets: SupportTicket[] = [
   {

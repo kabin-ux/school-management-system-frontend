@@ -1,18 +1,6 @@
 import { useState } from 'react';
 import { Search } from 'lucide-react';
-
-interface SchoolPayment {
-  id: string;
-  schoolCode: string;
-  school: string;
-  location: string;
-  totalStudents: number;
-  totalTeachers: number;
-  totalParents: number;
-  status: 'Active' | 'Inactive';
-  subscription: 'Premium' | 'Basic';
-  payment: string;
-}
+import type { SchoolPayment } from '../../../types/payments.types';
 
 interface SchoolPaymentTableProps {
   onViewSchool?: (schoolCode: string) => void;

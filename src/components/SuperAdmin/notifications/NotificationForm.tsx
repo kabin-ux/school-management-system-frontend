@@ -1,18 +1,6 @@
 import { useState } from 'react';
 import { Calendar, Clock, Mail, Smartphone, Send } from 'lucide-react';
-
-interface NotificationFormData {
-  title: string;
-  targetAudience: string;
-  messageContent: string;
-  schoolSelections: string;
-  schoolCode: string;
-  notificationType: string;
-  scheduleOption: string;
-  scheduleDate: string;
-  scheduleTime: string;
-  specificSchool: boolean;
-}
+import type { NotificationFormData } from '../../../types/super-admin-notification.types';
 
 export default function NotificationForm() {
   const [formData, setFormData] = useState<NotificationFormData>({

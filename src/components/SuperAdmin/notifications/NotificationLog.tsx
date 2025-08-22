@@ -1,14 +1,6 @@
 import  { useState } from 'react';
 import { Mail, Smartphone, MoreHorizontal, ChevronLeft, ChevronRight } from 'lucide-react';
-
-interface NotificationLog {
-  id: string;
-  title: string;
-  sentTo: string;
-  type: string;
-  sentOn: string;
-  status: 'Sent' | 'Failed' | 'Scheduled';
-}
+import type { NotificationLog } from '../../../types/super-admin-notification.types';
 
 export default function NotificationLog() {
   const [activeTab, setActiveTab] = useState('All');

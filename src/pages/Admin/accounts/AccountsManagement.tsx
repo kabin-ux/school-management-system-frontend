@@ -1,5 +1,5 @@
 import React from 'react';
-import { AccountantManagementHeader } from '../../../components/Admin/accountmanagement/AccountManagementHeder';
+import { AccountantManagementHeader } from '../../../components/Admin/accountmanagement/AccountManagementHeader';
 import { AccountantManagementContent } from '../../../components/Admin/accountmanagement/AccountMangementContent';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';

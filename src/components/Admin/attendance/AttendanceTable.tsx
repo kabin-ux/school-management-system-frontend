@@ -1,13 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
-interface AttendanceRecord {
-    id:number
-    name: string;
-    classSection: string;
-    date: string;
-    status: string;
-}
+import type { AttendanceRecord } from '../../../types/attendance-record.types';
 
 interface AttendanceTableProps {
     attendanceData: AttendanceRecord[];

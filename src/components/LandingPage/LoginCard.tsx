@@ -1,5 +1,6 @@
 import type { LucideIcon } from 'lucide-react';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginCardProps {
   icon: LucideIcon;
@@ -9,6 +10,23 @@ interface LoginCardProps {
 }
 
 const LoginCard: React.FC<LoginCardProps> = ({ icon: Icon, title, description, buttonText }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    switch (buttonText) {
+      case "Login as Super Admin":
+        navigate("/super-admin-login");
+        break;
+      case "Login as Admin":
+        navigate("/admin-login");
+        break;
+      case "Login as Accountant":
+        navigate("/accountant-login"); // corrected double dash
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <div className="bg-white px-8 py-16 rounded-3xl hover:shadow-lg transition-shadow border-[#CBD72B] border-2 cursor-pointer">
       <div className="w-16 h-16 bg-[#CBD72B] rounded-lg flex items-center justify-center mx-auto mb-4">
@@ -18,7 +36,9 @@ const LoginCard: React.FC<LoginCardProps> = ({ icon: Icon, title, description, b
       <p className="text-gray-600 mb-6">
         {description}
       </p>
-      <button className="w-full bg-[#CBD72B] text-white font-semibold py-3 px-6 rounded-lg hover:bg-[#A8B122] transition-colors">
+      <button className="w-full bg-[#CBD72B] text-white font-semibold py-3 px-6 rounded-lg hover:bg-[#A8B122] transition-colors"
+        onClick={handleClick}
+      >
         {buttonText}
       </button>
     </div>

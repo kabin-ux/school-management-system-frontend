@@ -1,10 +1,4 @@
-
-interface Admin {
-  name: string;
-  role: string;
-  initials: string;
-  bgColor: string;
-}
+import type { Admin } from "../../../types/partner-school.types";
 
 export default function SystemInformation() {
   const admins: Admin[] = [

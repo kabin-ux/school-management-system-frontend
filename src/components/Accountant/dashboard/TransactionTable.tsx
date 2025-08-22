@@ -1,13 +1,4 @@
-
-interface Transaction {
-  id: string;
-  studentName: string;
-  class: string;
-  date: string;
-  amount: string;
-  method: string;
-  status: 'Paid' | 'Pending' | 'E-Stmt';
-}
+import type { Transaction } from "../../../types/accountant-dashboard.types";
 
 export default function TransactionTable() {
   const transactions: Transaction[] = [

@@ -36,6 +36,7 @@ import SuperAdminDashboard from './pages/SuperAdmin/dashboard/Dashboard';
 import { PartnerSchools } from './pages/SuperAdmin/partnerschools/PartnerSchools';
 import PartnerSchoolDetails from './pages/SuperAdmin/partnerschools/details/PartnerSchoolDetails';
 import SchoolPermissionDetailPage from './pages/SuperAdmin/permissions/details/SchoolPermissionDetail';
+import ProtectedRoute from './auth/ProtectedRoute';
 
 function App() {
     return (
@@ -49,18 +50,66 @@ function App() {
                     <Route path='/accountant-login' element={<AccountantLoginPage />} />
 
                     {/* Super Admin */}
-                    <Route path='/super-admin/dashboard' element={<SuperAdminDashboard />} />
-                    <Route path='/super-admin/partner-schools' element={<PartnerSchools />} />
-                    <Route path='/super-admin/partner-schools/details/:id' element={<PartnerSchoolDetails />} />
-                    <Route path='/super-admin/payments' element={<PaymentsOverview />} />
-                    <Route path='/super-admin/payments/schools' element={<SchoolWisePayment />} />
-                    <Route path='/super-admin/payments/schools/details' element={<PaymentDetails />} />
-                    <Route path='/super-admin/notifications' element={<NotificationCenter />} />
-                    <Route path='/super-admin/permissions' element={<PermissionManagement />} />
-                    <Route path='/super-admin/permissions/details/:id' element={<SchoolPermissionDetailPage />} />
-                    <Route path='/super-admin/support' element={<SupportConsole />} />
-                    <Route path='/super-admin/support/details/:id' element={<SupportTicketDetailPage />} />
-                    <Route path='/super-admin/settings' element={<Settings />} />
+                    <Route path='/super-admin/dashboard' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <SuperAdminDashboard />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/super-admin/partner-schools' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <PartnerSchools />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/super-admin/partner-schools/details/:id' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <PartnerSchoolDetails />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/super-admin/payments' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <PaymentsOverview />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/super-admin/payments/schools' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <SchoolWisePayment />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/super-admin/payments/schools/details' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <PaymentDetails />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/super-admin/notifications' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <NotificationCenter />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/super-admin/permissions' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <PermissionManagement />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/super-admin/permissions/details/:id' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <SchoolPermissionDetailPage />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/super-admin/support' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <SupportConsole />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/super-admin/support/details/:id' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <SupportTicketDetailPage />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/super-admin/settings' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <Settings />
+                        </ProtectedRoute>
+                    } />
 
                     {/* Admin */}
                     <Route path='/admin/dashboard' element={<AdminDashboard />} />

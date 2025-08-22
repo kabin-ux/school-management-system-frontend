@@ -1,18 +1,5 @@
 import React, { useState } from 'react';
-
-interface School {
-  id: string;
-  schoolCode: string;
-  name: string;
-  location: string;
-  totalStudents: number;
-  totalTeachers: number;
-  totalParents: number;
-  status: 'Active' | 'Inactive';
-  subscription: 'Premium' | 'Basic';
-  payment: 'Fully paid' | 'Partial paid';
-}
-
+import type { School } from '../../../types/partner-school.types';
 
 interface PartnerSchoolTableProps {
   onViewPartnerSchoolDetails: (schoolCode: string) => void;

@@ -1,11 +1,5 @@
 import React from 'react';
-
-interface Event {
-  date: string;
-  type: string;
-  audience: string;
-  description: string;
-}
+import type { Event } from '../../../types/events.types';
 
 interface EventsTableProps {
   events: Event[];

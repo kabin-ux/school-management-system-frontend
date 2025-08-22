@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChevronDown, ChevronRight, Eye, Trash2 } from 'lucide-react';
-import type { Grade } from '../../../types/types';
+import type { Grade } from '../../../types/class.types';
 
 interface ClassTableProps {
   grades: Grade[];

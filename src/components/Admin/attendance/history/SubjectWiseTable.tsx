@@ -1,11 +1,5 @@
 import React from 'react';
-
-interface Subject {
-  name: string;
-  totalClass: number;
-  attendedClass: number;
-  attendance: string;
-}
+import type { Subject } from '../../../../types/attendance-record.types';
 
 interface SubjectWiseTableProps {
   subjects: Subject[];

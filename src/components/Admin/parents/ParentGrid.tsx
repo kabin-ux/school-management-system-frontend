@@ -1,18 +1,5 @@
 import { Mail, Phone, Users, MessageCircle, Unlink } from 'lucide-react';
-
-interface Parent {
-  id: string;
-  name: string;
-  parentId: string;
-  email: string;
-  phone: string;
-  linkedStudents: Array<{
-    name: string;
-    class: string;
-  }>;
-  status: 'Active' | 'Inactive';
-  avatar: string;
-}
+import type { Parent } from '../../../types/parent.types';
 
 export default function ParentGrid() {
   const parents: Parent[] = Array.from({ length: 8 }, (_, i) => ({

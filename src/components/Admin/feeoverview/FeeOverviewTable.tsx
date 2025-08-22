@@ -1,16 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
-interface FeeRecord {
-  code: string,
-  id: number;
-  name: string;
-  classSection: string;
-  totalFee: number;
-  paidAmount: number;
-  dueAmount: number;
-  status: string;
-}
+import type { FeeRecord } from '../../../types/fee-salary.types';
 
 interface FeeOverviewTableProps {
   feeData: FeeRecord[];

@@ -1,21 +1,7 @@
 import React from 'react';
 import { ChatArea } from './ChatArea';
 import { ContactList } from './ContactList';
-
-interface Contact {
-    id: number;
-    name: string;
-    message: string;
-    time: string;
-    avatar: string;
-    online: boolean;
-}
-
-interface Message {
-    type: string;
-    content: string;
-    isImage?: boolean;
-}
+import type { Contact, Message } from '../../../types/communication.types';
 
 interface ChatInterfaceProps {
     contacts: Contact[];

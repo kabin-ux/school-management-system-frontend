@@ -1,12 +1,5 @@
 import React from 'react';
-
-interface Notification {
-  type: 'success' | 'info' | 'warning' | 'error';
-  title: string;
-  description: string;
-  time: string;
-  target: string;
-}
+import type { Notification } from '../../../types/super-admin-dashboard.types';
 
 const notifications: Notification[] = [
   {

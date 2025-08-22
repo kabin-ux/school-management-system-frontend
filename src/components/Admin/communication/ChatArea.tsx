@@ -1,11 +1,6 @@
 import React from 'react';
 import { Phone, Video, MoreHorizontal, Mic, Image, Smile, Send } from 'lucide-react';
-
-interface Message {
-  type: string;
-  content: string;
-  isImage?: boolean;
-}
+import type { Message } from '../../../types/communication.types';
 
 interface ChatAreaProps {
   messages: Message[];

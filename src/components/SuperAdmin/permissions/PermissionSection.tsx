@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
-
-interface Permission {
-  id: string;
-  name: string;
-  description: string;
-  enabled: boolean;
-}
+import type { Permission } from '../../../types/permission.types';
 
 interface PermissionSectionProps {
   title: string;

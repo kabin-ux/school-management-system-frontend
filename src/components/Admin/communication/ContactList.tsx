@@ -1,13 +1,5 @@
 import React from 'react';
-
-interface Contact {
-  id: number;
-  name: string;
-  message: string;
-  time: string;
-  avatar: string;
-  online: boolean;
-}
+import type { Contact } from '../../../types/communication.types';
 
 interface ContactListProps {
   contacts: Contact[];

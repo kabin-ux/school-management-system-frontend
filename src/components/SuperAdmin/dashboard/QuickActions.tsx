@@ -6,13 +6,7 @@ import {
   UserPlus, 
   HeadphonesIcon 
 } from 'lucide-react';
-
-interface QuickAction {
-  icon: React.ComponentType<any>;
-  title: string;
-  description: string;
-  color: 'blue' | 'green' | 'purple' | 'orange' | 'red';
-}
+import type { QuickAction } from '../../../types/super-admin-dashboard.types';
 
 const quickActions: QuickAction[] = [
   {

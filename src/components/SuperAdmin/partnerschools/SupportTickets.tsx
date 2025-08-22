@@ -1,12 +1,4 @@
-
-interface Ticket {
-  id: string;
-  title: string;
-  priority: 'High' | 'Medium' | 'Low';
-  assignee: string;
-  timeAgo: string;
-  status: 'Open' | 'In progress' | 'Resolved';
-}
+import type { Ticket } from "../../../types/partner-school.types";
 
 export default function SupportTickets() {
   const tickets: Ticket[] = [

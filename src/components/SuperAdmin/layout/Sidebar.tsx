@@ -9,12 +9,7 @@ import {
   Settings,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
-
-interface SidebarItem {
-  icon: React.ComponentType<any>;
-  label: string;
-  path: string;
-}
+import type { SidebarItem } from "../../../types/sidebar-item.types";
 
 const sidebarItems: SidebarItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/super-admin/dashboard" },
