@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../../components/SuperAdmin/layout/Sidebar';
 import { DashboardHeader } from '../../../components/SuperAdmin/layout/DashboardHeader';
 import { PartnerSchoolsTable } from '../../../components/SuperAdmin/partnerschools/PartnerSchoolsTable';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { getAllSchools } from '../../../features/schoolSlice';
 
 export const PartnerSchools: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { loading, error } = useAppSelector((state) => state.school)
+
+  useEffect(() => {
+    dispatch(getAllSchools())
+  }, [dispatch])
+  console.log(    dispatch(getAllSchools())
+)
 
   const handleViewPartnerSchoolDetails = (schoolCode: string) => {
     navigate(`/super-admin/partner-schools/details/${schoolCode}`)

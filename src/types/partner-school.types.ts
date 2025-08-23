@@ -11,6 +11,16 @@ export interface School {
   payment: 'Fully paid' | 'Partial paid';
 }
 
+// interface School {
+//     id: string;
+//     name: string;
+//     email: string;
+//     contact: string;
+//     status: string;
+//     school_code: string;
+//     [key: string]: any;
+// }
+
 export interface Ticket {
   id: string;
   title: string;

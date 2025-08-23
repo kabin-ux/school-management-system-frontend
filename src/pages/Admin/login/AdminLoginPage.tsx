@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
 import { FaApple, FaGooglePlay } from 'react-icons/fa';
 import MobileAppMockups from '../../../components/LandingPage/MobileAppMockups';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useNavigate } from 'react-router-dom';
+import { loginAdmin } from '../../../features/authSlice';
 
 const AdminLoginPage: React.FC = () => {
+    const dispatch = useAppDispatch();
+    const { user, loading, error } = useAppSelector((state) => state.auth);
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user) {
+            navigate('/admin/dashboard');
+        }
+    }, [user])
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        dispatch(loginAdmin({ email, password }));
+    }
     return (
         <section className="min-h-screen bg-gray-50 flex">
             {/* Left Side - Login Form */}
@@ -19,7 +39,7 @@ const AdminLoginPage: React.FC = () => {
                     </div>
 
                     {/* Login Form */}
-                    <form className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
                             <label className="block text-gray-700 text-sm font-medium mb-2">
                                 School Email ID
@@ -27,8 +47,11 @@ const AdminLoginPage: React.FC = () => {
                             <div className="relative">
                                 <input
                                     type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Superaddress@email.com"
                                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none"
+                                    required
                                 />
                                 <Mail className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
                             </div>
@@ -41,18 +64,22 @@ const AdminLoginPage: React.FC = () => {
                             <div className="relative">
                                 <input
                                     type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Enter your password"
                                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none"
+                                    required
                                 />
                                 <Lock className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
                             </div>
                         </div>
-
+                        {error && <p className="text-red-500 text-sm">{error}</p>}
                         <button
                             type="submit"
+                            disabled={loading}
                             className="w-full bg-[#E6F242] text-white py-3 rounded-lg font-semibold hover:bg-[#dbe465] transition-colors"
                         >
-                            Login Now
+                            {loading ? 'Logging in...' : 'Login'}
                         </button>
 
                         <div className="text-center">

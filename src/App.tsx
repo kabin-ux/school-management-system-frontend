@@ -37,6 +37,7 @@ import { PartnerSchools } from './pages/SuperAdmin/partnerschools/PartnerSchools
 import PartnerSchoolDetails from './pages/SuperAdmin/partnerschools/details/PartnerSchoolDetails';
 import SchoolPermissionDetailPage from './pages/SuperAdmin/permissions/details/SchoolPermissionDetail';
 import ProtectedRoute from './auth/ProtectedRoute';
+import UnauthorizedPage from './pages/Unauthorized';
 
 function App() {
     return (
@@ -48,6 +49,7 @@ function App() {
                     <Route path='/super-admin-login' element={<SuperAdminLoginPage />} />
                     <Route path='/admin-login' element={<AdminLoginPage />} />
                     <Route path='/accountant-login' element={<AccountantLoginPage />} />
+                    <Route path='/unauthorized' element={<UnauthorizedPage />} />
 
                     {/* Super Admin */}
                     <Route path='/super-admin/dashboard' element={
@@ -112,11 +114,32 @@ function App() {
                     } />
 
                     {/* Admin */}
-                    <Route path='/admin/dashboard' element={<AdminDashboard />} />
-                    <Route path='/admin/student-management' element={<StudentManagement />} />
-                    <Route path='/admin/parent-management' element={<ParentsManagement />} />
-                    <Route path='/admin/teacher-management' element={<TeacherManagement />} />
-                    <Route path='/admin/timetable-management' element={<TimetableManagement />} />
+                    <Route path='/admin/dashboard' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <AdminDashboard />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/admin/student-management' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <StudentManagement />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/admin/parent-management' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <ParentsManagement />
+                        </ProtectedRoute>
+
+                    } />
+                    <Route path='/admin/teacher-management' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <TeacherManagement />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/admin/timetable-management' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <TimetableManagement />
+                        </ProtectedRoute>
+                    } />
                     <Route path='/admin/class-management' element={<ClassManagement />} />
                     <Route path='/admin/attendance-monitoring' element={<AttendanceMonitoring />} />
                     <Route path='/admin/attendance-monitoring/history/:id' element={<AttendanceHistory />} />
@@ -135,7 +158,7 @@ function App() {
                     <Route path='/accountant/invoices' element={<InvoicesPage />} />
                     <Route path='/accountant/settings' element={<SettingsPage />} />
                 </Routes>
-            </Router>
+            </Router >
         </>
     );
 }

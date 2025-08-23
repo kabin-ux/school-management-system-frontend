@@ -15,10 +15,10 @@ export const loginSuperAdmin = createAsyncThunk(
 );
 
 export const loginAdmin = createAsyncThunk(
-  "auth/loginSuperAdmin",
+  "auth/loginAdmin",
   async (credentials: { email: string; password: string }, thunkAPI) => {
     try {
-      const res = await api.post("/admin/login", credentials);
+      const res = await api.post("/school/login", credentials);
       return res.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || "Login failed");
@@ -27,7 +27,7 @@ export const loginAdmin = createAsyncThunk(
 );
 
 export const loginAccountant = createAsyncThunk(
-  "auth/loginSuperAdmin",
+  "auth/loginAccountant",
   async (credentials: { email: string; password: string }, thunkAPI) => {
     try {
       const res = await api.post("/accountant/login", credentials);
@@ -71,6 +71,21 @@ const authSlice = createSlice({
         localStorage.setItem("auth", JSON.stringify(action.payload.data));
       })
       .addCase(loginSuperAdmin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+         .addCase(loginAdmin.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginAdmin.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.data;
+        state.token = action.payload.token;
+        state.role = "admin";
+        localStorage.setItem("auth", JSON.stringify(action.payload.data));
+      })
+      .addCase(loginAdmin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

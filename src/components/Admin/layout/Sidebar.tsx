@@ -13,9 +13,12 @@ import {
   Calendar,
   Wallet,
   UserCog,
+  LogOut,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { SidebarItem } from "../../../types/sidebar-item.types";
+import { useAppDispatch } from "../../../app/hooks";
+import { logout } from "../../../features/authSlice";
 
 const sidebarItems: SidebarItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/admin/dashboard" },
@@ -37,6 +40,13 @@ export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/admin"); // Redirect to login page
+  };
+
   return (
     <div className="w-64 bg-white shadow-sm border-r border-gray-200">
       <div className="p-6">
@@ -48,7 +58,7 @@ export const Sidebar: React.FC = () => {
         </div>
       </div>
 
-      <nav className="px-6 space-y-6">
+      <nav className="px-6 space-y-6 flex-1">
         {sidebarItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = location.pathname.startsWith(item.path);
@@ -58,8 +68,8 @@ export const Sidebar: React.FC = () => {
               key={index}
               onClick={() => navigate(item.path)}
               className={`flex items-center space-x-3 px-3 py-2 rounded-lg cursor-pointer transition-colors ${isActive
-                  ? "bg-blue-50 text-blue-700 border-r-2 border-blue-600"
-                  : "text-gray-600 hover:bg-gray-50"
+                ? "bg-blue-50 text-blue-700 border-r-2 border-blue-600"
+                : "text-gray-600 hover:bg-gray-50"
                 }`}
             >
               <Icon className="w-5 h-5" />
@@ -68,6 +78,17 @@ export const Sidebar: React.FC = () => {
           );
         })}
       </nav>
+
+      <div className="p-6">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+        >
+          <LogOut className="w-5 h-5" />
+          <span className="font-medium">Logout</span>
+        </button>
+      </div>
+
     </div>
   );
 };
