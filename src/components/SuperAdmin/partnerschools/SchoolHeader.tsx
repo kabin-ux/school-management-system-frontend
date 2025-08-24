@@ -8,7 +8,7 @@ interface SchoolHeaderProps {
   principal: string;
   email: string;
   phone: string;
-  status: 'Active' | 'Inactive';
+  status: string;
   createdDate: string;
   memberSince: string;
 }

@@ -36,7 +36,7 @@ export const getAllSchools = createAsyncThunk(
                 withCredentials: true,
 
                 headers: {
-                    'x-client-type': 'school details'
+                    'x-client-type': 'web'
                 }
             });
             return res.data.data as School[];
@@ -53,11 +53,32 @@ export const getSchoolDetails = createAsyncThunk(
     "school/getSchoolDetails",
     async (id: string, thunkAPI) => {
         try {
-            const res = await api.get(`/school/${id}`, { withCredentials: true });
+            const res = await api.get(`/school/${id}`, {
+                withCredentials: true,
+                headers: {
+                    'x-client-type': 'web'
+                }
+            });
             return res.data.data as School;
         } catch (error: any) {
             return thunkAPI.rejectWithValue(
                 error.response?.data?.message || "Error fetching school details"
+            );
+        }
+    }
+);
+
+export const deleteSchool = createAsyncThunk(
+    "school/deleteSchool",
+    async (schoolId: string, thunkAPI) => {
+        try {
+            await api.delete("/school", {
+                data: { schoolId }, 
+            });
+            return schoolId; 
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(
+                error.response?.data?.message || "Failed to delete school"
             );
         }
     }
@@ -130,7 +151,7 @@ export const addSchoolBySuperAdmin = createAsyncThunk(
     "school/addSchool",
     async (schoolData: School, thunkAPI) => {
         try {
-            const res = await api.post(`/school/add`, schoolData);
+            const res = await api.post(`/school`, schoolData);
             return res.data.data as School;
         } catch (error: any) {
             return thunkAPI.rejectWithValue(
@@ -184,6 +205,12 @@ const schoolSlice = createSlice({
                 state.error = action.payload as string;
             });
 
+        builder
+            .addCase(deleteSchool.fulfilled, (state, action) => {
+                state.schools = state.schools.filter(
+                    (school) => school.id !== action.payload
+                );
+            })
         // Change Status
         builder.addCase(changeSchoolStatus.fulfilled, (state, action: PayloadAction<School>) => {
             state.currentSchool = action.payload;

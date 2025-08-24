@@ -1,26 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../../components/SuperAdmin/layout/Sidebar';
 import { DashboardHeader } from '../../../components/SuperAdmin/layout/DashboardHeader';
 import { PartnerSchoolsTable } from '../../../components/SuperAdmin/partnerschools/PartnerSchoolsTable';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { getAllSchools } from '../../../features/schoolSlice';
+import { addSchoolBySuperAdmin, getAllSchools } from '../../../features/schoolSlice';
+import { AddSchoolModal } from '../../../components/SuperAdmin/partnerschools/AddSchoolModal';
 
 export const PartnerSchools: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { loading, error } = useAppSelector((state) => state.school)
+  const { loading, error, schools } = useAppSelector((state) => state.school)
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(getAllSchools())
   }, [dispatch])
-  console.log(    dispatch(getAllSchools())
-)
+
 
   const handleViewPartnerSchoolDetails = (schoolCode: string) => {
     navigate(`/super-admin/partner-schools/details/${schoolCode}`)
 
   };
+
+  const handleAddSchool = (schoolData: any) => {
+    try {
+      dispatch(addSchoolBySuperAdmin(schoolData))
+    } catch (error) {
+      console.error('Error adding school', error)
+    }
+  }
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar />
@@ -34,8 +43,22 @@ export const PartnerSchools: React.FC = () => {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Partner Schools Dashboard</h1>
               <p className="text-gray-600">List of all partnered schools and click to view its detailed information.</p>
             </div>
+            <button className='w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium'
+              onClick={() => setIsModalOpen(true)}
+            >
+              Add School
+            </button>
 
-            <PartnerSchoolsTable onViewPartnerSchoolDetails={handleViewPartnerSchoolDetails} />
+            <PartnerSchoolsTable
+              schoolData={schools}
+              onViewPartnerSchoolDetails={handleViewPartnerSchoolDetails}
+            />
+
+            <AddSchoolModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              onSubmit={handleAddSchool}
+            />
           </div>
         </div>
       </div>

@@ -1,6 +1,11 @@
 import type { Admin } from "../../../types/partner-school.types";
 
-export default function SystemInformation() {
+interface SystemInformationProps {
+  onDeleteSchool: () => void;
+}
+
+export default function SystemInformation({ onDeleteSchool }: SystemInformationProps) {
+
   const admins: Admin[] = [
     { name: 'Sarah Johnson', role: 'Primary Admin', initials: 'SJ', bgColor: 'bg-blue-100 text-blue-600' },
     { name: 'Mike Chen', role: 'Secondary Admin', initials: 'MC', bgColor: 'bg-green-100 text-green-600' },
@@ -53,7 +58,9 @@ export default function SystemInformation() {
         <button className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors text-sm font-medium">
           Reset Schools Information
         </button>
-        <button className="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors text-sm font-medium">
+        <button className="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
+          onClick={onDeleteSchool}
+        >
           Remove School From Partnered Schools
         </button>
       </div>

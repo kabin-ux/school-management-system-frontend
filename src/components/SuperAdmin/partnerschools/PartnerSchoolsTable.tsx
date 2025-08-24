@@ -2,194 +2,12 @@ import React, { useState } from 'react';
 import type { School } from '../../../types/partner-school.types';
 
 interface PartnerSchoolTableProps {
+  schoolData?: School[];
   onViewPartnerSchoolDetails: (schoolCode: string) => void;
 }
 
-const schoolsData: School[] = [
-  {
-    id: "1",
-    schoolCode: "TIC-001",
-    name: "Springfield High School",
-    location: "Dhawan",
-    totalStudents: 1800,
-    totalTeachers: 122,
-    totalParents: 1600,
-    status: "Active",
-    subscription: "Premium",
-    payment: "Fully paid"
-  },
-  {
-    id: "2",
-    schoolCode: "TIC-002",
-    name: "Oakwood Academy",
-    location: "Bhramagar",
-    totalStudents: 950,
-    totalTeachers: 89,
-    totalParents: 800,
-    status: "Inactive",
-    subscription: "Basic",
-    payment: "Fully paid"
-  },
-  {
-    id: "3",
-    schoolCode: "TIC-003",
-    name: "Riverside School",
-    location: "Kathmandu",
-    totalStudents: 2200,
-    totalTeachers: 156,
-    totalParents: 1800,
-    status: "Active",
-    subscription: "Premium",
-    payment: "Partial paid"
-  },
-  {
-    id: "4",
-    schoolCode: "TIC-004",
-    name: "Greenfield College",
-    location: "Butwal",
-    totalStudents: 1200,
-    totalTeachers: 98,
-    totalParents: 800,
-    status: "Active",
-    subscription: "Premium",
-    payment: "Fully paid"
-  },
-  {
-    id: "5",
-    schoolCode: "TIC-001",
-    name: "Springfield High School",
-    location: "Dhawan",
-    totalStudents: 1800,
-    totalTeachers: 122,
-    totalParents: 1600,
-    status: "Active",
-    subscription: "Premium",
-    payment: "Fully paid"
-  },
-  {
-    id: "6",
-    schoolCode: "TIC-002",
-    name: "Oakwood Academy",
-    location: "Bhramagar",
-    totalStudents: 950,
-    totalTeachers: 89,
-    totalParents: 800,
-    status: "Inactive",
-    subscription: "Basic",
-    payment: "Fully paid"
-  },
-  {
-    id: "7",
-    schoolCode: "TIC-003",
-    name: "Riverside School",
-    location: "Kathmandu",
-    totalStudents: 2200,
-    totalTeachers: 156,
-    totalParents: 1800,
-    status: "Active",
-    subscription: "Premium",
-    payment: "Partial paid"
-  },
-  {
-    id: "8",
-    schoolCode: "TIC-004",
-    name: "Greenfield College",
-    location: "Butwal",
-    totalStudents: 1200,
-    totalTeachers: 98,
-    totalParents: 800,
-    status: "Active",
-    subscription: "Premium",
-    payment: "Fully paid"
-  },
-  {
-    id: "9",
-    schoolCode: "TIC-001",
-    name: "Springfield High School",
-    location: "Dhawan",
-    totalStudents: 1800,
-    totalTeachers: 122,
-    totalParents: 1600,
-    status: "Active",
-    subscription: "Premium",
-    payment: "Fully paid"
-  },
-  {
-    id: "10",
-    schoolCode: "TIC-002",
-    name: "Oakwood Academy",
-    location: "Bhramagar",
-    totalStudents: 950,
-    totalTeachers: 89,
-    totalParents: 800,
-    status: "Inactive",
-    subscription: "Basic",
-    payment: "Fully paid"
-  },
-  {
-    id: "11",
-    schoolCode: "TIC-003",
-    name: "Riverside School",
-    location: "Kathmandu",
-    totalStudents: 2200,
-    totalTeachers: 156,
-    totalParents: 1800,
-    status: "Active",
-    subscription: "Premium",
-    payment: "Partial paid"
-  },
-  {
-    id: "12",
-    schoolCode: "TIC-004",
-    name: "Greenfield College",
-    location: "Butwal",
-    totalStudents: 1200,
-    totalTeachers: 98,
-    totalParents: 800,
-    status: "Active",
-    subscription: "Premium",
-    payment: "Fully paid"
-  },
-  {
-    id: "13",
-    schoolCode: "TIC-001",
-    name: "Springfield High School",
-    location: "Dhawan",
-    totalStudents: 1800,
-    totalTeachers: 122,
-    totalParents: 1600,
-    status: "Active",
-    subscription: "Premium",
-    payment: "Fully paid"
-  },
-  {
-    id: "14",
-    schoolCode: "TIC-002",
-    name: "Oakwood Academy",
-    location: "Bhramagar",
-    totalStudents: 950,
-    totalTeachers: 89,
-    totalParents: 800,
-    status: "Inactive",
-    subscription: "Basic",
-    payment: "Fully paid"
-  },
-  {
-    id: "15",
-    schoolCode: "TIC-003",
-    name: "Riverside School",
-    location: "Kathmandu",
-    totalStudents: 2200,
-    totalTeachers: 156,
-    totalParents: 1800,
-    status: "Active",
-    subscription: "Premium",
-    payment: "Partial paid"
-  }
-];
 
-
-export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({ onViewPartnerSchoolDetails }) => {
+export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({schoolData, onViewPartnerSchoolDetails }) => {
   const [subscription, setSubscription] = useState('All Status');
   const [payment, setPayment] = useState('Payment');
 
@@ -275,16 +93,16 @@ export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({ onViewP
             </tr>
           </thead>
           <tbody>
-            {schoolsData.map((school, index) => (
+            {schoolData?.map((school, index) => (
               <tr key={index} className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
                 onClick={() => onViewPartnerSchoolDetails?.(school.id)}
               >
-                <td className="py-4 px-6 text-sm text-blue-600 font-medium">{school.id}</td>
-                <td className="py-4 px-6 text-sm text-gray-900 font-medium">{school.name}</td>
-                <td className="py-4 px-6 text-sm text-gray-600">{school.location}</td>
-                <td className="py-4 px-6 text-sm text-gray-900">{school.totalStudents}</td>
-                <td className="py-4 px-6 text-sm text-gray-900">{school.totalTeachers}</td>
-                <td className="py-4 px-6 text-sm text-gray-900">{school.totalParents}</td>
+                <td className="py-4 px-6 text-sm text-blue-600 font-medium">{school.school_code || '-'}</td>
+                <td className="py-4 px-6 text-sm text-gray-900 font-medium">{school.name || '-'}</td>
+                <td className="py-4 px-6 text-sm text-gray-600">{school.address || '-'}</td>
+                <td className="py-4 px-6 text-sm text-gray-900">{school.totalStudents || '-'}</td>
+                <td className="py-4 px-6 text-sm text-gray-900">{school.totalTeachers || '-'}</td>
+                <td className="py-4 px-6 text-sm text-gray-900">{school.totalParents || '-'}</td>
                 <td className="py-4 px-6">
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadge(school.status)}`}>
                     {school.status}
@@ -292,10 +110,10 @@ export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({ onViewP
                 </td>
                 <td className="py-4 px-6">
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getSubscriptionBadge(school.subscription)}`}>
-                    {school.subscription}
+                    {school.subscription || '-'}
                   </span>
                 </td>
-                <td className="py-4 px-6 text-sm text-gray-900">{school.payment}</td>
+                <td className="py-4 px-6 text-sm text-gray-900">{school.payment || '-'}</td>
               </tr>
             ))}
           </tbody>

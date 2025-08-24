@@ -1,25 +1,25 @@
-export interface School {
-  id: string;
-  schoolCode: string;
-  name: string;
-  location: string;
-  totalStudents: number;
-  totalTeachers: number;
-  totalParents: number;
-  status: 'Active' | 'Inactive';
-  subscription: 'Premium' | 'Basic';
-  payment: 'Fully paid' | 'Partial paid';
-}
-
-// interface School {
-//     id: string;
-//     name: string;
-//     email: string;
-//     contact: string;
-//     status: string;
-//     school_code: string;
-//     [key: string]: any;
+// export interface School {
+//   id: string;
+//   schoolCode: string;
+//   name: string;
+//   location: string;
+//   totalStudents: number;
+//   totalTeachers: number;
+//   totalParents: number;
+//   status: 'Active' | 'Inactive';
+//   subscription: 'Premium' | 'Basic';
+//   payment: 'Fully paid' | 'Partial paid';
 // }
+
+export interface School {
+    id: string;
+    name: string;
+    email: string;
+    contact: string;
+    status: string;
+    school_code: string;
+    [key: string]: any;
+}
 
 export interface Ticket {
   id: string;
