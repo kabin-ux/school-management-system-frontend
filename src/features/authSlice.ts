@@ -38,6 +38,94 @@ export const loginAccountant = createAsyncThunk(
   }
 );
 
+export const logoutSuperAdmin = createAsyncThunk(
+  "auth/logoutSuperAdmin",
+  async (_, thunkAPI) => {
+    try {
+      const res = await api.get("/super-admin/logout"); // endpoint from your backend
+      // clear local state if needed
+      return res.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to logout"
+      );
+    }
+  }
+);
+
+export const logoutSchool = createAsyncThunk(
+  "auth/logoutSchool",
+  async (_, thunkAPI) => {
+    try {
+      const res = await api.get("/school/logout"); // endpoint from your backend
+      // clear local state if needed
+      return res.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to logout"
+      );
+    }
+  }
+);
+
+export const logoutAccountant = createAsyncThunk(
+  "auth/logoutAccountant",
+  async (_, thunkAPI) => {
+    try {
+      const res = await api.get("/accountant/logout"); // endpoint from your backend
+      // clear local state if needed
+      return res.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to logout"
+      );
+    }
+  }
+);
+
+// Change Super Admin Password
+export const changeSuperAdminPassword = createAsyncThunk(
+  "auth/changeSuperAdminPassword",
+  async (passwordData: { oldPassword: string; newPassword: string; confirmPassword: string }, thunkAPI) => {
+    try {
+      const res = await api.post("/super-admin/change-password", passwordData);
+      return res.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response?.data?.message || "Failed to change password");
+    }
+  }
+);
+
+// Send Mail for Password Reset
+export const sendPasswordResetMail = createAsyncThunk(
+  "auth/sendSuperAdminPasswordResetMail",
+  async (emailData: { email: string }, thunkAPI) => {
+    try {
+      const res = await api.post("/super-admin/password-reset-mail", emailData);
+      return res.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response?.data?.message || "Failed to send reset mail");
+    }
+  }
+);
+
+// Reset Super Admin Password
+export const resetSuperAdminPassword = createAsyncThunk(
+  "auth/resetSuperAdminPassword",
+  async (
+    payload: { token: string; id: string; password: string; confirmPassword: string },
+    thunkAPI
+  ) => {
+    try {
+      const { token, id, ...passwordData } = payload;
+      const res = await api.post(`/super-admin/password-reset?token=${token}&id=${id}`, passwordData);
+      return res.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response?.data?.message || "Failed to reset password");
+    }
+  }
+);
+
 const initialState: AuthState = {
   user: null,
   role: null,
@@ -50,12 +138,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout: (state) => {
-      state.user = null;
-      state.role = null;
-      state.token = null;
-      localStorage.removeItem("auth");
-    },
+
   },
   extraReducers: (builder) => {
     builder
@@ -74,7 +157,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-         .addCase(loginAdmin.pending, (state) => {
+      .addCase(loginAdmin.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -88,9 +171,98 @@ const authSlice = createSlice({
       .addCase(loginAdmin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(loginAccountant.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginAccountant.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.data;
+        state.token = action.payload.token;
+        state.role = "accountant";
+        localStorage.setItem("auth", JSON.stringify(action.payload.data));
+      })
+      .addCase(loginAccountant.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(logoutSuperAdmin.fulfilled, (state) => {
+        state.user = null;
+        state.role = null;
+        state.token = null;
+        localStorage.removeItem("auth");
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(logoutSuperAdmin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(logoutSchool.fulfilled, (state) => {
+        state.user = null;
+        state.role = null;
+        state.token = null;
+        localStorage.removeItem("auth");
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(logoutSchool.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(logoutAccountant.fulfilled, (state) => {
+        state.user = null;
+        state.role = null;
+        state.token = null;
+        localStorage.removeItem("auth");
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(logoutAccountant.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+    builder
+      .addCase(changeSuperAdminPassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(changeSuperAdminPassword.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(changeSuperAdminPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+
+    // Send Password Reset Mail
+    builder
+      .addCase(sendPasswordResetMail.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(sendPasswordResetMail.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(sendPasswordResetMail.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      // Reset Super Admin Password
+      .addCase(resetSuperAdminPassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(resetSuperAdminPassword.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(resetSuperAdminPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });
 
-export const { logout } = authSlice.actions;
 export default authSlice.reducer;

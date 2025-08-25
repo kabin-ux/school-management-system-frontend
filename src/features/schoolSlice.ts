@@ -151,7 +151,7 @@ export const addSchoolBySuperAdmin = createAsyncThunk(
     "school/addSchool",
     async (schoolData: School, thunkAPI) => {
         try {
-            const res = await api.post(`/school`, schoolData);
+            const res = await api.post(`/school`, schoolData , { withCredentials: true });
             return res.data.data as School;
         } catch (error: any) {
             return thunkAPI.rejectWithValue(

@@ -19,6 +19,7 @@ export const PartnerSchools: React.FC = () => {
     dispatch(getAllSchools())
   }, [dispatch])
 
+
   const handleViewPartnerSchoolDetails = (schoolCode: string) => {
     navigate(`/super-admin/partner-schools/details/${schoolCode}`)
 

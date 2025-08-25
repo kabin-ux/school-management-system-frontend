@@ -38,11 +38,13 @@ import PartnerSchoolDetails from './pages/SuperAdmin/partnerschools/details/Part
 import SchoolPermissionDetailPage from './pages/SuperAdmin/permissions/details/SchoolPermissionDetail';
 import ProtectedRoute from './auth/ProtectedRoute';
 import UnauthorizedPage from './pages/Unauthorized';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
     return (
         <>
             <Router>
+                <Toaster />
                 <Routes>
                     <Route path='/' element={<UserLandingPage />} />
                     <Route path='/admin' element={<AdminLandingPage />} />
@@ -153,7 +155,11 @@ function App() {
                     <Route path='/admin/settings' element={<AdminSettings />} />
 
                     {/* Accountant */}
-                    <Route path='/accountant/dashboard' element={<AccountantDashboard />} />
+                    <Route path='/accountant/dashboard' element={
+                        <ProtectedRoute allowedRoles={['accountant']}>
+                            <AccountantDashboard />
+                        </ProtectedRoute>
+                    } />
                     <Route path='/accountant/fee-salary' element={<FeeAndSalaryPage />} />
                     <Route path='/accountant/invoices' element={<InvoicesPage />} />
                     <Route path='/accountant/settings' element={<SettingsPage />} />

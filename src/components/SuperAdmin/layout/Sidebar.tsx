@@ -8,11 +8,12 @@ import {
   HeadphonesIcon,
   Settings,
   LogOut,
+  ShieldUser,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { SidebarItem } from "../../../types/sidebar-item.types";
 import { useAppDispatch } from "../../../app/hooks";
-import { logout } from "../../../features/authSlice";
+import { logoutSuperAdmin } from "../../../features/authSlice";
 
 const sidebarItems: SidebarItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/super-admin/dashboard" },
@@ -21,6 +22,7 @@ const sidebarItems: SidebarItem[] = [
   { icon: Bell, label: "Notifications Log", path: "/super-admin/notifications" },
   { icon: Shield, label: "Permissions", path: "/super-admin/permissions" },
   { icon: HeadphonesIcon, label: "Support Console", path: "/super-admin/support" },
+  { icon: ShieldUser, label: "Super Admins", path: "/super-admin/super-admins" },
   { icon: Settings, label: "Settings", path: "/super-admin/settings" },
 ];
 
@@ -30,7 +32,7 @@ export const Sidebar: React.FC = () => {
   const location = useLocation();
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutSuperAdmin());
     navigate("/admin"); // Redirect to login page
   };
 
@@ -57,8 +59,8 @@ export const Sidebar: React.FC = () => {
               key={index}
               onClick={() => navigate(item.path)}
               className={`flex items-center space-x-3 px-3 py-2 rounded-lg cursor-pointer transition-colors ${isActive
-                  ? "bg-blue-50 text-blue-700 border-r-2 border-blue-600"
-                  : "text-gray-600 hover:bg-gray-50"
+                ? "bg-blue-50 text-blue-700 border-r-2 border-blue-600"
+                : "text-gray-600 hover:bg-gray-50"
                 }`}
             >
               <Icon className="w-5 h-5" />

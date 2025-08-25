@@ -18,7 +18,7 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import type { SidebarItem } from "../../../types/sidebar-item.types";
 import { useAppDispatch } from "../../../app/hooks";
-import { logout } from "../../../features/authSlice";
+import { logoutSchool } from "../../../features/authSlice";
 
 const sidebarItems: SidebarItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/admin/dashboard" },
@@ -43,7 +43,7 @@ export const Sidebar: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutSchool());
     navigate("/admin"); // Redirect to login page
   };
 

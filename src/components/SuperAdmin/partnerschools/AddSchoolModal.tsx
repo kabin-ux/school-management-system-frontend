@@ -123,7 +123,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
 
         if (formData.details) {
             const wordCount = formData.details.trim().split(/\s+/).length;
-            if (wordCount < 50) {
+            if (wordCount < 10) {
                 newErrors.details = "School details should be at least 50 words";
             }
         }
@@ -133,6 +133,8 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
     };
 
     const handleSubmit = () => {
+        console.log("Submit clicked");  // Debug
+
         if (!validateForm()) return;
 
         const payload: SchoolData = {
@@ -144,6 +146,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
             student_capacity: Number(formData.student_capacity) || "",
             school_code: Number(formData.school_code) || "",
         };
+        console.log(payload)
 
         onSubmit(payload);
         onClose();
@@ -174,6 +177,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
                             />
+                            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                         </div>
 
                         <div>
@@ -186,6 +190,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
                             />
+                            {errors.school_code && <p className="text-red-500 text-sm mt-1">{errors.school_code}</p>}
                         </div>
 
                         <div>
@@ -200,6 +205,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 <option value="private">Private</option>
                                 <option value="charter">Charter</option>
                             </select>
+                            {errors.school_type && <p className="text-red-500 text-sm mt-1">{errors.school_type}</p>}
                         </div>
 
                         <div>
@@ -212,6 +218,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 placeholder="e.g., K-12, 1-8"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
+                            {errors.grade_range && <p className="text-red-500 text-sm mt-1">{errors.grade_range}</p>}
                         </div>
 
                         <div>
@@ -225,6 +232,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 max="2024"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
+                            {errors.established_year && <p className="text-red-500 text-sm mt-1">{errors.established_year}</p>}
                         </div>
 
                         <div>
@@ -237,6 +245,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 min="1"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
+                            {errors.student_capacity && <p className="text-red-500 text-sm mt-1">{errors.student_capacity}</p>}
                         </div>
                     </div>
                 );
@@ -254,6 +263,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
                             />
+                            {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
@@ -267,6 +277,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
                                 />
+                                {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">State *</label>
@@ -278,6 +289,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
                                 />
+                                {errors.state && <p className="text-red-500 text-sm mt-1">{errors.state}</p>}
                             </div>
                         </div>
 
@@ -291,6 +303,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
+                                {errors.district && <p className="text-red-500 text-sm mt-1">{errors.district}</p>}
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
@@ -301,6 +314,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
+                                {errors.postal_code && <p className="text-red-500 text-sm mt-1">{errors.postal_code}</p>}
                             </div>
                         </div>
 
@@ -315,6 +329,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
+                                {errors.latitude && <p className="text-red-500 text-sm mt-1">{errors.latitude}</p>}
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Longitude</label>
@@ -326,6 +341,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
+                                {errors.longitude && <p className="text-red-500 text-sm mt-1">{errors.longitude}</p>}
                             </div>
                         </div>
                     </div>
@@ -344,6 +360,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
                             />
+                            {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
                         </div>
 
                         <div>
@@ -355,6 +372,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
+                            {errors.contact && <p className="text-red-500 text-sm mt-1">{errors.contact}</p>}
                         </div>
 
                         <div>
@@ -367,6 +385,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
                             />
+                            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                         </div>
 
                         <div>
@@ -379,6 +398,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
                             />
+                            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                         </div>
 
                         <div>
@@ -390,6 +410,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
+                            {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image}</p>}
                         </div>
 
                         <div>
@@ -401,6 +422,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
+                            {errors.school_logo && <p className="text-red-500 text-sm mt-1">{errors.school_logo}</p>}
                         </div>
                     </div>
                 );
@@ -417,6 +439,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
+                            {errors.principal_name && <p className="text-red-500 text-sm mt-1">{errors.principal_name}</p>}
                         </div>
 
                         <div>
@@ -428,6 +451,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
+                            {errors.principal_contact && <p className="text-red-500 text-sm mt-1">{errors.principal_contact}</p>}
                         </div>
 
                         <div className="flex items-center space-x-2">
@@ -439,6 +463,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label className="text-sm font-medium text-gray-700">Verified School</label>
+                            {errors.verified && <p className="text-red-500 text-sm mt-1">{errors.verified}</p>}
                         </div>
                     </div>
                 );
@@ -456,6 +481,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="Describe the school's facilities, programs, and highlights..."
                             />
+                            {errors.details && <p className="text-red-500 text-sm mt-1">{errors.details}</p>}
                         </div>
 
                         <div className="flex items-center space-x-2">
@@ -467,6 +493,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label className="text-sm font-medium text-gray-700">Has Transportation</label>
+                            {errors.has_transport && <p className="text-red-500 text-sm mt-1">{errors.has_transport}</p>}
                         </div>
 
                         <div className="flex items-center space-x-2">
@@ -478,6 +505,8 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label className="text-sm font-medium text-gray-700">Has Hostel Facilities</label>
+                            {errors.has_hostel && <p className="text-red-500 text-sm mt-1">{errors.has_hostel}</p>}
+
                         </div>
                     </div>
                 );
@@ -510,8 +539,8 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 key={tab.id}
                                 onClick={() => setCurrentTab(tab.id)}
                                 className={`flex items-center space-x-2 px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${currentTab === tab.id
-                                        ? 'border-blue-500 text-blue-600'
-                                        : 'border-transparent text-gray-500 hover:text-gray-700'
+                                    ? 'border-blue-500 text-blue-600'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700'
                                     }`}
                             >
                                 <IconComponent size={16} />

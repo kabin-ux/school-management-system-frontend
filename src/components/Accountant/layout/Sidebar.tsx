@@ -3,10 +3,13 @@ import {
   LayoutDashboard,
   GraduationCap,
   Users,
-  User
+  User,
+  LogOut
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { SidebarItem } from "../../../types/sidebar-item.types";
+import { useAppDispatch } from "../../../app/hooks";
+import { logoutAccountant } from "../../../features/authSlice";
 
 const sidebarItems: SidebarItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/accountant/dashboard" },
@@ -16,9 +19,14 @@ const sidebarItems: SidebarItem[] = [
 ];
 
 export const Sidebar: React.FC = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
+  const handleLogout = () => {
+    dispatch(logoutAccountant());
+    navigate("/admin"); // Redirect to login page
+  };
   return (
     <div className="w-64 bg-white shadow-sm border-r border-gray-200">
       <div className="p-6">
@@ -50,6 +58,16 @@ export const Sidebar: React.FC = () => {
           );
         })}
       </nav>
+
+      <div className="p-6">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+        >
+          <LogOut className="w-5 h-5" />
+          <span className="font-medium">Logout</span>
+        </button>
+      </div>
     </div>
   );
 };

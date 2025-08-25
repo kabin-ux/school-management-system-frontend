@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { UserPlus } from 'lucide-react';
 import ParentStats from '../../../components/Admin/parents/ParentStats';
-import TeacherFilters from '../../../components/Admin/dashboard/teachers/TeacherFilters';
+import TeacherFilters from '../../../components/Admin/teachers/TeacherFilters';
 import ParentGrid from '../../../components/Admin/parents/ParentGrid';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';

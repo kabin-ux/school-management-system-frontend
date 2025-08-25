@@ -8,12 +8,13 @@ export interface Activity {
 
 export interface Teacher {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   teacherId: string;
   email: string;
   phone: string;
-  subjects: string[];
-  classes: string[];
+  teacherSubjects: string[];
+  teacherClasses: string[];
   status: 'Active' | 'Inactive';
   avatar: string;
 }
