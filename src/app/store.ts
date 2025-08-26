@@ -4,6 +4,8 @@ import storage from "redux-persist/lib/storage";
 import authReducer from "../features/authSlice";
 import schoolReducer from "../features/schoolSlice";
 import teacherReducer from "../features/teacherSlice";
+import studentReducer from "../features/studentSlice";
+import superAdminReducer from "../features/superAdminSlice";
 
 // Persist config ONLY for auth
 const persistConfig = {
@@ -16,12 +18,16 @@ const persistConfig = {
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 const persistedSchoolReducer = persistReducer(persistConfig, schoolReducer);
 const persistedTeacherReducer = persistReducer(persistConfig, teacherReducer);
+const persistedStudentReducer = persistReducer(persistConfig, studentReducer);
+const persistedSuperAdminReducer = persistReducer(persistConfig, superAdminReducer);
 
 export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     school: persistedSchoolReducer,
     teacher: persistedTeacherReducer,
+    student: persistedStudentReducer,
+    superAdmin: persistedSuperAdminReducer,
     // 
   },
   middleware: (getDefaultMiddleware) =>

@@ -39,6 +39,7 @@ import SchoolPermissionDetailPage from './pages/SuperAdmin/permissions/details/S
 import ProtectedRoute from './auth/ProtectedRoute';
 import UnauthorizedPage from './pages/Unauthorized';
 import { Toaster } from 'react-hot-toast';
+import { SuperAdminsPage } from './pages/SuperAdmin/superadmins/SuperAdminsPage';
 
 function App() {
     return (
@@ -107,6 +108,11 @@ function App() {
                     <Route path='/super-admin/support/details/:id' element={
                         <ProtectedRoute allowedRoles={['superadmin']}>
                             <SupportTicketDetailPage />
+                        </ProtectedRoute>
+                    } />
+                     <Route path='/super-admin/super-admins' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <SuperAdminsPage />
                         </ProtectedRoute>
                     } />
                     <Route path='/super-admin/settings' element={

@@ -39,7 +39,7 @@ export default function TeacherGrid({ teachers }: TeacherGridProps) {
             <div className="flex items-start gap-2 text-gray-600">
               <BookOpen className="w-4 h-4 mt-0.5" />
               <div className="flex flex-wrap gap-1">
-                {teacher.teacherSubjects.map((subject, index) => (
+                {teacher.teacherSubjects?.map((subject, index) => (
                   <span key={index} className="text-blue-600 text-xs">
                     {subject}{index < teacher.teacherSubjects.length - 1 ? ',' : '-'}
                   </span>
@@ -49,7 +49,7 @@ export default function TeacherGrid({ teachers }: TeacherGridProps) {
             <div className="flex items-start gap-2 text-gray-600">
               <GraduationCap className="w-4 h-4 mt-0.5" />
               <div className="flex flex-wrap gap-1">
-                {teacher.teacherClasses.map((cls, index) => (
+                {teacher.teacherClasses?.map((cls, index) => (
                   <span key={index} className="text-purple-600 text-xs">
                     {cls}{index < teacher.teacherClasses.length - 1 ? ',' : '-'}
                   </span>

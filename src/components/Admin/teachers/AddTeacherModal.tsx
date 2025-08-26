@@ -32,8 +32,8 @@ interface AddTeacherModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (teacher: Omit<Teacher, 'id'>) => void;
-  classes: Class[];
-  subjects: Subject[];
+  classes?: Class[];
+  subjects?: Subject[];
   isLoading?: boolean;
 }
 
@@ -120,7 +120,7 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     if (touched[name]) {
       const error = validateField(name, value);
       setErrors(prev => ({ ...prev, [name]: error }));
@@ -137,7 +137,7 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
   const handleMultiSelectChange = (type: 'classIds' | 'subjectIds', id: number) => {
     setFormData(prev => ({
       ...prev,
-      [type]: prev[type].includes(id) 
+      [type]: prev[type].includes(id)
         ? prev[type].filter(item => item !== id)
         : [...prev[type], id]
     }));
@@ -152,12 +152,12 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
       }
     });
 
-    if (formData.classIds.length === 0) {
-      newErrors.classIds = 'Please select at least one class';
-    }
-    if (formData.subjectIds.length === 0) {
-      newErrors.subjectIds = 'Please select at least one subject';
-    }
+    // if (formData.classIds.length === 0) {
+    //   newErrors.classIds = 'Please select at least one class';
+    // }
+    // if (formData.subjectIds.length === 0) {
+    //   newErrors.subjectIds = 'Please select at least one subject';
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -165,7 +165,7 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Mark all fields as touched
     const allFields = Object.keys(formData);
     setTouched(allFields.reduce((acc, field) => ({ ...acc, [field]: true }), {}));
@@ -201,7 +201,7 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
             {/* Personal Information */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-gray-900 border-b pb-2">Personal Information</h3>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   First Name <span className="text-red-500">*</span>
@@ -212,9 +212,8 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
                   value={formData.firstName}
                   onChange={handleInputChange}
                   onBlur={handleBlur}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.firstName ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.firstName ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder="Enter first name"
                 />
                 {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}
@@ -230,9 +229,8 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
                   value={formData.lastName}
                   onChange={handleInputChange}
                   onBlur={handleBlur}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.lastName ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.lastName ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder="Enter last name"
                 />
                 {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>}
@@ -249,9 +247,8 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
                   value={formData.email}
                   onChange={handleInputChange}
                   onBlur={handleBlur}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.email ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder="Enter email address"
                 />
                 {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
@@ -268,9 +265,8 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
                   value={formData.phone}
                   onChange={handleInputChange}
                   onBlur={handleBlur}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.phone ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.phone ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder="Enter phone number"
                 />
                 {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
@@ -287,9 +283,8 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
                   value={formData.dateOfBirth}
                   onChange={handleInputChange}
                   onBlur={handleBlur}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
+                    }`}
                 />
                 {errors.dateOfBirth && <p className="text-red-500 text-xs mt-1">{errors.dateOfBirth}</p>}
               </div>
@@ -329,7 +324,7 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
             {/* Professional Information */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-gray-900 border-b pb-2">Professional Information</h3>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   <Briefcase className="w-4 h-4 inline mr-1" />
@@ -341,9 +336,8 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
                   value={formData.hireDate}
                   onChange={handleInputChange}
                   onBlur={handleBlur}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.hireDate ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.hireDate ? 'border-red-500' : 'border-gray-300'
+                    }`}
                 />
                 {errors.hireDate && <p className="text-red-500 text-xs mt-1">{errors.hireDate}</p>}
               </div>
@@ -359,21 +353,20 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
                   value={formData.qualification}
                   onChange={handleInputChange}
                   onBlur={handleBlur}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.qualification ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.qualification ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder="e.g., Master's in Mathematics"
                 />
                 {errors.qualification && <p className="text-red-500 text-xs mt-1">{errors.qualification}</p>}
               </div>
 
               {/* Classes */}
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Assigned Classes <span className="text-red-500">*</span>
                 </label>
                 <div className="max-h-32 overflow-y-auto border border-gray-300 rounded-lg p-2 space-y-1">
-                  {classes.map(cls => (
+                  {classes?.map(cls => (
                     <label key={cls.id} className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
                       <input
                         type="checkbox"
@@ -386,15 +379,15 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
                   ))}
                 </div>
                 {errors.classIds && <p className="text-red-500 text-xs mt-1">{errors.classIds}</p>}
-              </div>
+              </div> */}
 
               {/* Subjects */}
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Teaching Subjects <span className="text-red-500">*</span>
                 </label>
                 <div className="max-h-32 overflow-y-auto border border-gray-300 rounded-lg p-2 space-y-1">
-                  {subjects.map(subject => (
+                  {subjects?.map(subject => (
                     <label key={subject.id} className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
                       <input
                         type="checkbox"
@@ -407,7 +400,7 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
                   ))}
                 </div>
                 {errors.subjectIds && <p className="text-red-500 text-xs mt-1">{errors.subjectIds}</p>}
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -425,6 +418,7 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
               type="submit"
               disabled={isLoading}
               className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 flex items-center gap-2"
+              onClick={handleSubmit}
             >
               {isLoading ? (
                 <>
