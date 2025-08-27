@@ -1,51 +1,47 @@
 import React, { useState } from "react";
 import { X, School, MapPin, Phone, User, Users } from "lucide-react";
+import type { SchoolData } from "./AddSchoolModal";
 
-export interface SchoolData {
-    id?: string;
-    name: string;
-    address: string;
-    district: string;
-    city: string;
-    state: string;
-    postal_code: string | number;
-    latitude: string | number;
-    longitude: string | number;
-    phone: string;
-    email: string;
-    password: string;
-    image: string;
-    verified: boolean;
-    principal_name: string;
-    principal_contact: string;
-    contact: string;
-    school_type: string;
-    status?: string;
-    totalStudents?: number;
-    totalTeachers?: number;
-    totalParents?: number;
-    subscription?:string;
-    payment?: string;
-    has_transport: boolean;
-    established_year: string | number;
-    student_capacity: string | number;
-    school_code: string | number;
-    details: string;
-    grade_range: string;
-    has_hostel: boolean;
-    school_logo: string;
-}
+// interface SchoolData {
+//     name: string;
+//     address: string;
+//     district: string;
+//     city: string;
+//     state: string;
+//     postal_code: string | number;
+//     latitude: string | number;
+//     longitude: string | number;
+//     phone: string;
+//     email: string;
+//     password: string;
+//     image: string;
+//     verified: boolean;
+//     principal_name: string;
+//     principal_contact: string;
+//     contact: string;
+//     school_type: string;
+//     has_transport: boolean;
+//     established_year: string | number;
+//     student_capacity: string | number;
+//     school_code: string | number;
+//     details: string;
+//     grade_range: string;
+//     has_hostel: boolean;
+//     school_logo: string;
+// }
 
-interface AddSchoolModalProps {
+interface EditSchoolModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: SchoolData) => void;
+    onSubmit: (data: SchoolData, id: any) => void;
+    school?: SchoolData
 }
 
-export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
+export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
     isOpen,
     onClose,
     onSubmit,
+    school,
 }) => {
     const [formData, setFormData] = useState<SchoolData>({
         name: "",
@@ -155,7 +151,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
         };
         console.log(payload)
 
-        onSubmit(payload);
+        onSubmit(payload, school?.id);
         onClose();
     };
 
@@ -179,7 +175,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="text"
                                 name="name"
-                                value={formData.name}
+                                value={school?.name}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
@@ -192,7 +188,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="number"
                                 name="school_code"
-                                value={formData.school_code}
+                                value={school?.school_code}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
@@ -204,7 +200,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <label className="block text-sm font-medium text-gray-700 mb-1">School Type *</label>
                             <select
                                 name="school_type"
-                                value={formData.school_type}
+                                value={school?.school_type}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
@@ -220,7 +216,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="text"
                                 name="grade_range"
-                                value={formData.grade_range}
+                                value={school?.grade_range}
                                 onChange={handleInputChange}
                                 placeholder="e.g., K-12, 1-8"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -233,7 +229,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="number"
                                 name="established_year"
-                                value={formData.established_year}
+                                value={school?.established_year}
                                 onChange={handleInputChange}
                                 min="1800"
                                 max="2024"
@@ -247,7 +243,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="number"
                                 name="student_capacity"
-                                value={formData.student_capacity}
+                                value={school?.student_capacity}
                                 onChange={handleInputChange}
                                 min="1"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -265,7 +261,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="text"
                                 name="address"
-                                value={formData.address}
+                                value={school?.address}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
@@ -279,7 +275,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 <input
                                     type="text"
                                     name="city"
-                                    value={formData.city}
+                                    value={school?.city}
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
@@ -291,7 +287,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 <input
                                     type="text"
                                     name="state"
-                                    value={formData.state}
+                                    value={school?.state}
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
@@ -306,7 +302,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 <input
                                     type="text"
                                     name="district"
-                                    value={formData.district}
+                                    value={school?.district}
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
@@ -317,7 +313,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 <input
                                     type="text"
                                     name="postal_code"
-                                    value={formData.postal_code}
+                                    value={school?.postal_code}
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
@@ -332,7 +328,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                     type="number"
                                     step="any"
                                     name="latitude"
-                                    value={formData.latitude}
+                                    value={school?.latitude}
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
@@ -344,7 +340,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                     type="number"
                                     step="any"
                                     name="longitude"
-                                    value={formData.longitude}
+                                    value={school?.longitude}
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
@@ -362,7 +358,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="tel"
                                 name="phone"
-                                value={formData.phone}
+                                value={school?.phone}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
@@ -375,7 +371,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="tel"
                                 name="contact"
-                                value={formData.contact}
+                                value={school?.contact}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
@@ -387,7 +383,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="email"
                                 name="email"
-                                value={formData.email}
+                                value={school?.email}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
@@ -400,7 +396,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="password"
                                 name="password"
-                                value={formData.password}
+                                value={school?.password}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
@@ -413,7 +409,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="url"
                                 name="image"
-                                value={formData.image}
+                                value={school?.image}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
@@ -425,7 +421,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="url"
                                 name="school_logo"
-                                value={formData.school_logo}
+                                value={school?.school_logo}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
@@ -442,7 +438,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="text"
                                 name="principal_name"
-                                value={formData.principal_name}
+                                value={school?.principal_name}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
@@ -454,7 +450,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="tel"
                                 name="principal_contact"
-                                value={formData.principal_contact}
+                                value={school?.principal_contact}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
@@ -465,7 +461,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="checkbox"
                                 name="verified"
-                                checked={formData.verified}
+                                checked={school?.verified}
                                 onChange={handleInputChange}
                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
@@ -482,7 +478,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <label className="block text-sm font-medium text-gray-700 mb-1">School Details</label>
                             <textarea
                                 name="details"
-                                value={formData.details}
+                                value={school?.details}
                                 onChange={handleInputChange}
                                 rows={4}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -495,7 +491,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="checkbox"
                                 name="has_transport"
-                                checked={formData.has_transport}
+                                checked={school?.has_transport}
                                 onChange={handleInputChange}
                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
@@ -507,7 +503,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <input
                                 type="checkbox"
                                 name="has_hostel"
-                                checked={formData.has_hostel}
+                                checked={school?.has_hostel}
                                 onChange={handleInputChange}
                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
@@ -528,7 +524,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
             <div className="bg-white rounded-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                    <h2 className="text-xl font-semibold text-gray-800">Add New School</h2>
+                    <h2 className="text-xl font-semibold text-gray-800">Edit School</h2>
                     <button
                         onClick={onClose}
                         className="text-gray-400 hover:text-gray-600 transition-colors"

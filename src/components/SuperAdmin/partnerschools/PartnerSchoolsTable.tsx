@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import type { School } from '../../../types/partner-school.types';
+import type { SchoolData } from './AddSchoolModal';
 
 interface PartnerSchoolTableProps {
-  schoolData?: School[];
-  onViewPartnerSchoolDetails: (schoolCode: string) => void;
+  schoolData?: SchoolData[];
+  onViewPartnerSchoolDetails: (schoolCode: any) => void;
 }
 
 
@@ -11,13 +11,13 @@ export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({schoolDa
   const [subscription, setSubscription] = useState('All Status');
   const [payment, setPayment] = useState('Payment');
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status: string | undefined) => {
     return status === 'Active'
       ? 'bg-green-100 text-green-800'
       : 'bg-red-100 text-red-800';
   };
 
-  const getSubscriptionBadge = (sub: string) => {
+  const getSubscriptionBadge = (sub: string | undefined) => {
     return sub === 'Premium'
       ? 'bg-blue-100 text-blue-800'
       : 'bg-gray-100 text-gray-800';
@@ -104,7 +104,7 @@ export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({schoolDa
                 <td className="py-4 px-6 text-sm text-gray-900">{school.totalTeachers || '-'}</td>
                 <td className="py-4 px-6 text-sm text-gray-900">{school.totalParents || '-'}</td>
                 <td className="py-4 px-6">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadge(school.status)}`}>
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadge(school?.status)}`}>
                     {school.status}
                   </span>
                 </td>
@@ -113,7 +113,7 @@ export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({schoolDa
                     {school.subscription || '-'}
                   </span>
                 </td>
-                <td className="py-4 px-6 text-sm text-gray-900">{school.payment || '-'}</td>
+                <td className="py-4 px-6 text-sm text-gray-900">{school?.payment || '-'}</td>
               </tr>
             ))}
           </tbody>

@@ -6,14 +6,15 @@ export interface SuperAdmin {
   firstName: string;
   lastName: string;
   email: string;
+  password?: string;
   address: string;
-  created_by: string;
+  created_by: string | null;
   status: "active" | "inactive" | string; // enum-like, can refine later
   profile_image: string | null;
   phone_number: string;
-  createdAt: string;   // ISO date string, can also use Date type
-  updatedAt: string;
-  deletedAt: string | null;
+  createdAt?: string;   // ISO date string, can also use Date type
+  updatedAt?: string;
+  deletedAt?: string | null;
 }
 
 interface SuperAdminState {
@@ -23,12 +24,22 @@ interface SuperAdminState {
   error: string | null;
 }
 
-const initialState: SuperAdminState = {
-  superAdmins: [],
-  selectedSuperAdmin: null,
-  loading: false,
-  error: null,
-};
+export const createSuperAdmin = createAsyncThunk<
+  SuperAdmin, // return type
+  Omit<SuperAdmin, "id" | "createdAt" | "updatedAt" | "deletedAt" | "created_by"> & { password: string }, // input type
+  { rejectValue: string }
+>("superAdmin/createSuperAdmin", async (superAdminData, { rejectWithValue }) => {
+  try {
+    const resp = await api.post("/super-admin", superAdminData, {
+      withCredentials: true,
+    });
+    return resp.data.data as SuperAdmin;
+  } catch (error: any) {
+    return rejectWithValue(
+      error.response?.data?.message || "Failed to create super admin"
+    );
+  }
+});
 
 // Get all Super Admins
 export const fetchSuperAdmins = createAsyncThunk(
@@ -72,23 +83,45 @@ export const deleteSuperAdmin = createAsyncThunk(
 // Update Super Admin Details
 export const updateSuperAdmin = createAsyncThunk(
   "superAdmin/updateSuperAdmin",
-  async (data: { id: string; updates: Partial<SuperAdmin> }, { rejectWithValue }) => {
+  async (data: Partial<SuperAdmin>, { rejectWithValue }) => {
     try {
-      const res = await api.put(`/super-admin/update`, data.updates);
+      const res = await api.put(`/super-admin`, data);
       return res.data.data as SuperAdmin;
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || "Failed to update super admin");
     }
   }
 );
+const initialState: SuperAdminState = {
+  superAdmins: [],
+  selectedSuperAdmin: null,
+  loading: false,
+  error: null,
+};
 
 const superAdminSlice = createSlice({
+
   name: "superAdmin",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     // fetchSuperAdmins
     builder
+      .addCase(createSuperAdmin.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        createSuperAdmin.fulfilled,
+        (state, action: PayloadAction<SuperAdmin>) => {
+          state.loading = false;
+          state.superAdmins.push(action.payload);
+        }
+      )
+      .addCase(createSuperAdmin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Something went wrong";
+      })
       .addCase(fetchSuperAdmins.pending, (state) => {
         state.loading = true;
         state.error = null;

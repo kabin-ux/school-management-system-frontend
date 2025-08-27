@@ -1,19 +1,20 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import api from "../lib/axios";
+import type { SchoolData } from "../components/SuperAdmin/partnerschools/AddSchoolModal";
 
-interface School {
-    id: string;
-    name: string;
-    email: string;
-    contact: string;
-    status: string;
-    school_code: string;
-    [key: string]: any;
-}
+// interface School {
+//     id: string;
+//     name: string;
+//     email: string;
+//     contact: string;
+//     status: string;
+//     school_code: string;
+//     [key: string]: any;
+// }
 
 interface SchoolState {
-    schools: School[];       // all schools list
-    currentSchool: School | null; // selected school details
+    schools: SchoolData[];       // all schools list
+    currentSchool: SchoolData | null; // selected school details
     loading: boolean;
     error: string | null;
 }
@@ -39,7 +40,7 @@ export const getAllSchools = createAsyncThunk(
                     'x-client-type': 'web'
                 }
             });
-            return res.data.data as School[];
+            return res.data.data as SchoolData[];
         } catch (error: any) {
             return thunkAPI.rejectWithValue(
                 error.response?.data?.message || "Error fetching schools"
@@ -59,10 +60,27 @@ export const getSchoolDetails = createAsyncThunk(
                     'x-client-type': 'web'
                 }
             });
-            return res.data.data as School;
+            return res.data.data as SchoolData;
         } catch (error: any) {
             return thunkAPI.rejectWithValue(
                 error.response?.data?.message || "Error fetching school details"
+            );
+        }
+    }
+);
+
+export const updateSchoolInfo = createAsyncThunk(
+    "school/updateSchoolInfo",
+    async (data: { id: string; updates: Record<string, any> }, { rejectWithValue }) => {
+        try {
+            const response = await api.put(`/api/schools/update`, {
+                ...data.updates,
+                id: data.id, // backend expects id inside body
+            });
+            return response.data.data; // returning updated school
+        } catch (error: any) {
+            return rejectWithValue(
+                error.response?.data?.message || "Failed to update school info"
             );
         }
     }
@@ -73,9 +91,9 @@ export const deleteSchool = createAsyncThunk(
     async (schoolId: string, thunkAPI) => {
         try {
             await api.delete("/school", {
-                data: { schoolId }, 
+                data: { schoolId },
             });
-            return schoolId; 
+            return schoolId;
         } catch (error: any) {
             return thunkAPI.rejectWithValue(
                 error.response?.data?.message || "Failed to delete school"
@@ -137,7 +155,7 @@ export const changeSchoolStatus = createAsyncThunk(
     async ({ id, status }: { id: string; status: string }, thunkAPI) => {
         try {
             const res = await api.put(`/school/change-status/${id}`, { status });
-            return res.data.data as School;
+            return res.data.data as SchoolData;
         } catch (error: any) {
             return thunkAPI.rejectWithValue(
                 error.response?.data?.message || "Error changing status"
@@ -149,10 +167,10 @@ export const changeSchoolStatus = createAsyncThunk(
 // Add School (SuperAdmin)
 export const addSchoolBySuperAdmin = createAsyncThunk(
     "school/addSchool",
-    async (schoolData: School, thunkAPI) => {
+    async (schoolData: SchoolData, thunkAPI) => {
         try {
-            const res = await api.post(`/school`, schoolData , { withCredentials: true });
-            return res.data.data as School;
+            const res = await api.post(`/school`, schoolData, { withCredentials: true });
+            return res.data.data as SchoolData;
         } catch (error: any) {
             return thunkAPI.rejectWithValue(
                 error.response?.data?.message || "Error adding school"
@@ -181,7 +199,7 @@ const schoolSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(getAllSchools.fulfilled, (state, action: PayloadAction<School[]>) => {
+            .addCase(getAllSchools.fulfilled, (state, action: PayloadAction<SchoolData[]>) => {
                 state.loading = false;
                 state.schools = action.payload;
             })
@@ -196,11 +214,30 @@ const schoolSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(getSchoolDetails.fulfilled, (state, action: PayloadAction<School>) => {
+            .addCase(getSchoolDetails.fulfilled, (state, action: PayloadAction<SchoolData>) => {
                 state.loading = false;
                 state.currentSchool = action.payload;
             })
             .addCase(getSchoolDetails.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            });
+
+        builder
+            .addCase(updateSchoolInfo.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateSchoolInfo.fulfilled, (state, action) => {
+                state.loading = false;
+                // update the modified school in the state
+                const updatedSchool = action.payload;
+                const index = state.schools.findIndex((s: any) => s.id === updatedSchool.id);
+                if (index !== -1) {
+                    state.schools[index] = updatedSchool;
+                }
+            })
+            .addCase(updateSchoolInfo.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             });
@@ -212,7 +249,7 @@ const schoolSlice = createSlice({
                 );
             })
         // Change Status
-        builder.addCase(changeSchoolStatus.fulfilled, (state, action: PayloadAction<School>) => {
+        builder.addCase(changeSchoolStatus.fulfilled, (state, action: PayloadAction<SchoolData>) => {
             state.currentSchool = action.payload;
             state.schools = state.schools.map((s) =>
                 s.id === action.payload.id ? action.payload : s
@@ -220,7 +257,7 @@ const schoolSlice = createSlice({
         });
 
         // Add School
-        builder.addCase(addSchoolBySuperAdmin.fulfilled, (state, action: PayloadAction<School>) => {
+        builder.addCase(addSchoolBySuperAdmin.fulfilled, (state, action: PayloadAction<SchoolData>) => {
             state.schools.push(action.payload);
         });
     },

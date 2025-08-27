@@ -3,18 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../../components/SuperAdmin/layout/Sidebar';
 import { DashboardHeader } from '../../../components/SuperAdmin/layout/DashboardHeader';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addSchoolBySuperAdmin, getAllSchools } from '../../../features/schoolSlice';
-import { AddSchoolModal } from '../../../components/SuperAdmin/partnerschools/AddSchoolModal';
 import { PlusIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { SuperAdminTable } from '../../../components/SuperAdmin/superadmins/SuperAdminTable';
-import { fetchSuperAdmins } from '../../../features/superAdminSlice';
+import { createSuperAdmin, deleteSuperAdmin, fetchSuperAdmins, updateSuperAdmin, type SuperAdmin } from '../../../features/superAdminSlice';
+import AddSuperAdminModal from '../../../components/SuperAdmin/superadmins/AddSuperAdminModal';
+import EditSuperAdminModal from '../../../components/SuperAdmin/superadmins/EditSuperAdminModal';
 
 export const SuperAdminsPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { superAdmins } = useAppSelector((state) => state.superAdmin)
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedSuperAdmin, setSelectedSuperAdmin] = useState<SuperAdmin | null>(null);
 
   useEffect(() => {
     dispatch(fetchSuperAdmins())
@@ -24,16 +26,38 @@ export const SuperAdminsPage: React.FC = () => {
 
   const handleViewPartnerSchoolDetails = (schoolCode: string) => {
     navigate(`/super-admin/partner-schools/details/${schoolCode}`)
-
   };
 
-  const handleAddSchool = (schoolData: any) => {
+  const handleAddSuperAdmin = (superAdminData: any) => {
     try {
-      console.log(schoolData)
-      dispatch(addSchoolBySuperAdmin(schoolData))
-      toast.success('School added successfully')
+      console.log(superAdminData)
+      dispatch(createSuperAdmin(superAdminData))
+      toast.success('Super admin created successfully')
     } catch (error) {
-      console.error('Error adding school', error)
+      console.error('Error adding super admin', error)
+    }
+  }
+
+  const handleEditSuperAdmin = (superAdmin: SuperAdmin) => {
+    setSelectedSuperAdmin(superAdmin);
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateSuperAdmin = (data: SuperAdmin) => {
+    try {
+      dispatch(updateSuperAdmin(data))
+      toast.success('Super admin details updated successfully')
+    } catch (error) {
+      console.error('Error editing super admin', error)
+    }
+  }
+
+  const handleDeleteSuperAdmin = (id: any) => {
+    try {
+      dispatch(deleteSuperAdmin(id))
+      toast.success('Super admin removed successfully')
+    } catch (error) {
+      console.error('Error removing super admin', error)
     }
   }
   return (
@@ -64,12 +88,24 @@ export const SuperAdminsPage: React.FC = () => {
             <SuperAdminTable
               superAdminData={superAdmins}
               onViewSuperAdminDetails={handleViewPartnerSchoolDetails}
+              onDelete={handleDeleteSuperAdmin}
+              onEdit={handleEditSuperAdmin}
             />
 
-            <AddSchoolModal
+            <AddSuperAdminModal
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
-              onSubmit={handleAddSchool}
+              onSubmit={handleAddSuperAdmin}
+            />
+
+            <EditSuperAdminModal
+              isOpen={isEditModalOpen}
+              onClose={() => {
+                setIsEditModalOpen(false);
+                setSelectedSuperAdmin(null);
+              }}
+              onSubmit={handleUpdateSuperAdmin}
+              superAdmin={selectedSuperAdmin}
             />
           </div>
         </div>

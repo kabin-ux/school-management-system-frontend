@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import { DashboardHeader } from "../../../../components/SuperAdmin/layout/DashboardHeader";
@@ -9,14 +9,18 @@ import SchoolPlan from "../../../../components/SuperAdmin/partnerschools/SchoolP
 import SchoolStats from "../../../../components/SuperAdmin/partnerschools/SchoolStats";
 import SupportTickets from "../../../../components/SuperAdmin/partnerschools/SupportTickets";
 import SystemInformation from "../../../../components/SuperAdmin/partnerschools/SystemInformation";
-import { deleteSchool, getSchoolDetails } from "../../../../features/schoolSlice";
+import { deleteSchool, getSchoolDetails, updateSchoolInfo } from "../../../../features/schoolSlice";
 import Loading from "../../../../common/Loading";
+import type { SchoolData } from "../../../../components/SuperAdmin/partnerschools/AddSchoolModal";
+import toast from "react-hot-toast";
+import { EditSchoolModal } from "../../../../components/SuperAdmin/partnerschools/EditSchoolModal";
 
 export default function PartnerSchoolDetails() {
     const { id } = useParams<{ id: string }>(); // expects URL like /super-admin/partner-schools/:id
     const dispatch = useAppDispatch();
 
     const { currentSchool, loading, error } = useAppSelector((state) => state.school);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -28,6 +32,19 @@ export default function PartnerSchoolDetails() {
 
     if (error) return <p className="p-6 text-red-500">{error}</p>;
     if (!currentSchool) return <p className="p-6">No school data found.</p>;
+
+    const handleEditSchool = () => {
+        setIsEditModalOpen(true);
+    };
+
+    const handleUpdateSschool = (updates: SchoolData, id: any) => {
+        try {
+            dispatch(updateSchoolInfo({ updates, id }))
+            toast.success('Super admin details updated successfully')
+        } catch (error) {
+            console.error('Error editing super admin', error)
+        }
+    }
 
     const handleRemoveSchool = () => {
         dispatch(deleteSchool(currentSchool.id));
@@ -74,10 +91,20 @@ export default function PartnerSchoolDetails() {
 
                         {/* System Information - spans 1 column */}
                         <div>
-                            <SystemInformation 
-                            onDeleteSchool={handleRemoveSchool}
+                            <SystemInformation
+                                onEditSchool={handleEditSchool}
+                                onDeleteSchool={handleRemoveSchool}
                             />
                         </div>
+
+                        <EditSchoolModal
+                            isOpen={isEditModalOpen}
+                            onClose={() => {
+                                setIsEditModalOpen(false);
+                            }}
+                            onSubmit={handleUpdateSschool}
+                            school={currentSchool}
+                        />
                     </div>
                 </div>
             </div>

@@ -1,10 +1,11 @@
 import type { Admin } from "../../../types/partner-school.types";
 
 interface SystemInformationProps {
+  onEditSchool: () => void;
   onDeleteSchool: () => void;
 }
 
-export default function SystemInformation({ onDeleteSchool }: SystemInformationProps) {
+export default function SystemInformation({onEditSchool, onDeleteSchool }: SystemInformationProps) {
 
   const admins: Admin[] = [
     { name: 'Sarah Johnson', role: 'Primary Admin', initials: 'SJ', bgColor: 'bg-blue-100 text-blue-600' },
@@ -55,7 +56,9 @@ export default function SystemInformation({ onDeleteSchool }: SystemInformationP
 
       {/* Action Buttons */}
       <div className="space-y-2">
-        <button className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors text-sm font-medium">
+        <button className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors text-sm font-medium"
+        onClick={onEditSchool}
+        >
           Reset Schools Information
         </button>
         <button className="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"

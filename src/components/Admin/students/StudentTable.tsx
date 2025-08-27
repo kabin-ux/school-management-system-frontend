@@ -36,7 +36,7 @@ export default function StudentTable({ students }: StudentTableProps) {
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Students (947)</h2>
+            <h2 className="text-lg font-semibold text-gray-900">Students ({students.length})</h2>
             <p className="text-sm text-gray-600">Manage and monitor student information</p>
           </div>
         </div>
@@ -80,7 +80,7 @@ export default function StudentTable({ students }: StudentTableProps) {
                       className="w-10 h-10 rounded-full object-cover"
                     />
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{student.firstName + student.lastName || '-'}</p>
+                      <p className="text-sm font-medium text-gray-900">{student.firstName + ' ' + student.lastName || '-'}</p>
                       <p className="text-sm text-gray-500">{student.email || '-'}</p>
                     </div>
                   </div>
