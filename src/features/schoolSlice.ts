@@ -71,11 +71,11 @@ export const getSchoolDetails = createAsyncThunk(
 
 export const updateSchoolInfo = createAsyncThunk(
     "school/updateSchoolInfo",
-    async (data: { id: string; updates: Record<string, any> }, { rejectWithValue }) => {
+    async (schoolInfo: { id: string; updates: Record<string, any> }, { rejectWithValue }) => {
         try {
-            const response = await api.put(`/api/schools/update`, {
-                ...data.updates,
-                id: data.id, // backend expects id inside body
+            const response = await api.put(`/school`, {
+                ...schoolInfo.updates,
+                id: schoolInfo.id, // backend expects id inside body
             });
             return response.data.data; // returning updated school
         } catch (error: any) {
@@ -88,7 +88,7 @@ export const updateSchoolInfo = createAsyncThunk(
 
 export const deleteSchool = createAsyncThunk(
     "school/deleteSchool",
-    async (schoolId: string, thunkAPI) => {
+    async (schoolId: string | undefined, thunkAPI) => {
         try {
             await api.delete("/school", {
                 data: { schoolId },

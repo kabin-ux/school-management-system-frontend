@@ -5,7 +5,6 @@ import TeacherFilters from '../../../components/Admin/teachers/TeacherFilters';
 import TeacherGrid from '../../../components/Admin/teachers/TeacherGrid';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { addTeacher, getAllTeachers } from '../../../features/teacherSlice';
 import AddTeacherModal from '../../../components/Admin/teachers/AddTeacherModal';

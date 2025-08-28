@@ -41,8 +41,8 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
-  classes,
-  subjects,
+  // classes,
+  // subjects,
   isLoading = false
 }) => {
   const [formData, setFormData] = useState<Omit<Teacher, 'id'>>({
@@ -134,14 +134,14 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
     setErrors(prev => ({ ...prev, [name]: error }));
   };
 
-  const handleMultiSelectChange = (type: 'classIds' | 'subjectIds', id: number) => {
-    setFormData(prev => ({
-      ...prev,
-      [type]: prev[type].includes(id)
-        ? prev[type].filter(item => item !== id)
-        : [...prev[type], id]
-    }));
-  };
+  // const handleMultiSelectChange = (type: 'classIds' | 'subjectIds', id: number) => {
+  //   setFormData(prev => ({
+  //     ...prev,
+  //     [type]: prev[type].includes(id)
+  //       ? prev[type].filter(item => item !== id)
+  //       : [...prev[type], id]
+  //   }));
+  // };
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};

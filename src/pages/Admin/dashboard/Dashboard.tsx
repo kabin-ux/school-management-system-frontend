@@ -1,3 +1,4 @@
+import { useAppSelector } from "../../../app/hooks";
 import AttendanceChart from "../../../components/Admin/dashboard/AttendanceChart";
 import AttendancePieChart from "../../../components/Admin/dashboard/AttendancePieChart";
 import DashboardStats from "../../../components/Admin/dashboard/DashboardStats";
@@ -8,6 +9,9 @@ import { AdminDashboardHeader } from "../../../components/Admin/layout/Dashboard
 import { Sidebar } from "../../../components/Admin/layout/Sidebar";
 
 export default function AdminDashboard() {
+  const { user } = useAppSelector(state => state.auth);
+
+console.log(user)
   return (
     <div className="flex h-full bg-gray-50">
       {/* Sidebar */}
@@ -23,7 +27,7 @@ export default function AdminDashboard() {
           <div className="max-w-7xl mx-auto">
             {/* Page Title */}
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-gray-900">Welcome, Admin</h1>
+              <h1 className="text-3xl font-bold text-gray-900">Welcome, Admin ({user.name})</h1>
               <p className="text-gray-600 mt-1">Monday, August 4, 2025</p>
             </div>
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { X, School, MapPin, Phone, User, Users } from "lucide-react";
 import type { SchoolData } from "./AddSchoolModal";
 
@@ -73,6 +73,46 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
 
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [currentTab, setCurrentTab] = useState("basic");
+
+    useEffect(() => {
+        if (isOpen && school) {
+            setFormData({
+                ...school,
+                password: '', // Don't pre-fill password for security
+            });
+            setErrors({});
+        } else if (!isOpen) {
+            setFormData({
+                id: "",
+                name: "",
+                address: "",
+                district: "",
+                city: "",
+                state: "",
+                postal_code: "",
+                latitude: "",
+                longitude: "",
+                phone: "",
+                email: "",
+                password: "",
+                image: "",
+                verified: false,
+                principal_name: "",
+                principal_contact: "",
+                contact: "",
+                school_type: "public",
+                has_transport: false,
+                established_year: "",
+                student_capacity: "",
+                school_code: "",
+                details: "",
+                grade_range: "",
+                has_hostel: false,
+                school_logo: "",
+            });
+            setErrors({});
+        }
+    }, [isOpen, school]);
 
     const handleInputChange = (
         e: React.ChangeEvent<
@@ -175,7 +215,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="text"
                                 name="name"
-                                value={school?.name}
+                                value={formData?.name}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
@@ -188,7 +228,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="number"
                                 name="school_code"
-                                value={school?.school_code}
+                                value={formData?.school_code}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
@@ -200,7 +240,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <label className="block text-sm font-medium text-gray-700 mb-1">School Type *</label>
                             <select
                                 name="school_type"
-                                value={school?.school_type}
+                                value={formData?.school_type}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
@@ -216,7 +256,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="text"
                                 name="grade_range"
-                                value={school?.grade_range}
+                                value={formData?.grade_range}
                                 onChange={handleInputChange}
                                 placeholder="e.g., K-12, 1-8"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -229,7 +269,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="number"
                                 name="established_year"
-                                value={school?.established_year}
+                                value={formData?.established_year}
                                 onChange={handleInputChange}
                                 min="1800"
                                 max="2024"
@@ -243,7 +283,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="number"
                                 name="student_capacity"
-                                value={school?.student_capacity}
+                                value={formData?.student_capacity}
                                 onChange={handleInputChange}
                                 min="1"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -261,7 +301,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="text"
                                 name="address"
-                                value={school?.address}
+                                value={formData?.address}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
@@ -275,7 +315,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                                 <input
                                     type="text"
                                     name="city"
-                                    value={school?.city}
+                                    value={formData?.city}
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
@@ -287,7 +327,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                                 <input
                                     type="text"
                                     name="state"
-                                    value={school?.state}
+                                    value={formData?.state}
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
@@ -302,7 +342,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                                 <input
                                     type="text"
                                     name="district"
-                                    value={school?.district}
+                                    value={formData?.district}
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
@@ -313,7 +353,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                                 <input
                                     type="text"
                                     name="postal_code"
-                                    value={school?.postal_code}
+                                    value={formData?.postal_code}
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
@@ -328,7 +368,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                                     type="number"
                                     step="any"
                                     name="latitude"
-                                    value={school?.latitude}
+                                    value={formData?.latitude}
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
@@ -340,7 +380,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                                     type="number"
                                     step="any"
                                     name="longitude"
-                                    value={school?.longitude}
+                                    value={formData?.longitude}
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
@@ -358,7 +398,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="tel"
                                 name="phone"
-                                value={school?.phone}
+                                value={formData?.phone}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
@@ -371,7 +411,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="tel"
                                 name="contact"
-                                value={school?.contact}
+                                value={formData?.principal_contact}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
@@ -383,7 +423,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="email"
                                 name="email"
-                                value={school?.email}
+                                value={formData?.email}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
@@ -396,7 +436,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="password"
                                 name="password"
-                                value={school?.password}
+                                value={formData?.password}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
@@ -409,7 +449,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="url"
                                 name="image"
-                                value={school?.image}
+                                value={formData?.image}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
@@ -421,7 +461,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="url"
                                 name="school_logo"
-                                value={school?.school_logo}
+                                value={formData?.school_logo}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
@@ -438,7 +478,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="text"
                                 name="principal_name"
-                                value={school?.principal_name}
+                                value={formData?.principal_name}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
@@ -450,7 +490,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="tel"
                                 name="principal_contact"
-                                value={school?.principal_contact}
+                                value={formData?.principal_contact}
                                 onChange={handleInputChange}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
@@ -461,7 +501,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="checkbox"
                                 name="verified"
-                                checked={school?.verified}
+                                checked={formData?.verified}
                                 onChange={handleInputChange}
                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
@@ -478,7 +518,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <label className="block text-sm font-medium text-gray-700 mb-1">School Details</label>
                             <textarea
                                 name="details"
-                                value={school?.details}
+                                value={formData?.details}
                                 onChange={handleInputChange}
                                 rows={4}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -491,7 +531,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="checkbox"
                                 name="has_transport"
-                                checked={school?.has_transport}
+                                checked={formData?.has_transport}
                                 onChange={handleInputChange}
                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
@@ -503,7 +543,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             <input
                                 type="checkbox"
                                 name="has_hostel"
-                                checked={school?.has_hostel}
+                                checked={formData?.has_hostel}
                                 onChange={handleInputChange}
                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
