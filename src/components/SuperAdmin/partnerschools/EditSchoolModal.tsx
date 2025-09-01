@@ -189,7 +189,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
             student_capacity: Number(formData.student_capacity) || "",
             school_code: Number(formData.school_code) || "",
         };
-        console.log(payload)
+        console.log("payload",payload)
 
         onSubmit(payload, school?.id);
         onClose();

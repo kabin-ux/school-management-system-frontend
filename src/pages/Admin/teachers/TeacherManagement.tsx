@@ -6,9 +6,11 @@ import TeacherGrid from '../../../components/Admin/teachers/TeacherGrid';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addTeacher, getAllTeachers } from '../../../features/teacherSlice';
+import { addTeacher, deleteTeacher, getAllTeachers, updateTeacher } from '../../../features/teacherSlice';
 import AddTeacherModal from '../../../components/Admin/teachers/AddTeacherModal';
 import toast from 'react-hot-toast';
+import type { Teacher } from '../../../types/admin-dashboard.types';
+import EditTeacherModal from '../../../components/Admin/teachers/EditTeacherModal';
 
 export default function TeacherManagement() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -19,20 +21,48 @@ export default function TeacherManagement() {
     const dispatch = useAppDispatch();
     const { teachers } = useAppSelector((state) => state.teacher)
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
 
     useEffect(() => {
         dispatch(getAllTeachers())
     }, [dispatch])
 
-      const handleAddTeacher = (teacherData: any) => {
+    const handleAddTeacher = (teacherData: any) => {
         try {
-          console.log(teacherData)
-          dispatch(addTeacher(teacherData))
-          toast.success('Teacher added successfully')
+            console.log(teacherData)
+            dispatch(addTeacher(teacherData))
+            toast.success('Teacher added successfully')
         } catch (error) {
-          console.error('Error adding school', error)
+            toast.error('Error adding teacher')
+            console.error('Error adding teacher', error)
         }
-      }
+    }
+
+    const handleEditTeaecher = (teacher: Teacher) => {
+        setIsEditModalOpen(true);
+        setSelectedTeacher(teacher);
+    }
+
+    const handleUpdateTeacher = (teacherData: any) => {
+        try {
+            dispatch(updateTeacher(teacherData))
+            toast.success('Teacher updated successfully')
+        } catch (error) {
+            toast.error('Error updating teacher')
+            console.error('Error updating teacher', error)
+        }
+    }
+
+    const handleDeleteTeacher = (teacherId: number) => {
+        try {
+            dispatch(deleteTeacher(teacherId))
+            toast.success('Teacher removed successfully')
+        } catch (error) {
+            toast.error('Error removing teacher')
+            console.error('Error removing teacher', error)
+        }
+    }
 
     return (
         <div className="flex h-full bg-gray-50">
@@ -77,6 +107,8 @@ export default function TeacherManagement() {
                         {/* Teacher Grid */}
                         <TeacherGrid
                             teachers={teachers}
+                            onEdit={handleEditTeaecher}
+                            onDelete={handleDeleteTeacher}
                         />
 
                         <AddTeacherModal
@@ -86,6 +118,16 @@ export default function TeacherManagement() {
                             // classes={classes}
                             // subjects={subjects}
                             isLoading={false}
+                        />
+
+                        <EditTeacherModal
+                            isOpen={isEditModalOpen}
+                            onClose={() => {
+                                setIsEditModalOpen(false);
+                                setSelectedTeacher(null);
+                            }}
+                            onSubmit={handleUpdateTeacher}
+                            teacher={selectedTeacher}
                         />
                     </div>
                 </main>

@@ -7,14 +7,17 @@ export interface Activity {
 }
 
 export interface Teacher {
-  id: string;
+  id: number;
   firstName: string;
   lastName: string;
-  teacherId: string;
   email: string;
   phone: string;
-  teacherSubjects: string[];
-  teacherClasses: string[];
-  status: 'Active' | 'Inactive';
-  avatar: string;
+  dateOfBirth: string;
+  gender: 'Male' | 'Female' | 'Other';
+  address?: string;
+  hireDate: string;
+  qualification: string;
+  classIds: number[];
+  subjectIds: number[];
+  status?: string;
 }

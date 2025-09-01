@@ -172,6 +172,7 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
 
     if (validateForm()) {
       onSubmit(formData);
+      onClose()
     }
   };
 

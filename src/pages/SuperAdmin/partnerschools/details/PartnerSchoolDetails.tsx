@@ -40,9 +40,9 @@ export default function PartnerSchoolDetails() {
     const handleUpdateSschool = (updates: SchoolData, id: any) => {
         try {
             dispatch(updateSchoolInfo({ updates, id }))
-            toast.success('Super admin details updated successfully')
+            toast.success('School details updated successfully')
         } catch (error) {
-            console.error('Error editing super admin', error)
+            console.error('Error editing school', error)
         }
     }
 

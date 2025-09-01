@@ -1,15 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Printer, Download, Save } from 'lucide-react';
 import TimetableFilters from '../../../components/Admin/timetable/TimetableFilters';
 import WeeklyTimetable from '../../../components/Admin/timetable/WeeklyTimetable';
 import TimetableSidebar from '../../../components/Admin/timetable/TimetableSidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
+import { useAppDispatch } from '../../../app/hooks';
+import { getTimetable } from '../../../features/timetableSlice';
 
 export default function TimetableManagement() {
     const [selectedClass, setSelectedClass] = useState('Grade 10');
     const [selectedSection, setSelectedSection] = useState('Section A');
     const [selectedSubject, setSelectedSubject] = useState('All Subject');
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(getTimetable(2))
+    })
 
     return (
         <div className="flex h-full bg-gray-50">

@@ -1,11 +1,13 @@
-import { Eye, MoreHorizontal } from 'lucide-react';
+import { Edit, Trash2 } from 'lucide-react';
 import type { Student } from '../../../features/studentSlice';
 
 interface StudentTableProps {
   students: Student[];
+  onEdit: (student: Student) => void;
+  onDelete: (id: number) => void;
 }
 
-export default function StudentTable({ students }: StudentTableProps) {
+export default function StudentTable({ students, onEdit, onDelete }: StudentTableProps) {
   const getFeeStatusBadge = (status: string) => {
     const statusClasses = {
       'Paid': 'bg-green-100 text-green-800',
@@ -105,11 +107,15 @@ export default function StudentTable({ students }: StudentTableProps) {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-2">
-                    <button className="text-gray-400 hover:text-gray-600">
-                      <Eye className="w-4 h-4" />
+                    <button className="text-blue-400 hover:text-gray-600"
+                      onClick={() => onEdit(student)}
+                    >
+                      <Edit className="w-4 h-4" />
                     </button>
-                    <button className="text-gray-400 hover:text-gray-600">
-                      <MoreHorizontal className="w-4 h-4" />
+                    <button className="text-red-400 hover:text-gray-600"
+                      onClick={() => onDelete(student.id)}
+                    >
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </td>

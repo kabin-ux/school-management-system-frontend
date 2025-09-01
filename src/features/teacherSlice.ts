@@ -45,7 +45,7 @@ export const updateTeacher = createAsyncThunk(
 // Delete Teacher
 export const deleteTeacher = createAsyncThunk(
     "teacher/deleteTeacher",
-    async (teacherId: string, thunkAPI) => {
+    async (teacherId: number, thunkAPI) => {
         try {
             await api.delete(`/teacher/${teacherId}`);
             return teacherId;

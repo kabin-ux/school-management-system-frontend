@@ -1,6 +1,25 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import api from "../lib/axios";
 
+export interface Accountant {
+  id: string;
+  firstName: string;
+  lastName: string;
+  status?: "Active" | "Inactive" | string; // or just string if status can vary
+  email: string;
+  phone: string;
+  dateOfBirth: string; // or Date if you parse it
+  address: string;
+  district: string;
+  city: string;
+  state: string;
+  postal_code: string;
+  school_id: string;
+  createdAt: string; // or Date
+  updatedAt: string; // or Date
+  deletedAt: string | null;
+}
+
 
 // Add Accountant by School
 export const addAccountantBySchool = createAsyncThunk(
@@ -48,7 +67,7 @@ export const getAllAccountant = createAsyncThunk(
   "accountant/getAllAccountant",
   async (_, thunkAPI) => {
     try {
-      const res = await api.get("/accountant", {withCredentials: true});
+      const res = await api.get("/accountant", { withCredentials: true });
       return res.data.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response?.data?.message || "Failed to fetch accountants");
@@ -183,8 +202,31 @@ const accountantSlice = createSlice({
 
     // Update
     builder.addCase(updateAccountant.fulfilled, (state, action: PayloadAction<any>) => {
-      state.currentAccountant = { ...state.currentAccountant, ...action.payload };
+      const updated = action.payload;
+
+      if (!updated) {
+        console.warn("updateAccountant.fulfilled received null payload");
+        return; // exit early to avoid crashing
+      }
+
+      // Update accountants safely
+      state.accountants = state.accountants.map((acc) =>
+        acc && acc.id === updated.id ? { ...acc, ...updated } : acc
+      );
+
+      // Update accountantBySchool safely
+      state.accountantBySchool = state.accountantBySchool.map((acc) =>
+        acc && acc.id === updated.id ? { ...acc, ...updated } : acc
+      );
+
+      // Update currentAccountant if it matches
+      if (state.currentAccountant && state.currentAccountant.id === updated.id) {
+        state.currentAccountant = { ...state.currentAccountant, ...updated };
+      }
+
+      console.log("updated acc", updated);
     });
+
 
     // Delete
     builder.addCase(deleteAccountant.fulfilled, (state, action: PayloadAction<string>) => {

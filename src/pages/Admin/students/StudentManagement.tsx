@@ -6,9 +6,10 @@ import StudentTable from '../../../components/Admin/students/StudentTable';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addStudent, getStudents } from '../../../features/studentSlice';
+import { addStudent, deleteStudent, getStudents, updateStudent, type Student } from '../../../features/studentSlice';
 import toast from 'react-hot-toast';
 import { AddStudentModal } from '../../../components/Admin/students/AddStudentModal';
+import EditStudentModal from '../../../components/Admin/students/EditStudentModal';
 export default function StudentManagement() {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedClass, setSelectedClass] = useState('Grade 10');
@@ -18,6 +19,8 @@ export default function StudentManagement() {
     const dispatch = useAppDispatch();
     const { students } = useAppSelector((state) => state.student)
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
 
     useEffect(() => {
         dispatch(getStudents())
@@ -30,6 +33,29 @@ export default function StudentManagement() {
             toast.success('Student added successfully')
         } catch (error) {
             console.error('Error adding school', error)
+        }
+    }
+
+    const handleEditStudent = (student: Student) => {
+        setIsEditModalOpen(true);
+        setSelectedStudent(student)
+    }
+
+    const handleUpdateStudent = (updates: Student, id: number) => {
+        try {
+            dispatch(updateStudent({ updates, id }))
+            toast.success('Student details updated successfully')
+        } catch (error) {
+            console.error('Error editing super admin', error)
+        }
+    }
+
+    const handleDeleteStudent = (id: any) => {
+        try {
+            dispatch(deleteStudent(id))
+            toast.success('Student removed successfully')
+        } catch (error) {
+            console.error('Error removing student', error)
         }
     }
 
@@ -52,7 +78,7 @@ export default function StudentManagement() {
                                 <p className="text-gray-600 mt-1">Organize and manage Students efficiently</p>
                             </div>
                             <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center gap-2"
-                            onClick={() => setIsModalOpen(true)}
+                                onClick={() => setIsModalOpen(true)}
                             >
                                 <UserPlus className="w-4 h-4" />
                                 Add Student
@@ -75,15 +101,26 @@ export default function StudentManagement() {
                         {/* Student Table */}
                         <StudentTable
                             students={students}
+                            onEdit={handleEditStudent}
+                            onDelete={handleDeleteStudent}
                         />
 
-                         <AddStudentModal
+                        <AddStudentModal
                             isOpen={isModalOpen}
                             onClose={() => setIsModalOpen(false)}
                             onSubmit={handleAddStudent}
-                            // classes={classes}
-                            // subjects={subjects}
-                            // isLoading={false}
+                        // classes={classes}
+                        // subjects={subjects}
+                        // isLoading={false}
+                        />
+
+                        <EditStudentModal
+                            isOpen={isEditModalOpen}
+                            onClose={() => {
+                                setIsEditModalOpen(false);
+                            }}
+                            onSubmit={handleUpdateStudent}
+                            student={selectedStudent}
                         />
                     </div>
                 </main>

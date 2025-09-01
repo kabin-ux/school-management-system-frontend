@@ -1,30 +1,33 @@
 import React from 'react';
 import { Users, FileText } from 'lucide-react';
+import type { Accountant } from '../../../features/accountantSlice';
 
-interface Accountant {
-  id: string | number;
-  name: string;
-  email: string;
-  status: "Active" | "On Leave";
-  lastModified: string;
-  permissions: {
-    category: string;
-    iconColor: string;
-    items: {
-      label: string;
-      description: string;
-      assigned: boolean;
-    }[];
-  }[];
-}
+// interface Accountant {
+//   id: string | number;
+//   name: string;
+//   email: string;
+//   status: "Active" | "On Leave";
+//   lastModified: string;
+//   permissions: {
+//     category: string;
+//     iconColor: string;
+//     items: {
+//       label: string;
+//       description: string;
+//       assigned: boolean;
+//     }[];
+//   }[];
+// }
 
 interface AccountantManagementContentProps {
   accountantBySchool: Accountant[];
+  onEdit: (accountant: Accountant) => void;
   onRemove?: (id: string | number) => void;
 }
 
 export const AccountantManagementContent: React.FC<AccountantManagementContentProps> = ({
   accountantBySchool,
+  onEdit,
   onRemove,
 }) => {
   console.log(accountantBySchool)
@@ -51,7 +54,7 @@ export const AccountantManagementContent: React.FC<AccountantManagementContentPr
             <div>
               <h3 className="text-gray-600 text-sm font-medium">On Leave</h3>
               <p className="text-3xl font-bold text-gray-900 mt-1">
-                {accountantBySchool.filter((a) => a.status === "On Leave").length}
+                {/* {accountantBySchool?.filter((a) => a.status === "On Leave").length} */}
               </p>
             </div>
             <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -63,7 +66,7 @@ export const AccountantManagementContent: React.FC<AccountantManagementContentPr
 
       {/* Accountants Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {accountantBySchool.map((acct) => (
+        {accountantBySchool?.map((acct) => (
           <div
             key={acct.id}
             className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
@@ -74,23 +77,29 @@ export const AccountantManagementContent: React.FC<AccountantManagementContentPr
                   <Users className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">{acct.name}</h3>
+                  <h3 className="font-semibold text-gray-900">{acct.firstName} {acct.lastName}</h3>
                   <p className="text-sm text-gray-600">Accountant</p>
                   <p className="text-xs text-gray-500">{acct.email}</p>
                   <p className="text-xs text-gray-500">
-                    Last modified: {acct.lastModified}
+                    Last modified: {acct?.lastModified}
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <span
                   className={`px-2 py-1 text-xs rounded ${acct.status === "Active"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-yellow-100 text-yellow-800"
+                    ? "bg-green-100 text-green-800"
+                    : "bg-yellow-100 text-yellow-800"
                     }`}
                 >
                   {acct.status}
                 </span>
+                <button
+                  className="text-blue-500 hover:text-blue-700"
+                  onClick={() => onEdit?.(acct)}
+                >
+                  Edit
+                </button>
                 <button
                   className="text-red-500 hover:text-red-700"
                   onClick={() => onRemove?.(acct.id)}
