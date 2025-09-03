@@ -8,6 +8,9 @@ import studentReducer from "../features/studentSlice";
 import superAdminReducer from "../features/superAdminSlice";
 import accountantReducer from "../features/accountantSlice";
 import timetableReducer from  "../features/timetableSlice";
+import classReducer from  "../features/classSlice";
+import sectionReducer from  "../features/sectionSlice";
+
 // Persist config ONLY for auth
 const persistConfig = {
   key: "auth",
@@ -23,6 +26,8 @@ const persistedStudentReducer = persistReducer(persistConfig, studentReducer);
 const persistedSuperAdminReducer = persistReducer(persistConfig, superAdminReducer);
 const persistedAccountantReducer = persistReducer(persistConfig, accountantReducer);
 const persistedTimetableReducer = persistReducer(persistConfig, timetableReducer);
+const persistedClassReducer = persistReducer(persistConfig, classReducer);
+const persistedSectionReducer = persistReducer(persistConfig, sectionReducer);
 
 export const store = configureStore({
   reducer: {
@@ -33,6 +38,8 @@ export const store = configureStore({
     superAdmin: persistedSuperAdminReducer,
     accountant: persistedAccountantReducer,
     timetable: persistedTimetableReducer,
+    class: persistedClassReducer,
+    section: persistedSectionReducer,
     // 
   },
   middleware: (getDefaultMiddleware) =>

@@ -6,11 +6,10 @@ export interface Subject {
 }
 
 export interface Grade {
-  id: number;
+   id: number;
   name: string;
-  sections: string[];
-  totalSubjects: number;
-  totalStudents: number;
-  teacher: string;
-  subjects: Subject[];
+  has_section: boolean;
+  school_id: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

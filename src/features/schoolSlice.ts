@@ -19,13 +19,6 @@ interface SchoolState {
     error: string | null;
 }
 
-const initialState: SchoolState = {
-    schools: [],
-    currentSchool: null,
-    loading: false,
-    error: null,
-};
-
 // ------------------ Thunks ------------------ //
 
 // Get All Schools
@@ -167,19 +160,25 @@ export const changeSchoolStatus = createAsyncThunk(
 // Add School (SuperAdmin)
 export const addSchoolBySuperAdmin = createAsyncThunk(
     "school/addSchool",
-    async (schoolData: SchoolData, thunkAPI) => {
+    async (schoolData: SchoolData, { rejectWithValue }) => {
         try {
             const res = await api.post(`/school`, schoolData, { withCredentials: true });
             return res.data.data as SchoolData;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue(
+            return rejectWithValue(
                 error.response?.data?.message || "Error adding school"
             );
         }
     }
 );
 
-// ------------------ Slice ------------------ //
+// Slice 
+const initialState: SchoolState = {
+    schools: [],
+    currentSchool: null,
+    loading: false,
+    error: null,
+};
 
 const schoolSlice = createSlice({
     name: "school",
@@ -232,9 +231,15 @@ const schoolSlice = createSlice({
                 state.loading = false;
                 // update the modified school in the state
                 const updatedSchool = action.payload;
+                console.log("updats sc", updatedSchool)
                 const index = state.schools.findIndex((s: any) => s.id === updatedSchool.id);
+                console.log("index", index)
                 if (index !== -1) {
                     state.schools[index] = updatedSchool;
+                }
+                // Update currentAccountant if it matches
+                if (state.currentSchool && state.currentSchool.id === updatedSchool.id) {
+                    state.currentSchool = { ...state.currentSchool, ...updatedSchool };
                 }
             })
             .addCase(updateSchoolInfo.rejected, (state, action) => {

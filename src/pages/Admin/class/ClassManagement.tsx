@@ -1,42 +1,53 @@
-import React, { useState } from 'react';
-import type { Grade } from '../../../types/class.types';
+import React, { useEffect, useState } from 'react';
 import { ClassHeader } from '../../../components/Admin/class/ClassHeader';
 import { ClassStats } from '../../../components/Admin/class/ClassStats';
 import { ClassTable } from '../../../components/Admin/class/ClassTable';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+import toast from 'react-hot-toast';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { addClass, getAllClassesBySchool } from '../../../features/classSlice';
+import { AddClassModal } from '../../../components/Admin/class/AddClassModal';
 
 const ClassManagement: React.FC = () => {
     const [expandedGrades, setExpandedGrades] = useState<number[]>([1]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const dispatch = useAppDispatch();
+    const { classes } = useAppSelector(state => state.class)
 
-    const grades: Grade[] = [
-        {
-            id: 1,
-            name: 'Grade 1',
-            sections: ['A', 'B'],
-            totalSubjects: 8,
-            totalStudents: 45,
-            teacher: 'Sarah Johnson',
-            subjects: [
-                { name: 'English', code: 'ENG101', teacher: 'Sarah Johnson', periods: 6 },
-                { name: 'English', code: 'ENG102', teacher: 'Sarah Johnson', periods: 6 },
-                { name: 'English', code: 'ENG103', teacher: 'Sarah Johnson', periods: 6 },
-                { name: 'English', code: 'ENG201', teacher: 'Sarah Johnson', periods: 6 },
-                { name: 'English', code: 'ENG202', teacher: 'Sarah Johnson', periods: 6 },
-                { name: 'English', code: 'ENG301', teacher: 'Sarah Johnson', periods: 6 },
-            ]
-        },
-        ...Array.from({ length: 11 }, (_, i) => ({
-            id: i + 2,
-            name: `Grade ${i + 2}`,
-            sections: ['A', 'B'],
-            totalSubjects: 8,
-            totalStudents: 45,
-            teacher: 'Sarah Johnson',
-            subjects: []
-        }))
-    ];
+    useEffect(() => {
+        dispatch(getAllClassesBySchool())
+    }, [dispatch])
+
+
+    // const grades: Grade[] = [
+    //     {
+    //         id: 1,
+    //         name: 'Grade 1',
+    //         sections: ['A', 'B'],
+    //         totalSubjects: 8,
+    //         totalStudents: 45,
+    //         teacher: 'Sarah Johnson',
+    //         subjects: [
+    //             { name: 'English', code: 'ENG101', teacher: 'Sarah Johnson', periods: 6 },
+    //             { name: 'English', code: 'ENG102', teacher: 'Sarah Johnson', periods: 6 },
+    //             { name: 'English', code: 'ENG103', teacher: 'Sarah Johnson', periods: 6 },
+    //             { name: 'English', code: 'ENG201', teacher: 'Sarah Johnson', periods: 6 },
+    //             { name: 'English', code: 'ENG202', teacher: 'Sarah Johnson', periods: 6 },
+    //             { name: 'English', code: 'ENG301', teacher: 'Sarah Johnson', periods: 6 },
+    //         ]
+    //     },
+    //     ...Array.from({ length: 11 }, (_, i) => ({
+    //         id: i + 2,
+    //         name: `Grade ${i + 2}`,
+    //         sections: ['A', 'B'],
+    //         totalSubjects: 8,
+    //         totalStudents: 45,
+    //         teacher: 'Sarah Johnson',
+    //         subjects: []
+    //     }))
+    // ];
 
     const toggleGrade = (gradeId: number) => {
         setExpandedGrades(prev =>
@@ -46,6 +57,24 @@ const ClassManagement: React.FC = () => {
         );
     };
 
+    const openModal = () => {
+        setIsModalOpen(true)
+    }
+
+    const handleAddClass = async (classData: any) => {
+        try {
+            const res = await dispatch(addClass(classData))
+            if (addClass.fulfilled.match(res)) {
+                toast.success('Class added successfully')
+            } else {
+                const errorMessage = typeof res.payload === "string" ? res.payload : 'Error adding class'
+                toast.error(errorMessage);;
+            }
+        } catch (error) {
+            toast.error('Error adding class')
+            console.error('Error adding class', error)
+        }
+    }
     return (
         <div className="flex h-full bg-gray-50">
             {/* Sidebar */}
@@ -58,12 +87,22 @@ const ClassManagement: React.FC = () => {
                 <main className="flex-1 p-6 overflow-y-auto">
                     <div className="max-w-7xl mx-auto">
 
-                        <ClassHeader searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                        <ClassHeader
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
+                            onAdd={openModal}
+                        />
                         <ClassStats />
                         <ClassTable
-                            grades={grades}
+                            grades={classes}
                             expandedGrades={expandedGrades}
                             toggleGrade={toggleGrade}
+                        />
+
+                        <AddClassModal
+                            isOpen={isModalOpen}
+                            onClose={() => setIsModalOpen(false)}
+                            onSubmit={handleAddClass}
                         />
                     </div>
                 </main>

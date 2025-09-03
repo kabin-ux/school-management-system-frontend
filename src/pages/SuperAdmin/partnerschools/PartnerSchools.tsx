@@ -24,11 +24,15 @@ export const PartnerSchools: React.FC = () => {
 
   };
 
-  const handleAddSchool = (schoolData: any) => {
+  const handleAddSchool = async (schoolData: any) => {
     try {
-      console.log(schoolData)
-      dispatch(addSchoolBySuperAdmin(schoolData))
-      toast.success('School added successfully')
+      const res = await dispatch(addSchoolBySuperAdmin(schoolData))
+      if (addSchoolBySuperAdmin.fulfilled.match(res)) {
+        toast.success('School added successfully')
+      } else {
+        const errorMessage = typeof res.payload === "string" ? res.payload : 'Error adding super admin'
+        toast.error(errorMessage);
+      }
     } catch (error) {
       console.error('Error adding school', error)
     }

@@ -1,5 +1,6 @@
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit, Trash2, Users } from 'lucide-react';
 import type { Student } from '../../../features/studentSlice';
+import EmptyState from '../../../common/EmptyState';
 
 interface StudentTableProps {
   students: Student[];
@@ -72,55 +73,69 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {students?.map((student, index) => (
-              <tr key={student.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={student.avatar}
-                      alt={student.name || ''}
-                      className="w-10 h-10 rounded-full object-cover"
+            {!students || students.length === 0 ? (
+              <tr>
+                <td colSpan={9} className="py-10">
+                  <div className="flex justify-center items-center">
+                    <EmptyState
+                      title="No Students Found"
+                      description="There are currently no students added to this class. Click the button below to add a new student."
+                      icon={<Users className="w-16 h-16 text-gray-400" />}
                     />
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">{student.firstName + ' ' + student.lastName || '-'}</p>
-                      <p className="text-sm text-gray-500">{student.email || '-'}</p>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-900">
-                  {student.admissionNumber || '-'}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-500">
-                  {student.class + ' ' + student.section || '-'}
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm font-medium text-gray-900">{student.attendance || '-'}%</span>
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  {getFeeStatusBadge(student.feeStatus || '-')}
-                </td>
-                <td className="px-6 py-4">
-                  {getStatusBadge(student.status || '-')}
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                    <button className="text-blue-400 hover:text-gray-600"
-                      onClick={() => onEdit(student)}
-                    >
-                      <Edit className="w-4 h-4" />
-                    </button>
-                    <button className="text-red-400 hover:text-gray-600"
-                      onClick={() => onDelete(student.id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
                   </div>
                 </td>
               </tr>
-            ))}
+            ) : (
+              students?.map((student, index) => (
+                <tr key={student.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={student.avatar}
+                        alt={student.name || ''}
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{student.firstName + ' ' + student.lastName || '-'}</p>
+                        <p className="text-sm text-gray-500">{student.email || '-'}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900">
+                    {student.admissionNumber || '-'}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {student.class + ' ' + student.section || '-'}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm font-medium text-gray-900">{student.attendance || '-'}%</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    {getFeeStatusBadge(student.feeStatus || '-')}
+                  </td>
+                  <td className="px-6 py-4">
+                    {getStatusBadge(student.status || '-')}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <button className="text-blue-400 hover:text-gray-600"
+                        onClick={() => onEdit(student)}
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button className="text-red-400 hover:text-gray-600"
+                        onClick={() => onDelete(student.id)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              )
+              ))}
           </tbody>
         </table>
       </div>

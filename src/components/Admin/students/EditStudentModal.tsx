@@ -5,7 +5,7 @@ import type { Student } from '../../../features/studentSlice';
 interface EditStudentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (updates: Student, id: string) => void;
+  onSubmit: (updates: Student, id: number) => void;
   student?: Student | null;
   isLoading?: boolean;
 }

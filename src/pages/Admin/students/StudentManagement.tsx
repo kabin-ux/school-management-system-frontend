@@ -6,10 +6,12 @@ import StudentTable from '../../../components/Admin/students/StudentTable';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addStudent, deleteStudent, getStudents, updateStudent, type Student } from '../../../features/studentSlice';
+import { addStudent, deleteStudent,  getStudentsBySchool, updateStudent, type Student } from '../../../features/studentSlice';
 import toast from 'react-hot-toast';
 import { AddStudentModal } from '../../../components/Admin/students/AddStudentModal';
 import EditStudentModal from '../../../components/Admin/students/EditStudentModal';
+import { getAllClassesBySchool } from '../../../features/classSlice';
+
 export default function StudentManagement() {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedClass, setSelectedClass] = useState('Grade 10');
@@ -18,21 +20,26 @@ export default function StudentManagement() {
 
     const dispatch = useAppDispatch();
     const { students } = useAppSelector((state) => state.student)
+    const { classes } = useAppSelector(state => state.class)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
 
     useEffect(() => {
-        dispatch(getStudents())
+        dispatch(getStudentsBySchool())
+        dispatch(getAllClassesBySchool())
     }, [dispatch])
 
-    const handleAddStudent = (studentData: any) => {
+    const handleAddStudent = async (studentData: any) => {
         try {
-            console.log(studentData)
-            dispatch(addStudent(studentData))
-            toast.success('Student added successfully')
+            const res = await dispatch(addStudent(studentData))
+            if (addStudent.fulfilled.match(res)) {
+                toast.success('Student added successfully')
+            } else {
+                toast.error('Error adding student')
+            }
         } catch (error) {
-            console.error('Error adding school', error)
+            console.error('Error adding student', error)
         }
     }
 
@@ -109,9 +116,7 @@ export default function StudentManagement() {
                             isOpen={isModalOpen}
                             onClose={() => setIsModalOpen(false)}
                             onSubmit={handleAddStudent}
-                        // classes={classes}
-                        // subjects={subjects}
-                        // isLoading={false}
+                            classes={classes}
                         />
 
                         <EditStudentModal

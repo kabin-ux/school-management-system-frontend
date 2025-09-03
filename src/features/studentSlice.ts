@@ -61,6 +61,18 @@ export const getStudents = createAsyncThunk(
   }
 );
 
+export const getStudentsBySchool = createAsyncThunk(
+  "students/getStudentsBySchool",
+  async (_, thunkAPI) => {
+    try {
+      const res = await api.get("/student/by-school");
+      return res.data.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response?.data?.message || "Failed to fetch students");
+    }
+  }
+);
+
 export const getStudentById = createAsyncThunk(
   "students/getStudentById",
   async (id: number, thunkAPI) => {
@@ -135,6 +147,21 @@ const studentSlice = createSlice({
         state.students = action.payload;
       })
       .addCase(getStudents.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+
+    // Get Students By School
+    builder
+      .addCase(getStudentsBySchool.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getStudentsBySchool.fulfilled, (state, action: PayloadAction<Student[]>) => {
+        state.loading = false;
+        state.students = action.payload;
+      })
+      .addCase(getStudentsBySchool.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

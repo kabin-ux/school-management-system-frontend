@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import type { SchoolData } from './AddSchoolModal';
+import EmptyState from '../../../common/EmptyState';
+import { School } from 'lucide-react';
 
 interface PartnerSchoolTableProps {
   schoolData?: SchoolData[];
   onViewPartnerSchoolDetails: (schoolCode: any) => void;
 }
 
-
-export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({schoolData, onViewPartnerSchoolDetails }) => {
+export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({ schoolData, onViewPartnerSchoolDetails }) => {
   const [subscription, setSubscription] = useState('All Status');
   const [payment, setPayment] = useState('Payment');
 
@@ -93,29 +94,45 @@ export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({schoolDa
             </tr>
           </thead>
           <tbody>
-            {schoolData?.map((school, index) => (
-              <tr key={index} className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
-                onClick={() => onViewPartnerSchoolDetails?.(school.id)}
-              >
-                <td className="py-4 px-6 text-sm text-blue-600 font-medium">{school.school_code || '-'}</td>
-                <td className="py-4 px-6 text-sm text-gray-900 font-medium">{school.name || '-'}</td>
-                <td className="py-4 px-6 text-sm text-gray-600">{school.address || '-'}</td>
-                <td className="py-4 px-6 text-sm text-gray-900">{school.totalStudents || '-'}</td>
-                <td className="py-4 px-6 text-sm text-gray-900">{school.totalTeachers || '-'}</td>
-                <td className="py-4 px-6 text-sm text-gray-900">{school.totalParents || '-'}</td>
-                <td className="py-4 px-6">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadge(school?.status)}`}>
-                    {school.status}
-                  </span>
-                </td>
-                <td className="py-4 px-6">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getSubscriptionBadge(school.subscription)}`}>
-                    {school.subscription || '-'}
-                  </span>
-                </td>
-                <td className="py-4 px-6 text-sm text-gray-900">{school?.payment || '-'}</td>
-              </tr>
-            ))}
+
+            {!schoolData || schoolData.length === 0 ?
+              (
+                <tr>
+                  <td colSpan={9} className="py-10">
+                    <div className="flex justify-center items-center">
+                      <EmptyState
+                        title='No Partner Schools'
+                        description='You haven’t added any partner schools yet. Add a school to get started managing your school network.'
+                        icon={<School className='w-12 h-12 text-gray-400' />}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                schoolData?.map((school, index) => (
+                  <tr key={index} className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
+                    onClick={() => onViewPartnerSchoolDetails?.(school.id)}
+                  >
+                    <td className="py-4 px-6 text-sm text-blue-600 font-medium">{school.school_code || '-'}</td>
+                    <td className="py-4 px-6 text-sm text-gray-900 font-medium">{school.name || '-'}</td>
+                    <td className="py-4 px-6 text-sm text-gray-600">{school.address || '-'}</td>
+                    <td className="py-4 px-6 text-sm text-gray-900">{school.totalStudents || '-'}</td>
+                    <td className="py-4 px-6 text-sm text-gray-900">{school.totalTeachers || '-'}</td>
+                    <td className="py-4 px-6 text-sm text-gray-900">{school.totalParents || '-'}</td>
+                    <td className="py-4 px-6">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadge(school?.status)}`}>
+                        {school.status}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getSubscriptionBadge(school.subscription)}`}>
+                        {school.subscription || '-'}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6 text-sm text-gray-900">{school?.payment || '-'}</td>
+                  </tr>
+                ))
+              )}
           </tbody>
         </table>
       </div>

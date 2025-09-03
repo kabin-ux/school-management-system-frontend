@@ -28,12 +28,17 @@ export const SuperAdminsPage: React.FC = () => {
     navigate(`/super-admin/partner-schools/details/${schoolCode}`)
   };
 
-  const handleAddSuperAdmin = (superAdminData: any) => {
+  const handleAddSuperAdmin = async (superAdminData: any) => {
     try {
-      console.log(superAdminData)
-      dispatch(createSuperAdmin(superAdminData))
-      toast.success('Super admin created successfully')
+      const res = await dispatch(createSuperAdmin(superAdminData))
+      console.log("Response",res)
+      if (createSuperAdmin.fulfilled.match(res)) {
+        toast.success('Super admin created successfully')
+      } else {
+        toast.error(res.payload || 'Error adding super admin');
+      }
     } catch (error) {
+      toast.error('Error adding super admin')
       console.error('Error adding super admin', error)
     }
   }

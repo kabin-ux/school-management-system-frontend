@@ -28,11 +28,16 @@ export default function TeacherManagement() {
         dispatch(getAllTeachers())
     }, [dispatch])
 
-    const handleAddTeacher = (teacherData: any) => {
+    const handleAddTeacher = async (teacherData: any) => {
         try {
             console.log(teacherData)
-            dispatch(addTeacher(teacherData))
-            toast.success('Teacher added successfully')
+            const res = await dispatch(addTeacher(teacherData))
+            if (addTeacher.fulfilled.match(res)) {
+                toast.success('Teacher added successfully')
+            } else {
+                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to add teacher'
+                toast.error(errorMsg)
+            }
         } catch (error) {
             toast.error('Error adding teacher')
             console.error('Error adding teacher', error)

@@ -1,60 +1,78 @@
-import React, { useState } from "react";
-import { X, Plus, Trash2 } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { X } from "lucide-react";
+import type { Grade } from "../../../types/class.types";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { getSectionsByClass } from "../../../features/sectionSlice";
 
-interface Parent {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  relation: string;
-}
+// interface Parent {
+//   firstName: string;
+//   lastName: string;
+//   email: string;
+//   phoneNumber: string;
+//   relation: string;
+// }
 
 interface StudentForm {
   firstName: string;
   lastName: string;
   email: string;
-  class: string;
-  section: string;
+  class_id: number;
+  section_id: string;
   rollNumber: string;
   gender: string;
   dateOfBirth: string;
   address: string;
-  parents: Parent[];
+  // parents: Parent[];
 }
 
 interface StudentModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (studentData: StudentForm) => void;
+  classes: Grade[]
 }
 
 export const AddStudentModal: React.FC<StudentModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
+  classes
 }) => {
   const [formData, setFormData] = useState<StudentForm>({
     firstName: "",
     lastName: "",
     email: "",
-    class: "",
-    section: "",
+    class_id: 0,
+    section_id: "",
     rollNumber: "",
     gender: "",
     dateOfBirth: "",
     address: "",
-    parents: [
-      {
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: "",
-        relation: "Father",
-      },
-    ],
+    // parents: [
+    //   {
+    //     firstName: "",
+    //     lastName: "",
+    //     email: "",
+    //     phoneNumber: "",
+    //     relation: "Father",
+    //   },
+    // ],
   });
-
+  const { sections } = useAppSelector(state => state.section)
+  const dispatch = useAppDispatch();
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Load sections when class changes
+  useEffect(() => {
+    if (formData.class_id) {
+      const selectedClass = classes.find(cls => cls.id === formData.class_id);
+      if (selectedClass) {
+        dispatch(getSectionsByClass(selectedClass?.id));
+      }
+    }
+  }, [formData.class_id, classes, dispatch]);
+
+  console.log("Sections", sections)
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -74,66 +92,66 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
     }
   };
 
-  const handleParentChange = (
-    index: number,
-    field: keyof Parent,
-    value: string
-  ) => {
-    const updatedParents = [...formData.parents];
-    updatedParents[index] = {
-      ...updatedParents[index],
-      [field]: value,
-    };
-    setFormData((prev) => ({
-      ...prev,
-      parents: updatedParents,
-    }));
+  // const handleParentChange = (
+  //   index: number,
+  //   field: keyof Parent,
+  //   value: string
+  // ) => {
+  //   const updatedParents = [...formData.parents];
+  //   updatedParents[index] = {
+  //     ...updatedParents[index],
+  //     [field]: value,
+  //   };
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     parents: updatedParents,
+  //   }));
 
-    // Clear error if exists
-    const errorKey =
-      field === "firstName"
-        ? `parent${index}FirstName`
-        : field === "lastName"
-        ? `parent${index}LastName`
-        : field === "phoneNumber"
-        ? `parent${index}PhoneNumber`
-        : field === "email"
-        ? `parent${index}Email`
-        : null;
+  //   // Clear error if exists
+  //   const errorKey =
+  //     field === "firstName"
+  //       ? `parent${index}FirstName`
+  //       : field === "lastName"
+  //         ? `parent${index}LastName`
+  //         : field === "phoneNumber"
+  //           ? `parent${index}PhoneNumber`
+  //           : field === "email"
+  //             ? `parent${index}Email`
+  //             : null;
 
-    if (errorKey && errors[errorKey]) {
-      setErrors((prev) => ({
-        ...prev,
-        [errorKey]: "",
-      }));
-    }
-  };
+  //   if (errorKey && errors[errorKey]) {
+  //     setErrors((prev) => ({
+  //       ...prev,
+  //       [errorKey]: "",
+  //     }));
+  //   }
+  // };
 
-  const addParent = () => {
-    setFormData((prev) => ({
-      ...prev,
-      parents: [
-        ...prev.parents,
-        {
-          firstName: "",
-          lastName: "",
-          email: "",
-          phoneNumber: "",
-          relation: "Mother",
-        },
-      ],
-    }));
-  };
+  // const addParent = () => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     parents: [
+  //       ...prev.parents,
+  //       {
+  //         firstName: "",
+  //         lastName: "",
+  //         email: "",
+  //         phoneNumber: "",
+  //         relation: "Mother",
+  //       },
+  //     ],
+  //   }));
+  // };
 
-  const removeParent = (index: number) => {
-    if (formData.parents.length > 1) {
-      const updatedParents = formData.parents.filter((_, i) => i !== index);
-      setFormData((prev) => ({
-        ...prev,
-        parents: updatedParents,
-      }));
-    }
-  };
+  // const removeParent = (index: number) => {
+  //   if (formData.parents.length > 1) {
+  //     const updatedParents = formData.parents.filter((_, i) => i !== index);
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       parents: updatedParents,
+  //     }));
+  //   }
+  // };
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -143,8 +161,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
     if (!formData.lastName.trim())
       newErrors.lastName = "Last name is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
-    if (!formData.class.trim()) newErrors.class = "Class is required";
-    if (!formData.section.trim()) newErrors.section = "Section is required";
+    if (!formData.class_id) newErrors.class = "Class is required";
+    if (!formData.section_id.trim()) newErrors.section = "Section is required";
     if (!formData.rollNumber.trim())
       newErrors.rollNumber = "Roll number is required";
     if (!formData.gender) newErrors.gender = "Gender is required";
@@ -158,28 +176,29 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
       newErrors.email = "Please enter a valid email address";
     }
 
-    formData.parents.forEach((parent, index) => {
-      if (!parent.firstName.trim()) {
-        newErrors[`parent${index}FirstName`] = "Parent first name is required";
-      }
-      if (!parent.lastName.trim()) {
-        newErrors[`parent${index}LastName`] = "Parent last name is required";
-      }
-      if (!parent.phoneNumber.trim()) {
-        newErrors[`parent${index}PhoneNumber`] =
-          "Parent phone number is required";
-      }
-      if (parent.email && !emailRegex.test(parent.email)) {
-        newErrors[`parent${index}Email`] =
-          "Please enter a valid parent email address";
-      }
-    });
+    // formData.parents.forEach((parent, index) => {
+    //   if (!parent.firstName.trim()) {
+    //     newErrors[`parent${index}FirstName`] = "Parent first name is required";
+    //   }
+    //   if (!parent.lastName.trim()) {
+    //     newErrors[`parent${index}LastName`] = "Parent last name is required";
+    //   }
+    //   if (!parent.phoneNumber.trim()) {
+    //     newErrors[`parent${index}PhoneNumber`] =
+    //       "Parent phone number is required";
+    //   }
+    //   if (parent.email && !emailRegex.test(parent.email)) {
+    //     newErrors[`parent${index}Email`] =
+    //       "Please enter a valid parent email address";
+    //   }
+    // });
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = () => {
+    console.log(formData)
     if (validateForm()) {
       onSubmit(formData);
       // Reset form
@@ -187,21 +206,21 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
         firstName: "",
         lastName: "",
         email: "",
-        class: "",
-        section: "",
+        class_id: 0,
+        section_id: "",
         rollNumber: "",
         gender: "",
         dateOfBirth: "",
         address: "",
-        parents: [
-          {
-            firstName: "",
-            lastName: "",
-            email: "",
-            phoneNumber: "",
-            relation: "Father",
-          },
-        ],
+        // parents: [
+        //   {
+        //     firstName: "",
+        //     lastName: "",
+        //     email: "",
+        //     phoneNumber: "",
+        //     relation: "Father",
+        //   },
+        // ],
       });
       setErrors({});
       onClose();
@@ -228,7 +247,7 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
           {/* Student Information */}
           <div className="mb-8">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Student Information</h3>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -239,9 +258,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.firstName ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.firstName ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder="Enter first name"
                 />
                 {errors.firstName && <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>}
@@ -256,9 +274,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.lastName ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.lastName ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder="Enter last name"
                 />
                 {errors.lastName && <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>}
@@ -275,9 +292,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.email ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder="Enter email address"
                 />
                 {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
@@ -291,14 +307,13 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   name="gender"
                   value={formData.gender}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.gender ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.gender ? 'border-red-500' : 'border-gray-300'
+                    }`}
                 >
                   <option value="">Select gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
                 </select>
                 {errors.gender && <p className="mt-1 text-sm text-red-600">{errors.gender}</p>}
               </div>
@@ -309,16 +324,20 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Class *
                 </label>
-                <input
-                  type="text"
-                  name="class"
-                  value={formData.class}
+                <select
+                  name="class_id"
+                  value={formData.class_id}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.class ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="Enter class"
-                />
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.class ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                >
+                  <option value="">Select class</option>
+                  {classes.map((cls) => (
+                    <option key={cls.id} value={cls.id}>
+                      {cls.name}
+                    </option>
+                  ))}
+                </select>
                 {errors.class && <p className="mt-1 text-sm text-red-600">{errors.class}</p>}
               </div>
 
@@ -326,16 +345,21 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Section *
                 </label>
-                <input
-                  type="text"
-                  name="section"
-                  value={formData.section}
+                <select
+                  name="section_id"
+                  value={formData.section_id}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.section ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="Enter section"
-                />
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.section ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  disabled={!formData.class_id}
+                >
+                  <option value="">Select section</option>
+                  {sections.map((section: any) => (
+                    <option key={section.id} value={section.id}>
+                      {section.name}
+                    </option>
+                  ))}
+                </select>
                 {errors.section && <p className="mt-1 text-sm text-red-600">{errors.section}</p>}
               </div>
 
@@ -348,9 +372,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   name="rollNumber"
                   value={formData.rollNumber}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.rollNumber ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.rollNumber ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder="Enter roll number"
                 />
                 {errors.rollNumber && <p className="mt-1 text-sm text-red-600">{errors.rollNumber}</p>}
@@ -367,9 +390,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   name="dateOfBirth"
                   value={formData.dateOfBirth}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
+                    }`}
                 />
                 {errors.dateOfBirth && <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth}</p>}
               </div>
@@ -383,9 +405,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   value={formData.address}
                   onChange={handleInputChange}
                   rows={2}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
-                    errors.address ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${errors.address ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder="Enter address"
                 />
                 {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address}</p>}
@@ -394,7 +415,7 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
           </div>
 
           {/* Parent Information */}
-          <div className="mb-6">
+          {/* <div className="mb-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">Parent Information</h3>
               <button
@@ -515,7 +536,7 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* Action Buttons */}
           <div className="flex justify-end space-x-4 pt-4 border-t border-gray-200">
