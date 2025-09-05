@@ -1,13 +1,14 @@
+import type { Student } from "../features/studentSlice";
+
 export interface Parent {
-  id: string;
-  name: string;
-  parentId: string;
-  email: string;
-  phone: string;
-  linkedStudents: Array<{
+    id: number;
+    avatar?: string;
+    status?: string;
     name: string;
-    class: string;
-  }>;
-  status: 'Active' | 'Inactive';
-  avatar: string;
+    email: string;
+    phone: string;
+    address?: string;
+    relation: string;
+    occupation: string;
+    students?: Student[];
 }

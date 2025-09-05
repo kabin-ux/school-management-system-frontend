@@ -1,21 +1,14 @@
-import { Mail, Phone, Users, MessageCircle, Unlink } from 'lucide-react';
+import { Mail, Phone, Users, MessageCircle, Unlink, Edit, Trash2 } from 'lucide-react';
 import type { Parent } from '../../../types/parent.types';
+import type { FC } from 'react';
 
-export default function ParentGrid() {
-  const parents: Parent[] = Array.from({ length: 8 }, (_, i) => ({
-    id: `${i + 1}`,
-    name: 'Michael Chen',
-    parentId: 'TCH002',
-    email: 'michael.chen@school.edu',
-    phone: '+977-9765424458',
-    linkedStudents: [
-      { name: 'Priya Sharma', class: 'Class 5 Section A' },
-      { name: 'Priya Sharma', class: 'Class 7 Section A' }
-    ],
-    status: 'Active' as const,
-    avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1'
-  }));
+interface ParentGridModalProps {
+  parents: Parent[]
+  onEdit: (parent: Parent) => void;
+  onDelete: (parentId: number) => void;
+}
 
+export const ParentGrid: FC<ParentGridModalProps> = ({ parents, onEdit, onDelete }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {parents.map((parent) => (
@@ -27,17 +20,16 @@ export default function ParentGrid() {
               className="w-16 h-16 rounded-full object-cover mb-3"
             />
             <h3 className="font-semibold text-gray-900">{parent.name}</h3>
-            <p className="text-sm text-gray-500 mb-2">{parent.parentId}</p>
+            <p className="text-sm text-gray-500 mb-2">{parent.id}</p>
             <div className="flex items-center gap-2">
-              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                parent.status === 'Active' 
-                  ? 'bg-green-100 text-green-800' 
-                  : 'bg-gray-100 text-gray-800'
-              }`}>
+              <span className={`px-2 py-1 rounded-full text-xs font-medium ${parent.status === 'Active'
+                ? 'bg-green-100 text-green-800'
+                : 'bg-gray-100 text-gray-800'
+                }`}>
                 {parent.status}
               </span>
               <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full font-medium">
-                Children
+                {parent.students?.length} Children
               </span>
             </div>
           </div>
@@ -54,9 +46,9 @@ export default function ParentGrid() {
             <div className="text-gray-600">
               <div className="flex items-center gap-2 mb-2">
                 <Users className="w-4 h-4" />
-                <span className="text-xs font-medium">Linked Student (2)</span>
+                <span className="text-xs font-medium">Linked Student {parent.students?.map((std) => (std.firstName)) }</span>
               </div>
-              {parent.linkedStudents.map((student, index) => (
+              {parent.students?.map((student, index) => (
                 <div key={index} className="flex items-center gap-2 ml-6 mb-1">
                   <div className="w-4 h-4 bg-blue-100 rounded-full flex items-center justify-center">
                     <span className="text-xs text-blue-600">👤</span>
@@ -79,6 +71,17 @@ export default function ParentGrid() {
               <Unlink className="w-4 h-4" />
               Unlink
             </button>
+            <button className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center justify-center gap-2"
+              onClick={() => onEdit(parent)}
+            >
+              <Edit className='w-4 h-4' />
+            </button>
+            <button className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center justify-center gap-2"
+              onClick={() => onDelete(parent.id)}
+            >
+              <Trash2 className='w-4 h-4' />
+            </button>
+
           </div>
         </div>
       ))}

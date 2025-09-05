@@ -44,7 +44,7 @@ export default function TeacherManagement() {
         }
     }
 
-    const handleEditTeaecher = (teacher: Teacher) => {
+    const handleEditTeacher = (teacher: Teacher) => {
         setIsEditModalOpen(true);
         setSelectedTeacher(teacher);
     }
@@ -112,7 +112,7 @@ export default function TeacherManagement() {
                         {/* Teacher Grid */}
                         <TeacherGrid
                             teachers={teachers}
-                            onEdit={handleEditTeaecher}
+                            onEdit={handleEditTeacher}
                             onDelete={handleDeleteTeacher}
                         />
 

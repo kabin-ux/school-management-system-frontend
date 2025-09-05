@@ -7,9 +7,10 @@ import teacherReducer from "../features/teacherSlice";
 import studentReducer from "../features/studentSlice";
 import superAdminReducer from "../features/superAdminSlice";
 import accountantReducer from "../features/accountantSlice";
-import timetableReducer from  "../features/timetableSlice";
-import classReducer from  "../features/classSlice";
-import sectionReducer from  "../features/sectionSlice";
+import timetableReducer from "../features/timetableSlice";
+import classReducer from "../features/classSlice";
+import sectionReducer from "../features/sectionSlice";
+import parentReducer from "../features/parentSlice";
 
 // Persist config ONLY for auth
 const persistConfig = {
@@ -28,6 +29,7 @@ const persistedAccountantReducer = persistReducer(persistConfig, accountantReduc
 const persistedTimetableReducer = persistReducer(persistConfig, timetableReducer);
 const persistedClassReducer = persistReducer(persistConfig, classReducer);
 const persistedSectionReducer = persistReducer(persistConfig, sectionReducer);
+const persistedParentReducer = persistReducer(persistConfig, parentReducer);
 
 export const store = configureStore({
   reducer: {
@@ -40,6 +42,7 @@ export const store = configureStore({
     timetable: persistedTimetableReducer,
     class: persistedClassReducer,
     section: persistedSectionReducer,
+    parent: persistedParentReducer,
     // 
   },
   middleware: (getDefaultMiddleware) =>

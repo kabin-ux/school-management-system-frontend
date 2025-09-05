@@ -34,7 +34,7 @@ export const updateTeacher = createAsyncThunk(
     "teacher/updateTeacher",
     async (teacherData: any, thunkAPI) => {
         try {
-            const res = await api.put(`/teacher/${teacherData.id}`, teacherData);
+            const res = await api.put(`/teacher`, teacherData);
             return res.data;
         } catch (error: any) {
             return thunkAPI.rejectWithValue(error.response?.data?.message || "Failed to update teacher");
