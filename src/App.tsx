@@ -40,6 +40,7 @@ import ProtectedRoute from './auth/ProtectedRoute';
 import UnauthorizedPage from './pages/Unauthorized';
 import { Toaster } from 'react-hot-toast';
 import { SuperAdminsPage } from './pages/SuperAdmin/superadmins/SuperAdminsPage';
+import TransportationManagement from './pages/Admin/transportation/TransportationManagement';
 
 function App() {
     return (
@@ -110,7 +111,7 @@ function App() {
                             <SupportTicketDetailPage />
                         </ProtectedRoute>
                     } />
-                     <Route path='/super-admin/super-admins' element={
+                    <Route path='/super-admin/super-admins' element={
                         <ProtectedRoute allowedRoles={['superadmin']}>
                             <SuperAdminsPage />
                         </ProtectedRoute>
@@ -148,7 +149,16 @@ function App() {
                             <TimetableManagement />
                         </ProtectedRoute>
                     } />
-                    <Route path='/admin/class-management' element={<ClassManagement />} />
+                    <Route path='/admin/class-management' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <ClassManagement />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/admin/transportation-management' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <TransportationManagement />
+                        </ProtectedRoute>
+                    } />
                     <Route path='/admin/attendance-monitoring' element={<AttendanceMonitoring />} />
                     <Route path='/admin/attendance-monitoring/history/:id' element={<AttendanceHistory />} />
                     <Route path='/admin/communication' element={<Communication />} />

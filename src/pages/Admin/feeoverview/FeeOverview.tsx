@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FeeOverviewHeader } from '../../../components/Admin/feeoverview/FeeOverviewHeader';
 import { FeeOverviewFilters } from '../../../components/Admin/feeoverview/FeeOverviewFilters';
 import { FeeOverviewStats } from '../../../components/Admin/feeoverview/FeeOverviewStats';
 import { FeeOverviewTable } from '../../../components/Admin/feeoverview/FeeOverviewTable';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import {  getMySchoolFeesStructures } from '../../../features/feesSlice';
 
 const FeeOverview: React.FC = () => {
     const [searchStudent, setSearchStudent] = useState('');
@@ -12,6 +14,13 @@ const FeeOverview: React.FC = () => {
     const [selectedSection, setSelectedSection] = useState('');
     const [selectedTerminal, setSelectedTerminal] = useState('');
     const [selectedDateRange, setSelectedDateRange] = useState('');
+    const { fees } = useAppSelector(state => state.fees)
+    const dispatch = useAppDispatch();
+    const {user} = useAppSelector(state=> state.auth);
+
+    useEffect(() => {
+        dispatch(getMySchoolFeesStructures(user.id))
+    })
 
     const feeData = Array.from({ length: 15 }, (_, i) => ({
         code: `TIC-001`,

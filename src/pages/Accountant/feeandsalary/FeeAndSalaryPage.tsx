@@ -6,8 +6,18 @@ import { StudentDetailView } from '../../../components/Accountant/feesandsalary/
 import { DataTable } from '../../../components/Accountant/feesandsalary/DataTable';
 import { AccountantDashboardHeader } from '../../../components/Accountant/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Accountant/layout/Sidebar';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useEffect } from 'react';
+import { getMySchoolFeesStructures } from '../../../features/feesSlice';
 
 export default function FeeAndSalaryPage() {
+    const dispatch = useAppDispatch();
+    const {fees} = useAppSelector(state => state.fees)
+
+    useEffect(() => {
+        dispatch(getMySchoolFeesStructures())
+    })
+
     const {
         activeView,
         selectedStudent,

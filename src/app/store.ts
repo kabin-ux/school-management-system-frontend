@@ -11,6 +11,8 @@ import timetableReducer from "../features/timetableSlice";
 import classReducer from "../features/classSlice";
 import sectionReducer from "../features/sectionSlice";
 import parentReducer from "../features/parentSlice";
+import feesReducer from "../features/feesSlice";
+import transportationReducer from '../features/transportationSlice';
 
 // Persist config ONLY for auth
 const persistConfig = {
@@ -30,6 +32,8 @@ const persistedTimetableReducer = persistReducer(persistConfig, timetableReducer
 const persistedClassReducer = persistReducer(persistConfig, classReducer);
 const persistedSectionReducer = persistReducer(persistConfig, sectionReducer);
 const persistedParentReducer = persistReducer(persistConfig, parentReducer);
+const persistedFeesReducer = persistReducer(persistConfig, feesReducer);
+const persistedTransportationReducer = persistReducer(persistConfig, transportationReducer);
 
 export const store = configureStore({
   reducer: {
@@ -43,6 +47,8 @@ export const store = configureStore({
     class: persistedClassReducer,
     section: persistedSectionReducer,
     parent: persistedParentReducer,
+    fees: persistedFeesReducer,
+    transportation: persistedTransportationReducer,
     // 
   },
   middleware: (getDefaultMiddleware) =>
