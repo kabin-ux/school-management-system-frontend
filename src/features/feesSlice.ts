@@ -31,7 +31,7 @@ export const updateFeesStructure = createAsyncThunk(
 // Delete Fees Structure
 export const deleteFeesStructure = createAsyncThunk(
     "feeStructure/delete",
-    async (id: number, thunkAPI) => {
+    async (id: string, thunkAPI) => {
         try {
             await api.delete("/fees", { data: { id } });
             return id;
@@ -83,7 +83,7 @@ export const getAllSchoolsFeesStructures = createAsyncThunk(
 // Slice
 
 interface FeeStructureState {
-    fees: any[];
+    feeStructures: any[];
     mySchoolFeeStructures: any[];
     selectedFeeStructure: any | null;
     loading: boolean;
@@ -91,7 +91,7 @@ interface FeeStructureState {
 }
 
 const initialState: FeeStructureState = {
-    fees: [],
+    feeStructures: [],
     mySchoolFeeStructures: [],
     selectedFeeStructure: null,
     loading: false,
@@ -116,7 +116,7 @@ const feeStructureSlice = createSlice({
         });
         builder.addCase(addFeesStructure.fulfilled, (state, action) => {
             state.loading = false;
-            state.fees.unshift(action.payload);
+            state.feeStructures.unshift(action.payload);
         });
         builder.addCase(addFeesStructure.rejected, (state, action: any) => {
             state.loading = false;
@@ -126,16 +126,16 @@ const feeStructureSlice = createSlice({
         // Update
         builder.addCase(updateFeesStructure.fulfilled, (state, action) => {
             state.loading = false;
-            const index = state.fees.findIndex(
+            const index = state.feeStructures.findIndex(
                 (f: any) => f.id === action.payload.id
             );
-            if (index !== -1) state.fees[index] = action.payload;
+            if (index !== -1) state.feeStructures[index] = action.payload;
         });
 
         // Delete
         builder.addCase(deleteFeesStructure.fulfilled, (state, action) => {
             state.loading = false;
-            state.fees = state.fees.filter(
+            state.feeStructures = state.feeStructures.filter(
                 (f: any) => f.id !== action.payload
             );
             state.mySchoolFeeStructures = state.mySchoolFeeStructures.filter(
@@ -158,7 +158,7 @@ const feeStructureSlice = createSlice({
         // Get All Schools Fees Structures
         builder.addCase(getAllSchoolsFeesStructures.fulfilled, (state, action) => {
             state.loading = false;
-            state.fees = action.payload;
+            state.feeStructures = action.payload;
         });
     },
 });

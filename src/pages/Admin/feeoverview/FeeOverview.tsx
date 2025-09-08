@@ -6,7 +6,7 @@ import { FeeOverviewTable } from '../../../components/Admin/feeoverview/FeeOverv
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import {  getMySchoolFeesStructures } from '../../../features/feesSlice';
+import { getMySchoolFeesStructures } from '../../../features/feesSlice';
 
 const FeeOverview: React.FC = () => {
     const [searchStudent, setSearchStudent] = useState('');
@@ -14,24 +14,12 @@ const FeeOverview: React.FC = () => {
     const [selectedSection, setSelectedSection] = useState('');
     const [selectedTerminal, setSelectedTerminal] = useState('');
     const [selectedDateRange, setSelectedDateRange] = useState('');
-    const { fees } = useAppSelector(state => state.fees)
+    const { mySchoolFeeStructures } = useAppSelector(state => state.fees)
     const dispatch = useAppDispatch();
-    const {user} = useAppSelector(state=> state.auth);
 
     useEffect(() => {
-        dispatch(getMySchoolFeesStructures(user.id))
-    })
-
-    const feeData = Array.from({ length: 15 }, (_, i) => ({
-        code: `TIC-001`,
-        id: 1,
-        name: 'Ramesh Poudel',
-        classSection: 'Class 12 Sec A',
-        totalFee: 20000,
-        paidAmount: 20000,
-        dueAmount: 0,
-        status: 'Paid'
-    }));
+        dispatch(getMySchoolFeesStructures())
+    }, [dispatch])
 
     return (
         <div className="flex h-full bg-gray-50">
@@ -58,7 +46,7 @@ const FeeOverview: React.FC = () => {
                             setSelectedDateRange={setSelectedDateRange}
                         />
                         <FeeOverviewStats />
-                        <FeeOverviewTable feeData={feeData} />
+                        <FeeOverviewTable feeData={mySchoolFeeStructures} />
                     </div>
                 </main>
             </div>

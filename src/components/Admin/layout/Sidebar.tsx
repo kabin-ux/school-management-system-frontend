@@ -28,6 +28,7 @@ const sidebarItems: SidebarItem[] = [
   { icon: User, label: "Parents Management", path: "/admin/parent-management" },
   { icon: CalendarClock, label: "Timetable", path: "/admin/timetable-management" },
   { icon: BookOpen, label: "Class Management", path: "/admin/class-management" },
+  { icon: BookOpen, label: "Section Management", path: "/admin/section-management" },
   { icon: Bus, label: "Transportation Management", path: "/admin/transportation-management" },
   { icon: ClipboardList, label: "Attendance Monitoring", path: "/admin/attendance-monitoring" },
   { icon: MessageSquare, label: "Communication", path: "/admin/communication" },

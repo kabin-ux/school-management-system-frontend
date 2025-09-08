@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import api from "../lib/axios";
 
-// ==================== Thunks ====================
+// Thunks
 
 // Get All Teachers
 export const getAllTeachers = createAsyncThunk(
@@ -68,7 +68,7 @@ export const logoutTeacher = createAsyncThunk(
     }
 );
 
-// ==================== Slice ====================
+// Slice
 
 interface TeacherState {
     teachers: any[];

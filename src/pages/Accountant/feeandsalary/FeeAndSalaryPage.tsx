@@ -1,22 +1,35 @@
-import { Download } from 'lucide-react';
+import { Banknote, Download } from 'lucide-react';
 import { useFeeSalary } from '../../../hooks/useFeeSalary';
-import type { Student, Teacher } from '../../../types/fee-salary.types';
+import type { Teacher } from '../../../types/fee-salary.types';
 import { FilterSection } from '../../../components/Accountant/feesandsalary/FilterSection';
 import { StudentDetailView } from '../../../components/Accountant/feesandsalary/StudentDetailView';
 import { DataTable } from '../../../components/Accountant/feesandsalary/DataTable';
 import { AccountantDashboardHeader } from '../../../components/Accountant/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Accountant/layout/Sidebar';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { useEffect } from 'react';
-import { getMySchoolFeesStructures } from '../../../features/feesSlice';
+import { useEffect, useState } from 'react';
+import { addFeesStructure, deleteFeesStructure, getMySchoolFeesStructures, updateFeesStructure } from '../../../features/feesSlice';
+import { getAllClassesBySchool } from '../../../features/classSlice';
+import { getAllTransportation } from '../../../features/transportationSlice';
+import { AddFeeStructureModal, type FeeStructureForm } from '../../../components/Accountant/feesandsalary/AddFeeStructureModal';
+import toast from 'react-hot-toast';
+import EditFeeStructureModal from '../../../components/Accountant/feesandsalary/EditFeeStructureModal';
 
 export default function FeeAndSalaryPage() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [selectedFeeStructure, setSelectedFeeStructure] = useState<FeeStructureForm | null>(null);
+
     const dispatch = useAppDispatch();
-    const {fees} = useAppSelector(state => state.fees)
+    const { mySchoolFeeStructures } = useAppSelector(state => state.fees);
+    const { classes } = useAppSelector(state => state.class);
+    const { items } = useAppSelector(state => state.transportation);
 
     useEffect(() => {
         dispatch(getMySchoolFeesStructures())
-    })
+        dispatch(getAllClassesBySchool())
+        dispatch(getAllTransportation())
+    }, [dispatch])
 
     const {
         activeView,
@@ -39,13 +52,6 @@ export default function FeeAndSalaryPage() {
         setSelectedStudent
     } = useFeeSalary();
 
-    // Mock data - replace with actual API calls
-    const students: Student[] = [
-        { id: 'TC-001', name: 'Ramesh Prasad', class: 'Class 12', date: 'Jan 3,2025', amount: 'Rs 50,000', dueAmount: 'Rs 30,000', status: 'Paid' },
-        { id: 'TC-002', name: 'Ramesh Prasad', class: 'Class 12', date: 'Jan 3,2025', amount: 'Rs 50,000', dueAmount: 'Rs 30,000', status: 'Unpaid' },
-        { id: 'TC-003', name: 'Ramesh Prasad', class: 'Class 12', date: 'Jan 3,2025', amount: 'Rs 50,000', dueAmount: 'Rs 30,000', status: 'Pending' },
-        // ... more students
-    ];
 
     const teachers: Teacher[] = [
         { id: 'TC-001', name: 'Ramesh Prasad', department: 'Science', lastPaid: 'Jan 3,2025', totalSalary: 'Rs 50,000', dueAmount: 'Rs 0', status: 'Paid' },
@@ -58,6 +64,48 @@ export default function FeeAndSalaryPage() {
         // Add payment submission logic
         resetPaymentForm();
     };
+
+
+    const handleEditFeeStructureData = (feeStructure: FeeStructureForm) => {
+        setIsEditModalOpen(true);
+        setSelectedFeeStructure(feeStructure);
+    }
+
+    const handleUpdateFeeStructure = (feeStructureData: any) => {
+        try {
+            dispatch(updateFeesStructure(feeStructureData))
+            toast.success('Fee Structure updated successfully')
+        } catch (error) {
+            toast.error('Error updating Fee Structure')
+            console.error('Error updating Fee Structure', error)
+        }
+    }
+
+    const handleDeleteFeeStructureData = (feeStructureId: string) => {
+        try {
+            dispatch(deleteFeesStructure(feeStructureId))
+            toast.success('Fee Structure removed successfully')
+        } catch (error) {
+            toast.error('Error removing Fee Structure')
+            console.error('Error removing Fee Structure', error)
+        }
+    }
+
+    const handleCreateFeeStructure = async (feeData: FeeStructureForm) => {
+        try {
+            console.log(feeData)
+            const res = await dispatch(addFeesStructure(feeData))
+            if (addFeesStructure.fulfilled.match(res)) {
+                toast.success('Fee Structure added successfully')
+            } else {
+                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to add Fee Structure'
+                toast.error(errorMsg)
+            }
+        } catch (error) {
+            toast.error('Error adding Fee Structure')
+            console.error('Error adding Fee Structure', error)
+        }
+    }
 
     if (selectedStudent) {
         return (
@@ -116,6 +164,12 @@ export default function FeeAndSalaryPage() {
                             <h1 className="text-3xl font-bold text-gray-900">Fee and Salary</h1>
                             <p className="text-gray-600 mt-1">Manage student fees, staff salary, payments, and receipts</p>
                         </div>
+                        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+                            onClick={() => setIsModalOpen(true)}
+                        >
+                            <Banknote className="h-4 w-4 mr-2" />
+                            Create Fee Structure
+                        </button>
                         <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center">
                             <Download className="h-4 w-4 mr-2" />
                             Download report
@@ -131,9 +185,31 @@ export default function FeeAndSalaryPage() {
 
                     <DataTable
                         activeView={activeView}
-                        students={students}
+                        students={mySchoolFeeStructures}
                         teachers={teachers}
-                        onRowClick={handleStudentSelect}
+                        // onRowClick={handleStudentSelect}
+                        onEdit={handleEditFeeStructureData}
+                        onDelete={handleDeleteFeeStructureData}
+                    />
+
+                    <AddFeeStructureModal
+                        isOpen={isModalOpen}
+                        onClose={() => setIsModalOpen(false)}
+                        onSubmit={handleCreateFeeStructure}
+                        classes={classes}
+                        items={items}
+                    />
+
+                    <EditFeeStructureModal
+                        isOpen={isEditModalOpen}
+                        onClose={() => {
+                            setIsEditModalOpen(false);
+                            setSelectedFeeStructure(null);
+                        }}
+                        onSubmit={handleUpdateFeeStructure}
+                        feeStructure={selectedFeeStructure}
+                        classes={classes}
+                        transportOptions={items}
                     />
                 </main>
             </div>

@@ -14,7 +14,7 @@ export default function TransportationGrid({ transportations, onEdit, onDelete }
       {!transportations || transportations.length === 0 ? (
         <div className="flex justify-center items-center">
           <EmptyState
-            title="No Transportations Found"
+            title="No Transportation Found"
             description="There are currently no transportation records. Click the button above to add a new vehicle."
             icon={<Truck className="w-14 h-14 text-gray-400" />}
           />

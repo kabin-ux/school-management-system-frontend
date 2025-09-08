@@ -1,11 +1,18 @@
-export interface Student {
+import type { Transportation } from "./admin-transportation.types";
+import type { Grade } from "./class.types";
+
+export interface FeeStructureAttributes {
   id: string;
-  name: string;
-  class: string;
-  date: string;
-  amount: string;
-  dueAmount: string;
-  status: 'Paid' | 'Unpaid' | 'Pending';
+  class_id: string;
+  monthly_fee: number;
+  exam_fee: number;
+  tution_fee?: number;
+  computer_fee?: number;
+  laboratory_fee?: number;
+  transport_fee?: string;
+  other_fee?: number;
+  class?: Grade[];
+  transportation?: Transportation[];
 }
 
 export interface Teacher {

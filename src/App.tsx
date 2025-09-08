@@ -41,6 +41,7 @@ import UnauthorizedPage from './pages/Unauthorized';
 import { Toaster } from 'react-hot-toast';
 import { SuperAdminsPage } from './pages/SuperAdmin/superadmins/SuperAdminsPage';
 import TransportationManagement from './pages/Admin/transportation/TransportationManagement';
+import SectionManagement from './pages/Admin/section/SectionManagement';
 
 function App() {
     return (
@@ -152,6 +153,11 @@ function App() {
                     <Route path='/admin/class-management' element={
                         <ProtectedRoute allowedRoles={['admin']}>
                             <ClassManagement />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/admin/section-management' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <SectionManagement />
                         </ProtectedRoute>
                     } />
                     <Route path='/admin/transportation-management' element={
