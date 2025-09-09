@@ -11,7 +11,7 @@ export const addParent = createAsyncThunk(
       const res = await api.post("/parent", parentData);
       return res.data.data;
     } catch (err: any) {
-      return thunkAPI.rejectWithValue(err.response?.data || err.message);
+      return thunkAPI.rejectWithValue(err.response?.data.error || err.message);
     }
   }
 );
@@ -24,7 +24,7 @@ export const loginParent = createAsyncThunk(
       const res = await api.post("/parent/login", credentials);
       return res.data.data;
     } catch (err: any) {
-      return thunkAPI.rejectWithValue(err.response?.data || err.message);
+      return thunkAPI.rejectWithValue(err.response?.data.error || err.message);
     }
   }
 );
@@ -37,7 +37,7 @@ export const updateParent = createAsyncThunk(
       const res = await api.put("/parent", updateData);
       return res.data.data;
     } catch (err: any) {
-      return thunkAPI.rejectWithValue(err.response?.data || err.message);
+      return thunkAPI.rejectWithValue(err.response?.data.error || err.message);
     }
   }
 );
@@ -50,7 +50,7 @@ export const getParentDetails = createAsyncThunk(
       const res = await api.get(`/parent/${id}`);
       return res.data.data;
     } catch (err: any) {
-      return thunkAPI.rejectWithValue(err.response?.data || err.message);
+      return thunkAPI.rejectWithValue(err.response?.data.error || err.message);
     }
   }
 );
@@ -63,7 +63,7 @@ export const linkStudentWithParent = createAsyncThunk(
       const res = await api.post("/parent/link-student", payload);
       return { parentId: payload.parentId, studentId: payload.studentId };
     } catch (err: any) {
-      return thunkAPI.rejectWithValue(err.response?.data || err.message);
+      return thunkAPI.rejectWithValue(err.response?.data.error || err.message);
     }
   }
 );

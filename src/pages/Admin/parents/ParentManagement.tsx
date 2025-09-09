@@ -51,10 +51,15 @@ export default function ParentsManagement() {
         setSelectedParent(parent);
     }
 
-    const handleUpdateParent = (parentData: any) => {
+    const handleUpdateParent = async (parentData: any) => {
         try {
-            dispatch(updateParent(parentData))
-            toast.success('Parent updated successfully')
+            const res = await dispatch(updateParent(parentData))
+            if (updateParent.fulfilled.match(res)) {
+                toast.success('Parent updated successfully')
+            } else {
+                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to update parent'
+                toast.error(errorMsg)
+            }
         } catch (error) {
             toast.error('Error updating parent')
             console.error('Error updating parent', error)

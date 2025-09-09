@@ -49,10 +49,14 @@ export default function TeacherManagement() {
         setSelectedTeacher(teacher);
     }
 
-    const handleUpdateTeacher = (teacherData: any) => {
+    const handleUpdateTeacher = async (teacherData: any) => {
         try {
-            dispatch(updateTeacher(teacherData))
-            toast.success('Teacher updated successfully')
+            const res = await dispatch(updateTeacher(teacherData))
+            if (updateTeacher.fulfilled.match(res)) {
+                toast.success('Teacher updated successfully')
+            } else {
+                toast.error('Error updating teacher')
+            }
         } catch (error) {
             toast.error('Error updating teacher')
             console.error('Error updating teacher', error)

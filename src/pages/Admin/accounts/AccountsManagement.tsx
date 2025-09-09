@@ -20,11 +20,15 @@ const AccountantManagement: React.FC = () => {
         dispatch(getAllAccountantBySchool())
     }, [dispatch])
 
-    const handleAddAccountant = (accountantData: any) => {
+    const handleAddAccountant = async (accountantData: any) => {
         try {
             console.log(accountantData)
-            dispatch(addAccountantBySchool(accountantData))
-            toast.success('Accountant added successfully')
+            const res = await dispatch(addAccountantBySchool(accountantData))
+            if (addAccountantBySchool.fulfilled.match(res)) {
+                toast.success('Accountant added successfully')
+            } else {
+                toast.error('Error adding accountant')
+            }
         } catch (error) {
             toast.error('Error adding accountant')
             console.error('Error adding accountant', error)
@@ -36,10 +40,14 @@ const AccountantManagement: React.FC = () => {
         setSelectedAccountant(accountant)
     }
 
-    const handleUpdateAccountant = (accountantData: any) => {
+    const handleUpdateAccountant = async (accountantData: any) => {
         try {
-            dispatch(updateAccountant(accountantData))
-            toast.success('Accountant updated successfully')
+            const res = await dispatch(updateAccountant(accountantData))
+            if (updateAccountant.fulfilled.match(res)) {
+                toast.success('Accountant updated successfully')
+            } else {
+                toast.error('Error adding accountant')
+            }
         } catch (error) {
             toast.error('Error updating accountant')
             console.error('Error updating accountant', error)

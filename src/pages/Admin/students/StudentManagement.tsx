@@ -6,7 +6,7 @@ import StudentTable from '../../../components/Admin/students/StudentTable';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addStudent, deleteStudent,  getStudentsBySchool, updateStudent, type Student } from '../../../features/studentSlice';
+import { addStudent, deleteStudent, getStudentsBySchool, updateStudent, type Student } from '../../../features/studentSlice';
 import toast from 'react-hot-toast';
 import { AddStudentModal } from '../../../components/Admin/students/AddStudentModal';
 import EditStudentModal from '../../../components/Admin/students/EditStudentModal';
@@ -48,10 +48,14 @@ export default function StudentManagement() {
         setSelectedStudent(student)
     }
 
-    const handleUpdateStudent = (updates: Student, id: number) => {
+    const handleUpdateStudent = async (updates: Student, id: number) => {
         try {
-            dispatch(updateStudent({ updates, id }))
-            toast.success('Student details updated successfully')
+            const res = await dispatch(updateStudent({ updates, id }))
+            if (updateStudent.fulfilled.match(res)) {
+                toast.success('Student details updated successfully')
+            } else {
+                toast.error('Error updating student')
+            }
         } catch (error) {
             console.error('Error editing super admin', error)
         }
