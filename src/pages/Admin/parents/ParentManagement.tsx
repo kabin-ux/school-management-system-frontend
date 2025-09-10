@@ -66,10 +66,14 @@ export default function ParentsManagement() {
         }
     }
 
-    const handleDeleteParent = (parentId: number) => {
+    const handleDeleteParent = async (parentId: number) => {
         try {
-            dispatch(deleteParent(parentId))
-            toast.success('Parent removed successfully')
+            const res = await dispatch(deleteParent(parentId))
+            if (deleteParent.fulfilled.match(res)) {
+                toast.success('Parent removed successfully')
+            } else {
+                toast.error('Error removing parent')
+            }
         } catch (error) {
             toast.error('Error removing parent')
             console.error('Error removing parent', error)

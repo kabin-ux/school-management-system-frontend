@@ -61,10 +61,15 @@ export default function StudentManagement() {
         }
     }
 
-    const handleDeleteStudent = (id: any) => {
+    const handleDeleteStudent = async (id: any) => {
         try {
-            dispatch(deleteStudent(id))
-            toast.success('Student removed successfully')
+            const res = await dispatch(deleteStudent(id))
+            if (deleteStudent.fulfilled.match(res)) {
+                toast.success('Student removed successfully')
+            } else {
+                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to remove student'
+                toast.error(errorMsg)
+            }
         } catch (error) {
             console.error('Error removing student', error)
         }

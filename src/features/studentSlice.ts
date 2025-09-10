@@ -92,7 +92,7 @@ export const deleteStudent = createAsyncThunk(
       await api.delete(`/student/${id}`);
       return id; // return deleted student's id to remove from state
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response?.data?.message || "Failed to delete student");
+      return thunkAPI.rejectWithValue(error.response?.data?.error || "Failed to delete student");
     }
   }
 );

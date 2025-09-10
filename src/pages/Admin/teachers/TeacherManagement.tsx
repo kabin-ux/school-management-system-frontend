@@ -63,10 +63,14 @@ export default function TeacherManagement() {
         }
     }
 
-    const handleDeleteTeacher = (teacherId: number) => {
+    const handleDeleteTeacher = async (teacherId: number) => {
         try {
-            dispatch(deleteTeacher(teacherId))
-            toast.success('Teacher removed successfully')
+            const res = dispatch(deleteTeacher(teacherId))
+            if (deleteTeacher.fulfilled.match(res)) {
+                toast.success('Teacher removed successfully')
+            } else {
+                toast.error('Error removing teacher')
+            }
         } catch (error) {
             toast.error('Error removing teacher')
             console.error('Error removing teacher', error)

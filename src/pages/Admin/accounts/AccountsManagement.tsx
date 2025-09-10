@@ -54,10 +54,14 @@ const AccountantManagement: React.FC = () => {
         }
     }
 
-    const handleDeleteAccountant = (id: any) => {
+    const handleDeleteAccountant = async (id: any) => {
         try {
-            dispatch(deleteAccountant(id))
-            toast.success('Accountant removed successfully')
+            const res = await dispatch(deleteAccountant(id))
+            if (deleteAccountant.fulfilled.match(res)) {
+                toast.success('Accountant removed successfully')
+            } else {
+                toast.error('Error deleting accountant')
+            }
         } catch (error) {
             toast.error('Error removing accountant')
             console.error('Error removing accountant', error)
