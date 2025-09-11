@@ -45,7 +45,7 @@ export const deleteClass = createAsyncThunk(
 // Get Class Details
 export const getClassDetails = createAsyncThunk(
     "class/getDetails",
-    async (id: number, { rejectWithValue }) => {
+    async (id: string, { rejectWithValue }) => {
         try {
             const res = await api.get(`/class/${id}`);
             return res.data;

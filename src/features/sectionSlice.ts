@@ -19,7 +19,7 @@ export const createSection = createAsyncThunk(
 // Get All  by Class
 export const getSectionsByClass = createAsyncThunk(
   "section/getByClass",
-  async (classId: number, thunkAPI) => {
+  async (classId: string, thunkAPI) => {
     try {
       const res = await api.get(`/section/class/${classId}`);
       return res.data.data;

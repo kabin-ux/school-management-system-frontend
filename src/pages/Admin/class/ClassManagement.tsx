@@ -6,60 +6,26 @@ import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import toast from 'react-hot-toast';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addClass, getAllClassesBySchool } from '../../../features/classSlice';
+import { addClass, deleteClass, getAllClassesBySchool, updateClass } from '../../../features/classSlice';
 import { AddClassModal } from '../../../components/Admin/class/AddClassModal';
+import { useNavigate } from 'react-router-dom';
+import type { Grade } from '../../../types/class.types';
+import EditClassModal from '../../../components/Admin/class/EditClassModal';
 
 const ClassManagement: React.FC = () => {
     const [expandedGrades, setExpandedGrades] = useState<number[]>([1]);
     const [searchTerm, setSearchTerm] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [selectedClass, setSelectedClass] = useState<Grade | null>(null);
+
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { classes } = useAppSelector(state => state.class)
+    const { classes, classDetails } = useAppSelector(state => state.class)
 
     useEffect(() => {
         dispatch(getAllClassesBySchool())
     }, [dispatch])
-
-
-    // const grades: Grade[] = [
-    //     {
-    //         id: 1,
-    //         name: 'Grade 1',
-    //         sections: ['A', 'B'],
-    //         totalSubjects: 8,
-    //         totalStudents: 45,
-    //         teacher: 'Sarah Johnson',
-    //         subjects: [
-    //             { name: 'English', code: 'ENG101', teacher: 'Sarah Johnson', periods: 6 },
-    //             { name: 'English', code: 'ENG102', teacher: 'Sarah Johnson', periods: 6 },
-    //             { name: 'English', code: 'ENG103', teacher: 'Sarah Johnson', periods: 6 },
-    //             { name: 'English', code: 'ENG201', teacher: 'Sarah Johnson', periods: 6 },
-    //             { name: 'English', code: 'ENG202', teacher: 'Sarah Johnson', periods: 6 },
-    //             { name: 'English', code: 'ENG301', teacher: 'Sarah Johnson', periods: 6 },
-    //         ]
-    //     },
-    //     ...Array.from({ length: 11 }, (_, i) => ({
-    //         id: i + 2,
-    //         name: `Grade ${i + 2}`,
-    //         sections: ['A', 'B'],
-    //         totalSubjects: 8,
-    //         totalStudents: 45,
-    //         teacher: 'Sarah Johnson',
-    //         subjects: []
-    //     }))
-    // ];
-
-    const toggleGrade = (gradeId: number) => {
-        setExpandedGrades(prev =>
-            prev.includes(gradeId)
-                ? prev.filter(id => id !== gradeId)
-                : [...prev, gradeId]
-        );
-    };
-
-    const openModal = () => {
-        setIsModalOpen(true)
-    }
 
     const handleAddClass = async (classData: any) => {
         try {
@@ -75,6 +41,44 @@ const ClassManagement: React.FC = () => {
             console.error('Error adding class', error)
         }
     }
+
+    const handleEditClass = (cls: Grade) => {
+        setIsEditModalOpen(true);
+        setSelectedClass(cls);
+    }
+
+    const handleUpdateClass = async (classData: any) => {
+        try {
+            const res = await dispatch(updateClass(classData))
+            if (updateClass.fulfilled.match(res)) {
+                toast.success('Class updated successfully')
+            } else {
+                toast.error('Error updating class')
+            }
+        } catch (error) {
+            toast.error('Error updating class')
+            console.error('Error updating class', error)
+        }
+    }
+
+     const handleDeleteClass = async (classId: any) => {
+        try {
+            const res = await dispatch(deleteClass(classId))
+            if (deleteClass.fulfilled.match(res)) {
+                toast.success('Class deleted successfully')
+            } else {
+                toast.error('Error deleting class')
+            }
+        } catch (error) {
+            toast.error('Error deleting class')
+            console.error('Error deleting class', error)
+        }
+    }
+
+    const navigateToDetail = (classId: number) => {
+        navigate(`/admin/class-management/details/${classId}`)
+    };
+
     return (
         <div className="flex h-full bg-gray-50">
             {/* Sidebar */}
@@ -90,19 +94,31 @@ const ClassManagement: React.FC = () => {
                         <ClassHeader
                             searchTerm={searchTerm}
                             setSearchTerm={setSearchTerm}
-                            onAdd={openModal}
+                            onAdd={() => setIsModalOpen(true)}
                         />
                         <ClassStats />
                         <ClassTable
                             grades={classes}
                             expandedGrades={expandedGrades}
-                            toggleGrade={toggleGrade}
+                            onNavigate={navigateToDetail}
+                            onEdit={handleEditClass}
+                            onDelete={handleDeleteClass}
                         />
 
                         <AddClassModal
                             isOpen={isModalOpen}
                             onClose={() => setIsModalOpen(false)}
                             onSubmit={handleAddClass}
+                        />
+
+                        <EditClassModal
+                            isOpen={isEditModalOpen}
+                            onClose={() => {
+                                setIsEditModalOpen(false);
+                                setSelectedClass(null);
+                            }}
+                            onSubmit={handleUpdateClass}
+                            cls={selectedClass}
                         />
                     </div>
                 </main>

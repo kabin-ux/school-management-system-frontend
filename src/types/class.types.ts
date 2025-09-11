@@ -6,7 +6,7 @@ export interface Subject {
 }
 
 export interface Grade {
-  id: number;
+  id: string;
   name: string;
   has_section: boolean;
   school_id: string;

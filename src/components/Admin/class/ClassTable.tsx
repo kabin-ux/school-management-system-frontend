@@ -1,16 +1,17 @@
 import React from 'react';
-import { BookUser, ChevronDown, ChevronRight, Eye, Trash2 } from 'lucide-react';
+import { BookUser, ChevronDown, ChevronRight, Edit, Eye, Trash2 } from 'lucide-react';
 import type { Grade } from '../../../types/class.types';
 import EmptyState from '../../../common/EmptyState';
 
 interface ClassTableProps {
   grades: Grade[];
   expandedGrades: number[];
-  toggleGrade: (gradeId: number) => void;
+  onNavigate: (classId: number) => void;
+  onEdit: (cls: Grade) => void;
+  onDelete: (classId: string) => void;
 }
 
-export const ClassTable: React.FC<ClassTableProps> = ({ grades, expandedGrades, toggleGrade }) => {
-  console.log(grades)
+export const ClassTable: React.FC<ClassTableProps> = ({ grades, expandedGrades, onNavigate, onEdit, onDelete }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm">
 
@@ -39,7 +40,8 @@ export const ClassTable: React.FC<ClassTableProps> = ({ grades, expandedGrades, 
               {
                 grades.map((grade) => (
                   <React.Fragment key={grade.id}>
-                    <tr className="hover:bg-gray-50 cursor-pointer">
+                    <tr className="hover:bg-gray-50 cursor-pointer"
+                    >
                       <td className="p-4 border-r border-gray-200">
                         <button
                           // onClick={() => toggleGrade(grade.id)}
@@ -65,16 +67,25 @@ export const ClassTable: React.FC<ClassTableProps> = ({ grades, expandedGrades, 
                       <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.teacher}</td>
                       <td className="p-4">
                         <div className="flex items-center gap-2">
-                          <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600">
+                          <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
+                            onClick={() => onNavigate(grade.id)}
+                          >
                             <Eye className="w-4 h-4" />
                           </button>
-                          <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-red-600">
+                          <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
+                            onClick={() => onEdit(grade)}
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                          <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-red-600"
+                            onClick={() => onDelete(grade.id)}
+                          >
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
                       </td>
                     </tr>
-                    {expandedGrades.includes(grade.id) && grade.subjects.length > 0 && (
+                    {/* {expandedGrades.includes(grade.id) && grade.subjects.length > 0 && (
                       <tr>
                         <td colSpan={6} className="p-4 bg-gray-50 border-t border-gray-200">
                           <div className="ml-6">
@@ -97,7 +108,7 @@ export const ClassTable: React.FC<ClassTableProps> = ({ grades, expandedGrades, 
                           </div>
                         </td>
                       </tr>
-                    )}
+                    )} */}
                   </React.Fragment>
                 ))
               }
