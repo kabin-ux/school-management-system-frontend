@@ -161,6 +161,7 @@ const accountantSlice = createSlice({
     builder.addCase(addAccountantBySchool.fulfilled, (state, action: PayloadAction<any>) => {
       state.loading = false;
       state.accountants.push(action.payload);
+      state.accountantBySchool.push(action.payload);
     });
     builder.addCase(addAccountantBySchool.rejected, (state, action: any) => {
       state.loading = false;

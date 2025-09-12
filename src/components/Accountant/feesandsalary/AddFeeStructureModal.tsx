@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { X } from "lucide-react";
 import type { Grade } from "../../../types/class.types";
 import type { Transportation } from "../../../types/admin-transportation.types";
@@ -140,7 +140,7 @@ export const AddFeeStructureModal: React.FC<FeeStructureModalProps> = ({
                             </label>
                             <select
                                 name="transport_fee"
-                                value={formData.transport_fee}
+                                value={formData.transport_fee ? String(formData.transport_fee) : ""}
                                 onChange={handleInputChange}
                                 className={`w-full border rounded px-3 py-2 ${errors.transport_fee ? "border-red-500" : "border-gray-300"
                                     }`}

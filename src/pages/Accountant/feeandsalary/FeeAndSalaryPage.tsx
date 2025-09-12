@@ -71,20 +71,30 @@ export default function FeeAndSalaryPage() {
         setSelectedFeeStructure(feeStructure);
     }
 
-    const handleUpdateFeeStructure = (feeStructureData: any) => {
+    const handleUpdateFeeStructure = async (feeStructureData: any) => {
         try {
-            dispatch(updateFeesStructure(feeStructureData))
-            toast.success('Fee Structure updated successfully')
+            const res = await dispatch(updateFeesStructure(feeStructureData))
+            if (updateFeesStructure.fulfilled.match(res)) {
+                toast.success('Fee Structure updated successfully')
+            } else {
+                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to update fee structure'
+                toast.error(errorMsg)
+            }
         } catch (error) {
             toast.error('Error updating Fee Structure')
             console.error('Error updating Fee Structure', error)
         }
     }
 
-    const handleDeleteFeeStructureData = (feeStructureId: string) => {
+    const handleDeleteFeeStructureData = async (feeStructureId: string) => {
         try {
-            dispatch(deleteFeesStructure(feeStructureId))
-            toast.success('Fee Structure removed successfully')
+            const res = await dispatch(deleteFeesStructure(feeStructureId))
+            if (deleteFeesStructure.fulfilled.match(res)) {
+                toast.success('Fee Structure removed successfully')
+            } else {
+                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to remove fee structure'
+                toast.error(errorMsg)
+            }
         } catch (error) {
             toast.error('Error removing Fee Structure')
             console.error('Error removing Fee Structure', error)
@@ -98,7 +108,7 @@ export default function FeeAndSalaryPage() {
             if (addFeesStructure.fulfilled.match(res)) {
                 toast.success('Fee Structure added successfully')
             } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to add Fee Structure'
+                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to add fee structure'
                 toast.error(errorMsg)
             }
         } catch (error) {

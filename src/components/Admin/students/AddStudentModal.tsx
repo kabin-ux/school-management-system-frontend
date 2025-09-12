@@ -356,7 +356,7 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   <option value="">Select section</option>
                   {sections.map((section: any) => (
                     <option key={section.id} value={section.id}>
-                      {section.name}
+                      {section.section_name}
                     </option>
                   ))}
                 </select>

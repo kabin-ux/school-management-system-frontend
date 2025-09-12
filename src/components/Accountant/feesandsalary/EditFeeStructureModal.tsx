@@ -118,7 +118,7 @@ const EditFeeStructureModal: React.FC<EditFeeStructureModalProps> = ({
               >
                 <option value="">Select Transport</option>
                 {transportOptions?.map(tr => (
-                  <option key={tr.id} value={tr.id}>{tr.route_name}</option>
+                  <option key={tr.id} value={tr.id}>{tr.driverName}</option>
                 ))}
               </select>
               {errors.transport_fee && <p className="text-xs text-red-500">{errors.transport_fee}</p>}
