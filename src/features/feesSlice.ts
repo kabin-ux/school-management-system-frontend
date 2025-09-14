@@ -124,12 +124,19 @@ const feeStructureSlice = createSlice({
         });
 
         // Update
+        builder.addCase(updateFeesStructure.pending, (state) => {
+            state.loading = true;
+        });
         builder.addCase(updateFeesStructure.fulfilled, (state, action) => {
             state.loading = false;
-            const index = state.feeStructures.findIndex(
+            const index = state.mySchoolFeeStructures.findIndex(
                 (f: any) => f.id === action.payload.id
             );
-            if (index !== -1) state.feeStructures[index] = action.payload;
+            if (index !== -1) state.mySchoolFeeStructures[index] = action.payload;
+        });
+        builder.addCase(updateFeesStructure.rejected, (state, action: any) => {
+            state.loading = false;
+            state.error = action.payload;
         });
 
         // Delete

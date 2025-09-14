@@ -20,6 +20,7 @@ interface FeeStructureModalProps {
     onSubmit: (feeData: FeeStructureForm) => void;
     classes: Grade[];
     items: Transportation[];
+    isLoading: boolean;
 }
 
 export const AddFeeStructureModal: React.FC<FeeStructureModalProps> = ({
@@ -28,6 +29,7 @@ export const AddFeeStructureModal: React.FC<FeeStructureModalProps> = ({
     onSubmit,
     classes,
     items,
+    isLoading
 }) => {
     const [formData, setFormData] = useState<FeeStructureForm>({
         class_id: "",
@@ -79,6 +81,8 @@ export const AddFeeStructureModal: React.FC<FeeStructureModalProps> = ({
     };
 
     const handleSubmit = () => {
+        if (isLoading) return;
+
         if (validateForm()) {
             onSubmit(formData);
             setFormData({
@@ -200,16 +204,25 @@ export const AddFeeStructureModal: React.FC<FeeStructureModalProps> = ({
                     <button
                         type="button"
                         onClick={onClose}
+                        disabled={isLoading}
                         className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
                     >
                         Cancel
                     </button>
                     <button
                         type="button"
+                        disabled={isLoading}
                         onClick={handleSubmit}
                         className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                     >
-                        Save Fee Structure
+                        {isLoading ? (
+                            <>
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                                Saving Fee Structure...
+                            </>
+                        ) : (
+                            'Save Fee Structure'
+                        )}
                     </button>
                 </div>
             </div>

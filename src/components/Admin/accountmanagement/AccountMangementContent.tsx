@@ -90,7 +90,7 @@ export const AccountantManagementContent: React.FC<AccountantManagementContentPr
                       <p className="text-sm text-gray-600">Accountant</p>
                       <p className="text-xs text-gray-500">{acct.email}</p>
                       <p className="text-xs text-gray-500">
-                        Last modified: {acct?.lastModified}
+                        Last modified: {acct?.updatedAt ? new Date(acct.updatedAt).toLocaleString() : "N/A"}
                       </p>
                     </div>
                   </div>
@@ -169,14 +169,14 @@ export const AccountantManagementContent: React.FC<AccountantManagementContentPr
                     </div>
                   ))}
 
-                  <div className="flex gap-2 pt-4">
+                  {/* <div className="flex gap-2 pt-4">
                     <button className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">
                       Restore Default
                     </button>
                     <button className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                       Save changes
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))}

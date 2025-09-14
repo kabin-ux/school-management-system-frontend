@@ -21,7 +21,7 @@ const EditFeeStructureModal: React.FC<EditFeeStructureModalProps> = ({
   feeStructure,
   classes,
   transportOptions,
-  isLoading = false,
+  isLoading,
 }) => {
   const [formData, setFormData] = useState<FeeStructureAttributes>({
     id: '',
@@ -48,16 +48,29 @@ const EditFeeStructureModal: React.FC<EditFeeStructureModalProps> = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: name.includes('fee') ? Number(value) : value,
-    }));
 
-    // Clear error on change
+    setFormData((prev) => {
+      if (
+        [
+          "monthly_fee",
+          "exam_fee",
+          "tution_fee",
+          "computer_fee",
+          "laboratory_fee",
+          "other_fee",
+        ].includes(name)
+      ) {
+        return { ...prev, [name]: value === "" ? 0 : Number(value) }; // force number
+      }
+
+      return { ...prev, [name]: value };
+    });
+
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
+
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -70,11 +83,25 @@ const EditFeeStructureModal: React.FC<EditFeeStructureModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     if (validateForm() && feeStructure) {
-      onSubmit(formData);
+      // Coerce numeric fields to numbers before sending
+      const payload: FeeStructureAttributes = {
+        ...formData,
+        monthly_fee: Number(formData.monthly_fee),
+        exam_fee: Number(formData.exam_fee),
+        tution_fee: Number(formData.tution_fee),
+        computer_fee: Number(formData.computer_fee),
+        laboratory_fee: Number(formData.laboratory_fee),
+        other_fee: Number(formData.other_fee),
+        transport_fee: formData.transport_fee, // if backend expects id keep as string, else convert to number
+      };
+
+      onSubmit(payload);
       onClose();
     }
   };
+
 
   if (!isOpen) return null;
 
@@ -125,9 +152,9 @@ const EditFeeStructureModal: React.FC<EditFeeStructureModalProps> = ({
             </div>
 
             {/* Fees */}
-            {['monthly_fee','exam_fee','tution_fee','computer_fee','laboratory_fee','other_fee'].map(fee => (
+            {['monthly_fee', 'exam_fee', 'tution_fee', 'computer_fee', 'laboratory_fee', 'other_fee'].map(fee => (
               <div key={fee}>
-                <label className="block text-sm font-medium">{fee.replace('_',' ').toUpperCase()}</label>
+                <label className="block text-sm font-medium">{fee.replace('_', ' ').toUpperCase()}</label>
                 <input
                   type="number"
                   name={fee}

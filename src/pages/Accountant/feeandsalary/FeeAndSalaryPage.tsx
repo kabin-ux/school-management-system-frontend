@@ -21,7 +21,7 @@ export default function FeeAndSalaryPage() {
     const [selectedFeeStructure, setSelectedFeeStructure] = useState<FeeStructureForm | null>(null);
 
     const dispatch = useAppDispatch();
-    const { mySchoolFeeStructures } = useAppSelector(state => state.fees);
+    const { mySchoolFeeStructures, loading } = useAppSelector(state => state.fees);
     const { classes } = useAppSelector(state => state.class);
     const { items } = useAppSelector(state => state.transportation);
 
@@ -207,6 +207,7 @@ export default function FeeAndSalaryPage() {
                         onSubmit={handleCreateFeeStructure}
                         classes={classes}
                         items={items}
+                        isLoading={loading}
                     />
 
                     <EditFeeStructureModal
@@ -219,6 +220,7 @@ export default function FeeAndSalaryPage() {
                         feeStructure={selectedFeeStructure}
                         classes={classes}
                         transportOptions={items}
+                        isLoading={loading}
                     />
                 </main>
             </div>
