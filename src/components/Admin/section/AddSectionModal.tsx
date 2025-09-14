@@ -8,7 +8,7 @@ interface SectionForm {
 
 export interface Section {
     id: string;
-    name: string;
+    section_name: string;
     class_id: string;
     createdAt?: Date;
     updatedAt?: Date;

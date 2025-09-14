@@ -35,7 +35,7 @@ const AddParentModal: React.FC<AddParentModalProps> = ({
         relation: '',
         occupation: '',
         address: '',
-        student_id: '', 
+        student_id: '',
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -112,6 +112,8 @@ const AddParentModal: React.FC<AddParentModalProps> = ({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if (isLoading) return;
+
 
         // Mark all fields as touched
         const allFields = Object.keys(formData);
@@ -119,7 +121,16 @@ const AddParentModal: React.FC<AddParentModalProps> = ({
 
         if (validateForm()) {
             onSubmit(formData);
-            onClose();
+
+            setFormData({
+                name: '',
+                email: '',
+                phone: '',
+                relation: '',
+                occupation: '',
+                address: '',
+                student_id: '',
+            });
         }
     };
 

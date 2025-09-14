@@ -23,7 +23,7 @@ export default function ParentsManagement() {
     const [selectedParent, setSelectedParent] = useState<Parent | null>(null);
 
     const dispatch = useAppDispatch();
-    const { parents } = useAppSelector(state => state.parent)
+    const { parents, loading } = useAppSelector(state => state.parent)
     const { students } = useAppSelector(state => state.student)
 
     useEffect(() => {
@@ -36,6 +36,7 @@ export default function ParentsManagement() {
             const res = await dispatch(addParent(parentData))
             if (addParent.fulfilled.match(res)) {
                 toast.success('Parent added successfully')
+                setIsModalOpen(false)
             } else {
                 const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to add parent'
                 toast.error(errorMsg)
@@ -131,7 +132,7 @@ export default function ParentsManagement() {
                             isOpen={isModalOpen}
                             onClose={() => setIsModalOpen(false)}
                             onSubmit={handleAddParent}
-                            isLoading={false}
+                            isLoading={loading}
                             students={students}
                         />
 

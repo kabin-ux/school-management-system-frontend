@@ -18,7 +18,7 @@ export default function TransportationManagement() {
     const [selectedStatus, setSelectedStatus] = useState("All");
 
     const dispatch = useAppDispatch();
-    const { items } = useAppSelector((state) => state.transportation)
+    const { items, loading } = useAppSelector((state) => state.transportation)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedTransportation, setSelectedTransportation] = useState<Transportation | null>(null);
@@ -45,6 +45,7 @@ export default function TransportationManagement() {
             const res = await dispatch(createTransportation(transportationData))
             if (createTransportation.fulfilled.match(res)) {
                 toast.success('Transportation added successfully')
+                setIsModalOpen(false)
             } else {
                 const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to add Transportation'
                 toast.error(errorMsg)
@@ -127,7 +128,7 @@ export default function TransportationManagement() {
                             isOpen={isModalOpen}
                             onClose={() => setIsModalOpen(false)}
                             onSubmit={handleAddTransportation}
-                            isLoading={false}
+                            isLoading={loading}
                         />
 
                         <EditTransportationModal

@@ -12,7 +12,7 @@ import toast from 'react-hot-toast';
 export const PartnerSchools: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { schools } = useAppSelector((state) => state.school)
+  const { schools, loading } = useAppSelector((state) => state.school)
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -29,6 +29,7 @@ export const PartnerSchools: React.FC = () => {
       const res = await dispatch(addSchoolBySuperAdmin(schoolData))
       if (addSchoolBySuperAdmin.fulfilled.match(res)) {
         toast.success('School added successfully')
+        setIsModalOpen(false)
       } else {
         const errorMessage = typeof res.payload === "string" ? res.payload : 'Error adding super admin'
         toast.error(errorMessage);
@@ -71,6 +72,7 @@ export const PartnerSchools: React.FC = () => {
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
               onSubmit={handleAddSchool}
+              isLoading={loading}
             />
           </div>
         </div>

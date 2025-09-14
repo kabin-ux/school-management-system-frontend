@@ -102,20 +102,44 @@ const teacherSlice = createSlice({
         });
 
         // Add
+        builder.addCase(addTeacher.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
         builder.addCase(addTeacher.fulfilled, (state, action: PayloadAction<any>) => {
             state.teachers.push(action.payload?.data);
         });
+        builder.addCase(addTeacher.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
+        });
 
         // Update
+        builder.addCase(updateTeacher.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
         builder.addCase(updateTeacher.fulfilled, (state, action: PayloadAction<any>) => {
             state.teachers = state.teachers.map((t) =>
                 t.id === action.payload?.data.id ? action.payload?.data : t
             );
         });
+        builder.addCase(updateTeacher.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
+        });
 
         // Delete
+        builder.addCase(deleteTeacher.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
         builder.addCase(deleteTeacher.fulfilled, (state, action: PayloadAction<any>) => {
             state.teachers = state.teachers.filter((t) => t.id !== action.payload);
+        });
+        builder.addCase(deleteTeacher.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
         });
 
         // Logout

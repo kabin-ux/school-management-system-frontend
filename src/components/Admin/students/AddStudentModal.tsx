@@ -4,14 +4,6 @@ import type { Grade } from "../../../types/class.types";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { getSectionsByClass } from "../../../features/sectionSlice";
 
-// interface Parent {
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   phoneNumber: string;
-//   relation: string;
-// }
-
 interface StudentForm {
   firstName: string;
   lastName: string;
@@ -22,21 +14,22 @@ interface StudentForm {
   gender: string;
   dateOfBirth: string;
   address: string;
-  // parents: Parent[];
 }
 
 interface StudentModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (studentData: StudentForm) => void;
-  classes: Grade[]
+  classes: Grade[];
+  loading: boolean;
 }
 
 export const AddStudentModal: React.FC<StudentModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
-  classes
+  classes,
+  loading
 }) => {
   const [formData, setFormData] = useState<StudentForm>({
     firstName: "",
@@ -48,16 +41,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
     gender: "",
     dateOfBirth: "",
     address: "",
-    // parents: [
-    //   {
-    //     firstName: "",
-    //     lastName: "",
-    //     email: "",
-    //     phoneNumber: "",
-    //     relation: "Father",
-    //   },
-    // ],
   });
+  
   const { sections } = useAppSelector(state => state.section)
   const dispatch = useAppDispatch();
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -72,11 +57,12 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
     }
   }, [formData.class_id, classes, dispatch]);
 
-  console.log("Sections", sections)
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
+    // Prevent input changes during loading
+    if (loading) return;
+    
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -91,67 +77,6 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
       }));
     }
   };
-
-  // const handleParentChange = (
-  //   index: number,
-  //   field: keyof Parent,
-  //   value: string
-  // ) => {
-  //   const updatedParents = [...formData.parents];
-  //   updatedParents[index] = {
-  //     ...updatedParents[index],
-  //     [field]: value,
-  //   };
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     parents: updatedParents,
-  //   }));
-
-  //   // Clear error if exists
-  //   const errorKey =
-  //     field === "firstName"
-  //       ? `parent${index}FirstName`
-  //       : field === "lastName"
-  //         ? `parent${index}LastName`
-  //         : field === "phoneNumber"
-  //           ? `parent${index}PhoneNumber`
-  //           : field === "email"
-  //             ? `parent${index}Email`
-  //             : null;
-
-  //   if (errorKey && errors[errorKey]) {
-  //     setErrors((prev) => ({
-  //       ...prev,
-  //       [errorKey]: "",
-  //     }));
-  //   }
-  // };
-
-  // const addParent = () => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     parents: [
-  //       ...prev.parents,
-  //       {
-  //         firstName: "",
-  //         lastName: "",
-  //         email: "",
-  //         phoneNumber: "",
-  //         relation: "Mother",
-  //       },
-  //     ],
-  //   }));
-  // };
-
-  // const removeParent = (index: number) => {
-  //   if (formData.parents.length > 1) {
-  //     const updatedParents = formData.parents.filter((_, i) => i !== index);
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       parents: updatedParents,
-  //     }));
-  //   }
-  // };
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -176,32 +101,17 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
       newErrors.email = "Please enter a valid email address";
     }
 
-    // formData.parents.forEach((parent, index) => {
-    //   if (!parent.firstName.trim()) {
-    //     newErrors[`parent${index}FirstName`] = "Parent first name is required";
-    //   }
-    //   if (!parent.lastName.trim()) {
-    //     newErrors[`parent${index}LastName`] = "Parent last name is required";
-    //   }
-    //   if (!parent.phoneNumber.trim()) {
-    //     newErrors[`parent${index}PhoneNumber`] =
-    //       "Parent phone number is required";
-    //   }
-    //   if (parent.email && !emailRegex.test(parent.email)) {
-    //     newErrors[`parent${index}Email`] =
-    //       "Please enter a valid parent email address";
-    //   }
-    // });
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = () => {
-    console.log(formData)
+    // Prevent multiple submissions
+    if (loading) return;
+    
     if (validateForm()) {
       onSubmit(formData);
-      // Reset form
+      // Reset form only on successful validation
       setFormData({
         firstName: "",
         lastName: "",
@@ -212,19 +122,15 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
         gender: "",
         dateOfBirth: "",
         address: "",
-        // parents: [
-        //   {
-        //     firstName: "",
-        //     lastName: "",
-        //     email: "",
-        //     phoneNumber: "",
-        //     relation: "Father",
-        //   },
-        // ],
       });
       setErrors({});
-      onClose();
     }
+  };
+
+  // Handle modal close - prevent closing during loading
+  const handleClose = () => {
+    if (loading) return;
+    onClose();
   };
 
   if (!isOpen) return null;
@@ -236,10 +142,15 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
         <div className="flex justify-between items-center p-6 border-b border-gray-200">
           <h2 className="text-2xl font-bold text-gray-900">Add New Student</h2>
           <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            onClick={handleClose}
+            disabled={loading}
+            className={`p-2 rounded-full transition-colors ${
+              loading 
+                ? 'text-gray-400 cursor-not-allowed' 
+                : 'text-gray-500 hover:bg-gray-100'
+            }`}
           >
-            <X className="w-6 h-6 text-gray-500" />
+            <X className="w-6 h-6" />
           </button>
         </div>
 
@@ -258,8 +169,10 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.firstName ? 'border-red-500' : 'border-gray-300'
-                    }`}
+                  disabled={loading}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    errors.firstName ? 'border-red-500' : 'border-gray-300'
+                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                   placeholder="Enter first name"
                 />
                 {errors.firstName && <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>}
@@ -274,8 +187,10 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.lastName ? 'border-red-500' : 'border-gray-300'
-                    }`}
+                  disabled={loading}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    errors.lastName ? 'border-red-500' : 'border-gray-300'
+                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                   placeholder="Enter last name"
                 />
                 {errors.lastName && <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>}
@@ -292,8 +207,10 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? 'border-red-500' : 'border-gray-300'
-                    }`}
+                  disabled={loading}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    errors.email ? 'border-red-500' : 'border-gray-300'
+                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                   placeholder="Enter email address"
                 />
                 {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
@@ -307,8 +224,10 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   name="gender"
                   value={formData.gender}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.gender ? 'border-red-500' : 'border-gray-300'
-                    }`}
+                  disabled={loading}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    errors.gender ? 'border-red-500' : 'border-gray-300'
+                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                 >
                   <option value="">Select gender</option>
                   <option value="male">Male</option>
@@ -328,8 +247,10 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   name="class_id"
                   value={formData.class_id}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.class ? 'border-red-500' : 'border-gray-300'
-                    }`}
+                  disabled={loading}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    errors.class ? 'border-red-500' : 'border-gray-300'
+                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                 >
                   <option value="">Select class</option>
                   {classes.map((cls) => (
@@ -349,9 +270,10 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   name="section_id"
                   value={formData.section_id}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.section ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                  disabled={!formData.class_id}
+                  disabled={loading || !formData.class_id}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    errors.section ? 'border-red-500' : 'border-gray-300'
+                  } ${(loading || !formData.class_id) ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                 >
                   <option value="">Select section</option>
                   {sections.map((section: any) => (
@@ -372,8 +294,10 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   name="rollNumber"
                   value={formData.rollNumber}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.rollNumber ? 'border-red-500' : 'border-gray-300'
-                    }`}
+                  disabled={loading}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    errors.rollNumber ? 'border-red-500' : 'border-gray-300'
+                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                   placeholder="Enter roll number"
                 />
                 {errors.rollNumber && <p className="mt-1 text-sm text-red-600">{errors.rollNumber}</p>}
@@ -390,8 +314,10 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   name="dateOfBirth"
                   value={formData.dateOfBirth}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
-                    }`}
+                  disabled={loading}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
+                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                 />
                 {errors.dateOfBirth && <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth}</p>}
               </div>
@@ -404,9 +330,11 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   name="address"
                   value={formData.address}
                   onChange={handleInputChange}
+                  disabled={loading}
                   rows={2}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${errors.address ? 'border-red-500' : 'border-gray-300'
-                    }`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
+                    errors.address ? 'border-red-500' : 'border-gray-300'
+                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                   placeholder="Enter address"
                 />
                 {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address}</p>}
@@ -414,145 +342,31 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
             </div>
           </div>
 
-          {/* Parent Information */}
-          {/* <div className="mb-6">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Parent Information</h3>
-              <button
-                type="button"
-                onClick={addParent}
-                className="flex items-center px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
-              >
-                <Plus className="w-4 h-4 mr-1" />
-                Add Parent
-              </button>
-            </div>
-
-            {formData.parents.map((parent, index) => (
-              <div key={index} className="border border-gray-200 rounded-lg p-4 mb-4 bg-gray-50">
-                <div className="flex justify-between items-center mb-3">
-                  <h4 className="font-medium text-gray-800">Parent {index + 1}</h4>
-                  {formData.parents.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeParent(index)}
-                      className="p-1 text-red-600 hover:bg-red-100 rounded transition-colors"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      First Name *
-                    </label>
-                    <input
-                      type="text"
-                      value={parent.firstName}
-                      onChange={(e) => handleParentChange(index, 'firstName', e.target.value)}
-                      className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                        errors[`parent${index}FirstName`] ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      placeholder="Enter first name"
-                    />
-                    {errors[`parent${index}FirstName`] && (
-                      <p className="mt-1 text-sm text-red-600">{errors[`parent${index}FirstName`]}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Last Name *
-                    </label>
-                    <input
-                      type="text"
-                      value={parent.lastName}
-                      onChange={(e) => handleParentChange(index, 'lastName', e.target.value)}
-                      className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                        errors[`parent${index}LastName`] ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      placeholder="Enter last name"
-                    />
-                    {errors[`parent${index}LastName`] && (
-                      <p className="mt-1 text-sm text-red-600">{errors[`parent${index}LastName`]}</p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      value={parent.email}
-                      onChange={(e) => handleParentChange(index, 'email', e.target.value)}
-                      className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                        errors[`parent${index}Email`] ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      placeholder="Enter email"
-                    />
-                    {errors[`parent${index}Email`] && (
-                      <p className="mt-1 text-sm text-red-600">{errors[`parent${index}Email`]}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Phone Number *
-                    </label>
-                    <input
-                      type="tel"
-                      value={parent.phoneNumber}
-                      onChange={(e) => handleParentChange(index, 'phoneNumber', e.target.value)}
-                      className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                        errors[`parent${index}PhoneNumber`] ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      placeholder="Enter phone number"
-                    />
-                    {errors[`parent${index}PhoneNumber`] && (
-                      <p className="mt-1 text-sm text-red-600">{errors[`parent${index}PhoneNumber`]}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Relation
-                    </label>
-                    <select
-                      value={parent.relation}
-                      onChange={(e) => handleParentChange(index, 'relation', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="Father">Father</option>
-                      <option value="Mother">Mother</option>
-                      <option value="Guardian">Guardian</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div> */}
-
           {/* Action Buttons */}
           <div className="flex justify-end space-x-4 pt-4 border-t border-gray-200">
             <button
               type="button"
-              onClick={onClose}
-              className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+              onClick={handleClose}
+              disabled={loading}
+              className={`px-6 py-2 border border-gray-300 rounded-md transition-colors ${
+                loading 
+                  ? 'text-gray-400 border-gray-200 cursor-not-allowed bg-gray-50'
+                  : 'text-gray-700 hover:bg-gray-50'
+              }`}
             >
               Cancel
             </button>
             <button
               type="button"
+              disabled={loading}
               onClick={handleSubmit}
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              className={`px-6 py-2 rounded-md transition-colors ${
+                loading
+                  ? 'bg-blue-400 cursor-not-allowed text-white'
+                  : 'bg-blue-600 text-white hover:bg-blue-700'
+              }`}
             >
-              Add Student
+              {loading ? "Adding..." : "Add Student"}
             </button>
           </div>
         </div>

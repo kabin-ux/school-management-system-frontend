@@ -24,7 +24,7 @@ export interface SchoolData {
     totalStudents?: number;
     totalTeachers?: number;
     totalParents?: number;
-    subscription?:string;
+    subscription?: string;
     payment?: string;
     has_transport: boolean;
     established_year: string | number;
@@ -40,12 +40,14 @@ interface AddSchoolModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSubmit: (data: SchoolData) => void;
+    isLoading: boolean;
 }
 
 export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
     isOpen,
     onClose,
     onSubmit,
+    isLoading
 }) => {
     const [formData, setFormData] = useState<SchoolData>({
         name: "",
@@ -140,7 +142,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
     };
 
     const handleSubmit = () => {
-        console.log("Submit clicked");  // Debug
+        if (isLoading) return;
 
         if (!validateForm()) return;
 
@@ -153,10 +155,35 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
             student_capacity: Number(formData.student_capacity) || "",
             school_code: Number(formData.school_code) || "",
         };
-        console.log(payload)
 
         onSubmit(payload);
-        onClose();
+        setFormData({
+            name: "",
+            address: "",
+            district: "",
+            city: "",
+            state: "",
+            postal_code: "",
+            latitude: "",
+            longitude: "",
+            phone: "",
+            email: "",
+            password: "",
+            image: "",
+            verified: false,
+            principal_name: "",
+            principal_contact: "",
+            contact: "",
+            school_type: "public",
+            has_transport: false,
+            established_year: "",
+            student_capacity: "",
+            school_code: "",
+            details: "",
+            grade_range: "",
+            has_hostel: false,
+            school_logo: "",
+        });
     };
 
     if (!isOpen) return null;
@@ -567,6 +594,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                     <div className="flex justify-end space-x-4 p-6 border-t border-gray-200 bg-gray-50">
                         <button
                             type="button"
+                            disabled={isLoading}
                             onClick={onClose}
                             className="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                         >
@@ -574,10 +602,18 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                         </button>
                         <button
                             type="button"
+                            disabled={isLoading}
                             onClick={handleSubmit}
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                         >
-                            Add School
+                            {isLoading ? (
+                                <>
+                                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                                    Adding School...
+                                </>
+                            ) : (
+                                'Add School'
+                            )}
                         </button>
                     </div>
                 </div>

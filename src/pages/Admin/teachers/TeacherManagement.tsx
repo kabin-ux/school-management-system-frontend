@@ -19,7 +19,7 @@ export default function TeacherManagement() {
     const [selectedDepartment, setSelectedDepartment] = useState('All Departments');
 
     const dispatch = useAppDispatch();
-    const { teachers } = useAppSelector((state) => state.teacher)
+    const { teachers, loading } = useAppSelector((state) => state.teacher)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
@@ -34,6 +34,7 @@ export default function TeacherManagement() {
             const res = await dispatch(addTeacher(teacherData))
             if (addTeacher.fulfilled.match(res)) {
                 toast.success('Teacher added successfully')
+                setIsModalOpen(false)
             } else {
                 const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to add teacher'
                 toast.error(errorMsg)
@@ -130,7 +131,7 @@ export default function TeacherManagement() {
                             onSubmit={handleAddTeacher}
                             // classes={classes}
                             // subjects={subjects}
-                            isLoading={false}
+                            isLoading={loading}
                         />
 
                         <EditTeacherModal

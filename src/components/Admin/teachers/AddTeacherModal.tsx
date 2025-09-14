@@ -41,9 +41,9 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
+  isLoading
   // classes,
   // subjects,
-  isLoading = false
 }) => {
   const [formData, setFormData] = useState<Omit<Teacher, 'id'>>({
     firstName: '',
@@ -152,13 +152,6 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
       }
     });
 
-    // if (formData.classIds.length === 0) {
-    //   newErrors.classIds = 'Please select at least one class';
-    // }
-    // if (formData.subjectIds.length === 0) {
-    //   newErrors.subjectIds = 'Please select at least one subject';
-    // }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -166,13 +159,28 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (isLoading) return;
+
     // Mark all fields as touched
     const allFields = Object.keys(formData);
     setTouched(allFields.reduce((acc, field) => ({ ...acc, [field]: true }), {}));
 
     if (validateForm()) {
       onSubmit(formData);
-      onClose()
+
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        dateOfBirth: '',
+        gender: 'Male',
+        address: '',
+        hireDate: '',
+        qualification: '',
+        classIds: [],
+        subjectIds: []
+      });
     }
   };
 

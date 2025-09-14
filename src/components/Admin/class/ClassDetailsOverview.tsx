@@ -30,7 +30,7 @@ export default function ClassSections({ sections, onEdit, onDelete }: ClassSecti
                                 {/* Header Info */}
                                 <div className="flex flex-col items-center text-center mb-4">
                                     <Layers className="w-12 h-12 text-blue-500 mb-3" />
-                                    <h3 className="font-semibold text-gray-900">Section {section.name}</h3>
+                                    <h3 className="font-semibold text-gray-900">Section {section.section_name}</h3>
                                     {/* <p className="text-sm text-gray-500 mb-2">Class : {section.class_id}</p> */}
                                 </div>
 

@@ -1,4 +1,4 @@
-import { Banknote, Download } from 'lucide-react';
+import { Banknote } from 'lucide-react';
 import { useFeeSalary } from '../../../hooks/useFeeSalary';
 import type { Teacher } from '../../../types/fee-salary.types';
 import { FilterSection } from '../../../components/Accountant/feesandsalary/FilterSection';
@@ -41,7 +41,6 @@ export default function FeeAndSalaryPage() {
         feeCategory,
         additionalNotes,
         handleViewChange,
-        handleStudentSelect,
         handleTabChange,
         handleFilterChange,
         setPaymentAmount,

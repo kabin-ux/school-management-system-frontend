@@ -1,17 +1,16 @@
 import React from 'react';
-import { BookUser, ChevronDown, ChevronRight, Edit, Eye, Trash2 } from 'lucide-react';
+import { BookUser, Edit, Eye, Trash2 } from 'lucide-react';
 import type { Grade } from '../../../types/class.types';
 import EmptyState from '../../../common/EmptyState';
 
 interface ClassTableProps {
   grades: Grade[];
-  expandedGrades: number[];
   onNavigate: (classId: number) => void;
   onEdit: (cls: Grade) => void;
   onDelete: (classId: string) => void;
 }
 
-export const ClassTable: React.FC<ClassTableProps> = ({ grades, expandedGrades, onNavigate, onEdit, onDelete }) => {
+export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigate, onEdit, onDelete }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm">
 

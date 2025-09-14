@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import api from "../lib/axios";
 
 // Async Thunks
@@ -114,9 +114,9 @@ const feeStructureSlice = createSlice({
         builder.addCase(addFeesStructure.pending, (state) => {
             state.loading = true;
         });
-        builder.addCase(addFeesStructure.fulfilled, (state, action) => {
+        builder.addCase(addFeesStructure.fulfilled, (state, action: PayloadAction<FeeStructureState>) => {
             state.loading = false;
-            state.feeStructures.unshift(action.payload);
+            state.mySchoolFeeStructures.push(action.payload);
         });
         builder.addCase(addFeesStructure.rejected, (state, action: any) => {
             state.loading = false;

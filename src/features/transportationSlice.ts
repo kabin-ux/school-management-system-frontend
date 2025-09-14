@@ -128,6 +128,7 @@ const transportationSlice = createSlice({
     // Create
     builder.addCase(createTransportation.pending, (state) => {
       state.loading = true;
+      state.error = null;
     });
     builder.addCase(createTransportation.fulfilled, (state, action) => {
       state.loading = false;

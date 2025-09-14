@@ -13,7 +13,6 @@ import type { Grade } from '../../../types/class.types';
 import EditClassModal from '../../../components/Admin/class/EditClassModal';
 
 const ClassManagement: React.FC = () => {
-    const [expandedGrades, setExpandedGrades] = useState<number[]>([1]);
     const [searchTerm, setSearchTerm] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -21,7 +20,7 @@ const ClassManagement: React.FC = () => {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { classes, classDetails } = useAppSelector(state => state.class)
+    const { classes, loading } = useAppSelector(state => state.class)
 
     useEffect(() => {
         dispatch(getAllClassesBySchool())
@@ -32,6 +31,7 @@ const ClassManagement: React.FC = () => {
             const res = await dispatch(addClass(classData))
             if (addClass.fulfilled.match(res)) {
                 toast.success('Class added successfully')
+                setIsModalOpen(false)
             } else {
                 const errorMessage = typeof res.payload === "string" ? res.payload : 'Error adding class'
                 toast.error(errorMessage);;
@@ -61,7 +61,7 @@ const ClassManagement: React.FC = () => {
         }
     }
 
-     const handleDeleteClass = async (classId: any) => {
+    const handleDeleteClass = async (classId: any) => {
         try {
             const res = await dispatch(deleteClass(classId))
             if (deleteClass.fulfilled.match(res)) {
@@ -99,7 +99,6 @@ const ClassManagement: React.FC = () => {
                         <ClassStats />
                         <ClassTable
                             grades={classes}
-                            expandedGrades={expandedGrades}
                             onNavigate={navigateToDetail}
                             onEdit={handleEditClass}
                             onDelete={handleDeleteClass}
@@ -109,6 +108,7 @@ const ClassManagement: React.FC = () => {
                             isOpen={isModalOpen}
                             onClose={() => setIsModalOpen(false)}
                             onSubmit={handleAddClass}
+                            isLoading={loading}
                         />
 
                         <EditClassModal

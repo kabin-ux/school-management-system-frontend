@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X,  Phone, Hash, DollarSign, MapPin, Car, CheckCircle } from 'lucide-react';
+import { X, Phone, Hash, DollarSign, MapPin, Car, CheckCircle } from 'lucide-react';
 import type { Transportation } from '../../../types/admin-transportation.types';
 
 interface AddTransportationModalProps {
@@ -13,7 +13,7 @@ const AddTransportationModal: React.FC<AddTransportationModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
-  isLoading = false
+  isLoading
 }) => {
   const [formData, setFormData] = useState<Omit<Transportation, 'id'>>({
     vehicleNumber: '',
@@ -100,12 +100,23 @@ const AddTransportationModal: React.FC<AddTransportationModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLoading) return;
+
 
     setTouched(Object.keys(formData).reduce((acc, field) => ({ ...acc, [field]: true }), {}));
 
     if (validateForm()) {
-      onSubmit(formData); // ✅ correct payload
-      onClose();
+      onSubmit(formData);
+
+      setFormData({
+        vehicleNumber: '',
+        driverName: '',
+        driverPhone: '',
+        last_location: '',
+        capacity: 0,
+        price: 0,
+        status: 'active',
+      });
     }
   };
 

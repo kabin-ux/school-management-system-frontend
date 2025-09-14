@@ -13,7 +13,7 @@ interface Accountant {
   district: string;
   city: string;
   state: string;
-  postal_code: string ;
+  postal_code: string;
 }
 
 interface AddAccountantModalProps {
@@ -27,7 +27,7 @@ const AddAccountantModal: React.FC<AddAccountantModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
-  isLoading = false,
+  isLoading,
 }) => {
   const [formData, setFormData] = useState<Omit<Accountant, 'id'>>({
     firstName: '',
@@ -133,11 +133,28 @@ const AddAccountantModal: React.FC<AddAccountantModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (isLoading) return;
+
     const allFields = Object.keys(formData);
     setTouched(allFields.reduce((acc, f) => ({ ...acc, [f]: true }), {}));
+
     if (validateForm()) {
       onSubmit(formData);
-      onClose();
+
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        phone: '',
+        dateOfBirth: '',
+        address: '',
+        district: '',
+        city: '',
+        state: '',
+        postal_code: '',
+      });
     }
   };
 
@@ -178,9 +195,8 @@ const AddAccountantModal: React.FC<AddAccountantModalProps> = ({
                 value={formData.firstName}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.firstName ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.firstName ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {errors.firstName && (
                 <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>
@@ -198,9 +214,8 @@ const AddAccountantModal: React.FC<AddAccountantModalProps> = ({
                 value={formData.lastName}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.lastName ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.lastName ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {errors.lastName && (
                 <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
@@ -219,9 +234,8 @@ const AddAccountantModal: React.FC<AddAccountantModalProps> = ({
                 value={formData.email}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.email ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {errors.email && (
                 <p className="text-red-500 text-xs mt-1">{errors.email}</p>
@@ -240,9 +254,8 @@ const AddAccountantModal: React.FC<AddAccountantModalProps> = ({
                 value={formData.phone}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.phone ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.phone ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {errors.phone && (
                 <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
@@ -260,9 +273,8 @@ const AddAccountantModal: React.FC<AddAccountantModalProps> = ({
                 value={formData.password}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.password ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {errors.password && (
                 <p className="text-red-500 text-xs mt-1">{errors.password}</p>
@@ -281,9 +293,8 @@ const AddAccountantModal: React.FC<AddAccountantModalProps> = ({
                 value={formData.dateOfBirth}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {errors.dateOfBirth && (
                 <p className="text-red-500 text-xs mt-1">

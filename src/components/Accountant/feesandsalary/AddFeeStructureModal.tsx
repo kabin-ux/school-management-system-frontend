@@ -50,7 +50,12 @@ export const AddFeeStructureModal: React.FC<FeeStructureModalProps> = ({
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
-            [name]: name.includes("fee") ? Number(value) : value,
+            [name]: ["monthly_fee",
+                "exam_fee",
+                "tution_fee",
+                "computer_fee",
+                "laboratory_fee",
+                "other_fee",].includes(name) ? Number(value) : value,
         }));
 
         // Clear error when user starts typing

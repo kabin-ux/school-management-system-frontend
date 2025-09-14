@@ -11,7 +11,7 @@ import EditAccountantModal from '../../../components/Admin/accountmanagement/Edi
 
 const AccountantManagement: React.FC = () => {
     const dispatch = useAppDispatch();
-    const { accountantBySchool } = useAppSelector((state) => state.accountant)
+    const { accountantBySchool, loading } = useAppSelector((state) => state.accountant)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedAccountant, setSelectedAccountant] = useState<Accountant | null>(null);
@@ -26,6 +26,7 @@ const AccountantManagement: React.FC = () => {
             const res = await dispatch(addAccountantBySchool(accountantData))
             if (addAccountantBySchool.fulfilled.match(res)) {
                 toast.success('Accountant added successfully')
+                setIsModalOpen(false)
             } else {
                 toast.error('Error adding accountant')
             }
@@ -92,7 +93,7 @@ const AccountantManagement: React.FC = () => {
                             isOpen={isModalOpen}
                             onClose={() => setIsModalOpen(false)}
                             onSubmit={handleAddAccountant}
-                            isLoading={false}
+                            isLoading={loading}
                         />
 
                         <EditAccountantModal

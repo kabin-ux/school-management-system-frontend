@@ -19,7 +19,7 @@ export default function StudentManagement() {
 
 
     const dispatch = useAppDispatch();
-    const { students } = useAppSelector((state) => state.student)
+    const { students, loading } = useAppSelector((state) => state.student)
     const { classes } = useAppSelector(state => state.class)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -35,6 +35,7 @@ export default function StudentManagement() {
             const res = await dispatch(addStudent(studentData))
             if (addStudent.fulfilled.match(res)) {
                 toast.success('Student added successfully')
+                setIsModalOpen(false)
             } else {
                 toast.error('Error adding student')
             }
@@ -126,6 +127,7 @@ export default function StudentManagement() {
                             onClose={() => setIsModalOpen(false)}
                             onSubmit={handleAddStudent}
                             classes={classes}
+                            loading={loading}
                         />
 
                         <EditStudentModal

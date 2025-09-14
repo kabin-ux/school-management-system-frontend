@@ -20,7 +20,7 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
       {!feeData || feeData.length === 0 ? (
         <EmptyState
           title="No fee structure found"
-          description="There are currently no any fee structure in the system. Click on button above to create a fee structure"
+          description="There are currently no any fee structure in the system."
           icon={<DollarSign className="w-14 h-14" />}
         />
       ) : (

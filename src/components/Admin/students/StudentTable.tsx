@@ -9,30 +9,6 @@ interface StudentTableProps {
 }
 
 export default function StudentTable({ students, onEdit, onDelete }: StudentTableProps) {
-  const getFeeStatusBadge = (status: string) => {
-    const statusClasses = {
-      'Paid': 'bg-green-100 text-green-800',
-      'Pending': 'bg-yellow-100 text-yellow-800',
-      'Overdue': 'bg-red-100 text-red-800'
-    };
-
-    return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusClasses[status as keyof typeof statusClasses]}`}>
-        {status}
-      </span>
-    );
-  };
-
-  const getStatusBadge = (status: string) => {
-    return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${status === 'Active'
-        ? 'bg-blue-100 text-blue-800'
-        : 'bg-gray-100 text-gray-800'
-        }`}>
-        {status}
-      </span>
-    );
-  };
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
@@ -113,7 +89,7 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
 
                   {/* Class & Section */}
                   <td className="px-6 py-4 text-sm text-gray-500">
-                    {student["classes.name"]} {student["classes.sections.name"]}
+                    {student.classes?.name} {student.classes?.sections?.section_name}
                   </td>
 
 

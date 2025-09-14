@@ -11,12 +11,14 @@ interface ClassModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSubmit: (classData: ClassForm) => void;
+    isLoading: boolean;
 }
 
 export const AddClassModal: React.FC<ClassModalProps> = ({
     isOpen,
     onClose,
     onSubmit,
+    isLoading
 }) => {
     const [formData, setFormData] = useState<ClassForm>({
         name: "",
@@ -50,11 +52,16 @@ export const AddClassModal: React.FC<ClassModalProps> = ({
     };
 
     const handleSubmit = () => {
+        if (isLoading) return;
+
         if (validateForm()) {
             onSubmit(formData);
-            setFormData({ name: "", has_section: false, school_id: "" });
+            setFormData({
+                name: "",
+                has_section: false,
+                school_id: ""
+            });
             setErrors({});
-            onClose();
         }
     };
 
@@ -112,6 +119,7 @@ export const AddClassModal: React.FC<ClassModalProps> = ({
                 <div className="flex justify-end space-x-4 p-6 border-t border-gray-200">
                     <button
                         type="button"
+                        disabled={isLoading}
                         onClick={onClose}
                         className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
                     >
@@ -119,10 +127,18 @@ export const AddClassModal: React.FC<ClassModalProps> = ({
                     </button>
                     <button
                         type="button"
+                        disabled={isLoading}
                         onClick={handleSubmit}
                         className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                     >
-                        Add Class
+                        {isLoading ? (
+                            <>
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                                Adding Parent...
+                            </>
+                        ) : (
+                            'Add Parent'
+                        )}
                     </button>
                 </div>
             </div>

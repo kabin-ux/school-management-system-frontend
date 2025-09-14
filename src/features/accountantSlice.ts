@@ -157,6 +157,7 @@ const accountantSlice = createSlice({
     // Add
     builder.addCase(addAccountantBySchool.pending, (state) => {
       state.loading = true;
+      state.error = null;
     });
     builder.addCase(addAccountantBySchool.fulfilled, (state, action: PayloadAction<any>) => {
       state.loading = false;

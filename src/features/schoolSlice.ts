@@ -262,8 +262,16 @@ const schoolSlice = createSlice({
         });
 
         // Add School
+        builder.addCase(addSchoolBySuperAdmin.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
         builder.addCase(addSchoolBySuperAdmin.fulfilled, (state, action: PayloadAction<SchoolData>) => {
             state.schools.push(action.payload);
+        });
+        builder.addCase(addSchoolBySuperAdmin.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
         });
     },
 });
