@@ -12,6 +12,7 @@ const AdminLoginPage: React.FC = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,7 +23,7 @@ const AdminLoginPage: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(loginAdmin({ email, password }));
+        dispatch(loginAdmin({ email, password, rememberMe }));
     }
     return (
         <section className="min-h-screen bg-gray-50 flex">
@@ -74,6 +75,18 @@ const AdminLoginPage: React.FC = () => {
                             </div>
                         </div>
                         {error && <p className="text-red-500 text-sm">{error}</p>}
+                        <div className='flex items-center justify-between'>
+                            <label className='flex items-center text-sm text-gray-500'>
+                                <input 
+                                type="checkbox"
+                                checked={rememberMe}
+                                onChange={(e) => setRememberMe(e.target.checked)}
+                                className='mr-2 h-4 w-4 text-lime-400 border-gray-300 rounded focus:ring-lime-400'
+                                />
+                                Remember Me
+                            </label>
+                        </div>
+                        <a href="#" className='text-sm text-[#CBD72B] hover:underline'>Forgot Password</a>
                         <button
                             type="submit"
                             disabled={loading}

@@ -79,6 +79,10 @@ const ClassManagement: React.FC = () => {
         navigate(`/admin/class-management/details/${classId}`)
     };
 
+     const navigateToSubject = (classId: number) => {
+        navigate(`/admin/class-management/subject/${classId}`)
+    };
+
     return (
         <div className="flex h-full bg-gray-50">
             {/* Sidebar */}
@@ -99,7 +103,8 @@ const ClassManagement: React.FC = () => {
                         <ClassStats />
                         <ClassTable
                             grades={classes}
-                            onNavigate={navigateToDetail}
+                            onNavigateToSection={navigateToDetail}
+                            onNavigateToSubject={navigateToSubject}
                             onEdit={handleEditClass}
                             onDelete={handleDeleteClass}
                         />

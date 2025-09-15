@@ -134,10 +134,10 @@ export const AddClassModal: React.FC<ClassModalProps> = ({
                         {isLoading ? (
                             <>
                                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                                Adding Parent...
+                                Adding Class...
                             </>
                         ) : (
-                            'Add Parent'
+                            'Add Class'
                         )}
                     </button>
                 </div>

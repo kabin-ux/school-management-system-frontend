@@ -16,15 +16,28 @@ export const loginSuperAdmin = createAsyncThunk(
 
 export const loginAdmin = createAsyncThunk(
   "auth/loginAdmin",
-  async (credentials: { email: string; password: string }, thunkAPI) => {
+  async (
+    { email, password, rememberMe }: { email: string; password: string; rememberMe: boolean },
+    thunkAPI
+  ) => {
     try {
-      const res = await api.post("/school/login", credentials);
+      const res = await api.post("/school/login", { email, password });
+
+      if (rememberMe) {
+        localStorage.setItem("rememberMe", "true");
+      } else {
+        localStorage.removeItem("rememberMe");
+      }
+
       return res.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response?.data?.message || "Login failed");
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Login failed"
+      );
     }
   }
 );
+
 
 export const loginAccountant = createAsyncThunk(
   "auth/loginAccountant",
@@ -138,6 +151,16 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    loadUser: (state) => {
+      const rememberMe = localStorage.getItem("rememberMe");
+      const token = rememberMe ? localStorage.getItem("token") : null;
+
+      if (token) {
+        state.token = token;
+        // optional: decode JWT or fetch user profile
+        state.user = { token };
+      }
+    },
 
   },
   extraReducers: (builder) => {

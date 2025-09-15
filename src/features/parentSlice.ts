@@ -184,10 +184,12 @@ const parentSlice = createSlice({
     // Update
     builder.addCase(updateParent.fulfilled, (state, action) => {
       state.loading = false;
-      const index = state.parents.findIndex(
-        (p: any) => p.id === action.payload.id
-      );
-      if (index !== -1) state.parents[index] = action.payload;
+      const index = state.parents.findIndex((p) => p.id === action.payload.id);
+      if (index !== -1) {
+        state.parents[index] = action.payload;
+      } else {
+        state.parents.push(action.payload); // optional
+      }
     });
 
     // Get Details
