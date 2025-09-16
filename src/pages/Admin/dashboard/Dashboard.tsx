@@ -1,4 +1,5 @@
-import { useAppSelector } from "../../../app/hooks";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import AttendanceChart from "../../../components/Admin/dashboard/AttendanceChart";
 import AttendancePieChart from "../../../components/Admin/dashboard/AttendancePieChart";
 import DashboardStats from "../../../components/Admin/dashboard/DashboardStats";
@@ -7,11 +8,18 @@ import RecentActivity from "../../../components/Admin/dashboard/RecentActivity";
 import SystemStatus from "../../../components/Admin/dashboard/SystemStatus";
 import { AdminDashboardHeader } from "../../../components/Admin/layout/DashboardHeader";
 import { Sidebar } from "../../../components/Admin/layout/Sidebar";
+import { getSchoolAdminDashboard } from "../../../features/dashboardSlice";
 
 export default function AdminDashboard() {
   const { user } = useAppSelector(state => state.auth);
+  const { schoolAdmin } = useAppSelector(state => state.dashboard);
+  const dispatch = useAppDispatch();
 
-console.log(user)
+  useEffect(() => {
+    dispatch(getSchoolAdminDashboard());
+  }, [dispatch])
+
+  console.log(user)
   return (
     <div className="flex h-full bg-gray-50">
       {/* Sidebar */}
@@ -32,7 +40,9 @@ console.log(user)
             </div>
 
             {/* Stats Cards */}
-            <DashboardStats />
+            <DashboardStats
+              data={schoolAdmin}
+            />
 
             {/* Charts Section */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">

@@ -12,6 +12,7 @@ export interface Subject {
 
 interface SubjectState {
   subjects: Subject[];
+  subjectsByClass: Subject[];
   selectedSubject: Subject | null;
   loading: boolean;
   error: string | null;
@@ -19,6 +20,7 @@ interface SubjectState {
 
 const initialState: SubjectState = {
   subjects: [],
+  subjectsByClass: [],
   selectedSubject: null,
   loading: false,
   error: null,
@@ -58,6 +60,19 @@ export const getAllSubjects = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const res = await api.get("/subject");
+      return res.data.data;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
+// Get All Subjects
+export const getAllSubjectsByClass = createAsyncThunk(
+  "subjects/getAllSubjectsByClass",
+  async (id: string, thunkAPI) => {
+    try {
+      const res = await api.get(`/subject/class/${id}`);
       return res.data.data;
     } catch (err: any) {
       return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
@@ -158,6 +173,11 @@ const subjectSlice = createSlice({
     // Get All
     builder.addCase(getAllSubjects.fulfilled, (state, action: PayloadAction<Subject[]>) => {
       state.subjects = action.payload;
+      state.loading = false;
+    });
+
+    builder.addCase(getAllSubjectsByClass.fulfilled, (state, action: PayloadAction<Subject[]>) => {
+      state.subjectsByClass = action.payload; // ✅ use correct field
       state.loading = false;
     });
 

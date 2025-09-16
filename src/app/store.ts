@@ -15,6 +15,7 @@ import feesReducer from "../features/feesSlice";
 import transportationReducer from '../features/transportationSlice';
 import eventReducer from '../features/eventsSlice';
 import subjectReducer from '../features/subjectSlice';
+import dashboardReducer from '../features/dashboardSlice';
 
 // Persist config ONLY for auth
 const persistConfig = {
@@ -38,6 +39,7 @@ const persistedFeesReducer = persistReducer(persistConfig, feesReducer);
 const persistedTransportationReducer = persistReducer(persistConfig, transportationReducer);
 const persistedEventReducer = persistReducer(persistConfig, eventReducer);
 const persistedSubjectReducer = persistReducer(persistConfig, subjectReducer);
+const persistedDashboardReducer = persistReducer(persistConfig, dashboardReducer);
 
 export const store = configureStore({
   reducer: {
@@ -55,6 +57,7 @@ export const store = configureStore({
     transportation: persistedTransportationReducer,
     event: persistedEventReducer,
     subject: persistedSubjectReducer,
+    dashboard: persistedDashboardReducer,
     // 
   },
   middleware: (getDefaultMiddleware) =>

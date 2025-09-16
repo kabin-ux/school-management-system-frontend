@@ -12,7 +12,8 @@ import { useParams } from "react-router-dom";
 import { SubjectHeader } from "../../../../components/Admin/class/subject/SubjectHeader";
 import { SubjectStats } from "../../../../components/Admin/class/subject/SubjectStats";
 import { SubjectTable } from "../../../../components/Admin/class/subject/SubjectTable";
-import { addSubject, deleteSubject, getAllSubjects, updateSubject, type Subject } from "../../../../features/subjectSlice";
+import { addSubject, deleteSubject, getAllSubjects, getAllSubjectsByClass, updateSubject, type Subject } from "../../../../features/subjectSlice";
+import { AddSubjectModal } from "../../../../components/Admin/class/subject/AddSubjectModal";
 
 
 const SubjectManagement: React.FC = () => {
@@ -23,25 +24,27 @@ const SubjectManagement: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const { classDetails } = useAppSelector(state => state.class)
-    const { subjects } = useAppSelector(state => state.subject)
+    const { subjectsByClass, loading } = useAppSelector(state => state.subject)
 
     const { id } = useParams<{ id: string }>()
     const classId: string = id ?? "";
+    console.log(classId)
 
     useEffect(() => {
         dispatch(getClassDetails(classId))
-        dispatch(getAllSubjects())
+        dispatch(getAllSubjectsByClass(classId))
     }, [dispatch])
 
     const openModal = () => {
         setIsModalOpen(true)
     }
 
-    const handleAddSSubject = async (subjectData: any) => {
+    const handleAddSubject = async (subjectData: any) => {
         try {
             const res = await dispatch(addSubject(subjectData))
-            if (createSection.fulfilled.match(res)) {
+            if (addSubject.fulfilled.match(res)) {
                 toast.success('Subject added successfully')
+                setIsModalOpen(false);
             } else {
                 const errorMessage = typeof res.payload === "string" ? res.payload : 'Error adding Subject'
                 toast.error(errorMessage);;
@@ -104,9 +107,17 @@ const SubjectManagement: React.FC = () => {
                         />
                         <SubjectStats />
                         <SubjectTable
-                            subjects={subjects}
+                            subjects={subjectsByClass}
                             onEdit={handleEditSubject}
                             onDelete={handleDeleteSubject}
+                        />
+
+                        <AddSubjectModal
+                            classId={classId}
+                            isOpen={isModalOpen}
+                            onClose={() => setIsModalOpen(false)}
+                            onSubmit={handleAddSubject}
+                            isLoading={loading}
                         />
                     </div>
                 </main>
