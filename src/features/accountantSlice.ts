@@ -127,7 +127,7 @@ export const deleteAccountant = createAsyncThunk(
   }
 );
 
-// --------------------- SLICE ---------------------
+// SLICE
 
 interface AccountantState {
   accountants: any[];

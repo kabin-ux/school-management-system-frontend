@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../../components/SuperAdmin/layout/Sidebar';
 import { DashboardHeader } from '../../../components/SuperAdmin/layout/DashboardHeader';
 import SupportFilters from '../../../components/SuperAdmin/support/SupportFilters';
 import SupportStats from '../../../components/SuperAdmin/support/SupportStats';
 import SupportTicketsTable from '../../../components/SuperAdmin/support/SupportTicketsTable';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { deleteSupportTicket, getAllSupportTickets } from '../../../features/supportTicketSlice';
+import toast from 'react-hot-toast';
 
 export default function SupportConsole() {
     const [userType, setUserType] = useState('All');
@@ -14,22 +17,34 @@ export default function SupportConsole() {
     const [ticketId, setTicketId] = useState('');
     const navigate = useNavigate();
 
-    const supportTickets = [
-        { id: '1', ticketId: 'TIC-001', school: 'Springfield High School', submittedBy: 'Sarah Johnson', role: 'Admin', issueType: 'Other', priority: 'High' as const, status: 'Open' as const, lastModified: '2024-01-15 14:30' },
-        { id: '2', ticketId: 'TIC-002', school: 'Oakwood Academy', submittedBy: 'Michael Chen', role: 'Accountant', issueType: 'App', priority: 'Low' as const, status: 'In Progress' as const, lastModified: '2024-01-15 14:30' },
-        { id: '3', ticketId: 'TIC-003', school: 'Riverside School', submittedBy: 'Emily Rodriguez', role: 'Admin', issueType: 'Website', priority: 'High' as const, status: 'Resolved' as const, lastModified: '2024-01-15 14:30' },
-        { id: '4', ticketId: 'TIC-004', school: 'Greenfield College', submittedBy: 'David Thompson', role: 'Admin', issueType: 'Website', priority: 'Medium' as const, status: 'Resolved' as const, lastModified: '2024-01-15 14:30' },
-        { id: '5', ticketId: 'TIC-001', school: 'Springfield High School', submittedBy: 'Lisa Anderson', role: 'Accountant', issueType: 'Other', priority: 'Low' as const, status: 'Open' as const, lastModified: '2024-01-15 14:30' },
-        { id: '6', ticketId: 'TIC-002', school: 'Oakwood Academy', submittedBy: 'Robert Kim', role: 'Admin', issueType: 'App', priority: 'Medium' as const, status: 'Resolved' as const, lastModified: '2024-01-15 14:30' },
-        { id: '7', ticketId: 'TIC-003', school: 'Riverside School', submittedBy: 'Jennifer Walsh', role: 'Accountant', issueType: 'Website', priority: 'High' as const, status: 'In Progress' as const, lastModified: '2024-01-15 14:30' },
-        { id: '8', ticketId: 'TIC-004', school: 'Greenfield College', submittedBy: 'Mark Davis', role: 'Admin', issueType: 'App', priority: 'High' as const, status: 'Resolved' as const, lastModified: '2024-01-15 14:30' }
-    ];
+    const dispatch = useAppDispatch();
+    const { tickets } = useAppSelector(state => state.supportTicket);
+
+    useEffect(() => {
+        dispatch(getAllSupportTickets());
+    }, [dispatch])
 
     const handleViewTicket = (ticketId: string) => {
         console.log('Viewing ticket:', ticketId);
 
         navigate(`/super-admin/support/details/${ticketId}`)
     };
+
+    const handleDeleteSupportTicket = async (supportTicketId: string) => {
+        try {
+            const res = await dispatch(deleteSupportTicket(supportTicketId))
+            if (deleteSupportTicket.fulfilled.match(res)) {
+                toast.success('Support Ticket deleted successfully')
+            } else {
+                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to delete Support Ticket'
+                toast.error(errorMsg)
+            }
+        } catch (error) {
+            toast.error('Error removing Support Ticket')
+            console.error('Error removing Support Ticket', error)
+        }
+    }
+
 
     return (
         <div className="flex h-screen bg-gray-50">
@@ -65,8 +80,9 @@ export default function SupportConsole() {
 
                     {/* Support Tickets Table */}
                     <SupportTicketsTable
-                        tickets={supportTickets}
+                        tickets={tickets}
                         onViewTicket={handleViewTicket}
+                        onDeleteTicket={handleDeleteSupportTicket}
                     />
                 </div>
             </div>

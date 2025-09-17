@@ -89,7 +89,7 @@ export const AddSubjectModal: React.FC<SubjectModalProps> = ({
             <div className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
                 {/* Header */}
                 <div className="flex justify-between items-center p-6 border-b border-gray-200">
-                    <h2 className="text-2xl font-bold text-gray-900">Add New Class</h2>
+                    <h2 className="text-2xl font-bold text-gray-900">Add New Subject</h2>
                     <button
                         onClick={onClose}
                         className="p-2 hover:bg-gray-100 rounded-full transition-colors"

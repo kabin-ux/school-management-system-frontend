@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react";
-import { createSection, deleteSection, getSectionsByClass, updateSection } from "../../../../features/sectionSlice";
-import { addClass, getAllClassesBySchool, getClassDetails } from "../../../../features/classSlice";
+import {getClassDetails } from "../../../../features/classSlice";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import toast from "react-hot-toast";
 import { Sidebar } from "../../../../components/Admin/layout/Sidebar";
 import { AdminDashboardHeader } from "../../../../components/Admin/layout/DashboardHeader";
-import { ClassDetailsHeader } from "../../../../components/Admin/class/ClassDetailsHeader";
-import { ClassDetailsStats } from "../../../../components/Admin/class/ClassDetailsStats";
-import ClassSections from "../../../../components/Admin/class/ClassDetailsOverview";
 import { useParams } from "react-router-dom";
 import { SubjectHeader } from "../../../../components/Admin/class/subject/SubjectHeader";
 import { SubjectStats } from "../../../../components/Admin/class/subject/SubjectStats";
 import { SubjectTable } from "../../../../components/Admin/class/subject/SubjectTable";
-import { addSubject, deleteSubject, getAllSubjects, getAllSubjectsByClass, updateSubject, type Subject } from "../../../../features/subjectSlice";
+import { addSubject, deleteSubject,  getAllSubjectsByClass, updateSubject, type Subject } from "../../../../features/subjectSlice";
 import { AddSubjectModal } from "../../../../components/Admin/class/subject/AddSubjectModal";
 
 

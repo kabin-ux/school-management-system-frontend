@@ -61,9 +61,16 @@ export default function TransportationManagement() {
         setSelectedTransportation(transportation);
     }
 
-    const handleUpdateTransportation = (transportationData: any) => {
+    const handleUpdateTransportation = async (transportationData: any) => {
         try {
-            dispatch(updateTransportation(transportationData))
+            const res = await dispatch(updateTransportation(transportationData))
+            if (updateTransportation.fulfilled.match(res)) {
+                toast.success('Transportation updated successfully')
+                setIsEditModalOpen(false)
+            } else {
+                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to update Transportation'
+                toast.error(errorMsg)
+            }
             toast.success('Transportation updated successfully')
         } catch (error) {
             toast.error('Error updating Transportation')
@@ -71,9 +78,15 @@ export default function TransportationManagement() {
         }
     }
 
-    const handleDeleteTransportation = (transportationId: string) => {
+    const handleDeleteTransportation = async (transportationId: string) => {
         try {
-            dispatch(deleteTransportation(transportationId))
+            const res = await dispatch(deleteTransportation(transportationId))
+            if (deleteTransportation.fulfilled.match(res)) {
+                toast.success('Transportation deleted successfully')
+            } else {
+                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to delete Transportation'
+                toast.error(errorMsg)
+            }
             toast.success('Transportation removed successfully')
         } catch (error) {
             toast.error('Error removing Transportation')

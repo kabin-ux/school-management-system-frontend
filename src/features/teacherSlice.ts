@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/tool
 import api from "../lib/axios";
 
 // Thunks
-
 // Get All Teachers
 export const getAllTeachers = createAsyncThunk(
     "teacher/getAllTeachers",

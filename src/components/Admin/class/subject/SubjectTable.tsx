@@ -1,5 +1,5 @@
 import React from 'react';
-import {  BookUser, Edit, Eye, Trash2 } from 'lucide-react';
+import {  BookUser, Edit,  Trash2 } from 'lucide-react';
 import EmptyState from '../../../../common/EmptyState';
 import type { Subject } from '../../../../features/subjectSlice';
 

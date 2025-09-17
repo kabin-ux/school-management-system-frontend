@@ -160,13 +160,13 @@ const subjectSlice = createSlice({
   extraReducers: (builder) => {
     // Add Subject
     builder.addCase(addSubject.fulfilled, (state, action: PayloadAction<Subject>) => {
-      state.subjects.push(action.payload);
+      state.subjectsByClass.push(action.payload);
       state.loading = false;
     });
 
     // Add Bulk
     builder.addCase(addSubjectsBulk.fulfilled, (state, action: PayloadAction<Subject[]>) => {
-      state.subjects = [...state.subjects, ...action.payload];
+      state.subjectsByClass = [...state.subjectsByClass, ...action.payload];
       state.loading = false;
     });
 

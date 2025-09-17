@@ -1,11 +1,19 @@
-import  { useState } from 'react';
-import { ArrowLeft, Paperclip, Send, Download } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowLeft } from 'lucide-react';
+import type { SupportTicket } from '../../../types/support.types';
+import { getStatusAction } from '../../../lib/utils';
 
 interface TicketDetailProps {
+  selectedTicket: SupportTicket | null;
+  onAccept: (id: string) => void;
+  onResolve: (id: string) => void;
+  onClose: (id: string) => void;
   onBack: () => void;
+  isLoading?: boolean
+  isLoadingClose?: boolean
 }
 
-export default function TicketDetail({ onBack }: TicketDetailProps) {
+export default function TicketDetail({ selectedTicket, onAccept, onResolve, onBack, onClose, isLoading, isLoadingClose }: TicketDetailProps) {
   const [newMessage, setNewMessage] = useState('');
   const [status, setStatus] = useState('Open');
   const [notificationMessage, setNotificationMessage] = useState('');
@@ -29,12 +37,28 @@ export default function TicketDetail({ onBack }: TicketDetailProps) {
     }
   };
 
+  const handleClick = () => {
+    if (selectedTicket?.status === 'in_progress') {
+      onResolve(selectedTicket.id);
+    } else if (selectedTicket?.status === "open") {
+      onAccept(selectedTicket.id);
+    }
+  }
+
+  const handleClose = () => {
+    if (selectedTicket) {
+      onClose(selectedTicket.id);
+    }
+  }
+
+  const statusInfo = getStatusAction(selectedTicket?.status);
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <button 
+          <button
             onClick={onBack}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
@@ -54,16 +78,16 @@ export default function TicketDetail({ onBack }: TicketDetailProps) {
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <div className="flex items-start justify-between mb-4">
               <div>
-                <h2 className="text-xl font-semibold text-gray-900">#TIC-001</h2>
+                <h2 className="text-xl font-semibold text-gray-900">{selectedTicket?.id}</h2>
                 <div className="mt-2 space-y-1 text-sm">
-                  <p><span className="text-gray-500">Submitted by:</span> <span className="font-medium">Sarah Johnson</span></p>
+                  <p><span className="text-gray-500">Submitted by:</span> <span className="font-medium">{selectedTicket?.created_by}</span></p>
                   <p><span className="text-gray-500">Admin • Springfield High School</span></p>
                 </div>
               </div>
               <div className="text-right">
                 <div className="mb-2">
                   <span className="text-gray-500 text-sm">Issue Type</span>
-                  <p className="font-medium">Payment</p>
+                  <p className="font-medium">{selectedTicket?.title}</p>
                 </div>
                 <div className="mb-2">
                   <span className="text-gray-500 text-sm">Priority</span>
@@ -72,7 +96,7 @@ export default function TicketDetail({ onBack }: TicketDetailProps) {
                 <div>
                   <span className="text-gray-500 text-sm">Status</span>
                   <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium">
-                    {status}
+                    {statusInfo.label}
                   </span>
                 </div>
               </div>
@@ -83,14 +107,12 @@ export default function TicketDetail({ onBack }: TicketDetailProps) {
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Issue Description</h3>
             <p className="text-gray-700 leading-relaxed">
-              We are experiencing issues with processing student fees through the payment gateway. Multiple parents have reported 
-              failed transactions, and the system shows an error message when trying to complete payments. This is affecting our 
-              enrollment process and causing frustration among parents.
+              {selectedTicket?.description}
             </p>
           </div>
 
           {/* Attachments */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
+          {/* <div className="bg-white rounded-lg border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Attachments</h3>
             <div className="space-y-2">
               <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -112,18 +134,18 @@ export default function TicketDetail({ onBack }: TicketDetailProps) {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Conversation Thread */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Conversation Thread</h3>
-            <div className="space-y-4">
-              <div className="text-sm text-gray-500 mb-4">
+            {/* <h3 className="text-lg font-semibold text-gray-900 mb-4">Conversation Thread</h3> */}
+            {/* <div className="space-y-4"> */}
+            {/* <div className="text-sm text-gray-500 mb-4">
                 Updated 1hr ago check the ticket logs and get back to you within 2 hours.
-              </div>
-              
-              {/* Messages */}
-              <div className="space-y-4">
+              </div> */}
+
+            {/* Messages */}
+            {/* <div className="space-y-4">
                 <div className="flex gap-3">
                   <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
                     <span className="text-xs font-medium">SJ</span>
@@ -134,7 +156,7 @@ export default function TicketDetail({ onBack }: TicketDetailProps) {
                       <span className="text-xs text-gray-500">on 10/15/2024</span>
                     </div>
                     <p className="text-sm text-gray-700">
-                      Thanks for the quick response. The issue is quite urgent as we have enrollment 
+                      Thanks for the quick response. The issue is quite urgent as we have enrollment
                       deadlines approaching.
                     </p>
                   </div>
@@ -150,15 +172,15 @@ export default function TicketDetail({ onBack }: TicketDetailProps) {
                       <span className="text-xs text-gray-500">on 10/15/2024</span>
                     </div>
                     <p className="text-sm text-gray-700">
-                      Your welcome as a developer and the management team we are eager to help 
+                      Your welcome as a developer and the management team we are eager to help
                       our partners and the schools.
                     </p>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
-              {/* Reply Input */}
-              <div className="mt-6 pt-4 border-t border-gray-200">
+            {/* Reply Input */}
+            {/* <div className="mt-6 pt-4 border-t border-gray-200">
                 <div className="flex gap-3">
                   <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                     <span className="text-xs font-medium text-blue-600">YO</span>
@@ -194,12 +216,12 @@ export default function TicketDetail({ onBack }: TicketDetailProps) {
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </div> */}
+            {/* </div> */}
           </div>
 
           {/* Internal Notes */}
-          <div className="bg-yellow-50 rounded-lg border border-yellow-200 p-6">
+          {/* <div className="bg-yellow-50 rounded-lg border border-yellow-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Internal Notes</h3>
             <div className="bg-yellow-100 p-3 rounded text-sm text-yellow-800 mb-3">
               Admin Only
@@ -208,10 +230,10 @@ export default function TicketDetail({ onBack }: TicketDetailProps) {
               Initial assessment: Payment gateway configuration issue. Need to check with development team for API updates.
               Escalate after 1 day if not resolved.
             </p>
-          </div>
+          </div> */}
 
           {/* Send Notification */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
+          {/* <div className="bg-white rounded-lg border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Send Notification to User</h3>
             <div className="space-y-3">
               <div>
@@ -250,7 +272,7 @@ export default function TicketDetail({ onBack }: TicketDetailProps) {
                 Send Notification
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Sidebar */}
@@ -259,17 +281,49 @@ export default function TicketDetail({ onBack }: TicketDetailProps) {
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
             <div className="space-y-3">
-              <div>
-                <span className="text-sm text-gray-500">Status</span>
-                <p className="font-medium text-blue-600">In Progress</p>
-              </div>
               <div className="space-y-2">
-                <button className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors font-medium">
-                  Mark as Resolved
+                <button
+                  className={`w-full py-2 text-white rounded-lg font-medium flex items-center justify-center  gap-2 transition-colors
+    ${selectedTicket?.status === "in_progress"
+                      ? "bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300"
+                      : selectedTicket?.status === "resolved"
+                        ? "bg-gray-600 hover:bg-gray-700 disabled:bg-gray-300"
+                        : "bg-amber-400 hover:bg-amber-500 disabled:bg-amber-500"
+                    }`}
+                  onClick={handleClick}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                      <span>Sending...</span>
+                    </>
+                  ) : (
+                    selectedTicket?.status === "in_progress"
+                      ? "Resolve Ticket"
+                      : selectedTicket?.status === "open"
+                        ? "Accept Ticket"
+                        : "Reopen Ticket"
+                  )}
                 </button>
-                <button className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors font-medium">
-                  Escalate Ticket
+                <button
+                  className="w-full bg-red-600 text-white py-2 rounded-lg 
+             hover:bg-red-700 transition-colors 
+             disabled:bg-red-300 disabled:text-gray-200 disabled:cursor-not-allowed
+             font-medium flex items-center justify-center gap-2"
+                  disabled={isLoadingClose || selectedTicket?.status === 'closed'}
+                  onClick={handleClose}
+                >
+                  {isLoadingClose ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                      <span>Closing...</span>
+                    </>
+                  ) : (
+                    "Close Support Ticket"
+                  )}
                 </button>
+
               </div>
             </div>
           </div>
@@ -285,7 +339,7 @@ export default function TicketDetail({ onBack }: TicketDetailProps) {
                 <div className="text-2xl font-bold text-gray-900">250</div>
                 <div className="text-xs text-gray-500">+7.5% from last month</div>
               </div>
-              
+
               <div className="mt-4">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-sm text-gray-600">Success Rate</span>

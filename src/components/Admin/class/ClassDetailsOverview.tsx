@@ -40,13 +40,15 @@ export default function ClassSections({ sections, onEdit, onDelete }: ClassSecti
                                         <Calendar className="w-4 h-4" />
                                         <span>Created: {section.createdAt
                                             ? new Date(section.createdAt).toLocaleDateString()
-                                            : "N/A"}</span>
+                                            : "N/A"}
+                                        </span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <Clock className="w-4 h-4" />
                                         <span>Updated:{section.updatedAt
                                             ? new Date(section.updatedAt).toLocaleDateString()
-                                            : "N/A"}</span>
+                                            : "N/A"}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
