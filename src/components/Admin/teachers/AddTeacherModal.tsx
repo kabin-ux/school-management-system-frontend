@@ -10,7 +10,6 @@ interface Teacher {
   dateOfBirth: string;
   gender: 'Male' | 'Female' | 'Other';
   address?: string;
-  hireDate: string;
   qualification: string;
   classIds: number[];
   subjectIds: number[];
@@ -53,7 +52,6 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
     dateOfBirth: '',
     gender: 'Male',
     address: '',
-    hireDate: '',
     qualification: '',
     classIds: [],
     subjectIds: []
@@ -73,7 +71,6 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
         dateOfBirth: '',
         gender: 'Male',
         address: '',
-        hireDate: '',
         qualification: '',
         classIds: [],
         subjectIds: []
@@ -103,12 +100,6 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
         const today = new Date();
         const age = today.getFullYear() - birthDate.getFullYear();
         if (age < 18 || age > 80) return 'Teacher must be between 18 and 80 years old';
-        return '';
-      case 'hireDate':
-        if (!value) return 'Hire date is required';
-        const hireDate = new Date(value);
-        const currentDate = new Date();
-        if (hireDate > currentDate) return 'Hire date cannot be in the future';
         return '';
       case 'qualification':
         return !value.trim() ? 'Qualification is required' : '';
@@ -176,7 +167,6 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
         dateOfBirth: '',
         gender: 'Male',
         address: '',
-        hireDate: '',
         qualification: '',
         classIds: [],
         subjectIds: []
@@ -333,24 +323,6 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
             {/* Professional Information */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-gray-900 border-b pb-2">Professional Information</h3>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  <Briefcase className="w-4 h-4 inline mr-1" />
-                  Hire Date <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="date"
-                  name="hireDate"
-                  value={formData.hireDate}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.hireDate ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                />
-                {errors.hireDate && <p className="text-red-500 text-xs mt-1">{errors.hireDate}</p>}
-              </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   <GraduationCap className="w-4 h-4 inline mr-1" />

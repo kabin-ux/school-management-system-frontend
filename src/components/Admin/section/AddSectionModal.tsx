@@ -1,19 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-
-interface SectionForm {
-    section_name: string;
-    class_id: string;
-}
-
-export interface Section {
-    id: string;
-    section_name: string;
-    class_id: string;
-    createdAt?: Date;
-    updatedAt?: Date;
-    deletedAt?: Date | null;
-}
+import type { SectionForm } from '../../../types/class.types';
 
 interface AddSectionModalProps {
     classId: string;

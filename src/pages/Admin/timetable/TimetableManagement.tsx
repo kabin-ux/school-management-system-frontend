@@ -5,18 +5,21 @@ import WeeklyTimetable from '../../../components/Admin/timetable/WeeklyTimetable
 import TimetableSidebar from '../../../components/Admin/timetable/TimetableSidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
-import { useAppDispatch } from '../../../app/hooks';
-import { getTimetable } from '../../../features/timetableSlice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { getAllClassesBySchool } from '../../../features/classSlice';
+import { getActiveTimetableForClass } from '../../../features/timetableSlice';
 
 export default function TimetableManagement() {
     const [selectedClass, setSelectedClass] = useState('Grade 10');
     const [selectedSection, setSelectedSection] = useState('Section A');
     const [selectedSubject, setSelectedSubject] = useState('All Subject');
     const dispatch = useAppDispatch();
+    const { classes } = useAppSelector(state => state.class);
 
     useEffect(() => {
-        dispatch(getTimetable(2))
-    })
+        dispatch(getAllClassesBySchool())
+        dispatch(getActiveTimetableForClass("82541457-b0d4-4077-9a7d-fa224418da2c"))
+    }, [dispatch])
 
     return (
         <div className="flex h-full bg-gray-50">

@@ -1,14 +1,15 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import api from "../lib/axios";
+import type { Student, StudentForm } from "../types/student.types";
 
 // Define types
-export interface Student {
-  id: number;
-  name: string;
-  email: string;
-  age: number;
-  [key: string]: any;
-}
+// export interface Student {
+//   id: number;
+//   name: string;
+//   email: string;
+//   age: number;
+//   [key: string]: any;
+// }
 
 interface StudentState {
   students: Student[];
@@ -39,7 +40,7 @@ export const addStudent = createAsyncThunk(
 
 export const updateStudent = createAsyncThunk(
   "students/updateStudent",
-  async ({ id, updates }: { id: number; updates: Partial<Student> }, thunkAPI) => {
+  async ({ id, updates }: { id: string; updates: Partial<StudentForm> }, thunkAPI) => {
     try {
       const res = await api.put(`/student/${id}`, updates);
       return res.data.data;
@@ -75,7 +76,7 @@ export const getStudentsBySchool = createAsyncThunk(
 
 export const getStudentById = createAsyncThunk(
   "students/getStudentById",
-  async (id: number, thunkAPI) => {
+  async (id: string, thunkAPI) => {
     try {
       const res = await api.get(`/student/${id}`);
       return res.data.data;
@@ -87,7 +88,7 @@ export const getStudentById = createAsyncThunk(
 
 export const deleteStudent = createAsyncThunk(
   "students/deleteStudent",
-  async (id: number, thunkAPI) => {
+  async (id: string, thunkAPI) => {
     try {
       await api.delete(`/student/${id}`);
       return id; // return deleted student's id to remove from state
@@ -187,7 +188,7 @@ const studentSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(deleteStudent.fulfilled, (state, action: PayloadAction<number>) => {
+      .addCase(deleteStudent.fulfilled, (state, action: PayloadAction<string>) => {
         state.loading = false;
         state.students = state.students.filter((s) => s.id !== action.payload);
       })

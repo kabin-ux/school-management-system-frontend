@@ -1,11 +1,11 @@
 import { Edit, Trash2, Users } from 'lucide-react';
-import type { Student } from '../../../features/studentSlice';
 import EmptyState from '../../../common/EmptyState';
+import type { Student } from '../../../types/student.types';
 
 interface StudentTableProps {
   students: Student[];
   onEdit: (student: Student) => void;
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => void;
 }
 
 export default function StudentTable({ students, onEdit, onDelete }: StudentTableProps) {
@@ -89,13 +89,13 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
 
                   {/* Class & Section */}
                   <td className="px-6 py-4 text-sm text-gray-500">
-                    {student.classes?.name} {student.classes?.sections?.section_name}
+                    {student.classes?.name} {student.section?.section_name}
                   </td>
 
 
                   {/* Date of Birth */}
                   <td className="px-6 py-4 text-sm text-gray-500">
-                    {student.dateOfBirth || '-'}
+                    <td>{new Date(student.dateOfBirth).toLocaleDateString()}</td>
                   </td>
 
                   {/* Gender */}

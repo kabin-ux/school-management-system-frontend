@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { X, User } from 'lucide-react';
-import type { Student } from '../../../features/studentSlice';
+import type { Grade } from '../../../types/class.types';
+import type { Student, StudentForm } from '../../../types/student.types';
+import { getSectionsByClass } from '../../../features/sectionSlice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 
 interface EditStudentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (updates: Student, id: number) => void;
+  onSubmit: (updates: StudentForm, id: string) => void;
   student?: Student | null;
+  classes: Grade[];
   isLoading?: boolean;
 }
 
@@ -15,15 +19,15 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
   onClose,
   onSubmit,
   student,
-  isLoading = false,
+  classes,
+  isLoading,
 }) => {
-  const [formData, setFormData] = useState<Student>({
-    id: '',
+  const [formData, setFormData] = useState<StudentForm>({
     firstName: '',
     lastName: '',
     email: '',
-    class: '',
-    section: '',
+    class_id: '',
+    section_id: '',
     rollNumber: '',
     gender: 'Male', // default gender
     address: '',
@@ -32,20 +36,31 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const dispatch = useAppDispatch();
+  const { sections } = useAppSelector(state => state.section)
 
   useEffect(() => {
     if (isOpen && student) {
-      setFormData({ ...student });
+      setFormData({
+        firstName: student.firstName,
+        lastName: student.lastName,
+        email: student.email,
+        class_id: student.class_id,
+        section_id: student.section_id ?? '',
+        rollNumber: student.rollNumber ?? '',
+        gender: student.gender,
+        dateOfBirth: student.dateOfBirth.toString(),
+        address: student.address ?? '',
+      });
       setErrors({});
       setTouched({});
     } else if (!isOpen) {
       setFormData({
-        id: '',
         firstName: '',
         lastName: '',
         email: '',
-        class: '',
-        section: '',
+        class_id: '',
+        section_id: '',
         rollNumber: '',
         gender: 'पुरुष',
         address: '',
@@ -56,6 +71,14 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
     }
   }, [isOpen, student]);
 
+  useEffect(() => {
+    if (formData.class_id) {
+      const selectedClass = classes.find(cls => cls.id === formData.class_id);
+      if (selectedClass) {
+        dispatch(getSectionsByClass(selectedClass?.id));
+      }
+    }
+  }, [formData.class_id, classes, dispatch]);
   const validateField = (name: string, value: any) => {
     switch (name) {
       case 'firstName':
@@ -142,9 +165,8 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
                 value={formData.firstName}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg ${
-                  errors.firstName ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg ${errors.firstName ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {errors.firstName && <p className="text-xs text-red-500">{errors.firstName}</p>}
             </div>
@@ -158,9 +180,8 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
                 value={formData.lastName}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg ${
-                  errors.lastName ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg ${errors.lastName ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {errors.lastName && <p className="text-xs text-red-500">{errors.lastName}</p>}
             </div>
@@ -174,9 +195,8 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
                 value={formData.email}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg ${
-                  errors.email ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg ${errors.email ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
             </div>
@@ -184,27 +204,42 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
             {/* Class */}
             <div>
               <label className="block text-sm font-medium">Class</label>
-              <input
-                type="text"
-                name="class"
-                value={formData.class}
+
+              <select
+                name="class_id"
+                value={formData.class_id}
                 onChange={handleInputChange}
-                onBlur={handleBlur}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-              />
+                disabled={isLoading}
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.class ? 'border-red-500' : 'border-gray-300'
+                  } ${isLoading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
+              >
+                <option value="">Select class</option>
+                {classes.map((cls) => (
+                  <option key={cls.id} value={cls.id}>
+                    {cls.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Section */}
             <div>
               <label className="block text-sm font-medium">Section</label>
-              <input
-                type="text"
-                name="section"
-                value={formData.section}
+              <select
+                name="section_id"
+                value={formData.section_id}
                 onChange={handleInputChange}
-                onBlur={handleBlur}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-              />
+                disabled={isLoading || !formData.class_id}
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.section ? 'border-red-500' : 'border-gray-300'
+                  } ${(isLoading || !formData.class_id) ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
+              >
+                <option value="">Select section</option>
+                {sections.map((section: any) => (
+                  <option key={section.id} value={section.id}>
+                    {section.section_name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Roll Number */}
@@ -216,9 +251,8 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
                 value={formData.rollNumber}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg ${
-                  errors.rollNumber ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg ${errors.rollNumber ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {errors.rollNumber && <p className="text-xs text-red-500">{errors.rollNumber}</p>}
             </div>

@@ -142,6 +142,7 @@ export default function TeacherManagement() {
                             }}
                             onSubmit={handleUpdateTeacher}
                             teacher={selectedTeacher}
+                            isLoading={loading}
                         />
                     </div>
                 </main>

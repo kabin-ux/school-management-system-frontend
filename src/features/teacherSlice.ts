@@ -67,6 +67,66 @@ export const logoutTeacher = createAsyncThunk(
     }
 );
 
+export const assignClassesToTeacher = createAsyncThunk(
+    "teacher/assignClasses",
+    async (
+        { teacherId, classIds }: { teacherId: number; classIds: number[] },
+        thunkAPI
+    ) => {
+        try {
+            const res = await api.post(`/teacher/${teacherId}/assign-classes`, {
+                classIds,
+            });
+            return res.data; // message + status
+        } catch (err: any) {
+            return thunkAPI.rejectWithValue(
+                err.response?.data?.message || err.message
+            );
+        }
+    }
+);
+
+//  Assign subjects to teacher
+export const assignSubjectsToTeacher = createAsyncThunk(
+    "teacher/assignSubjects",
+    async (
+        { teacherId, subjectIds }: { teacherId: number; subjectIds: number[] },
+        thunkAPI
+    ) => {
+        try {
+            const res = await api.post(`/teacher/${teacherId}/assign-subjects`, {
+                subjectIds,
+            });
+            return res.data; // message + status
+        } catch (err: any) {
+            return thunkAPI.rejectWithValue(
+                err.response?.data?.message || err.message
+            );
+        }
+    }
+);
+
+//  Assign class teacher
+export const assignClassTeacher = createAsyncThunk(
+    "teacher/assignClassTeacher",
+    async (
+        { teacherId, classId }: { teacherId: number; classId: number },
+        thunkAPI
+    ) => {
+        try {
+            const res = await api.post(`/teacher/assign-class-teacher`, {
+                teacherId,
+                classId,
+            });
+            return res.data.data; // updated classObj
+        } catch (err: any) {
+            return thunkAPI.rejectWithValue(
+                err.response?.data?.message || err.message
+            );
+        }
+    }
+);
+
 // Slice
 
 interface TeacherState {
@@ -144,6 +204,45 @@ const teacherSlice = createSlice({
         // Logout
         builder.addCase(logoutTeacher.fulfilled, (state) => {
             state.teachers = [];
+        });
+
+        builder.addCase(assignClassesToTeacher.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(assignClassesToTeacher.fulfilled, (state) => {
+            state.loading = false;
+            state.error = null;
+        });
+        builder.addCase(assignClassesToTeacher.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
+        });
+
+        builder.addCase(assignSubjectsToTeacher.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(assignSubjectsToTeacher.fulfilled, (state) => {
+            state.loading = false;
+            state.error = null;
+        });
+        builder.addCase(assignSubjectsToTeacher.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
+        });
+
+        // Assign Class Teacher
+        builder.addCase(assignClassTeacher.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(assignClassTeacher.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(assignClassTeacher.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
         });
     },
 });

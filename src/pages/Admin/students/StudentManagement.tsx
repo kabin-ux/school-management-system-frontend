@@ -6,11 +6,12 @@ import StudentTable from '../../../components/Admin/students/StudentTable';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addStudent, deleteStudent, getStudentsBySchool, updateStudent, type Student } from '../../../features/studentSlice';
+import { addStudent, deleteStudent, getStudentsBySchool, updateStudent } from '../../../features/studentSlice';
 import toast from 'react-hot-toast';
 import { AddStudentModal } from '../../../components/Admin/students/AddStudentModal';
 import EditStudentModal from '../../../components/Admin/students/EditStudentModal';
 import { getAllClassesBySchool } from '../../../features/classSlice';
+import type { Student, StudentForm } from '../../../types/student.types';
 
 export default function StudentManagement() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -49,7 +50,7 @@ export default function StudentManagement() {
         setSelectedStudent(student)
     }
 
-    const handleUpdateStudent = async (updates: Student, id: number) => {
+    const handleUpdateStudent = async (updates: StudentForm, id: string) => {
         try {
             const res = await dispatch(updateStudent({ updates, id }))
             if (updateStudent.fulfilled.match(res)) {
@@ -137,6 +138,8 @@ export default function StudentManagement() {
                             }}
                             onSubmit={handleUpdateStudent}
                             student={selectedStudent}
+                            classes={classes}
+                            isLoading={loading}
                         />
                     </div>
                 </main>

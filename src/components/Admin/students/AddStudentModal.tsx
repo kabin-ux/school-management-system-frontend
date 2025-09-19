@@ -8,7 +8,7 @@ interface StudentForm {
   firstName: string;
   lastName: string;
   email: string;
-  class_id: number;
+  class_id: string;
   section_id: string;
   rollNumber: string;
   gender: string;
@@ -35,7 +35,7 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
     firstName: "",
     lastName: "",
     email: "",
-    class_id: 0,
+    class_id: "",
     section_id: "",
     rollNumber: "",
     gender: "",
@@ -116,7 +116,7 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
         firstName: "",
         lastName: "",
         email: "",
-        class_id: 0,
+        class_id: "",
         section_id: "",
         rollNumber: "",
         gender: "",

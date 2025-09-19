@@ -7,7 +7,7 @@ export interface Activity {
 }
 
 export interface Teacher {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -15,7 +15,23 @@ export interface Teacher {
   dateOfBirth: string;
   gender: 'Male' | 'Female' | 'Other';
   address?: string;
-  hireDate: string;
+  qualification: string;
+  classIds: number[];
+  subjectIds: number[];
+  status?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
+}
+
+export interface TeacherForm {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  gender: 'Male' | 'Female' | 'Other';
+  address?: string;
   qualification: string;
   classIds: number[];
   subjectIds: number[];

@@ -53,7 +53,7 @@ export const deletePeriod = createAsyncThunk(
 
 export const getActiveTimetableForClass = createAsyncThunk(
   "timetable/getActiveForClass",
-  async (classId: number, { rejectWithValue }) => {
+  async (classId: string, { rejectWithValue }) => {
     try {
       const res = await api.get(`/classes/${classId}/timetable/active`);
       return res.data;

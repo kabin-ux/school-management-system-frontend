@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { X, User } from 'lucide-react';
-import type { Teacher } from '../../../types/admin-dashboard.types';
+import type { Teacher, TeacherForm } from '../../../types/admin-dashboard.types';
 
 interface EditTeacherModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (updates: Teacher) => void;
+    onSubmit: (updates: TeacherForm) => void;
     teacher?: Teacher | null;
     isLoading?: boolean;
 }
@@ -15,10 +15,9 @@ const EditTeacherModal: React.FC<EditTeacherModalProps> = ({
     onClose,
     onSubmit,
     teacher,
-    isLoading = false,
+    isLoading,
 }) => {
-    const [formData, setFormData] = useState<Teacher>({
-        id: 0,
+    const [formData, setFormData] = useState<TeacherForm>({
         firstName: '',
         lastName: '',
         email: '',
@@ -26,7 +25,6 @@ const EditTeacherModal: React.FC<EditTeacherModalProps> = ({
         dateOfBirth: '',
         gender: 'Male',
         address: '',
-        hireDate: '',
         qualification: '',
         classIds: [],
         subjectIds: [],
@@ -37,12 +35,22 @@ const EditTeacherModal: React.FC<EditTeacherModalProps> = ({
 
     useEffect(() => {
         if (isOpen && teacher) {
-            setFormData({ ...teacher });
+            setFormData({
+                firstName: teacher.firstName,
+                lastName: teacher.lastName,
+                email: teacher.email,
+                phone: teacher.phone,
+                dateOfBirth: teacher.dateOfBirth,
+                gender: teacher.gender,
+                address: teacher.address,
+                qualification: teacher.qualification,
+                classIds: teacher.classIds,
+                subjectIds: teacher.subjectIds,
+            });
             setErrors({});
             setTouched({});
         } else if (!isOpen) {
             setFormData({
-                id: 0,
                 firstName: '',
                 lastName: '',
                 email: '',
@@ -50,7 +58,6 @@ const EditTeacherModal: React.FC<EditTeacherModalProps> = ({
                 dateOfBirth: '',
                 gender: 'Male',
                 address: '',
-                hireDate: '',
                 qualification: '',
                 classIds: [],
                 subjectIds: [],
@@ -220,18 +227,6 @@ const EditTeacherModal: React.FC<EditTeacherModalProps> = ({
                                 <option value="Female">Female</option>
                                 <option value="Other">Other</option>
                             </select>
-                        </div>
-
-                        {/* Hire Date */}
-                        <div>
-                            <label className="block text-sm font-medium">Hire Date *</label>
-                            <input
-                                type="date"
-                                name="hireDate"
-                                value={formData.hireDate}
-                                onChange={handleInputChange}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                            />
                         </div>
 
                         {/* Qualification */}

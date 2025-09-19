@@ -10,19 +10,19 @@ interface SupportTicketsTableProps {
 }
 
 export default function SupportTicketsTable({ tickets, onViewTicket, onDeleteTicket }: SupportTicketsTableProps) {
-  const getStatusBadge = (status: string) => {
-    const statusClasses = {
-      'Open': 'bg-blue-100 text-blue-800',
-      'In Progress': 'bg-yellow-100 text-yellow-800',
-      'Resolved': 'bg-green-100 text-green-800'
-    };
+  // const getStatusBadge = (status: string) => {
+  //   const statusClasses = {
+  //     'Open': 'bg-blue-100 text-blue-800',
+  //     'In Progress': 'bg-yellow-100 text-yellow-800',
+  //     'Resolved': 'bg-green-100 text-green-800'
+  //   };
 
-    return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusClasses[status as keyof typeof statusClasses]}`}>
-        {status}
-      </span>
-    );
-  };
+  //   return (
+  //     <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusClasses[status as keyof typeof statusClasses]}`}>
+  //       {status}
+  //     </span>
+  //   );
+  // };
 
   const getIssueTypeBadge = (issueType: string) => {
     const issueTypeClasses = {
@@ -87,7 +87,7 @@ export default function SupportTicketsTable({ tickets, onViewTicket, onDeleteTic
                     {ticket.id}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
-                    {ticket.school}
+                    {ticket.school?.name}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {ticket.created_by}
