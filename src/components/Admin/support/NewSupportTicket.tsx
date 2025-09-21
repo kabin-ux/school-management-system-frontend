@@ -6,11 +6,21 @@ interface NewSupportTicketProps {
   onAdd: (ticket: SupportTicketForm) => void;
 }
 
+const issueTypes = [
+  { key: "FEATURE REQUEST", value: "feature_request" },
+  { key: "BUG REPORT", value: "bug_report" },
+  { key: "GENERAL INQUIRY", value: "general_inquiry" },
+  { key: "BILLING", value: "billing" },
+  { key: "OTHER", value: "other" },
+];
+
+
 export const NewSupportTicket: React.FC<NewSupportTicketProps> = ({ isLoading, onAdd }) => {
 
   const [formData, setFormData] = useState<SupportTicketForm>({
     title: "",
     description: "",
+    type: "general_inquiry"
     // status: ""
   });
 
@@ -30,15 +40,13 @@ export const NewSupportTicket: React.FC<NewSupportTicketProps> = ({ isLoading, o
     setFormData({
       title: "",
       description: "",
-      // status: ""
+      type: "general_inquiry"
     })
   };
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
       <h3 className="text-lg font-semibold text-gray-900 mb-4">New Support Ticket</h3>
-      <p className="text-gray-600 text-sm mb-6">Submit a new support request</p>
-
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Issue Title *</label>
@@ -52,45 +60,6 @@ export const NewSupportTicket: React.FC<NewSupportTicketProps> = ({ isLoading, o
           />
         </div>
 
-        {/* <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Issue Category *</label>
-          <div className="flex gap-4">
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="category"
-                value="App"
-                checked={issueCategory === 'App'}
-                onChange={(e) => setIssueCategory(e.target.value)}
-                className="mr-2"
-              />
-              App
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="category"
-                value="Website"
-                checked={issueCategory === 'Website'}
-                onChange={(e) => setIssueCategory(e.target.value)}
-                className="mr-2"
-              />
-              Website
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="category"
-                value="Others"
-                checked={issueCategory === 'Others'}
-                onChange={(e) => setIssueCategory(e.target.value)}
-                className="mr-2"
-              />
-              Others
-            </label>
-          </div>
-        </div> */}
-
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Description *</label>
           <textarea
@@ -103,10 +72,29 @@ export const NewSupportTicket: React.FC<NewSupportTicketProps> = ({ isLoading, o
           />
         </div>
 
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Select issue type <span className="text-red-500">*</span>
+          </label>
+          <select
+            name="type"
+            value={formData.type}
+            onChange={handleChange}
+            className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+          >
+            <option value="">-- Select Issue Type --</option>
+            {issueTypes.map(type => (
+              <option key={type.key} value={type.value}>
+                {type.key}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <button
           className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg shadow-sm transition-all disabled:opacity-70 disabled:cursor-not-allowed"
           onClick={handleSubmit}
-          disabled={isLoading}
+          disabled={isLoading || !formData.title || !formData.description}
         >
           {isLoading ? (
             <>

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk,type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import api from "../lib/axios";
 
 //  TYPES 
@@ -18,6 +18,7 @@ export interface SchoolAdminDashboard {
   totalClasses: number;
   totalStudents: number;
   totalTeachers: number;
+  totalParents: number;
   totalAccountant: number;
   totalSupportTicket: number;
   last7DaysAttendanceGraphData: AttendanceData[];

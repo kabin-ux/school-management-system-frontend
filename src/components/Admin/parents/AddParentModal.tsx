@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, User, Mail, Phone, MapPin, Users } from 'lucide-react'; // Added Users icon
-import type { Student } from '../../../features/studentSlice';
+import type { Student } from '../../../types/student.types';
 
 interface Parent {
     id?: number;

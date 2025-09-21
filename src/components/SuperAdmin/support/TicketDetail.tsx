@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
-import type { SupportTicket } from '../../../types/support.types';
 import { getStatusAction } from '../../../lib/utils';
+import type { SupportTicket } from '../../../types/support.types';
 
 interface TicketDetailProps {
   selectedTicket: SupportTicket | null;
@@ -14,29 +13,6 @@ interface TicketDetailProps {
 }
 
 export default function TicketDetail({ selectedTicket, onAccept, onResolve, onBack, onClose, isLoading, isLoadingClose }: TicketDetailProps) {
-  const [newMessage, setNewMessage] = useState('');
-  const [status, setStatus] = useState('Open');
-  const [notificationMessage, setNotificationMessage] = useState('');
-
-  const handleSendMessage = () => {
-    if (newMessage.trim()) {
-      console.log('Sending message:', newMessage);
-      setNewMessage('');
-    }
-  };
-
-  const handleStatusChange = (newStatus: string) => {
-    setStatus(newStatus);
-    console.log('Status changed to:', newStatus);
-  };
-
-  const handleSendNotification = () => {
-    if (notificationMessage.trim()) {
-      console.log('Sending notification:', notificationMessage);
-      setNotificationMessage('');
-    }
-  };
-
   const handleClick = () => {
     if (selectedTicket?.status === 'in_progress') {
       onResolve(selectedTicket.id);

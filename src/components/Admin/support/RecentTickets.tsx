@@ -1,37 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import type { SupportTicket } from '../../../types/support.types';
+import EmptyState from '../../../common/EmptyState';
+import { Tags } from 'lucide-react';
+import { getStatusAction, getTicketType } from '../../../lib/utils';
 
-export const RecentTickets: React.FC = () => {
+interface RecentTicketsProps {
+  tickets: SupportTicket[];
+}
+
+export const RecentTickets: React.FC<RecentTicketsProps> = ({ tickets }) => {
   const navigate = useNavigate();
-  const tickets = [
-    { id: '1', ticketId: 'TIC-001', submittedBy: 'Evergreen Academy', assignedTo: 'Sarah Johnson', issueType: 'Admin', status: 'Other', priority: 'High', lastModified: '2024-01-15 14:30', action: 'View and edit' },
-    { id: '2', ticketId: 'TIC-002', submittedBy: 'Greenwood High', assignedTo: 'Michael Chen', issueType: 'Accountant', status: 'Low', priority: 'Medium', lastModified: '2024-01-15 14:30', action: 'View and edit' },
-    { id: '3', ticketId: 'TIC-003', submittedBy: 'Lakeside School', assignedTo: 'Emily Rodriguez', issueType: 'Admin', status: 'Website', priority: 'High', lastModified: '2024-01-15 14:30', action: 'View and edit' },
-    { id: '4', ticketId: 'TIC-004', submittedBy: 'Hillside Prep', assignedTo: 'David Thompson', issueType: 'Admin', status: 'Website', priority: 'Medium', lastModified: '2024-01-15 14:30', action: 'View and edit' },
-    { id: '5', ticketId: 'TIC-005', submittedBy: 'Riverside Academy', assignedTo: 'Lisa Anderson', issueType: 'Accountant', status: 'Other', priority: 'Low', lastModified: '2024-01-15 14:30', action: 'View and edit' },
-    { id: '6', ticketId: 'TIC-006', submittedBy: 'Maplewood Institute', assignedTo: 'Robert Kim', issueType: 'Admin', status: 'Website', priority: 'Medium', lastModified: '2024-01-15 14:30', action: 'View and edit' },
-    { id: '7', ticketId: 'TIC-007', submittedBy: 'Cedar Valley School', assignedTo: 'Jennifer Walsh', issueType: 'Accountant', status: 'Website', priority: 'Medium', lastModified: '2024-01-15 14:30', action: 'View and edit' },
-    { id: '8', ticketId: 'TIC-008', submittedBy: 'Pinecrest High', assignedTo: 'Mark Garcia', issueType: 'Admin', status: 'Website', priority: 'Medium', lastModified: '2024-01-15 14:30', action: 'View and edit' },
-  ];
-
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Other': return 'bg-blue-100 text-blue-800';
-      case 'Low': return 'bg-red-100 text-red-800';
-      case 'Website': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'High': return 'bg-red-100 text-red-800';
-      case 'Medium': return 'bg-yellow-100 text-yellow-800';
-      case 'Low': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
 
   const handleViewTicket = (ticketId: string) => {
     console.log('Viewing ticket:', ticketId);
@@ -45,48 +24,125 @@ export const RecentTickets: React.FC = () => {
         <h3 className="text-lg font-semibold text-gray-900">Recent tickets</h3>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Submitted by</th>
-              <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Date</th>
-              <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Issue Type</th>
-              <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Priority</th>
-              <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Status</th>
-              <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Latest Modified</th>
-              <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tickets.map((ticket, index) => (
-              <tr key={index} className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer"
-                onClick={() => handleViewTicket(ticket.id)}
-              >
-                <td className="p-4 text-gray-900">{ticket.submittedBy}</td>
-                <td className="p-4 text-gray-900">{ticket.assignedTo}</td>
-                <td className="p-4 text-gray-900">{ticket.issueType}</td>
-                <td className="p-4">
-                  <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getPriorityColor(ticket.priority)}`}>
-                    {ticket.priority}
-                  </span>
-                </td>
-                <td className="p-4">
-                  <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(ticket.status)}`}>
-                    {ticket.status}
-                  </span>
-                </td>
-                <td className="p-4 text-gray-900">{ticket.lastModified}</td>
-                <td className="p-4">
-                  <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                    {ticket.action}
-                  </button>
-                </td>
+      {!tickets || tickets.length === 0 ? (
+        <EmptyState
+          title="No Support Tickets found"
+          description="There are currently no support tickets."
+          icon={<Tags className="w-14 h-14 text-gray-400" />}
+        />
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Date</th>
+                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Issue Type</th>
+                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Title</th>
+                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Description</th>
+                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Status</th>
+                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Latest Modified</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {tickets.map((ticket, index) => (
+                <tr
+                  key={index}
+                  className="border-b border-gray-100 hover:bg-blue-50 cursor-pointer transition-all duration-200 hover:shadow-sm group"
+                  onClick={() => handleViewTicket(ticket.id)}
+                >
+                  {/* Created Date */}
+                  <td className="p-4 text-sm text-gray-600 whitespace-nowrap">
+                    <div className="flex flex-col">
+                      <span className="font-medium text-gray-800">
+                        {ticket?.createdAt ? new Date(ticket.createdAt).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric'
+                        }) : "N/A"}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {ticket?.createdAt ? new Date(ticket.createdAt).toLocaleTimeString('en-US', {
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        }) : ""}
+                      </span>
+                    </div>
+                  </td>
+
+                  {/* Type */}
+                  <td className="p-4 text-sm whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 rounded-full bg-blue-500 mr-2"></div>
+                      <span className="font-medium text-gray-900">
+                        {getTicketType(ticket.type)}
+                      </span>
+                    </div>
+                  </td>
+
+                  {/* Title */}
+                  <td className="p-4 text-sm whitespace-nowrap">
+                    <div className="max-w-xs">
+                      <p className="font-semibold text-gray-900 group-hover:text-blue-700 transition-colors truncate">
+                        {ticket.title}
+                      </p>
+                    </div>
+                  </td>
+
+                  {/* Description */}
+                  <td className="p-4 text-sm">
+                    <div className="max-w-sm">
+                      <p className="text-gray-600 line-clamp-2 leading-relaxed">
+                        {ticket.description}
+                      </p>
+                    </div>
+                  </td>
+
+                  {/* Status Badge */}
+                  <td className="p-4">
+                    {(() => {
+                      const statusInfo = getStatusAction(ticket.status);
+                      return (
+                        <span
+                          className={`inline-flex px-3 py-1 rounded-full text-xs font-medium  ${statusInfo.bgColor} ${statusInfo.textColor}`}
+                        >
+                          {statusInfo.label}
+                        </span>
+                      );
+                    })()}
+                  </td>
+
+                  {/* Updated Date */}
+                  <td className="p-4 text-sm text-gray-600 whitespace-nowrap">
+                    <div className="flex flex-col">
+                      <span className="font-medium text-gray-800">
+                        {ticket?.updatedAt
+                          ? new Date(ticket.updatedAt).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                          })
+                          : "N/A"}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {ticket?.updatedAt
+                          ? new Date(ticket.updatedAt).toLocaleTimeString('en-US', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })
+                          : ""}
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+
+      }
+
+
 
       {/* Pagination */}
       <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-between items-center">

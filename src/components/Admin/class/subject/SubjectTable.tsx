@@ -1,15 +1,16 @@
 import React from 'react';
-import {  BookUser, Edit,  Trash2 } from 'lucide-react';
+import { BookUser, Edit, Equal, Trash2 } from 'lucide-react';
 import EmptyState from '../../../../common/EmptyState';
 import type { Subject } from '../../../../features/subjectSlice';
 
 interface SubjectTableProps {
     subjects: Subject[];
+    onAssignTeacher: (subject: Subject) => void;
     onEdit: (cls: Subject) => void;
     onDelete: (classId: string) => void;
 }
 
-export const SubjectTable: React.FC<SubjectTableProps> = ({ subjects, onEdit, onDelete }) => {
+export const SubjectTable: React.FC<SubjectTableProps> = ({ subjects, onAssignTeacher, onEdit, onDelete }) => {
     return (
         <div className="bg-white rounded-lg shadow-sm">
 
@@ -40,9 +41,14 @@ export const SubjectTable: React.FC<SubjectTableProps> = ({ subjects, onEdit, on
                                         >
                                             <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.name}</td>
                                             <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.code}</td>
-                                            <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.teacher}</td>
+                                            <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.teacher_id}</td>
                                             <td className="p-4">
                                                 <div className="flex items-center gap-2">
+                                                    <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
+                                                        onClick={() => onAssignTeacher(subject)}
+                                                    >
+                                                        <Equal className="w-4 h-4" />
+                                                    </button>
                                                     <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
                                                         onClick={() => onEdit(subject)}
                                                     >

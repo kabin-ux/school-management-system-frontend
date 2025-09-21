@@ -22,12 +22,12 @@ export const ParentGrid: FC<ParentGridModalProps> = ({ parents, onEdit, onDelete
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {parents.map((parent) => (
+          {parents?.map((parent) => (
             <div key={parent.id} className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
               <div className="flex flex-col items-center text-center mb-4">
                 <img
-                  src={parent.avatar}
-                  alt={parent.name}
+                  src={parent?.avatar}
+                  alt={parent?.name}
                   className="w-16 h-16 rounded-full object-cover mb-3"
                 />
                 <h3 className="font-semibold text-gray-900">{parent.name}</h3>

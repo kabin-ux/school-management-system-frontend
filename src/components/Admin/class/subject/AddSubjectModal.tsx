@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { Users, X } from "lucide-react";
+import type { Teacher } from "../../../../types/teacher.types";
 
 interface SubjectForm {
     name: string;
     code: string;
     description: string;
     class_id: string;
+    teacher_id?: string;
 }
 
 interface SubjectModalProps {
@@ -13,6 +15,7 @@ interface SubjectModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSubmit: (section: Omit<SubjectForm, 'id'>) => void;
+    teachers: Teacher[]
     isLoading: boolean;
 }
 
@@ -21,6 +24,7 @@ export const AddSubjectModal: React.FC<SubjectModalProps> = ({
     isOpen,
     onClose,
     onSubmit,
+    teachers,
     isLoading
 }) => {
     const [formData, setFormData] = useState<SubjectForm>({
@@ -28,6 +32,7 @@ export const AddSubjectModal: React.FC<SubjectModalProps> = ({
         code: "",
         description: "",
         class_id: "",
+        teacher_id:""
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -102,7 +107,7 @@ export const AddSubjectModal: React.FC<SubjectModalProps> = ({
                 <div className="p-6 space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Subject Name *
+                            Subject Name <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
@@ -120,7 +125,7 @@ export const AddSubjectModal: React.FC<SubjectModalProps> = ({
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Subject Code *
+                            Subject Code <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
@@ -138,7 +143,7 @@ export const AddSubjectModal: React.FC<SubjectModalProps> = ({
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Description *
+                            Description <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
@@ -152,6 +157,27 @@ export const AddSubjectModal: React.FC<SubjectModalProps> = ({
                         {errors.description && (
                             <p className="mt-1 text-sm text-red-600">{errors.description}</p>
                         )}
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Assign Teacher <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                            name="teacher_id"
+                            value={formData.teacher_id}
+                            onChange={handleInputChange}
+                            className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.student_id ? 'border-red-500' : 'border-gray-300'
+                                }`}
+                        >
+                            <option value="">-- Select a Teacher --</option>
+                            {teachers.map(teacher => (
+                                <option key={teacher.id} value={teacher.id}>
+                                    {teacher.firstName} {teacher.lastName}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.student_id && <p className="text-red-500 text-xs mt-1">{errors.student_id}</p>}
                     </div>
                 </div>
 

@@ -38,7 +38,7 @@ export default function DashboardStats({ data }: DashboardStatsProps) {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <StatCard
         title="Total Students"
-        value={data?.totalStudents}
+        value={data?.totalStudents || 0}
         change="+240 this Year"
         changeType="positive"
         icon={<GraduationCap className="w-6 h-6 text-blue-600" />}
@@ -46,7 +46,7 @@ export default function DashboardStats({ data }: DashboardStatsProps) {
       />
       <StatCard
         title="Total Teachers"
-        value={data?.totalTeachers}
+        value={data?.totalTeachers || 0}
         change="98%"
         changeType="positive"
         icon={<Users className="w-6 h-6 text-green-600" />}
@@ -54,7 +54,7 @@ export default function DashboardStats({ data }: DashboardStatsProps) {
       />
       <StatCard
         title="Total Parents"
-        value={data?.totalClasses}
+        value={data?.totalParents || 0}
         change="Active teaching staff"
         changeType="positive"
         icon={<Users className="w-6 h-6 text-purple-600" />}
@@ -62,7 +62,7 @@ export default function DashboardStats({ data }: DashboardStatsProps) {
       />
       <StatCard
         title="Active Classes"
-        value={data?.totalClasses}
+        value={data?.totalClasses || 0}
         change=""
         changeType="positive"
         icon={<BookOpen className="w-6 h-6 text-orange-600" />}
@@ -70,7 +70,7 @@ export default function DashboardStats({ data }: DashboardStatsProps) {
       />
       <StatCard
         title="Total Accountants"
-        value={data?.totalAccountant}
+        value={data?.totalAccountant || 0}
         change=""
         changeType="positive"
         icon={<Calendar className="w-6 h-6 text-pink-600" />}
@@ -78,7 +78,7 @@ export default function DashboardStats({ data }: DashboardStatsProps) {
       />
       <StatCard
         title="Open Support Tickets"
-        value={data?.totalSupportTicket}
+        value={data?.totalSupportTicket || 0}
         change=""
         changeType="positive"
         icon={<Headphones className="w-6 h-6 text-indigo-600" />}

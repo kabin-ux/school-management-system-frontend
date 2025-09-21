@@ -6,6 +6,7 @@ export interface Subject {
   id: string;
   name: string;
   code?: string | null;
+  teacher_id?: string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -148,6 +149,27 @@ export const deleteSubject = createAsyncThunk(
   }
 );
 
+//  Assign subjects to teacher
+export const assignSubjectsToTeacher = createAsyncThunk(
+  "subjects/assignTeacher",
+  async (
+    { teacherId, subjectId }: { teacherId: string; subjectId: string },
+    thunkAPI
+  ) => {
+    try {
+      const res = await api.put(`/subject/assign-teacher`, {
+        subjectId,
+        teacherId
+      });
+      return res.data; // message + status
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || err.message
+      );
+    }
+  }
+);
+
 // Slice
 const subjectSlice = createSlice({
   name: "subjects",
@@ -213,6 +235,11 @@ const subjectSlice = createSlice({
     builder.addCase(deleteSubject.fulfilled, (state, action: PayloadAction<string>) => {
       state.subjects = state.subjects.filter((s) => s.id !== action.payload);
       state.loading = false;
+    });
+
+    builder.addCase(assignSubjectsToTeacher.fulfilled, (state) => {
+      state.loading = false;
+      state.error = null;
     });
 
     // Handle pending and rejected

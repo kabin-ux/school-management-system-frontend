@@ -161,8 +161,8 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onAdd, isLoadi
         {/* Submit */}
         <button
           type="button"
-          disabled={isLoading}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+          disabled={isLoading || !formData.title || !formData.description || !formData.eventType || !formData.target || !formData.date || !formData.startTime || !formData.endTime}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg disabled:bg-blue-300 transition-colors flex items-center justify-center gap-2"
           onClick={handleSubmit}
         >
           {isLoading ? (

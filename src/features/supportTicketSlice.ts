@@ -1,15 +1,6 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import api from "../lib/axios";
-
-export interface SupportTicket {
-    id: string;
-    title: string;
-    description: string;
-    status: string;
-    created_by: number;
-    createdAt: string;
-    updatedAt: string;
-}
+import type { SupportTicket } from "../types/support.types";
 
 interface SupportTicketState {
     tickets: SupportTicket[];
@@ -98,6 +89,18 @@ export const getSupportTicketById = createAsyncThunk(
     async (id: string, thunkAPI) => {
         try {
             const res = await api.get(`/support/${id}`);
+            return res.data.data;
+        } catch (err: any) {
+            return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+        }
+    }
+);
+
+export const getSupportTicketBySchool = createAsyncThunk(
+    "supportTickets/getBYSchool",
+    async (id: string, thunkAPI) => {
+        try {
+            const res = await api.get(`/support/my-school/?id=${id}`);
             return res.data.data;
         } catch (err: any) {
             return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
@@ -203,6 +206,19 @@ const supportTicketSlice = createSlice({
             // Delete
             .addCase(deleteSupportTicket.fulfilled, (state, action: PayloadAction<string>) => {
                 state.tickets = state.tickets.filter((t) => t.id !== action.payload);
+            })
+
+              // Get School
+            .addCase(getSupportTicketBySchool.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getSupportTicketBySchool.fulfilled, (state, action: PayloadAction<SupportTicket[]>) => {
+                state.loading = false;
+                state.tickets = action.payload;
+            })
+            .addCase(getSupportTicketBySchool.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
             });
     },
 });

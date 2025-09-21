@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { SupportConsoleHeader } from '../../../components/Admin/support/SupportConsoleHeader';
 import { SupportConsoleStats } from '../../../components/Admin/support/SupportConsoleStats';
 import { NewSupportTicket } from '../../../components/Admin/support/NewSupportTicket';
@@ -6,12 +6,16 @@ import { RecentTickets } from '../../../components/Admin/support/RecentTickets';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { createSupportTicket } from '../../../features/supportTicketSlice';
+import { createSupportTicket, getSupportTicketBySchool } from '../../../features/supportTicketSlice';
 import toast from 'react-hot-toast';
 
 const AdminSupportConsole: React.FC = () => {
     const dispatch = useAppDispatch();
     const { tickets, loading } = useAppSelector(state => state.supportTicket);
+
+    useEffect(() => {
+        dispatch(getSupportTicketBySchool(''));
+    }, [dispatch])
 
     const handleAddSupportTicket = async (supportTicketData: any) => {
         try {
@@ -45,7 +49,9 @@ const AdminSupportConsole: React.FC = () => {
                             onAdd={handleAddSupportTicket}
                             isLoading={loading}
                         />
-                        <RecentTickets />
+                        <RecentTickets
+                            tickets={tickets}
+                        />
                     </div>
                 </main>
             </div>

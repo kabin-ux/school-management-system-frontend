@@ -86,25 +86,7 @@ export const assignClassesToTeacher = createAsyncThunk(
     }
 );
 
-//  Assign subjects to teacher
-export const assignSubjectsToTeacher = createAsyncThunk(
-    "teacher/assignSubjects",
-    async (
-        { teacherId, subjectIds }: { teacherId: number; subjectIds: number[] },
-        thunkAPI
-    ) => {
-        try {
-            const res = await api.post(`/teacher/${teacherId}/assign-subjects`, {
-                subjectIds,
-            });
-            return res.data; // message + status
-        } catch (err: any) {
-            return thunkAPI.rejectWithValue(
-                err.response?.data?.message || err.message
-            );
-        }
-    }
-);
+
 
 //  Assign class teacher
 export const assignClassTeacher = createAsyncThunk(
@@ -219,18 +201,7 @@ const teacherSlice = createSlice({
             state.error = action.payload as string;
         });
 
-        builder.addCase(assignSubjectsToTeacher.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        });
-        builder.addCase(assignSubjectsToTeacher.fulfilled, (state) => {
-            state.loading = false;
-            state.error = null;
-        });
-        builder.addCase(assignSubjectsToTeacher.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string;
-        });
+      
 
         // Assign Class Teacher
         builder.addCase(assignClassTeacher.pending, (state) => {

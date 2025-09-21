@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {getClassDetails } from "../../../../features/classSlice";
+import { getClassDetails } from "../../../../features/classSlice";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import toast from "react-hot-toast";
 import { Sidebar } from "../../../../components/Admin/layout/Sidebar";
@@ -8,8 +8,10 @@ import { useParams } from "react-router-dom";
 import { SubjectHeader } from "../../../../components/Admin/class/subject/SubjectHeader";
 import { SubjectStats } from "../../../../components/Admin/class/subject/SubjectStats";
 import { SubjectTable } from "../../../../components/Admin/class/subject/SubjectTable";
-import { addSubject, deleteSubject,  getAllSubjectsByClass, updateSubject, type Subject } from "../../../../features/subjectSlice";
+import { addSubject, assignSubjectsToTeacher, deleteSubject, getAllSubjectsByClass, updateSubject, type Subject } from "../../../../features/subjectSlice";
 import { AddSubjectModal } from "../../../../components/Admin/class/subject/AddSubjectModal";
+import { getAllTeachers } from "../../../../features/teacherSlice";
+import { AssignTeacherModal, type AssignTeacherForm } from "../../../../components/Admin/class/subject/AssignTeacherModal";
 
 
 const SubjectManagement: React.FC = () => {
@@ -17,10 +19,13 @@ const SubjectManagement: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
+    const [isAssignTeacherModalOpen, setIsAssignTeacherModalOpen] = useState(false);
+
 
     const dispatch = useAppDispatch();
     const { classDetails } = useAppSelector(state => state.class)
     const { subjectsByClass, loading } = useAppSelector(state => state.subject)
+    const { teachers } = useAppSelector(state => state.teacher)
 
     const { id } = useParams<{ id: string }>()
     const classId: string = id ?? "";
@@ -29,6 +34,7 @@ const SubjectManagement: React.FC = () => {
     useEffect(() => {
         dispatch(getClassDetails(classId))
         dispatch(getAllSubjectsByClass(classId))
+        dispatch(getAllTeachers())
     }, [dispatch])
 
     const openModal = () => {
@@ -83,6 +89,25 @@ const SubjectManagement: React.FC = () => {
             console.error('Error deleting subject', error)
         }
     }
+
+    const assignTeacher = (subject: Subject) => {
+                setSelectedSubject(subject)
+        setIsAssignTeacherModalOpen(true)
+    }
+
+    const handleAssignTeacher = async (data: AssignTeacherForm) => {
+        try {
+            const res = await dispatch(assignSubjectsToTeacher(data))
+            if (assignSubjectsToTeacher.fulfilled.match(res)) {
+                toast.success('Teacher assigned to subject successfully')
+            } else {
+                toast.error('Error assigning Teacher')
+            }
+        } catch (error) {
+            toast.error('Error updating Teacher')
+            console.error('Error updating Teacher', error)
+        }
+    }
     return (
         <div className="flex h-full bg-gray-50">
             {/* Sidebar */}
@@ -104,6 +129,7 @@ const SubjectManagement: React.FC = () => {
                         <SubjectStats />
                         <SubjectTable
                             subjects={subjectsByClass}
+                            onAssignTeacher={assignTeacher}
                             onEdit={handleEditSubject}
                             onDelete={handleDeleteSubject}
                         />
@@ -114,6 +140,16 @@ const SubjectManagement: React.FC = () => {
                             onClose={() => setIsModalOpen(false)}
                             onSubmit={handleAddSubject}
                             isLoading={loading}
+                            teachers={teachers}
+                        />
+
+                        <AssignTeacherModal
+                            isOpen={isAssignTeacherModalOpen}
+                            onClose={() => setIsAssignTeacherModalOpen(false)}
+                            subjectId={selectedSubject?.id}
+                            onSubmit={handleAssignTeacher}
+                            isLoading={loading}
+                            teachers={teachers}
                         />
                     </div>
                 </main>
