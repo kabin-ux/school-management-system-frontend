@@ -62,12 +62,12 @@ export default function TeacherGrid({ teachers, onEdit, onDelete }: TeacherGridP
                   <div className="flex items-start gap-2 text-gray-600">
                     <BookOpen className="w-4 h-4 mt-0.5" />
                     <div className="flex flex-wrap gap-1">
-                      {/* {teacher?.teacherSubjects?.map((subject, index) => (
-                <span key={index} className="text-blue-600 text-xs">
-                  {subject}
-                  {index < teacher.teacherSubjects.length - 1 ? ',' : ''}
-                </span>
-              ))} */}
+                      {teacher?.subjects?.map((subject, index) => (
+                        <span key={index} className="text-blue-600 text-xs">
+                          {subject.name}
+                          {index < teacher.subjects.length - 1 ? ',' : ''}
+                        </span>
+                      ))}
                     </div>
                   </div>
                   <div className="flex items-start gap-2 text-gray-600">

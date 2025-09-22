@@ -1,3 +1,5 @@
+import type { Subject } from "./class.types";
+
 export interface Activity {
   id: string;
   type: 'student' | 'timetable' | 'exam' | 'support' | 'teacher';
@@ -19,6 +21,7 @@ export interface Teacher {
   classIds: number[];
   subjectIds: number[];
   status?: string;
+  subjects?: Subject[];
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;

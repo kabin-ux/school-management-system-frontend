@@ -1,6 +1,7 @@
 export interface Subject {
   name: string;
   code: string;
+  description:string;
   teacher: string;
   periods: number;
 }

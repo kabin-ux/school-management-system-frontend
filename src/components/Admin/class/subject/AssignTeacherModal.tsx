@@ -28,7 +28,7 @@ export const AssignTeacherModal: React.FC<AssignTeacherModalProps> = ({
         subjectId: subjectId,
         teacherId: ""
     });
-    console.log("subject", subjectId)
+    console.log("subject", subjectId, teachers)
 
     const [errors, setErrors] = useState<Record<string, string>>({});
 

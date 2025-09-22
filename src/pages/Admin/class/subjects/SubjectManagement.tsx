@@ -12,6 +12,7 @@ import { addSubject, assignSubjectsToTeacher, deleteSubject, getAllSubjectsByCla
 import { AddSubjectModal } from "../../../../components/Admin/class/subject/AddSubjectModal";
 import { getAllTeachers } from "../../../../features/teacherSlice";
 import { AssignTeacherModal, type AssignTeacherForm } from "../../../../components/Admin/class/subject/AssignTeacherModal";
+import EditSubjectModal from "../../../../components/Admin/class/subject/EditSubjectModal";
 
 
 const SubjectManagement: React.FC = () => {
@@ -36,6 +37,10 @@ const SubjectManagement: React.FC = () => {
         dispatch(getAllSubjectsByClass(classId))
         dispatch(getAllTeachers())
     }, [dispatch])
+
+    const filteredTeachers = teachers.filter((teacher) => teacher.subjects.length === 0);
+
+    console.log("filterd teacher", filteredTeachers)
 
     const openModal = () => {
         setIsModalOpen(true)
@@ -91,7 +96,7 @@ const SubjectManagement: React.FC = () => {
     }
 
     const assignTeacher = (subject: Subject) => {
-                setSelectedSubject(subject)
+        setSelectedSubject(subject)
         setIsAssignTeacherModalOpen(true)
     }
 
@@ -143,13 +148,23 @@ const SubjectManagement: React.FC = () => {
                             teachers={teachers}
                         />
 
+                        <EditSubjectModal
+                            isOpen={isEditModalOpen}
+                            onClose={() => {
+                                setIsEditModalOpen(false);
+                                setSelectedSubject(null);
+                            }}
+                            onSubmit={handleUpdateSubject}
+                            subject={selectedSubject}
+                        />
+
                         <AssignTeacherModal
                             isOpen={isAssignTeacherModalOpen}
                             onClose={() => setIsAssignTeacherModalOpen(false)}
                             subjectId={selectedSubject?.id}
                             onSubmit={handleAssignTeacher}
                             isLoading={loading}
-                            teachers={teachers}
+                            teachers={filteredTeachers}
                         />
                     </div>
                 </main>

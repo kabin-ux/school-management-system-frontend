@@ -128,6 +128,7 @@ export const updateSubject = createAsyncThunk(
     thunkAPI
   ) => {
     try {
+      console.log("id subject", id)
       const res = await api.put(`/subject/${id}`, updates);
       return res.data.data;
     } catch (err: any) {

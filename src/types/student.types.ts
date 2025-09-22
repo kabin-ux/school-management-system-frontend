@@ -21,7 +21,7 @@ export interface Student {
   updatedAt?: Date;
 
   // Relations
-  classes: Grade;
+  class: Grade;
   section: Section;
 }
 

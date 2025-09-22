@@ -89,7 +89,7 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
 
                   {/* Class & Section */}
                   <td className="px-6 py-4 text-sm text-gray-500">
-                    {student.classes?.name} {student.section?.section_name}
+                    {student.class?.name} {student.section?.section_name}
                   </td>
 
 
