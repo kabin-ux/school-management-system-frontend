@@ -15,6 +15,19 @@ export interface FeeStructureAttributes {
   transportation?: Transportation[];
 }
 
+export interface Salary {
+  id: string;
+  employee_id: string;
+  basic: number;
+  allowances: number;
+  role: 'teacher' | 'accountant' | 'staff';
+  created_by: string;
+  remarks?: string | null;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
+}
+
 export interface Teacher {
   id: string;
   name: string;

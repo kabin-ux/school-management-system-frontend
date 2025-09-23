@@ -1,5 +1,5 @@
 import React from 'react';
-import type { FeeStructureAttributes, Teacher, ViewType } from '../../../types/fee-salary.types';
+import type { FeeStructureAttributes, Salary, Teacher, ViewType } from '../../../types/fee-salary.types';
 import { StatusBadge } from './StatusBadge';
 import { DollarSign, Edit, Trash2 } from 'lucide-react';
 import type { FeeStructureForm } from './AddFeeStructureModal';
@@ -8,7 +8,7 @@ import EmptyState from '../../../common/EmptyState';
 interface DataTableProps {
   activeView: ViewType;
   students: FeeStructureAttributes[];
-  teachers: Teacher[];
+  teachers: Salary[];
   // onRowClick: (id: string) => void;
   onEdit: (feeStructure: FeeStructureForm) => void;
   onDelete: (feeStructureId: string) => void;
@@ -23,6 +23,8 @@ export const DataTable: React.FC<DataTableProps> = ({
   onDelete
 }) => {
   const data = activeView === 'Student' ? students : teachers;
+
+  console.log(students)
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100">
@@ -54,22 +56,22 @@ export const DataTable: React.FC<DataTableProps> = ({
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? 'Fee ID' : 'Teacher ID'}
+                  {activeView === 'Student' ? 'Fee ID' : 'Teacher Name'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? 'Class' : 'Teacher Name'}
+                  {activeView === 'Student' ? 'Class' : 'Basic Salary'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? 'Monthly Fee' : 'Department'}
+                  {activeView === 'Student' ? 'Monthly Fee' : 'Allowances'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? 'Exam Fee' : 'Last Paid'}
+                  {activeView === 'Student' ? 'Exam Fee' : 'Total Salary'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? 'Total' : 'Total Salary'}
+                  {activeView === 'Student' ? 'Total' : 'Role'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
+                  {activeView === 'Student' ? 'Status' : 'Creator'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
@@ -132,7 +134,7 @@ export const DataTable: React.FC<DataTableProps> = ({
                     </tr>
                   );
                 } else {
-                  const teacher = item as Teacher;
+                  const teacher = item as Salary;
                   return (
                     <tr
                       key={index}
@@ -142,20 +144,36 @@ export const DataTable: React.FC<DataTableProps> = ({
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">
                         {teacher.id}
                       </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">
+                        {teacher.basic}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {teacher.name}
+                        {teacher.allowances}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {teacher.department}
+                        {/* {teacher.role} */}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {teacher.lastPaid}
+                        {teacher.role}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                        {teacher.totalSalary}
+                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        {/* {teacher.role} */}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <StatusBadge status={teacher.status} />
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <button
+                            className="text-blue-400 hover:text-gray-600"
+                            onClick={() => onEdit(student)}
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                          <button
+                            className="text-red-400 hover:text-gray-600"
+                            onClick={() => onDelete(student.id)}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );

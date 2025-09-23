@@ -1,3 +1,5 @@
+import type { School } from "./partner-school.types";
+
 export interface Subject {
   name: string;
   code: string;
@@ -28,4 +30,6 @@ export interface Grade {
   class_teacher_id: string | null;
   createdAt: string;
   updatedAt: string;
+
+  school?: School[];
 }

@@ -14,22 +14,38 @@ import { getAllTransportation } from '../../../features/transportationSlice';
 import { AddFeeStructureModal, type FeeStructureForm } from '../../../components/Accountant/feesandsalary/AddFeeStructureModal';
 import toast from 'react-hot-toast';
 import EditFeeStructureModal from '../../../components/Accountant/feesandsalary/EditFeeStructureModal';
+import { createSalaryStructure, getMySchoolSalaryStructures } from '../../../features/salarySlice';
+import { AddSalaryStructureModal, type SalaryStructureForm } from '../../../components/Accountant/feesandsalary/salary/AddSalaryStructureModal';
+import { getAllTeachers } from '../../../features/teacherSlice';
+import { getAllAccountantBySchool } from '../../../features/accountantSlice';
 
 export default function FeeAndSalaryPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSalaryModalOpen, setIsSalaryModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isEditSalaryModalOpen, setIsEditSalaryModalOpen] = useState(false);
     const [selectedFeeStructure, setSelectedFeeStructure] = useState<FeeStructureForm | null>(null);
+    const [selectedSalaryStructure, setSelectedSalaryStructure] = useState<FeeStructureForm | null>(null);
 
     const dispatch = useAppDispatch();
-    const { mySchoolFeeStructures, loading } = useAppSelector(state => state.fees);
+    const { feeStructures, loading } = useAppSelector(state => state.fees);
+    const { salaryStructures, isLoading } = useAppSelector(state => state.salary);
     const { classes } = useAppSelector(state => state.class);
     const { items } = useAppSelector(state => state.transportation);
+    const { teachers } = useAppSelector(state => state.teacher);
+    const { accountants } = useAppSelector(state => state.accountant);
 
     useEffect(() => {
         dispatch(getMySchoolFeesStructures())
         dispatch(getAllClassesBySchool())
         dispatch(getAllTransportation())
-    }, [dispatch])
+        dispatch(getMySchoolSalaryStructures())
+
+        dispatch(getAllTeachers())
+        dispatch(getAllAccountantBySchool())
+    }, [])
+
+    console.log("student", feeStructures)
 
     const {
         activeView,
@@ -50,13 +66,6 @@ export default function FeeAndSalaryPage() {
         resetPaymentForm,
         setSelectedStudent
     } = useFeeSalary();
-
-
-    const teachers: Teacher[] = [
-        { id: 'TC-001', name: 'Ramesh Prasad', department: 'Science', lastPaid: 'Jan 3,2025', totalSalary: 'Rs 50,000', dueAmount: 'Rs 0', status: 'Paid' },
-        { id: 'TC-002', name: 'Ramesh Prasad', department: 'Management', lastPaid: 'Jan 3,2025', totalSalary: 'Rs 50,000', dueAmount: 'Rs 30,000', status: 'Unpaid' },
-        // ... more teachers
-    ];
 
     const handleSubmitPayment = () => {
         console.log('Submitting payment:', { paymentAmount, paymentType, feeCategory, additionalNotes });
@@ -113,6 +122,22 @@ export default function FeeAndSalaryPage() {
         } catch (error) {
             toast.error('Error adding Fee Structure')
             console.error('Error adding Fee Structure', error)
+        }
+    }
+
+      const handleCreateSalaryStructure = async (salaryData: SalaryStructureForm) => {
+        try {
+            console.log(salaryData)
+            const res = await dispatch(createSalaryStructure(salaryData))
+            if (createSalaryStructure.fulfilled.match(res)) {
+                toast.success('Salary Structure created successfully')
+            } else {
+                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to create salary structure'
+                toast.error(errorMsg)
+            }
+        } catch (error) {
+            toast.error('Error adding Salary Structure')
+            console.error('Error adding Salary Structure', error)
         }
     }
 
@@ -174,10 +199,15 @@ export default function FeeAndSalaryPage() {
                             <p className="text-gray-600 mt-1">Manage student fees, staff salary, payments, and receipts</p>
                         </div>
                         <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center"
-                            onClick={() => setIsModalOpen(true)}
-                        >
+                            onClick={() => {
+                                if (activeView === "Student") {
+                                    setIsModalOpen(true);
+                                } else {
+                                    setIsSalaryModalOpen(true);
+                                }
+                            }}                        >
                             <Banknote className="h-4 w-4 mr-2" />
-                            Create Fee Structure
+                            {activeView === 'Student' ? 'Create Fee Structure' : 'Create Salary Structure'}
                         </button>
                         {/* <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center">
                             <Download className="h-4 w-4 mr-2" />
@@ -194,8 +224,8 @@ export default function FeeAndSalaryPage() {
 
                     <DataTable
                         activeView={activeView}
-                        students={mySchoolFeeStructures}
-                        teachers={teachers}
+                        students={feeStructures}
+                        teachers={salaryStructures}
                         // onRowClick={handleStudentSelect}
                         onEdit={handleEditFeeStructureData}
                         onDelete={handleDeleteFeeStructureData}
@@ -221,6 +251,15 @@ export default function FeeAndSalaryPage() {
                         classes={classes}
                         transportOptions={items}
                         isLoading={loading}
+                    />
+
+                    <AddSalaryStructureModal
+                        isOpen={isSalaryModalOpen}
+                        teachers={teachers}
+                        accountants={accountants}
+                        onClose={() => setIsSalaryModalOpen(false)}
+                        onSubmit={handleCreateSalaryStructure}
+                        isLoading={isLoading}
                     />
                 </main>
             </div>
