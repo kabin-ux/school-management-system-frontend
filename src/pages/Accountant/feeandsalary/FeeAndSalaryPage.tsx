@@ -1,6 +1,6 @@
 import { Banknote } from 'lucide-react';
 import { useFeeSalary } from '../../../hooks/useFeeSalary';
-import type { Teacher } from '../../../types/fee-salary.types';
+import type { Salary, SalaryStructureForm, Teacher } from '../../../types/fee-salary.types';
 import { FilterSection } from '../../../components/Accountant/feesandsalary/FilterSection';
 import { StudentDetailView } from '../../../components/Accountant/feesandsalary/StudentDetailView';
 import { DataTable } from '../../../components/Accountant/feesandsalary/DataTable';
@@ -14,10 +14,11 @@ import { getAllTransportation } from '../../../features/transportationSlice';
 import { AddFeeStructureModal, type FeeStructureForm } from '../../../components/Accountant/feesandsalary/AddFeeStructureModal';
 import toast from 'react-hot-toast';
 import EditFeeStructureModal from '../../../components/Accountant/feesandsalary/EditFeeStructureModal';
-import { createSalaryStructure, getMySchoolSalaryStructures } from '../../../features/salarySlice';
-import { AddSalaryStructureModal, type SalaryStructureForm } from '../../../components/Accountant/feesandsalary/salary/AddSalaryStructureModal';
+import { createSalaryStructure, deleteSalaryStructure, getMySchoolSalaryStructures, updateSalaryStructure } from '../../../features/salarySlice';
+import { AddSalaryStructureModal } from '../../../components/Accountant/feesandsalary/salary/AddSalaryStructureModal';
 import { getAllTeachers } from '../../../features/teacherSlice';
 import { getAllAccountantBySchool } from '../../../features/accountantSlice';
+import EditSalaryStructureModal from '../../../components/Accountant/feesandsalary/salary/EditSalaryStructureModal';
 
 export default function FeeAndSalaryPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,7 +26,7 @@ export default function FeeAndSalaryPage() {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isEditSalaryModalOpen, setIsEditSalaryModalOpen] = useState(false);
     const [selectedFeeStructure, setSelectedFeeStructure] = useState<FeeStructureForm | null>(null);
-    const [selectedSalaryStructure, setSelectedSalaryStructure] = useState<FeeStructureForm | null>(null);
+    const [selectedSalaryStructure, setSelectedSalaryStructure] = useState<Salary | null>(null);
 
     const dispatch = useAppDispatch();
     const { feeStructures, loading } = useAppSelector(state => state.fees);
@@ -33,7 +34,7 @@ export default function FeeAndSalaryPage() {
     const { classes } = useAppSelector(state => state.class);
     const { items } = useAppSelector(state => state.transportation);
     const { teachers } = useAppSelector(state => state.teacher);
-    const { accountants } = useAppSelector(state => state.accountant);
+    const { accountantBySchool } = useAppSelector(state => state.accountant);
 
     useEffect(() => {
         dispatch(getMySchoolFeesStructures())
@@ -94,6 +95,26 @@ export default function FeeAndSalaryPage() {
         }
     }
 
+    const handleEditSalaryStructureData = (salaryStructure: SalaryStructureForm) => {
+        setIsEditSalaryModalOpen(true);
+        setSelectedSalaryStructure(salaryStructure);
+    }
+
+    const handleUpdateSalaryStructure = async (id: string, salaryStructureData: SalaryStructureForm) => {
+        try {
+            const res = await dispatch(updateSalaryStructure({id, salaryStructureData}))
+            if (updateSalaryStructure.fulfilled.match(res)) {
+                toast.success('Salary Structure updated successfully')
+            } else {
+                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to update Salary structure'
+                toast.error(errorMsg)
+            }
+        } catch (error) {
+            toast.error('Error updating Salary Structure')
+            console.error('Error updating Salary Structure', error)
+        }
+    }
+
     const handleDeleteFeeStructureData = async (feeStructureId: string) => {
         try {
             const res = await dispatch(deleteFeesStructure(feeStructureId))
@@ -106,6 +127,21 @@ export default function FeeAndSalaryPage() {
         } catch (error) {
             toast.error('Error removing Fee Structure')
             console.error('Error removing Fee Structure', error)
+        }
+    }
+
+    const handleDeleteSalaryStructureData = async (salaryStructureId: string) => {
+        try {
+            const res = await dispatch(deleteSalaryStructure(salaryStructureId))
+            if (deleteSalaryStructure.fulfilled.match(res)) {
+                toast.success('Salary Structure removed successfully')
+            } else {
+                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to remove Salary structure'
+                toast.error(errorMsg)
+            }
+        } catch (error) {
+            toast.error('Error removing Salary Structure')
+            console.error('Error removing Salary Structure', error)
         }
     }
 
@@ -125,9 +161,9 @@ export default function FeeAndSalaryPage() {
         }
     }
 
-      const handleCreateSalaryStructure = async (salaryData: SalaryStructureForm) => {
+    const handleCreateSalaryStructure = async (salaryData: SalaryStructureForm) => {
         try {
-            console.log(salaryData)
+            console.log("salary", salaryData)
             const res = await dispatch(createSalaryStructure(salaryData))
             if (createSalaryStructure.fulfilled.match(res)) {
                 toast.success('Salary Structure created successfully')
@@ -229,6 +265,8 @@ export default function FeeAndSalaryPage() {
                         // onRowClick={handleStudentSelect}
                         onEdit={handleEditFeeStructureData}
                         onDelete={handleDeleteFeeStructureData}
+                        onEditSalary={handleEditSalaryStructureData}
+                        onDeleteSalary={handleDeleteSalaryStructureData}
                     />
 
                     <AddFeeStructureModal
@@ -256,10 +294,23 @@ export default function FeeAndSalaryPage() {
                     <AddSalaryStructureModal
                         isOpen={isSalaryModalOpen}
                         teachers={teachers}
-                        accountants={accountants}
+                        accountants={accountantBySchool}
                         onClose={() => setIsSalaryModalOpen(false)}
                         onSubmit={handleCreateSalaryStructure}
                         isLoading={isLoading}
+                    />
+
+                    <EditSalaryStructureModal
+                        isOpen={isEditSalaryModalOpen}
+                        teachers={teachers}
+                        accountants={accountantBySchool}
+                        onClose={() => {
+                            setIsEditSalaryModalOpen(false);
+                            setSelectedSalaryStructure(null);
+                        }}
+                        onSubmit={handleUpdateSalaryStructure}
+                        salaryStructure={selectedSalaryStructure}
+                        isLoading={loading}
                     />
                 </main>
             </div>

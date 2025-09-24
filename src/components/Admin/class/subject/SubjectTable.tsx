@@ -41,7 +41,7 @@ export const SubjectTable: React.FC<SubjectTableProps> = ({ subjects, onAssignTe
                                         >
                                             <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.name}</td>
                                             <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.code}</td>
-                                            <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.teacher_id}</td>
+                                            <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.teacher?.firstName} {subject?.teacher?.lastName}</td>
                                             <td className="p-4">
                                                 <div className="flex items-center gap-2">
                                                     <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"

@@ -43,6 +43,7 @@ import { SuperAdminsPage } from './pages/SuperAdmin/superadmins/SuperAdminsPage'
 import TransportationManagement from './pages/Admin/transportation/TransportationManagement';
 import ClassDetails from './pages/Admin/class/details/ClassDetails';
 import SubjectManagement from './pages/Admin/class/subjects/SubjectManagement';
+import SalaryOverview from './pages/Admin/salaryoverview/SalaryOverview';
 
 function App() {
     return (
@@ -171,13 +172,35 @@ function App() {
                             <TransportationManagement />
                         </ProtectedRoute>
                     } />
-                    <Route path='/admin/attendance-monitoring' element={<AttendanceMonitoring />} />
+                    <Route path='/admin/attendance-monitoring' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <AttendanceMonitoring />
+                        </ProtectedRoute>
+                    } />
                     <Route path='/admin/attendance-monitoring/history/:id' element={<AttendanceHistory />} />
                     <Route path='/admin/communication' element={<Communication />} />
-                    <Route path='/admin/event' element={<Events />} />
-                    <Route path='/admin/fee-overview' element={<FeeOverview />} />
+                    <Route path='/admin/event' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <Events />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/admin/fee-overview' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <FeeOverview />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/admin/salary-overview' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <SalaryOverview />
+                        </ProtectedRoute>
+                    } />
+
                     <Route path='/admin/fee-overview/details/:id' element={<FeeDetails />} />
-                    <Route path='/admin/account-management' element={<AccountantManagement />} />
+                    <Route path='/admin/account-management' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <AccountantManagement />
+                        </ProtectedRoute>
+                    } />
                     <Route path='/admin/support' element={<AdminSupportConsole />} />
                     <Route path='/admin/support/details/:id' element={<AdminSupportTicketDetailPage />} />
                     <Route path='/admin/settings' element={<AdminSettings />} />

@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { FeeOverviewHeader } from '../../../components/Admin/feeoverview/FeeOverviewHeader';
-import { FeeOverviewFilters } from '../../../components/Admin/feeoverview/FeeOverviewFilters';
-import { FeeOverviewStats } from '../../../components/Admin/feeoverview/FeeOverviewStats';
-import { FeeOverviewTable } from '../../../components/Admin/feeoverview/FeeOverviewTable';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { getMySchoolFeesStructures } from '../../../features/feesSlice';
+import { SalaryOverviewTable } from '../../../components/Admin/salary/SalaryOverviewTable';
+import { SalaryOverviewHeader } from '../../../components/Admin/salary/SalaryOverviewHeader';
+import { SalaryOverviewFilter } from '../../../components/Admin/salary/SalaryOverviewFilters';
+import { SalaryOverviewStats } from '../../../components/Admin/salary/SalaryOverviewStats';
+import { getMySchoolSalaryStructures } from '../../../features/salarySlice';
 
-const FeeOverview: React.FC = () => {
+const SalaryOverview: React.FC = () => {
     const [searchStudent, setSearchStudent] = useState('');
     const [selectedClass, setSelectedClass] = useState('');
     const [selectedSection, setSelectedSection] = useState('');
     const [selectedTerminal, setSelectedTerminal] = useState('');
     const [selectedDateRange, setSelectedDateRange] = useState('');
-    const { feeStructures } = useAppSelector(state => state.fees)
+    const { salaryStructures } = useAppSelector(state => state.salary)
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(getMySchoolFeesStructures())
+        dispatch(getMySchoolSalaryStructures())
     }, [dispatch])
 
     return (
@@ -32,8 +32,8 @@ const FeeOverview: React.FC = () => {
                 <AdminDashboardHeader />
                 <main className="flex-1 p-6 overflow-y-auto">
                     <div className="max-w-7xl mx-auto">
-                        <FeeOverviewHeader />
-                        <FeeOverviewFilters
+                        <SalaryOverviewHeader />
+                        <SalaryOverviewFilter
                             searchStudent={searchStudent}
                             setSearchStudent={setSearchStudent}
                             selectedClass={selectedClass}
@@ -45,8 +45,8 @@ const FeeOverview: React.FC = () => {
                             selectedDateRange={selectedDateRange}
                             setSelectedDateRange={setSelectedDateRange}
                         />
-                        <FeeOverviewStats />
-                        <FeeOverviewTable feeData={feeStructures} />
+                        <SalaryOverviewStats />
+                        <SalaryOverviewTable salaryData={salaryStructures} />
                     </div>
                 </main>
             </div>
@@ -54,4 +54,4 @@ const FeeOverview: React.FC = () => {
     );
 };
 
-export default FeeOverview;
+export default SalaryOverview;

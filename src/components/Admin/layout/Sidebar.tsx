@@ -33,6 +33,7 @@ const sidebarItems: SidebarItem[] = [
   { icon: MessageSquare, label: "Communication", path: "/admin/communication" },
   { icon: Calendar, label: "Event", path: "/admin/event" },
   { icon: Wallet, label: "Fee Overview", path: "/admin/fee-overview" },
+  { icon: Wallet, label: "Salary Overview", path: "/admin/salary-overview" },
   { icon: UserCog, label: "Account Management", path: "/admin/account-management" },
   { icon: HeadphonesIcon, label: "Support Console", path: "/admin/support" },
   { icon: Settings, label: "Settings", path: "/admin/settings" },

@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { X, User } from "lucide-react";
-import type { Subject } from "../../../../types/class.types";
+import type { Subject, SubjectForm } from "../../../../types/class.types";
 
-interface EditClassForm {
-    name?: string,
-    code?: string,
-    description: string,
-}
 
 interface EditSubjectModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (updates: EditClassForm) => void;
+    onSubmit: (id: string, updates: SubjectForm) => void;
     subject?: Subject | null;
     isLoading?: boolean;
 }
@@ -23,7 +18,7 @@ const EditSubjectModal: React.FC<EditSubjectModalProps> = ({
     subject,
     isLoading = false,
 }) => {
-    const [formData, setFormData] = useState<EditClassForm>({
+    const [formData, setFormData] = useState<SubjectForm>({
         name: "",
         code: "",
         description: "",
@@ -93,8 +88,8 @@ const EditSubjectModal: React.FC<EditSubjectModalProps> = ({
                 {}
             )
         );
-        if (validateForm()) {
-            onSubmit(formData);
+        if (validateForm() && subject) {
+            onSubmit(subject.id, formData);
             onClose();
         }
     };

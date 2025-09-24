@@ -1,25 +1,33 @@
 import type { School } from "./partner-school.types";
+import type { Teacher } from "./teacher.types";
 
 export interface Subject {
+  id: string;
   name: string;
   code: string;
-  description:string;
-  teacher: string;
+  description: string;
+  teacher: Teacher[];
   periods: number;
 }
 
+export interface SubjectForm {
+  name: string,
+  code: string,
+  description: string,
+}
+
 export interface SectionForm {
-    section_name: string;
-    class_id: string;
+  section_name: string;
+  class_id: string;
 }
 
 export interface Section {
-    id: string;
-    section_name: string;
-    class_id: string;
-    createdAt?: Date;
-    updatedAt?: Date;
-    deletedAt?: Date | null;
+  id: string;
+  section_name: string;
+  class_id: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
 }
 
 export interface Grade {

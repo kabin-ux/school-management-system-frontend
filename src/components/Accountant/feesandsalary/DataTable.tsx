@@ -1,5 +1,5 @@
 import React from 'react';
-import type { FeeStructureAttributes, Salary, Teacher, ViewType } from '../../../types/fee-salary.types';
+import type { FeeStructureAttributes, Salary, SalaryStructureForm, Teacher, ViewType } from '../../../types/fee-salary.types';
 import { StatusBadge } from './StatusBadge';
 import { DollarSign, Edit, Trash2 } from 'lucide-react';
 import type { FeeStructureForm } from './AddFeeStructureModal';
@@ -12,6 +12,8 @@ interface DataTableProps {
   // onRowClick: (id: string) => void;
   onEdit: (feeStructure: FeeStructureForm) => void;
   onDelete: (feeStructureId: string) => void;
+  onEditSalary: (salary: SalaryStructureForm) => void;
+  onDeleteSalary: (salaryId: string) => void;
 }
 
 export const DataTable: React.FC<DataTableProps> = ({
@@ -20,7 +22,9 @@ export const DataTable: React.FC<DataTableProps> = ({
   teachers,
   // onRowClick,
   onEdit,
-  onDelete
+  onDelete,
+  onEditSalary,
+  onDeleteSalary
 }) => {
   const data = activeView === 'Student' ? students : teachers;
 
@@ -65,13 +69,13 @@ export const DataTable: React.FC<DataTableProps> = ({
                   {activeView === 'Student' ? 'Monthly Fee' : 'Allowances'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? 'Exam Fee' : 'Total Salary'}
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? 'Total' : 'Role'}
+                  {activeView === 'Student' ? 'Exam Fee' : 'Role'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {activeView === 'Student' ? 'Status' : 'Creator'}
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {activeView === 'Student' ? 'StTotal Feesatus' : 'Total Salary'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
@@ -79,7 +83,7 @@ export const DataTable: React.FC<DataTableProps> = ({
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {data.map((item, index) => {
+              {data?.map((item, index) => {
                 if (activeView === 'Student') {
                   const student = item as FeeStructureAttributes;
                   const total =
@@ -100,21 +104,20 @@ export const DataTable: React.FC<DataTableProps> = ({
                         {student.id}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {student.class?.name ?? '-'}
+                        {student.class?.name ?? '-'} '{student.class?.sections.name ?? '-'}'
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {student.monthly_fee}
+                        Rs. {Number(student.monthly_fee).toLocaleString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {student.exam_fee}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                        {total}
+                        Rs.{Number(student.exam_fee).toLocaleString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <StatusBadge status={student.class?.school?.status ?? 'Unknown'} />
                       </td>
-
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-semibold">
+                        Rs. {Number(total).toLocaleString()}
+                      </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
                           <button
@@ -135,6 +138,9 @@ export const DataTable: React.FC<DataTableProps> = ({
                   );
                 } else {
                   const teacher = item as Salary;
+                  const totalSalary =
+                    Number(teacher.basic) +
+                    Number(teacher.allowances)
                   return (
                     <tr
                       key={index}
@@ -144,32 +150,32 @@ export const DataTable: React.FC<DataTableProps> = ({
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">
                         {teacher.id}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">
-                        {teacher.basic}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {teacher.allowances}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">
+                        Rs. {Number(teacher.basic).toLocaleString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {/* {teacher.role} */}
+                        Rs. {Number(teacher.allowances).toLocaleString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                         {teacher.role}
                       </td>
-                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {/* {teacher.role} */}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        {teacher.creator?.firstName} {teacher.creator?.lastName}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-600">
+                        Rs. {Number(totalSalary).toLocaleString()}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
                           <button
                             className="text-blue-400 hover:text-gray-600"
-                            onClick={() => onEdit(student)}
+                            onClick={() => onEditSalary(teacher)}
                           >
                             <Edit className="w-4 h-4" />
                           </button>
                           <button
                             className="text-red-400 hover:text-gray-600"
-                            onClick={() => onDelete(student.id)}
+                            onClick={() => onDeleteSalary(teacher.id)}
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>

@@ -71,6 +71,7 @@ export const AssignTeacherModal: React.FC<AssignTeacherModalProps> = ({
         if (validateForm()) {
             console.log("formdata", formData)
             onSubmit(formData);
+            onClose();
             setFormData({
                 subjectId,
                 teacherId: ""

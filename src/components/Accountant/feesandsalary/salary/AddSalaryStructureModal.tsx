@@ -2,14 +2,7 @@ import React, { useState } from "react";
 import { X } from "lucide-react";
 import type { Teacher } from "../../../../types/teacher.types";
 import type { Accountant } from "../../../../features/accountantSlice";
-
-export interface SalaryStructureForm {
-    employee_id: string,
-    basic: number,
-    allowances: number,
-    role: string,
-    remarks: string
-}
+import type { SalaryStructureForm } from "../../../../types/fee-salary.types";
 
 interface SalaryStructureModalProps {
     isOpen: boolean;
@@ -36,11 +29,10 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
         remarks: ""
     });
 
-    console.log("staff", teachers, accountants)
-
     const [errors, setErrors] = useState<Record<string, string>>({});
 
-    // const staffs = 
+    const staffs = [teachers, accountants].flat();
+
     const roles = [
         { key: "Teacher", value: "teacher" },
         { key: "Accountant", value: "accountant" },
@@ -55,12 +47,8 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
-            [name]: ["monthly_fee",
-                "exam_fee",
-                "tution_fee",
-                "computer_fee",
-                "laboratory_fee",
-                "other_fee",].includes(name) ? Number(value) : value,
+            [name]: ["basic", "allowances"].includes(name) ? Number(value) : value,
+
         }));
 
         // Clear error when user starts typing
@@ -75,9 +63,9 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
     const validateForm = () => {
         const newErrors: Record<string, string> = {};
         if (!formData.employee_id) newErrors.employee_id = "Class is required";
-        if (!formData.basic) newErrors.transport_fee = "Basic salary is required";
-        if (formData.basic || formData.allowances <= 0)
-            newErrors.monthly_fee = "Monthly salary and allowances must be greater than 0";
+        if (!formData.basic) newErrors.basic = "Basic salary is required";
+        if (formData.basic <= 0) newErrors.basic = "Basic salary must be greater than 0";
+        if (formData.allowances <= 0) newErrors.allowances = "Allowances must be greater than 0";
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -85,9 +73,12 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
 
     const handleSubmit = () => {
         if (isLoading) return;
+        // console.log("form", formData)
 
         if (validateForm()) {
             onSubmit(formData);
+            console.log("form", formData)
+
             setFormData({
                 employee_id: "",
                 basic: 0,
@@ -98,6 +89,7 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
             setErrors({});
             onClose();
         }
+
     };
 
     if (!isOpen) return null;
@@ -107,7 +99,7 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
             <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
                 {/* Header */}
                 <div className="flex justify-between items-center p-6 border-b border-gray-200">
-                    <h2 className="text-2xl font-bold text-gray-900">Add Fee Structure</h2>
+                    <h2 className="text-2xl font-bold text-gray-900">Create Salary Structure</h2>
                     <button
                         onClick={onClose}
                         className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -131,9 +123,9 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
                                     }`}
                             >
                                 <option value="">Select staff</option>
-                                {teachers?.map((cls) => (
-                                    <option key={cls.id} value={cls.id}>
-                                        {cls.name}
+                                {staffs?.map((staff) => (
+                                    <option key={staff.id} value={staff.id}>
+                                        {staff.firstName} {staff.lastName} -
                                     </option>
                                 ))}
                             </select>
@@ -142,7 +134,7 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
                             )}
                         </div>
 
-                        {/* Transport */}
+                        {/* Salary */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Basic Salary  <span className="text-red-500">*</span>
@@ -161,10 +153,10 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
                         </div>
                     </div>
 
-                    {/* Fee Inputs */}
+                    {/* Allowance */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Allowence  <span className="text-red-500">*</span>
+                            Allowance  <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="number"
@@ -178,6 +170,7 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
                             <p className="mt-1 text-sm text-red-600">{errors.allowances}</p>
                         )}
                     </div>
+
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                             Employee Role  <span className="text-red-500">*</span>
@@ -235,10 +228,10 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
                         className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                     >
                         {isLoading ? (
-                            <>
+                            <div className="flex items-center gap-2">
                                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                                 Saving Salary Structure...
-                            </>
+                            </div>
                         ) : (
                             'Save Salary Structure'
                         )}

@@ -1,3 +1,4 @@
+import type { Accountant } from "../features/accountantSlice";
 import type { Transportation } from "./admin-transportation.types";
 import type { Grade } from "./class.types";
 
@@ -26,6 +27,16 @@ export interface Salary {
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
+
+  creator: Accountant[];
+}
+
+export interface SalaryStructureForm {
+    employee_id: string,
+    basic: number,
+    allowances: number,
+    role: string,
+  remarks?: string | null;
 }
 
 export interface Teacher {

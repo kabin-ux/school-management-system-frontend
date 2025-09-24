@@ -8,11 +8,12 @@ import { useParams } from "react-router-dom";
 import { SubjectHeader } from "../../../../components/Admin/class/subject/SubjectHeader";
 import { SubjectStats } from "../../../../components/Admin/class/subject/SubjectStats";
 import { SubjectTable } from "../../../../components/Admin/class/subject/SubjectTable";
-import { addSubject, assignSubjectsToTeacher, deleteSubject, getAllSubjectsByClass, updateSubject, type Subject } from "../../../../features/subjectSlice";
+import { addSubject, assignSubjectsToTeacher, deleteSubject, getAllSubjectsByClass, updateSubject } from "../../../../features/subjectSlice";
 import { AddSubjectModal } from "../../../../components/Admin/class/subject/AddSubjectModal";
 import { getAllTeachers } from "../../../../features/teacherSlice";
 import { AssignTeacherModal, type AssignTeacherForm } from "../../../../components/Admin/class/subject/AssignTeacherModal";
 import EditSubjectModal from "../../../../components/Admin/class/subject/EditSubjectModal";
+import type { Subject, SubjectForm } from "../../../../types/class.types";
 
 
 const SubjectManagement: React.FC = () => {
@@ -38,7 +39,7 @@ const SubjectManagement: React.FC = () => {
         dispatch(getAllTeachers())
     }, [dispatch])
 
-    const filteredTeachers = teachers.filter((teacher) => teacher.subjects.length === 0);
+    const filteredTeachers = teachers?.filter((teacher) => teacher?.subjects?.length === 0);
 
     console.log("filterd teacher", filteredTeachers)
 
@@ -62,14 +63,15 @@ const SubjectManagement: React.FC = () => {
         }
     }
 
-    const handleEditSubject = (section: Subject) => {
+    const handleEditSubject = (subject: Subject) => {
         setIsEditModalOpen(true);
-        setSelectedSubject(section)
+        setSelectedSubject(subject)
     }
 
-    const handleUpdateSubject = async (subjectData: any) => {
+    const handleUpdateSubject = async (id: string, updates: SubjectForm) => {
         try {
-            const res = await dispatch(updateSubject(subjectData))
+            console.log("subjecdata",updates)
+            const res = await dispatch(updateSubject({id, updates}))
             if (updateSubject.fulfilled.match(res)) {
                 toast.success('Subject updated successfully')
             } else {

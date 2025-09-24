@@ -1,15 +1,6 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import api from "../lib/axios";
-
-// Subject type
-export interface Subject {
-  id: string;
-  name: string;
-  code?: string | null;
-  teacher_id?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import type { Subject, SubjectForm } from "../types/class.types";
 
 interface SubjectState {
   subjects: Subject[];
@@ -124,7 +115,7 @@ export const searchSubjects = createAsyncThunk(
 export const updateSubject = createAsyncThunk(
   "subjects/updateSubject",
   async (
-    { id, updates }: { id: string; updates: { name?: string; code?: string | null } },
+    { id, updates }: { id: string; updates: SubjectForm },
     thunkAPI
   ) => {
     try {
@@ -224,8 +215,8 @@ const subjectSlice = createSlice({
 
     // Update
     builder.addCase(updateSubject.fulfilled, (state, action: PayloadAction<Subject>) => {
-      const idx = state.subjects.findIndex((s) => s.id === action.payload.id);
-      if (idx !== -1) state.subjects[idx] = action.payload;
+      const idx = state.subjectsByClass.findIndex((s) => s.id === action.payload.id);
+      if (idx !== -1) state.subjectsByClass[idx] = action.payload;
       if (state.selectedSubject?.id === action.payload.id) {
         state.selectedSubject = action.payload;
       }

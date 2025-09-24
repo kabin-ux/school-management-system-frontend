@@ -54,7 +54,7 @@ export const getMySchoolFeesStructures = createAsyncThunk<
 >("feeStructure/getMySchool", async (_, thunkAPI) => {
     try {
         const res = await api.get(`/fees/my-school`);
-        console.log(res.data.data)
+        console.log(res.data.data.feeStructures)
         return res.data.data as FeeStructureAttributes[];
     } catch (err: any) {
         return thunkAPI.rejectWithValue(err.response?.data || err.message);
