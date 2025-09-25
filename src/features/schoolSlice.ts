@@ -2,16 +2,6 @@ import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/tool
 import api from "../lib/axios";
 import type { SchoolData } from "../components/SuperAdmin/partnerschools/AddSchoolModal";
 
-// interface School {
-//     id: string;
-//     name: string;
-//     email: string;
-//     contact: string;
-//     status: string;
-//     school_code: string;
-//     [key: string]: any;
-// }
-
 interface SchoolState {
     schools: SchoolData[];       // all schools list
     currentSchool: SchoolData | null; // selected school details
@@ -19,7 +9,7 @@ interface SchoolState {
     error: string | null;
 }
 
-// ------------------ Thunks ------------------ //
+// Thunks
 
 // Get All Schools
 export const getAllSchools = createAsyncThunk(
@@ -33,7 +23,7 @@ export const getAllSchools = createAsyncThunk(
                     'x-client-type': 'web'
                 }
             });
-            return res.data.data as SchoolData[];
+            return res.data.data.schools as SchoolData[];
         } catch (error: any) {
             return thunkAPI.rejectWithValue(
                 error.response?.data?.message || "Error fetching schools"

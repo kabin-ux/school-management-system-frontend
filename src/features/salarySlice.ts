@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../lib/axios";
-import type { Salary } from "../types/fee-salary.types";
+import type { Salary, SalaryStructureForm } from "../types/fee-salary.types";
 
 // Thunks
 // Create Salary Structure
@@ -19,9 +19,10 @@ export const createSalaryStructure = createAsyncThunk(
 // Update Salary Structure
 export const updateSalaryStructure = createAsyncThunk(
     "salaryStructure/update",
-    async (data: any, thunkAPI) => {
+    async ({ id, data }: { id: string; data: SalaryStructureForm }, thunkAPI) => {
         try {
-            const res = await api.put("/salary", data);
+            console.log("edit salaryy",data)
+            const res = await api.put(`/salary/${id}`, data);
             return res.data.data;
         } catch (err: any) {
             return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);

@@ -43,6 +43,43 @@ export const getStatusAction = (status?: string) => {
   }
 };
 
+export const getRoleAction = (role?: string) => {
+  switch (role) {
+    case "teacher":
+      return {
+        label: "Teacher",
+        bgColor: "bg-emerald-100",
+        textColor: "text-emerald-800",
+        borderColor: "border-emerald-200",
+        dotColor: "bg-emerald-500"
+      };
+    case "accountant":
+      return {
+        label: "Accountant",
+        bgColor: "bg-amber-100",
+        textColor: "text-amber-800",
+        borderColor: "border-amber-200",
+        dotColor: "bg-amber-500"
+      };
+    case "staff":
+      return {
+        label: "Staff",
+        bgColor: "bg-blue-100",
+        textColor: "text-blue-800",
+        borderColor: "border-blue-200",
+        dotColor: "bg-blue-500"
+      };
+    default:
+      return {
+        label: "Unknown",
+        bgColor: "bg-slate-100",
+        textColor: "text-slate-600",
+        borderColor: "border-slate-200",
+        dotColor: "bg-slate-400"
+      };
+  }
+};
+
 export const getTicketType = (type: string) => {
   switch (type) {
     case "feature_request":

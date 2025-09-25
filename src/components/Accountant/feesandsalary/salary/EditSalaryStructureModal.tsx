@@ -102,6 +102,7 @@ const EditSalaryStructureModal: React.FC<EditSalaryStructureModalProps> = ({
                 role: formData.role,
                 remarks: formData.remarks
             };
+            console.log("edit slary",payload)
 
             onSubmit(salaryStructure.id, payload);
             onClose();

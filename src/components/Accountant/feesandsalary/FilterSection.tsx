@@ -31,7 +31,7 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
           type="text"
           value={filters.search}
           onChange={(e) => onFilterChange({ search: e.target.value })}
-          placeholder={activeView === "Student" ? "Search Students..." : "Search Teachers..."}
+          placeholder={activeView === "Student" ? "Search Students..." : "Search Employees..."}
           className="w-full pl-10 pr-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
       </div>

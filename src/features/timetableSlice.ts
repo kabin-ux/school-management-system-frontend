@@ -8,7 +8,7 @@ export const createTimetable = createAsyncThunk(
   async (payload: { classId: number; section?: string; name?: string }, { rejectWithValue }) => {
     try {
       const res = await api.post("/timetables", payload);
-      return res.data;
+      return res.data.data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -17,10 +17,10 @@ export const createTimetable = createAsyncThunk(
 
 export const getTimetable = createAsyncThunk(
   "timetable/get",
-  async (id: number, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const res = await api.get(`/timetables/${id}`);
-      return res.data;
+      const res = await api.get(`/timetable`);
+      return res.data.data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -32,7 +32,7 @@ export const upsertPeriods = createAsyncThunk(
   async (params: { id: number; items: any[] }, { rejectWithValue }) => {
     try {
       const res = await api.put(`/timetables/${params.id}/periods`, { items: params.items });
-      return res.data;
+      return res.data.data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -44,7 +44,7 @@ export const deletePeriod = createAsyncThunk(
   async (params: { id: number; periodId: number }, { rejectWithValue }) => {
     try {
       const res = await api.delete(`/timetables/${params.id}/periods/${params.periodId}`);
-      return res.data;
+      return res.data.data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
     }

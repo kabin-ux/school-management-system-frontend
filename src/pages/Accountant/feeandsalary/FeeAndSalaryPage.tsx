@@ -46,8 +46,6 @@ export default function FeeAndSalaryPage() {
         dispatch(getAllAccountantBySchool())
     }, [])
 
-    console.log("student", feeStructures)
-
     const {
         activeView,
         selectedStudent,
@@ -95,14 +93,14 @@ export default function FeeAndSalaryPage() {
         }
     }
 
-    const handleEditSalaryStructureData = (salaryStructure: SalaryStructureForm) => {
+    const handleEditSalaryStructureData = (salaryStructure: Salary) => {
         setIsEditSalaryModalOpen(true);
         setSelectedSalaryStructure(salaryStructure);
     }
 
-    const handleUpdateSalaryStructure = async (id: string, salaryStructureData: SalaryStructureForm) => {
+    const handleUpdateSalaryStructure = async (id: string, data: SalaryStructureForm) => {
         try {
-            const res = await dispatch(updateSalaryStructure({id, salaryStructureData}))
+            const res = await dispatch(updateSalaryStructure({id, data}))
             if (updateSalaryStructure.fulfilled.match(res)) {
                 toast.success('Salary Structure updated successfully')
             } else {

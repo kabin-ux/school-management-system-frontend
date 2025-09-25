@@ -29,6 +29,9 @@ export const SalaryOverviewTable: React.FC<SalaryOverviewTableProps> = ({ salary
                         <thead className="bg-gray-50">
                             <tr>
                                 <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
+                                    S.N
+                                </th>
+                                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
                                     Teacher Name
                                 </th>
                                 <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
@@ -42,14 +45,14 @@ export const SalaryOverviewTable: React.FC<SalaryOverviewTableProps> = ({ salary
                                 </th>
                                 <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
                                     Creator
-                                </th>                           
+                                </th>
                                 <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
                                     Total Salary
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {salaryData.map((record) => {
+                            {salaryData.map((record, index) => {
                                 const total =
                                     Number(record.basic) +
                                     Number(record.allowances)
@@ -58,9 +61,15 @@ export const SalaryOverviewTable: React.FC<SalaryOverviewTableProps> = ({ salary
                                     <tr
                                         key={record.id}
                                         className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer"
-                                        onClick={() => handleShowDetails(record.id)}
                                     >
-                                        <td className="p-4 text-gray-900">{record.id}</td>
+                                        <td className="p-4 text-gray-900">{index + 1}</td>
+                                        <td className="p-4 text-gray-900">
+                                            {record.role === "teacher" && record.teacherEmployee
+                                                ? `${record.teacherEmployee.firstName} ${record.teacherEmployee.lastName}`
+                                                : record.role === "accountant" && record.accountantEmployee
+                                                    ? `${record.accountantEmployee.firstName} ${record.accountantEmployee.lastName}`
+                                                    : "N/A"}
+                                        </td>
                                         <td className="p-4 text-gray-900">{Number(record.basic).toLocaleString()}</td>
                                         <td className="p-4 text-gray-900">{Number(record.allowances).toLocaleString()}</td>
                                         <td className="p-4 text-gray-900">{record.role}</td>

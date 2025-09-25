@@ -23,20 +23,22 @@ export interface Salary {
   allowances: number;
   role: 'teacher' | 'accountant' | 'staff';
   created_by: string;
-  remarks?: string | null;
+  remarks?: string;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
 
   creator: Accountant[];
+  teacherEmployee?: Teacher[];
+  accountantEmployee?: Accountant[];
 }
 
 export interface SalaryStructureForm {
-    employee_id: string,
-    basic: number,
-    allowances: number,
-    role: string,
-  remarks?: string | null;
+  employee_id: string,
+  basic: number,
+  allowances: number,
+  role: string,
+  remarks?: string;
 }
 
 export interface Teacher {
@@ -94,5 +96,5 @@ export interface FeeRecord {
   status: string;
 }
 
-export type ViewType = 'Student' | 'Teacher';
+export type ViewType = 'Student' | 'Employee';
 export type TabType = 'Fee Structure' | 'Payment History' | 'Add Payment';

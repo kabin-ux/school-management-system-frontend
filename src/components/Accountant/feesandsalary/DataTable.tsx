@@ -4,6 +4,7 @@ import { StatusBadge } from './StatusBadge';
 import { DollarSign, Edit, Trash2 } from 'lucide-react';
 import type { FeeStructureForm } from './AddFeeStructureModal';
 import EmptyState from '../../../common/EmptyState';
+import { getRoleAction } from '../../../lib/utils';
 
 interface DataTableProps {
   activeView: ViewType;
@@ -35,12 +36,12 @@ export const DataTable: React.FC<DataTableProps> = ({
       <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold text-gray-900">
-            {activeView === 'Student' ? 'Student Fees Details' : 'Teacher Salary Details'}
+            {activeView === 'Student' ? 'Student Fees Details' : 'Employee Salary Details'}
           </h3>
           <p className="text-gray-600 text-sm">
             {activeView === 'Student'
               ? 'Student fee structure and payment details'
-              : 'Teacher salary and payment details'}
+              : 'Employee salary and payment details'}
           </p>
         </div>
         <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
@@ -60,7 +61,10 @@ export const DataTable: React.FC<DataTableProps> = ({
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? 'Fee ID' : 'Teacher Name'}
+                  S.N
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {activeView === 'Student' ? 'Fee ID' : 'Employee Name'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {activeView === 'Student' ? 'Class' : 'Basic Salary'}
@@ -75,7 +79,7 @@ export const DataTable: React.FC<DataTableProps> = ({
                   {activeView === 'Student' ? 'Status' : 'Creator'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? 'StTotal Feesatus' : 'Total Salary'}
+                  {activeView === 'Student' ? 'Total Fees' : 'Total Salary'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
@@ -100,11 +104,14 @@ export const DataTable: React.FC<DataTableProps> = ({
                       className="hover:bg-gray-50 transition-colors cursor-pointer"
                     // onClick={() => onRowClick(student.id)}
                     >
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">
+                        {index + 1}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">
                         {student.id}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {student.class?.name ?? '-'} '{student.class?.sections.name ?? '-'}'
+                        {student.class?.name ?? '-'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                         Rs. {Number(student.monthly_fee).toLocaleString()}
@@ -137,30 +144,45 @@ export const DataTable: React.FC<DataTableProps> = ({
                     </tr>
                   );
                 } else {
-                  const teacher = item as Salary;
+                  const employee = item as Salary;
                   const totalSalary =
-                    Number(teacher.basic) +
-                    Number(teacher.allowances)
+                    Number(employee.basic) +
+                    Number(employee.allowances)
                   return (
                     <tr
                       key={index}
                       className="hover:bg-gray-50 transition-colors cursor-pointer"
-                      onClick={() => onRowClick(teacher.id)}
                     >
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">
-                        {teacher.id}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                        {employee.role === "teacher" && employee.teacherEmployee
+                          ? `${employee.teacherEmployee.firstName} ${employee.teacherEmployee.lastName}`
+                          : employee.role === "accountant" && employee.accountantEmployee
+                            ? `${employee.accountantEmployee.firstName} ${employee.accountantEmployee.lastName}`
+                            : "N/A"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">
-                        Rs. {Number(teacher.basic).toLocaleString()}
+                        Rs. {Number(employee.basic).toLocaleString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        Rs. {Number(teacher.allowances).toLocaleString()}
+                        Rs. {Number(employee.allowances).toLocaleString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {teacher.role}
+                        {(() => {
+                          const statusInfo = getRoleAction(employee.role);
+                          return (
+                            <span
+                              className={`inline-flex px-3 py-1 rounded-full text-xs font-medium  ${statusInfo.bgColor} ${statusInfo.textColor}`}
+                            >
+                              {statusInfo.label}
+                            </span>
+                          );
+                        })()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {teacher.creator?.firstName} {teacher.creator?.lastName}
+                        {employee.creator?.firstName} {employee.creator?.lastName}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-600">
                         Rs. {Number(totalSalary).toLocaleString()}
@@ -169,13 +191,13 @@ export const DataTable: React.FC<DataTableProps> = ({
                         <div className="flex items-center gap-2">
                           <button
                             className="text-blue-400 hover:text-gray-600"
-                            onClick={() => onEditSalary(teacher)}
+                            onClick={() => onEditSalary(employee)}
                           >
                             <Edit className="w-4 h-4" />
                           </button>
                           <button
                             className="text-red-400 hover:text-gray-600"
-                            onClick={() => onDeleteSalary(teacher.id)}
+                            onClick={() => onDeleteSalary(employee.id)}
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>

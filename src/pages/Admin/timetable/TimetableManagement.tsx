@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Printer, Download, Save } from 'lucide-react';
 import TimetableFilters from '../../../components/Admin/timetable/TimetableFilters';
-import WeeklyTimetable from '../../../components/Admin/timetable/WeeklyTimetable';
+import { WeeklyTimetable } from '../../../components/Admin/timetable/WeeklyTimetable';
 import TimetableSidebar from '../../../components/Admin/timetable/TimetableSidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { getAllClassesBySchool } from '../../../features/classSlice';
-import { getActiveTimetableForClass } from '../../../features/timetableSlice';
+import { getActiveTimetableForClass, getTimetable } from '../../../features/timetableSlice';
 
 export default function TimetableManagement() {
     const [selectedClass, setSelectedClass] = useState('Grade 10');
@@ -15,12 +15,14 @@ export default function TimetableManagement() {
     const [selectedSubject, setSelectedSubject] = useState('All Subject');
     const dispatch = useAppDispatch();
     const { classes } = useAppSelector(state => state.class);
+    const { current } = useAppSelector(state => state.timetable);
 
     useEffect(() => {
         dispatch(getAllClassesBySchool())
-        dispatch(getActiveTimetableForClass("82541457-b0d4-4077-9a7d-fa224418da2c"))
+        dispatch(getTimetable())
     }, [dispatch])
 
+    console.log("timetable", current)
     return (
         <div className="flex h-full bg-gray-50">
             {/* Sidebar */}
@@ -69,7 +71,9 @@ export default function TimetableManagement() {
                         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                             {/* Timetable - spans 3 columns */}
                             <div className="lg:col-span-3">
-                                <WeeklyTimetable />
+                                <WeeklyTimetable
+                                    timetables={current}
+                                />
                             </div>
 
                             {/* Sidebar - spans 1 column */}

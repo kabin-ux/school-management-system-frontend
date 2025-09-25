@@ -9,6 +9,7 @@ export interface Teacher {
   password: string;
   gender: 'Male' | 'Female' | 'Other';
   address?: string | null;
+  role: string;
   qualification: string;
   school_id: string;
   createdAt?: Date;

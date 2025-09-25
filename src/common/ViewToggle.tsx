@@ -21,13 +21,13 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ activeView, onViewChange
                     Student
                 </button>
                 <button
-                    onClick={() => onViewChange('Teacher')}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium ${activeView === 'Teacher'
+                    onClick={() => onViewChange('Employee')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium ${activeView === 'Employee'
                             ? 'bg-blue-600 text-white'
                             : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                         }`}
                 >
-                    Teacher
+                    Employee
                 </button>
             </div>
         </div>

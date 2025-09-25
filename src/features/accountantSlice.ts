@@ -15,6 +15,7 @@ export interface Accountant {
   state: string;
   postal_code: string;
   school_id: string;
+  role: string;
   createdAt: string; // or Date
   updatedAt: string; // or Date
   deletedAt: string | null;

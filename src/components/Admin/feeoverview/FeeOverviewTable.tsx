@@ -29,10 +29,13 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
             <thead className="bg-gray-50">
               <tr>
                 <th className="text-left p-4 font-medium text-gray-900 border-gray-200">
-                  Class
+                  S.N
                 </th>
                 <th className="text-left p-4 font-medium text-gray-900 border-gray-200">
                   School
+                </th>
+                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">
+                  Class
                 </th>
                 <th className="text-left p-4 font-medium text-gray-900 border-gray-200">
                   Monthly Fee
@@ -55,7 +58,7 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
               </tr>
             </thead>
             <tbody>
-              {feeData.map((record) => {
+              {feeData.map((record, index) => {
                 const total =
                   Number(record.monthly_fee) +
                   Number(record.exam_fee) +
@@ -71,8 +74,9 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
                     className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer"
                     onClick={() => handleShowDetails(record.id)}
                   >
-                    <td className="p-4 text-gray-900">{record.class?.name}</td>
+                    <td className="p-4 text-gray-900">{index + 1}</td>
                     <td className="p-4 text-gray-900">{record.class?.school?.name}</td>
+                    <td className="p-4 text-gray-900">{record.class?.name}</td>
                     <td className="p-4 text-gray-900">{Number(record.monthly_fee).toLocaleString()}</td>
                     <td className="p-4 text-gray-900">{Number(record.exam_fee).toLocaleString()}</td>
                     <td className="p-4 text-gray-900">{Number(record.tution_fee).toLocaleString()}</td>

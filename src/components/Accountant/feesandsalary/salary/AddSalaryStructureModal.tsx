@@ -125,7 +125,7 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
                                 <option value="">Select staff</option>
                                 {staffs?.map((staff) => (
                                     <option key={staff.id} value={staff.id}>
-                                        {staff.firstName} {staff.lastName} -
+                                        {staff.firstName} {staff.lastName} - {staff.role}
                                     </option>
                                 ))}
                             </select>
