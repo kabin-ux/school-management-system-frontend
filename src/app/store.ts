@@ -18,6 +18,7 @@ import subjectReducer from '../features/subjectSlice';
 import dashboardReducer from '../features/dashboardSlice';
 import supportTicketReducer from '../features/supportTicketSlice';
 import salaryReducer from '../features/salarySlice';
+import timeSlotReducer from "../features/timeSlotSlice";
 
 // Persist config ONLY for auth
 const persistConfig = {
@@ -44,6 +45,7 @@ const persistedSubjectReducer = persistReducer(persistConfig, subjectReducer);
 const persistedDashboardReducer = persistReducer(persistConfig, dashboardReducer);
 const persistedSupportTicketReducer = persistReducer(persistConfig, supportTicketReducer);
 const persistedSalaryReducer = persistReducer(persistConfig, salaryReducer);
+const persistedTimeSlotReducer = persistReducer(persistConfig, timeSlotReducer);
 
 export const store = configureStore({
   reducer: {
@@ -64,6 +66,7 @@ export const store = configureStore({
     dashboard: persistedDashboardReducer,
     supportTicket: persistedSupportTicketReducer,
     salary: persistedSalaryReducer,
+    timeSlot: persistedTimeSlotReducer,
     // 
   },
   middleware: (getDefaultMiddleware) =>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Printer, Download, Save } from 'lucide-react';
+import { Printer, Download, Save, Plus } from 'lucide-react';
 import TimetableFilters from '../../../components/Admin/timetable/TimetableFilters';
 import { WeeklyTimetable } from '../../../components/Admin/timetable/WeeklyTimetable';
 import TimetableSidebar from '../../../components/Admin/timetable/TimetableSidebar';
@@ -7,7 +7,10 @@ import { AdminDashboardHeader } from '../../../components/Admin/layout/Dashboard
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { getAllClassesBySchool } from '../../../features/classSlice';
-import { getActiveTimetableForClass, getTimetable } from '../../../features/timetableSlice';
+import { getAllTimetables, createTimetable } from '../../../features/timetableSlice';
+import { getAllTimeSlotsByTimetableId, createTimeSlot } from '../../../features/timeSlotSlice';
+import toast from 'react-hot-toast';
+import { getEndTime } from '../../../lib/utils';
 
 export default function TimetableManagement() {
     const [selectedClass, setSelectedClass] = useState('Grade 10');
@@ -15,14 +18,45 @@ export default function TimetableManagement() {
     const [selectedSubject, setSelectedSubject] = useState('All Subject');
     const dispatch = useAppDispatch();
     const { classes } = useAppSelector(state => state.class);
-    const { current } = useAppSelector(state => state.timetable);
+    const { timetables } = useAppSelector(state => state.timetable);
+    const { slots } = useAppSelector(state => state.timeSlot);
 
     useEffect(() => {
         dispatch(getAllClassesBySchool())
-        dispatch(getTimetable())
+        dispatch(getAllTimetables())
     }, [dispatch])
 
-    console.log("timetable", current)
+    const handleCreateTimetable = () => {
+        const selectedClassObj = classes.find(cls => cls.grade_name === selectedClass);
+        if (selectedClassObj) {
+            dispatch(createTimetable({
+                classId: selectedClassObj.id,
+                section: selectedSection,
+                name: `${selectedClass} - ${selectedSection} Timetable`
+            }));
+            toast.success('Timetable created successfully');
+        }
+    };
+
+    const handleAddTimeSlot = async (timetableId: string, dayOfWeek: string, startTime: string) => {
+        const newTimeSlot = {
+            timetableId,
+            dayOfWeek,
+            startTime,
+            endTime: getEndTime(startTime),
+            label: 'New Subject',
+            subject: 'New Subject',
+            teacher: 'TBD'
+        };
+        const res = await dispatch(createTimeSlot(newTimeSlot));
+        if (createTimeSlot.fulfilled.match(res)) {
+            toast.success('Time Slot added successfully')
+        } else {
+            const errorMessage = typeof res.payload === "string" ? res.payload : 'Error adding time slot'
+            toast.error(errorMessage);
+        }
+    };
+
     return (
         <div className="flex h-full bg-gray-50">
             {/* Sidebar */}
@@ -42,6 +76,13 @@ export default function TimetableManagement() {
                                 <p className="text-gray-600 mt-1">Organize and manage class schedules efficiently</p>
                             </div>
                             <div className="flex gap-3">
+                                <button
+                                    onClick={handleCreateTimetable}
+                                    className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors font-medium flex items-center gap-2"
+                                >
+                                    <Plus className="w-4 h-4" />
+                                    Create Timetable
+                                </button>
                                 <button className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors font-medium flex items-center gap-2">
                                     <Printer className="w-4 h-4" />
                                     Print Timetable
@@ -68,18 +109,19 @@ export default function TimetableManagement() {
                         />
 
                         {/* Main Content */}
-                        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
                             {/* Timetable - spans 3 columns */}
                             <div className="lg:col-span-3">
                                 <WeeklyTimetable
-                                    timetables={current}
+                                    timetables={timetables}
+                                    onAddTimeSlot={handleAddTimeSlot}
                                 />
                             </div>
 
                             {/* Sidebar - spans 1 column */}
-                            <div>
+                            {/* <div>
                                 <TimetableSidebar />
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </main>

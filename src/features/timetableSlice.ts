@@ -1,13 +1,14 @@
-import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import api from "../lib/axios";
 
-//  Thunks 
+// Async Thunks
 
+//Create Timetable
 export const createTimetable = createAsyncThunk(
   "timetable/create",
   async (payload: { classId: number; section?: string; name?: string }, { rejectWithValue }) => {
     try {
-      const res = await api.post("/timetables", payload);
+      const res = await api.post("/timetable", payload);
       return res.data.data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
@@ -15,66 +16,83 @@ export const createTimetable = createAsyncThunk(
   }
 );
 
-export const getTimetable = createAsyncThunk(
-  "timetable/get",
-  async (_, { rejectWithValue }) => {
+// Delete timetable
+export const deleteTimetable = createAsyncThunk(
+  "timetable/delete",
+  async (id: string, thunkAPI) => {
     try {
-      const res = await api.get(`/timetable`);
+      await api.delete(`/timetable/${id}`);
+      return id; // return deleted id for reducer
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+
+// Get all timetables by school
+export const getAllTimetables = createAsyncThunk(
+  "timetable/getAll",
+  async (_, thunkAPI) => {
+    try {
+      const res = await api.get("/timetable");
       return res.data.data;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data || err.message);
+      return thunkAPI.rejectWithValue(err.response?.data || err.message);
     }
   }
 );
 
-export const upsertPeriods = createAsyncThunk(
-  "timetable/upsertPeriods",
-  async (params: { id: number; items: any[] }, { rejectWithValue }) => {
+// Get timetable by classId
+export const getTimetableByClassId = createAsyncThunk(
+  "timetable/getByClassId",
+  async (classId: string, thunkAPI) => {
     try {
-      const res = await api.put(`/timetables/${params.id}/periods`, { items: params.items });
+      const res = await api.get(`/timetable/class/${classId}`);
       return res.data.data;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data || err.message);
+      return thunkAPI.rejectWithValue(err.response?.data || err.message);
     }
   }
 );
 
-export const deletePeriod = createAsyncThunk(
-  "timetable/deletePeriod",
-  async (params: { id: number; periodId: number }, { rejectWithValue }) => {
+// Get timetable by section
+export const getTimetableBySection = createAsyncThunk(
+  "timetable/getBySection",
+  async (sectionId: string, thunkAPI) => {
     try {
-      const res = await api.delete(`/timetables/${params.id}/periods/${params.periodId}`);
+      const res = await api.get(`/timetable/section/${sectionId}`);
       return res.data.data;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data || err.message);
+      return thunkAPI.rejectWithValue(err.response?.data || err.message);
     }
   }
 );
 
-export const getActiveTimetableForClass = createAsyncThunk(
-  "timetable/getActiveForClass",
-  async (classId: string, { rejectWithValue }) => {
+// Get timetable by id
+export const getTimetableById = createAsyncThunk(
+  "timetable/getById",
+  async (id: string, thunkAPI) => {
     try {
-      const res = await api.get(`/classes/${classId}/timetable/active`);
-      return res.data;
+      const res = await api.get(`/timetable/${id}`);
+      return res.data.data;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data || err.message);
+      return thunkAPI.rejectWithValue(err.response?.data || err.message);
     }
   }
 );
 
-//  Slice 
+// Slice
 
 interface TimetableState {
-  current: any | null;
-  activeForClass: any | null;
+  timetables: any[];
+  selectedTimetable: any | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: TimetableState = {
-  current: null,
-  activeForClass: null,
+  timetables: [],
+  selectedTimetable: null,
   loading: false,
   error: null,
 };
@@ -83,10 +101,8 @@ const timetableSlice = createSlice({
   name: "timetable",
   initialState,
   reducers: {
-    clearTimetable: (state) => {
-      state.current = null;
-      state.activeForClass = null;
-      state.error = null;
+    clearSelectedTimetable: (state) => {
+      state.selectedTimetable = null;
     },
   },
   extraReducers: (builder) => {
@@ -97,78 +113,55 @@ const timetableSlice = createSlice({
     });
     builder.addCase(createTimetable.fulfilled, (state, action: PayloadAction<any>) => {
       state.loading = false;
-      state.current = action.payload;
+      state.timetables = action.payload;
     });
     builder.addCase(createTimetable.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
     });
-
-    // Get Timetable
-    builder.addCase(getTimetable.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    });
-    builder.addCase(getTimetable.fulfilled, (state, action: PayloadAction<any>) => {
-      state.loading = false;
-      state.current = action.payload;
-    });
-    builder.addCase(getTimetable.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload as string;
-    });
-
-    // Upsert Periods
-    builder.addCase(upsertPeriods.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    });
-    builder.addCase(upsertPeriods.fulfilled, (state, action: PayloadAction<any>) => {
-      state.loading = false;
-      state.current = {
-        ...state.current,
-        periods: action.payload?.periods || [],
-      };
-    });
-    builder.addCase(upsertPeriods.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload as string;
-    });
-
-    // Delete Period
-    builder.addCase(deletePeriod.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    });
-    builder.addCase(deletePeriod.fulfilled, (state, action: PayloadAction<any>) => {
-      state.loading = false;
-      // remove from periods if available
-      if (state.current?.periods) {
-        state.current.periods = state.current.periods.filter(
-          (p: any) => p.id !== action.payload?.deletedId
-        );
+    // Delete timetable
+    builder.addCase(deleteTimetable.fulfilled, (state, action) => {
+      state.timetables = state.timetables.filter(
+        (t) => t.id !== action.payload
+      );
+      if (state.selectedTimetable?.id === action.payload) {
+        state.selectedTimetable = null;
       }
     });
-    builder.addCase(deletePeriod.rejected, (state, action) => {
+
+    // Get all timetables
+    builder.addCase(getAllTimetables.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(getAllTimetables.fulfilled, (state, action) => {
+      state.loading = false;
+      state.timetables = action.payload;
+    });
+    builder.addCase(getAllTimetables.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
     });
 
-    // Get Active Timetable for Class
-    builder.addCase(getActiveTimetableForClass.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    });
-    builder.addCase(getActiveTimetableForClass.fulfilled, (state, action: PayloadAction<any>) => {
+    // Get by classId
+    builder.addCase(getTimetableByClassId.fulfilled, (state, action) => {
       state.loading = false;
-      state.activeForClass = action.payload;
+      state.timetables = action.payload;
     });
-    builder.addCase(getActiveTimetableForClass.rejected, (state, action) => {
+
+    // Get by section
+    builder.addCase(getTimetableBySection.fulfilled, (state, action) => {
       state.loading = false;
-      state.error = action.payload as string;
+      state.timetables = action.payload;
+    });
+
+    // Get by id
+    builder.addCase(getTimetableById.fulfilled, (state, action) => {
+      state.loading = false;
+      state.selectedTimetable = action.payload;
     });
   },
 });
 
-export const { clearTimetable } = timetableSlice.actions;
+export const { clearSelectedTimetable } = timetableSlice.actions;
 export default timetableSlice.reducer;

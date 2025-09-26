@@ -94,3 +94,14 @@ export const getTicketType = (type: string) => {
       return "Other";
   }
 }
+
+export const getEndTime = (startTime: string): string => {
+  const [hourStr, minuteStr] = startTime.split(":");
+  let hour = parseInt(hourStr, 10) + 1;
+
+  if (hour >= 24) {
+    hour = 0; // wrap around to midnight
+  }
+
+  return `${hour.toString().padStart(2, "0")}:${minuteStr}:00`;
+}

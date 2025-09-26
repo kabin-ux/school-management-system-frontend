@@ -1,108 +1,120 @@
-import { BookOpen, Users, BarChart3 } from 'lucide-react';
+import React from 'react';
+import { Clock, Users, BookOpen, Calendar } from 'lucide-react';
 
-export default function TimetableSidebar() {
+const TimetableSidebar: React.FC = () => {
   const subjects = [
-    { name: 'Mathematics', periods: 5 },
-    { name: 'English', periods: 5 },
-    { name: 'Science', periods: 5 },
-    { name: 'Social Studies', periods: 5 },
-    { name: 'Computer Science', periods: 5 },
-    { name: 'Physical Education', periods: 5 },
-    { name: 'Art', periods: 5 },
-    { name: 'Music', periods: 5 }
+    { name: 'Mathematics', color: 'bg-blue-100 text-blue-800', teacher: 'Mr. Smith' },
+    { name: 'English', color: 'bg-green-100 text-green-800', teacher: 'Ms. Johnson' },
+    { name: 'Science', color: 'bg-purple-100 text-purple-800', teacher: 'Dr. Brown' },
+    { name: 'History', color: 'bg-orange-100 text-orange-800', teacher: 'Mrs. Davis' },
+    { name: 'Physics', color: 'bg-red-100 text-red-800', teacher: 'Dr. Wilson' },
+    { name: 'Chemistry', color: 'bg-yellow-100 text-yellow-800', teacher: 'Ms. Taylor' },
   ];
 
-  const teachers = [
-    { name: 'Dr. Sara Johnson', subject: 'Mathematics', status: 'Available' },
-    { name: 'Prof. Michael Brown', subject: 'English', status: 'Available' },
-    { name: 'Dr. Emily Davis', subject: 'Science', status: 'Available' },
-    { name: 'Ms. Jessica wilson', subject: 'Social Studies', status: 'Available' },
-    { name: 'Mr. David Lee', subject: 'Computer Science', status: 'Available' },
-    { name: 'Coach Anderson', subject: 'Physical Education', status: 'Available' },
-    { name: 'Ms. Lisa Garcia', subject: 'Art', status: 'Busy' },
-    { name: 'Mr. James Martinez', subject: 'Music', status: 'Busy' }
-  ];
-
-  const quickStats = [
-    { label: 'Total Periods', value: '24' },
-    { label: 'Scheduled', value: '13' },
-    { label: 'Free Slots', value: '11' }
+  const timeSlots = [
+    '08:00 - 09:00',
+    '09:00 - 10:00',
+    '10:00 - 11:00',
+    '11:00 - 12:00',
+    '12:00 - 13:00',
+    '13:00 - 14:00',
+    '14:00 - 15:00',
+    '15:00 - 16:00',
   ];
 
   return (
     <div className="space-y-6">
-      {/* Subject Overview */}
+      {/* Quick Stats */}
       <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <BookOpen className="w-5 h-5 text-blue-600" />
-          <h3 className="text-lg font-semibold text-gray-900">Subject Overview</h3>
-        </div>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <Calendar className="w-5 h-5" />
+          Quick Stats
+        </h3>
         <div className="space-y-3">
-          {subjects.map((subject) => (
-            <div key={subject.name} className="flex items-center justify-between">
-              <span className="text-sm text-gray-700">{subject.name}</span>
-              <span className="text-sm font-medium text-gray-900">{subject.periods} periods</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Available Teachers */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Users className="w-5 h-5 text-green-600" />
-          <h3 className="text-lg font-semibold text-gray-900">Available Teachers</h3>
-        </div>
-        <div className="space-y-3">
-          {teachers.map((teacher) => (
-            <div key={teacher.name} className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-900">{teacher.name}</p>
-                <p className="text-xs text-gray-500">{teacher.subject}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${
-                  teacher.status === 'Available' ? 'bg-green-500' : 'bg-red-500'
-                }`}></div>
-                <span className={`text-xs font-medium ${
-                  teacher.status === 'Available' ? 'text-green-600' : 'text-red-600'
-                }`}>
-                  {teacher.status}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-        
-        <div className="mt-4 pt-4 border-t border-gray-200">
-          <div className="flex items-center gap-4 text-xs">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span className="text-gray-600">Available</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-              <span className="text-gray-600">Busy</span>
-            </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-gray-600">Total Classes</span>
+            <span className="font-semibold text-gray-900">24</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-gray-600">Free Periods</span>
+            <span className="font-semibold text-gray-900">8</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-gray-600">Teachers</span>
+            <span className="font-semibold text-gray-900">6</span>
           </div>
         </div>
       </div>
 
-      {/* Quick Stats */}
+      {/* Available Subjects */}
       <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <BarChart3 className="w-5 h-5 text-purple-600" />
-          <h3 className="text-lg font-semibold text-gray-900">Quick Stats</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <BookOpen className="w-5 h-5" />
+          Available Subjects
+        </h3>
+        <div className="space-y-2">
+          {subjects.map((subject, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <div className={`w-3 h-3 rounded-full ${subject.color.split(' ')[0]}`}></div>
+                <div>
+                  <div className="font-medium text-sm text-gray-900">{subject.name}</div>
+                  <div className="text-xs text-gray-500">{subject.teacher}</div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="space-y-3">
-          {quickStats.map((stat) => (
-            <div key={stat.label} className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">{stat.label}</span>
-              <span className="text-lg font-bold text-gray-900">{stat.value}</span>
+      </div>
+
+      {/* Time Slots */}
+      <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <Clock className="w-5 h-5" />
+          Time Slots
+        </h3>
+        <div className="space-y-2">
+          {timeSlots.map((slot, index) => (
+            <div
+              key={index}
+              className="p-2 text-sm text-gray-700 bg-gray-50 rounded border hover:bg-gray-100 cursor-pointer transition-colors"
+            >
+              {slot}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Teachers */}
+      <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <Users className="w-5 h-5" />
+          Teachers
+        </h3>
+        <div className="space-y-2">
+          {subjects.map((subject, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-3 p-2 rounded hover:bg-gray-50 cursor-pointer transition-colors"
+            >
+              <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                <span className="text-xs font-medium text-gray-600">
+                  {subject.teacher.split(' ').map(n => n[0]).join('')}
+                </span>
+              </div>
+              <div>
+                <div className="text-sm font-medium text-gray-900">{subject.teacher}</div>
+                <div className="text-xs text-gray-500">{subject.name}</div>
+              </div>
             </div>
           ))}
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default TimetableSidebar;

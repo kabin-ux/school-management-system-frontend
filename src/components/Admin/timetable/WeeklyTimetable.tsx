@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Edit, Trash2, Plus } from "lucide-react";
 
 interface Timeslot {
   id: string;
@@ -6,6 +7,8 @@ interface Timeslot {
   label: string;     // e.g., "First Period"
   startTime: string; // "08:00:00"
   endTime: string;   // "09:00:00"
+  subject?: string;
+  teacher?: string;
 }
 
 interface Timetable {
@@ -16,31 +19,52 @@ interface Timetable {
 
 interface WeeklyTimetableProps {
   timetables: Timetable[];
+  onAddTimeSlot?: (timetableId: string, dayOfWeek: string, startTime: string) => void;
 }
 
-export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({ timetables }) => {
+export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({ 
+  timetables, 
+  onAddTimeSlot 
+}) => {
 
-  if (timetables?.length === 0) return <p>Loading...</p>;
+  if (!timetables || timetables.length === 0) {
+    return (
+      <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
+        <h3 className="text-lg font-medium text-gray-900 mb-2">No Timetables Found</h3>
+        <p className="text-gray-600">Create a new timetable to get started.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
       {timetables?.map((timetable) => {
         // ✅ Collect unique time slots across all days
-        const allTimes = Array.from(
-          new Set(timetable.timeslots.map(ts => ts.startTime))
-        ).sort();
+        const allTimes = timetable.timeslots && timetable.timeslots.length > 0 
+          ? Array.from(new Set(timetable.timeslots.map(ts => ts.startTime))).sort()
+          : ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00"];
 
         // ✅ Group timeslots by day
         const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
         const slotsByDay: Record<string, Timeslot[]> = {};
         days.forEach(day => {
-          slotsByDay[day] = timetable.timeslots.filter(ts => ts.dayOfWeek === day);
+          slotsByDay[day] = timetable.timeslots ? timetable.timeslots.filter(ts => ts.dayOfWeek === day) : [];
         });
 
         return (
           <div key={timetable.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden">
             <div className="p-6 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">{timetable.name}</h2>
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-semibold text-gray-900">{timetable.name}</h2>
+                <div className="flex gap-2">
+                  <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                    <Edit className="w-4 h-4" />
+                  </button>
+                  <button className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div className="overflow-x-auto">
@@ -66,14 +90,29 @@ export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({ timetables }) 
                       {allTimes.map((time, index) => {
                         const slot = slotsByDay[day]?.find(ts => ts.startTime === time);
                         return (
-                          <td key={index} className="px-2 py-6 text-center">
+                          <td key={index} className="px-2 py-4 text-center">
                             {slot ? (
-                              <div className="p-3 rounded-lg bg-blue-100 text-blue-800 min-h-16 flex flex-col justify-center">
-                                <div className="font-medium text-sm">{slot.label}</div>
+                              <div className="group relative p-3 rounded-lg bg-blue-100 text-blue-800 min-h-16 flex flex-col justify-center hover:bg-blue-200 transition-colors">
+                                <div className="font-medium text-sm">{slot.subject || slot.label}</div>
                                 <div className="text-xs mt-1">{slot.startTime} - {slot.endTime}</div>
+                                {slot.teacher && (
+                                  <div className="text-xs text-blue-600 mt-1">{slot.teacher}</div>
+                                )}
+                                <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                                  <button className="p-1 bg-white rounded text-blue-600 hover:bg-blue-50">
+                                    <Edit className="w-3 h-3" />
+                                  </button>
+                                  <button className="p-1 bg-white rounded text-red-600 hover:bg-red-50">
+                                    <Trash2 className="w-3 h-3" />
+                                  </button>
+                                </div>
                               </div>
                             ) : (
-                              <button className="w-full h-16 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 hover:border-blue-400 hover:text-blue-600 transition-colors text-sm">
+                              <button 
+                                onClick={() => onAddTimeSlot?.(timetable.id, day, time)}
+                                className="w-full h-16 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 hover:border-blue-400 hover:text-blue-600 transition-colors text-sm flex items-center justify-center gap-2"
+                              >
+                                <Plus className="w-4 h-4" />
                                 Add Subject
                               </button>
                             )}
