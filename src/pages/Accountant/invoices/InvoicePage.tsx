@@ -1,10 +1,12 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { DefaulterSummary, FilterValues, Invoice } from "../../../types/invoice.types";
 import { Sidebar } from "../../../components/Accountant/layout/Sidebar";
 import { AccountantDashboardHeader } from "../../../components/Accountant/layout/DashboardHeader";
 import { InvoiceFilters } from "../../../components/Accountant/invoice/InvoiceFilters";
 import { InvoiceTable } from "../../../components/Accountant/invoice/InvoiceTable";
 import { DefaulterList } from "../../../components/Accountant/invoice/DefaulterList";
+import { getAllPayments } from "../../../features/paymentSlice";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 
 export default function InvoicesPage() {
     const [filters, setFilters] = useState<FilterValues>({
@@ -14,6 +16,12 @@ export default function InvoicesPage() {
         class: ''
     });
     const [currentPage, setCurrentPage] = useState(1);
+    const dispatch = useAppDispatch();
+    const { payments } = useAppSelector(state => state.payment);
+
+    useEffect(() => {
+        dispatch(getAllPayments());
+    }, [dispatch])
 
     // Mock data - replace with actual API calls
     const invoices: Invoice[] = [
@@ -88,13 +96,13 @@ export default function InvoicesPage() {
             <div className="flex flex-col flex-1">
                 {/* Header */}
                 <AccountantDashboardHeader />
-                
+
                 {/* Scrollable Content */}
                 <main className="flex-1 p-6 overflow-y-auto">
                     <div className="mb-8">
                         <h1 className="text-3xl font-bold text-gray-900">Invoice & Report Center</h1>
                         <p className="text-gray-600 mt-1">
-                            Managing {filters.viewType === 'Student' ? 'invoices' : 'teacher salaries'}, 
+                            Managing {filters.viewType === 'Student' ? 'invoices' : 'teacher salaries'},
                             manage payments, and collect financial reports
                         </p>
                     </div>
@@ -105,7 +113,7 @@ export default function InvoicesPage() {
                     />
 
                     <InvoiceTable
-                        invoices={filteredInvoices}
+                        invoices={payments}
                         currentPage={currentPage}
                         totalPages={totalPages}
                         onPageChange={setCurrentPage}

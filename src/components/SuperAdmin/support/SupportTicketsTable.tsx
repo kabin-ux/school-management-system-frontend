@@ -64,9 +64,6 @@ export default function SupportTicketsTable({ tickets, onViewTicket, onDeleteTic
                   School
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Submitted by
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Issue Type
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -88,9 +85,6 @@ export default function SupportTicketsTable({ tickets, onViewTicket, onDeleteTic
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {ticket.school?.name}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-900">
-                    {ticket.created_by}
                   </td>
                   <td className="px-6 py-4 text-gray-500">
                     {getIssueTypeBadge(ticket.title)}

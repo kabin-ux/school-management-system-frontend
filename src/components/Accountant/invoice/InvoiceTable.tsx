@@ -33,7 +33,7 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
                     View All
                 </button>
             </div>
-            
+
             <div className="overflow-x-auto">
                 <table className="w-full">
                     <thead className="bg-gray-50">
@@ -68,16 +68,18 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
                                     {invoice.id}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {invoice.studentName}
+                                    {invoice.student_id}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                     {invoice.class}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                    {invoice.date}
+                                    {invoice.createdAt
+                                        ? new Date(invoice.createdAt).toLocaleDateString()
+                                        : "N/A"}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                                    {invoice.dueAmount}
+                                    {invoice.amount}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                     {invoice.outstanding}
@@ -90,7 +92,7 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
                     </tbody>
                 </table>
             </div>
-            
+
             <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
