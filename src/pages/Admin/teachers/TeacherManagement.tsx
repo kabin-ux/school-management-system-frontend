@@ -66,7 +66,7 @@ export default function TeacherManagement() {
 
     const handleDeleteTeacher = async (teacherId: number) => {
         try {
-            const res = dispatch(deleteTeacher(teacherId))
+            const res = await dispatch(deleteTeacher(teacherId))
             if (deleteTeacher.fulfilled.match(res)) {
                 toast.success('Teacher removed successfully')
             } else {

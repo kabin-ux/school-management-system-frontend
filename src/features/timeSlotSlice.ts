@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../lib/axios";
+import type { EditTimeSlotForm } from "../components/Admin/timetable/EditTimeSlotModal";
 
 // Async Thunks
 
@@ -19,9 +20,9 @@ export const createTimeSlot = createAsyncThunk(
 // Update time slot
 export const updateTimeSlot = createAsyncThunk(
     "timeSlot/update",
-    async ({ id, data }: { id: string; data: any }, thunkAPI) => {
+    async ({ id, timeslotData }: { id: string; timeslotData: EditTimeSlotForm }, thunkAPI) => {
         try {
-            const res = await api.put(`/timeslot/${id}`, data);
+            const res = await api.put(`/timeslot/${id}`, timeslotData);
             return res.data.data;
         } catch (err: any) {
             return thunkAPI.rejectWithValue(err.response?.data || err.message);

@@ -1,14 +1,15 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import api from "../lib/axios";
+import type { TimeTableForm } from "../components/Admin/timetable/CreateTimeTableModal";
 
 // Async Thunks
 
 //Create Timetable
 export const createTimetable = createAsyncThunk(
   "timetable/create",
-  async (payload: { classId: number; section?: string; name?: string }, { rejectWithValue }) => {
+  async (timetableData: TimeTableForm, { rejectWithValue }) => {
     try {
-      const res = await api.post("/timetable", payload);
+      const res = await api.post("/timetable", timetableData);
       return res.data.data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);

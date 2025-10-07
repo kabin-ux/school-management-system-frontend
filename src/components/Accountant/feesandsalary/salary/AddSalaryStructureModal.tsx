@@ -62,7 +62,7 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
 
     const validateForm = () => {
         const newErrors: Record<string, string> = {};
-        if (!formData.employee_id) newErrors.employee_id = "Class is required";
+        if (!formData.employee_id) newErrors.employee_id = "Employee is required";
         if (!formData.basic) newErrors.basic = "Basic salary is required";
         if (formData.basic <= 0) newErrors.basic = "Basic salary must be greater than 0";
         if (formData.allowances <= 0) newErrors.allowances = "Allowances must be greater than 0";
