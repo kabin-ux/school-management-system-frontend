@@ -1,81 +1,52 @@
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import { UserPlus } from 'lucide-react';
 import StudentStats from '../../../components/Admin/students/StudentStats';
 import StudentFilters from '../../../components/Admin/students/StudentFilters';
 import StudentTable from '../../../components/Admin/students/StudentTable';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addStudent, deleteStudent, getStudentsBySchool, updateStudent } from '../../../features/studentSlice';
-import toast from 'react-hot-toast';
 import { AddStudentModal } from '../../../components/Admin/students/AddStudentModal';
 import EditStudentModal from '../../../components/Admin/students/EditStudentModal';
-import { getAllClassesBySchool } from '../../../features/classSlice';
 import type { Student, StudentForm } from '../../../types/student.types';
+import { useAddStudent, useDeleteStudent, useStudentsBySchool, useUpdateStudent } from '../../../hooks/useStudents';
+import { useClasses } from '../../../hooks/useClasses';
 
 export default function StudentManagement() {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedClass, setSelectedClass] = useState('Grade 10');
     const [selectedSection, setSelectedSection] = useState('Section A');
 
-
-    const dispatch = useAppDispatch();
-    const { students, loading } = useAppSelector((state) => state.student)
-    const { classes } = useAppSelector(state => state.class)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
 
-    useEffect(() => {
-        dispatch(getStudentsBySchool())
-        dispatch(getAllClassesBySchool())
-    }, [dispatch])
+    const { data: students = [], isLoading: loading } = useStudentsBySchool();
+    const { data: classes = [] } = useClasses();
+
+    const addStudentMutation = useAddStudent();
+    const updateStudentMutation = useUpdateStudent();
+    const deleteStudentMutation = useDeleteStudent();
 
     const handleAddStudent = async (studentData: any) => {
-        try {
-            const res = await dispatch(addStudent(studentData))
-            if (addStudent.fulfilled.match(res)) {
-                toast.success('Student added successfully')
-                setIsModalOpen(false)
-            } else {
-                toast.error('Error adding student')
-            }
-        } catch (error) {
-            console.error('Error adding student', error)
-        }
-    }
+        addStudentMutation.mutate(studentData, {
+            onSuccess: () => setIsModalOpen(false),
+        });
+    };
 
     const handleEditStudent = (student: Student) => {
         setIsEditModalOpen(true);
         setSelectedStudent(student)
     }
 
-    const handleUpdateStudent = async (updates: StudentForm, id: string) => {
-        try {
-            const res = await dispatch(updateStudent({ updates, id }))
-            if (updateStudent.fulfilled.match(res)) {
-                toast.success('Student details updated successfully')
-            } else {
-                toast.error('Error updating student')
-            }
-        } catch (error) {
-            console.error('Error editing super admin', error)
-        }
-    }
+    const handleUpdateStudent = (updates: StudentForm, id: string) => {
+        updateStudentMutation.mutate({ updates, id }, {
+            onSuccess: () => setIsEditModalOpen(false),
+        });
+    };
 
-    const handleDeleteStudent = async (id: any) => {
-        try {
-            const res = await dispatch(deleteStudent(id))
-            if (deleteStudent.fulfilled.match(res)) {
-                toast.success('Student removed successfully')
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to remove student'
-                toast.error(errorMsg)
-            }
-        } catch (error) {
-            console.error('Error removing student', error)
-        }
-    }
+    const handleDeleteStudent = (id: string) => {
+        deleteStudentMutation.mutate(id);
+    };
 
     return (
         <div className="flex h-full bg-gray-50">

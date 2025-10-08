@@ -1,46 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
-import type { Teacher } from "../../../../types/teacher.types";
+import type { Teacher } from "../../../types/teacher.types";
 
-export interface AssignTeacherForm {
-    subjectId: string;
+export interface AssignClassTeacherForm {
+    classId: string;
     teacherId: string;
 }
 
-interface AssignTeacherModalProps {
+interface AssignClassTeacherModalProps {
     isOpen: boolean;
     onClose: () => void;
-    subjectId?: string;
-    onSubmit: (data: AssignTeacherForm) => void;
+    classId?: string;
+    onSubmit: (data: AssignClassTeacherForm) => void;
     teachers: Teacher[]
     isLoading: boolean;
 }
 
-export const AssignTeacherModal: React.FC<AssignTeacherModalProps> = ({
+export const AssignClassTeacherModal: React.FC<AssignClassTeacherModalProps> = ({
     isOpen,
     onClose,
-    subjectId,
+    classId,
     onSubmit,
     teachers,
     isLoading
 }) => {
-    const [formData, setFormData] = useState<AssignTeacherForm>({
-        subjectId: subjectId ?? "",
+    const [formData, setFormData] = useState<AssignClassTeacherForm>({
+        classId: classId ?? "",
         teacherId: ""
     });
-    console.log("subject", subjectId, teachers)
+    console.log("subject", classId, teachers)
 
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     useEffect(() => {
         if (isOpen) {
             setFormData({
-                subjectId: subjectId ?? "",
+                classId: classId ?? "",
                 teacherId: ""
             });
             setErrors({});
         }
-    }, [isOpen, subjectId]);
+    }, [isOpen, classId]);
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -73,7 +73,7 @@ export const AssignTeacherModal: React.FC<AssignTeacherModalProps> = ({
             onSubmit(formData);
             onClose();
             setFormData({
-                subjectId: subjectId ?? "",
+                classId: classId ?? "",
                 teacherId: ""
             });
             setErrors({});
@@ -87,7 +87,7 @@ export const AssignTeacherModal: React.FC<AssignTeacherModalProps> = ({
             <div className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
                 {/* Header */}
                 <div className="flex justify-between items-center p-6 border-b border-gray-200">
-                    <h2 className="text-2xl font-bold text-gray-900">Assign Teacher To Subject</h2>
+                    <h2 className="text-2xl font-bold text-gray-900">Assign Class Teacher</h2>
                     <button
                         onClick={onClose}
                         className="p-2 hover:bg-gray-100 rounded-full transition-colors"

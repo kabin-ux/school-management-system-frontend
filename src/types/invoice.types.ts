@@ -1,12 +1,20 @@
+import type { Student } from "./student.types";
+
 export interface Invoice {
   id: string;
-  studentName: string;
-  class: string;
-  date: string;
-  dueAmount: string;
-  outstanding: string;
-  lastReminder: string;
-  status: 'Paid' | 'Unpaid' | 'Pending' | 'Urgent';
+  student_id: string;
+  amount: number;
+  discount: number;
+  accountant_id: string | null;
+  method: "Cash" | "Online" | "None";
+  status: "Pending" | "Completed" | "Failed" | "Refunded";
+  payment_date?: Date;
+  description?: string | null;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
+
+  student: Student
 }
 
 export interface DefaulterSummary {

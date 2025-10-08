@@ -6,7 +6,6 @@ import TimetableSidebar from '../../../components/Admin/timetable/TimetableSideb
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { getAllClassesBySchool } from '../../../features/classSlice';
 import { getAllTimetables, createTimetable } from '../../../features/timetableSlice';
 import { getAllTimeSlotsByTimetableId, createTimeSlot, updateTimeSlot, deleteTimeSlot } from '../../../features/timeSlotSlice';
 import toast from 'react-hot-toast';
@@ -14,6 +13,7 @@ import { getEndTime } from '../../../lib/utils';
 import { CreateTimeTableModal, type TimeTableForm } from '../../../components/Admin/timetable/CreateTimeTableModal';
 import { EditTimeSlotModal, type EditTimeSlotForm } from '../../../components/Admin/timetable/EditTimeSlotModal';
 import type { TimeSlot } from '../../../types/timetable.types';
+import { useClasses } from '../../../hooks/useClasses';
 
 export default function TimetableManagement() {
     const [selectedClass, setSelectedClass] = useState('Grade 10');
@@ -25,12 +25,11 @@ export default function TimetableManagement() {
     const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(null);
 
     const dispatch = useAppDispatch();
-    const { classes } = useAppSelector(state => state.class);
+    const { data: classes = [] } = useClasses();
     const { timetables, loading } = useAppSelector(state => state.timetable);
     const { slots } = useAppSelector(state => state.timeSlot);
 
     useEffect(() => {
-        dispatch(getAllClassesBySchool())
         dispatch(getAllTimetables())
     }, [dispatch])
 

@@ -9,7 +9,6 @@ import { Sidebar } from '../../../components/Accountant/layout/Sidebar';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useEffect, useState } from 'react';
 import { addFeesStructure, deleteFeesStructure, getMySchoolFeesStructures, updateFeesStructure } from '../../../features/feesSlice';
-import { getAllClassesBySchool } from '../../../features/classSlice';
 import { getAllTransportation } from '../../../features/transportationSlice';
 import { AddFeeStructureModal, type FeeStructureForm } from '../../../components/Accountant/feesandsalary/AddFeeStructureModal';
 import toast from 'react-hot-toast';
@@ -19,6 +18,7 @@ import { AddSalaryStructureModal } from '../../../components/Accountant/feesands
 import { getAllTeachers } from '../../../features/teacherSlice';
 import { getAllAccountantBySchool } from '../../../features/accountantSlice';
 import EditSalaryStructureModal from '../../../components/Accountant/feesandsalary/salary/EditSalaryStructureModal';
+import { useClasses } from '../../../hooks/useClasses';
 
 export default function FeeAndSalaryPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,14 +31,13 @@ export default function FeeAndSalaryPage() {
     const dispatch = useAppDispatch();
     const { feeStructures, loading } = useAppSelector(state => state.fees);
     const { salaryStructures, isLoading } = useAppSelector(state => state.salary);
-    const { classes } = useAppSelector(state => state.class);
+    const { data: classes = [] } = useClasses();
     const { items } = useAppSelector(state => state.transportation);
     const { teachers } = useAppSelector(state => state.teacher);
     const { accountantBySchool } = useAppSelector(state => state.accountant);
 
     useEffect(() => {
         dispatch(getMySchoolFeesStructures())
-        dispatch(getAllClassesBySchool())
         dispatch(getAllTransportation())
         dispatch(getMySchoolSalaryStructures())
 

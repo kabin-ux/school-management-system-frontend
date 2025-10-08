@@ -4,11 +4,11 @@ import storage from "redux-persist/lib/storage";
 import authReducer from "../features/authSlice";
 import schoolReducer from "../features/schoolSlice";
 import teacherReducer from "../features/teacherSlice";
-import studentReducer from "../features/studentSlice";
+// import studentReducer from "../features/studentSlice";
 import superAdminReducer from "../features/superAdminSlice";
 import accountantReducer from "../features/accountantSlice";
 import timetableReducer from "../features/timetableSlice";
-import classReducer from "../features/classSlice";
+// import classReducer from "../features/classSlice";
 import sectionReducer from "../features/sectionSlice";
 import parentReducer from "../features/parentSlice";
 import feesReducer from "../features/feesSlice";
@@ -32,11 +32,11 @@ const persistConfig = {
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 const persistedSchoolReducer = persistReducer(persistConfig, schoolReducer);
 const persistedTeacherReducer = persistReducer(persistConfig, teacherReducer);
-const persistedStudentReducer = persistReducer(persistConfig, studentReducer);
+// const persistedStudentReducer = persistReducer(persistConfig, studentReducer);
 const persistedSuperAdminReducer = persistReducer(persistConfig, superAdminReducer);
 const persistedAccountantReducer = persistReducer(persistConfig, accountantReducer);
 const persistedTimetableReducer = persistReducer(persistConfig, timetableReducer);
-const persistedClassReducer = persistReducer(persistConfig, classReducer);
+// const persistedClassReducer = persistReducer(persistConfig, classReducer);
 const persistedSectionReducer = persistReducer(persistConfig, sectionReducer);
 const persistedParentReducer = persistReducer(persistConfig, parentReducer);
 const persistedFeesReducer = persistReducer(persistConfig, feesReducer);
@@ -54,11 +54,11 @@ export const store = configureStore({
     auth: persistedAuthReducer,
     school: persistedSchoolReducer,
     teacher: persistedTeacherReducer,
-    student: persistedStudentReducer,
+    // student: persistedStudentReducer,
     superAdmin: persistedSuperAdminReducer,
     accountant: persistedAccountantReducer,
     timetable: persistedTimetableReducer,
-    class: persistedClassReducer,
+    // class: persistedClassReducer,
     section: persistedSectionReducer,
     parent: persistedParentReducer,
     fees: persistedFeesReducer,

@@ -146,8 +146,8 @@ export const DataTable: React.FC<DataTableProps> = ({
                 } else {
                   const employee = item as Salary;
                   const totalSalary =
-                    Number(employee.basic) +
-                    Number(employee.allowances)
+                    Number(employee?.basic) +
+                    Number(employee?.allowances)
                   return (
                     <tr
                       key={index}

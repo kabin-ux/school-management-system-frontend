@@ -6,40 +6,38 @@ import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import toast from 'react-hot-toast';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addClass, deleteClass, getAllClassesBySchool, updateClass } from '../../../features/classSlice';
 import { AddClassModal } from '../../../components/Admin/class/AddClassModal';
 import { useNavigate } from 'react-router-dom';
 import type { Grade } from '../../../types/class.types';
 import EditClassModal from '../../../components/Admin/class/EditClassModal';
+import { AssignClassTeacherModal, type AssignClassTeacherForm } from '../../../components/Admin/class/AssignClassTeacherModal';
+import { assignClassTeacher, getAllTeachers } from '../../../features/teacherSlice';
+import { useAddClass, useClasses, useDeleteClass, useUpdateClass } from '../../../hooks/useClasses';
 
 const ClassManagement: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedClass, setSelectedClass] = useState<Grade | null>(null);
+    const [isAssignClassTeacherModalOpen, setIsAssignClassTeacherModalOpen] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { classes, loading } = useAppSelector(state => state.class)
+    const { data: classes = [], isLoading: loading } = useClasses();
+    const addClassMutation = useAddClass();
+    const updateClassMutation = useUpdateClass();
+    const deleteClassMutation = useDeleteClass();
+
+    const { teachers } = useAppSelector(state => state.teacher)
 
     useEffect(() => {
-        dispatch(getAllClassesBySchool())
+        dispatch(getAllTeachers())
     }, [dispatch])
 
     const handleAddClass = async (classData: any) => {
-        try {
-            const res = await dispatch(addClass(classData))
-            if (addClass.fulfilled.match(res)) {
-                toast.success('Class added successfully')
-                setIsModalOpen(false)
-            } else {
-                const errorMessage = typeof res.payload === "string" ? res.payload : 'Error adding class'
-                toast.error(errorMessage);;
-            }
-        } catch (error) {
-            toast.error('Error adding class')
-            console.error('Error adding class', error)
-        }
+        addClassMutation.mutate(classData, {
+            onSuccess: () => setIsModalOpen(false),
+        });
     }
 
     const handleEditClass = (cls: Grade) => {
@@ -47,41 +45,42 @@ const ClassManagement: React.FC = () => {
         setSelectedClass(cls);
     }
 
-    const handleUpdateClass = async (classData: any) => {
-        try {
-            const res = await dispatch(updateClass(classData))
-            if (updateClass.fulfilled.match(res)) {
-                toast.success('Class updated successfully')
-            } else {
-                toast.error('Error updating class')
-            }
-        } catch (error) {
-            toast.error('Error updating class')
-            console.error('Error updating class', error)
-        }
+    const handleUpdateClass = async (updates: any) => {
+        updateClassMutation.mutate({ updates }, {
+            onSuccess: () => setIsEditModalOpen(false),
+        });
     }
 
     const handleDeleteClass = async (classId: any) => {
-        try {
-            const res = await dispatch(deleteClass(classId))
-            if (deleteClass.fulfilled.match(res)) {
-                toast.success('Class deleted successfully')
-            } else {
-                toast.error('Error deleting class')
-            }
-        } catch (error) {
-            toast.error('Error deleting class')
-            console.error('Error deleting class', error)
-        }
+        deleteClassMutation.mutate(classId);
     }
 
     const navigateToDetail = (classId: number) => {
         navigate(`/admin/class-management/details/${classId}`)
     };
 
-     const navigateToSubject = (classId: number) => {
+    const navigateToSubject = (classId: number) => {
         navigate(`/admin/class-management/subject/${classId}`)
     };
+
+    const addClassTeacher = (cls: Grade) => {
+        setSelectedClass(cls)
+        setIsAssignClassTeacherModalOpen(true);
+    };
+
+    const handleAssignClassTeacher = async (data: AssignClassTeacherForm) => {
+        try {
+            const res = await dispatch(assignClassTeacher(data))
+            if (assignClassTeacher.fulfilled.match(res)) {
+                toast.success('Class Teacher assigned successfully')
+            } else {
+                toast.error('Error assigning Class Teacher')
+            }
+        } catch (error) {
+            toast.error('Error assigning Class teacher')
+            console.error('Error assigning Class teacher', error)
+        }
+    }
 
     return (
         <div className="flex h-full bg-gray-50">
@@ -105,6 +104,7 @@ const ClassManagement: React.FC = () => {
                             grades={classes}
                             onNavigateToSection={navigateToDetail}
                             onNavigateToSubject={navigateToSubject}
+                            onAssignClassTeacher={addClassTeacher}
                             onEdit={handleEditClass}
                             onDelete={handleDeleteClass}
                         />
@@ -124,6 +124,15 @@ const ClassManagement: React.FC = () => {
                             }}
                             onSubmit={handleUpdateClass}
                             cls={selectedClass}
+                        />
+
+                        <AssignClassTeacherModal
+                            isOpen={isAssignClassTeacherModalOpen}
+                            onClose={() => setIsAssignClassTeacherModalOpen(false)}
+                            classId={selectedClass?.id}
+                            onSubmit={handleAssignClassTeacher}
+                            isLoading={loading}
+                            teachers={teachers}
                         />
                     </div>
                 </main>

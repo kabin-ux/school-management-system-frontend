@@ -86,13 +86,11 @@ export const assignClassesToTeacher = createAsyncThunk(
     }
 );
 
-
-
 //  Assign class teacher
 export const assignClassTeacher = createAsyncThunk(
     "teacher/assignClassTeacher",
     async (
-        { teacherId, classId }: { teacherId: number; classId: number },
+        { teacherId, classId }: { teacherId: string; classId: string },
         thunkAPI
     ) => {
         try {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookCheck, BookUser, Edit, Eye, Trash2 } from 'lucide-react';
+import { BookCheck, BookOpenCheck, BookUser, Edit, Eye, Trash2 } from 'lucide-react';
 import type { Grade } from '../../../types/class.types';
 import EmptyState from '../../../common/EmptyState';
 
@@ -7,11 +7,12 @@ interface ClassTableProps {
   grades: Grade[];
   onNavigateToSection: (classId: number) => void;
   onNavigateToSubject: (classId: number) => void;
+  onAssignClassTeacher: (cls: Grade) => void;
   onEdit: (cls: Grade) => void;
   onDelete: (classId: string) => void;
 }
 
-export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSection, onNavigateToSubject, onEdit, onDelete }) => {
+export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSection, onNavigateToSubject, onAssignClassTeacher, onEdit, onDelete }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm">
 
@@ -76,6 +77,11 @@ export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSect
                             onClick={() => onNavigateToSubject(grade.id)}
                           >
                             <BookCheck className="w-4 h-4" />
+                          </button>
+                          <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
+                            onClick={() => onAssignClassTeacher(grade)}
+                          >
+                            <BookOpenCheck className="w-4 h-4" />
                           </button>
                           <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
                             onClick={() => onEdit(grade)}

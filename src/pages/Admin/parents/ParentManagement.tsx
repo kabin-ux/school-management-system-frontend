@@ -5,13 +5,13 @@ import TeacherFilters from '../../../components/Admin/teachers/TeacherFilters';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { getStudentsBySchool } from '../../../features/studentSlice';
 import { addParent, deleteParent, getAllParents, updateParent } from '../../../features/parentSlice';
 import { ParentGrid } from '../../../components/Admin/parents/ParentGrid';
 import AddParentModal from '../../../components/Admin/parents/AddParentModal';
 import toast from 'react-hot-toast';
 import type { Parent } from '../../../types/parent.types';
 import EditParentModal from '../../../components/Admin/parents/EditParentModal';
+import { useStudentsBySchool } from '../../../hooks/useStudents';
 
 export default function ParentsManagement() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -24,11 +24,9 @@ export default function ParentsManagement() {
 
     const dispatch = useAppDispatch();
     const { parents, loading } = useAppSelector(state => state.parent)
-    const { students } = useAppSelector(state => state.student)
-
+    const { data: students = [] } = useStudentsBySchool();
     useEffect(() => {
         dispatch(getAllParents())
-        dispatch(getStudentsBySchool())
     }, [dispatch])
 
     const handleAddParent = async (parentData: any) => {

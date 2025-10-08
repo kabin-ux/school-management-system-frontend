@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { createSection, deleteSection, getSectionsByClass, updateSection } from "../../../../features/sectionSlice";
-import { addClass, getAllClassesBySchool, getClassDetails } from "../../../../features/classSlice";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import toast from "react-hot-toast";
 import { Sidebar } from "../../../../components/Admin/layout/Sidebar";
@@ -11,6 +10,7 @@ import ClassSections from "../../../../components/Admin/class/ClassDetailsOvervi
 import { useParams } from "react-router-dom";
 import AddSectionModal, { type Section } from "../../../../components/Admin/section/AddSectionModal";
 import EditSectionModal from "../../../../components/Admin/section/EditSectionModal";
+import { useClassDetails } from "../../../../hooks/useClasses";
 
 
 const ClassDetails: React.FC = () => {
@@ -20,14 +20,15 @@ const ClassDetails: React.FC = () => {
     const [selectedSection, setSelectedSection] = useState<Section | null>(null);
 
     const dispatch = useAppDispatch();
-    const { classDetails } = useAppSelector(state => state.class)
-    const { sections } = useAppSelector(state => state.section)
-
     const { id } = useParams<{ id: string }>()
     const classId: string = id ?? "";
+    
+    const { data: classDetails } = useClassDetails(classId);
+    const { sections } = useAppSelector(state => state.section)
+
+
 
     useEffect(() => {
-        dispatch(getClassDetails(classId))
         dispatch(getSectionsByClass(classId))
     }, [dispatch])
 

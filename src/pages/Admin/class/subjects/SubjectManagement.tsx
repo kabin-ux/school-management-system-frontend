@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getClassDetails } from "../../../../features/classSlice";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import toast from "react-hot-toast";
 import { Sidebar } from "../../../../components/Admin/layout/Sidebar";
@@ -14,6 +13,7 @@ import { getAllTeachers } from "../../../../features/teacherSlice";
 import { AssignTeacherModal, type AssignTeacherForm } from "../../../../components/Admin/class/subject/AssignTeacherModal";
 import EditSubjectModal from "../../../../components/Admin/class/subject/EditSubjectModal";
 import type { Subject, SubjectForm } from "../../../../types/class.types";
+import { useClassDetails } from "../../../../hooks/useClasses";
 
 
 const SubjectManagement: React.FC = () => {
@@ -25,13 +25,15 @@ const SubjectManagement: React.FC = () => {
 
 
     const dispatch = useAppDispatch();
-    const { classDetails } = useAppSelector(state => state.class)
-    const { subjectsByClass, loading } = useAppSelector(state => state.subject)
-    const { teachers } = useAppSelector(state => state.teacher)
-
     const { id } = useParams<{ id: string }>()
     const classId: string = id ?? "";
     console.log(classId)
+
+    const { data: classDetails } = useClassDetails(classId);
+    const { subjectsByClass, loading } = useAppSelector(state => state.subject)
+    const { teachers } = useAppSelector(state => state.teacher)
+
+
 
     useEffect(() => {
         dispatch(getClassDetails(classId))
@@ -70,8 +72,8 @@ const SubjectManagement: React.FC = () => {
 
     const handleUpdateSubject = async (id: string, updates: SubjectForm) => {
         try {
-            console.log("subjecdata",updates)
-            const res = await dispatch(updateSubject({id, updates}))
+            console.log("subjecdata", updates)
+            const res = await dispatch(updateSubject({ id, updates }))
             if (updateSubject.fulfilled.match(res)) {
                 toast.success('Subject updated successfully')
             } else {
@@ -111,8 +113,8 @@ const SubjectManagement: React.FC = () => {
                 toast.error('Error assigning Teacher')
             }
         } catch (error) {
-            toast.error('Error updating Teacher')
-            console.error('Error updating Teacher', error)
+            toast.error('Error assigning Teacher')
+            console.error('Error assigning Teacher', error)
         }
     }
     return (
