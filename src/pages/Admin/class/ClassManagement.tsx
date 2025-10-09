@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ClassHeader } from '../../../components/Admin/class/ClassHeader';
 import { ClassStats } from '../../../components/Admin/class/ClassStats';
 import { ClassTable } from '../../../components/Admin/class/ClassTable';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
-import toast from 'react-hot-toast';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { AddClassModal } from '../../../components/Admin/class/AddClassModal';
 import { useNavigate } from 'react-router-dom';
 import type { Grade } from '../../../types/class.types';
 import EditClassModal from '../../../components/Admin/class/EditClassModal';
 import { AssignClassTeacherModal, type AssignClassTeacherForm } from '../../../components/Admin/class/AssignClassTeacherModal';
-import { assignClassTeacher, getAllTeachers } from '../../../features/teacherSlice';
 import { useAddClass, useClasses, useDeleteClass, useUpdateClass } from '../../../hooks/useClasses';
+import { useAssignClassTeacher, useTeachers } from '../../../hooks/useTeachers';
 
 const ClassManagement: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -22,17 +20,14 @@ const ClassManagement: React.FC = () => {
     const [isAssignClassTeacherModalOpen, setIsAssignClassTeacherModalOpen] = useState(false);
 
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
+
     const { data: classes = [], isLoading: loading } = useClasses();
     const addClassMutation = useAddClass();
     const updateClassMutation = useUpdateClass();
     const deleteClassMutation = useDeleteClass();
 
-    const { teachers } = useAppSelector(state => state.teacher)
-
-    useEffect(() => {
-        dispatch(getAllTeachers())
-    }, [dispatch])
+    const { data: teachers = [] } = useTeachers();
+    const assignClassTeacherMutate = useAssignClassTeacher();
 
     const handleAddClass = async (classData: any) => {
         addClassMutation.mutate(classData, {
@@ -69,17 +64,9 @@ const ClassManagement: React.FC = () => {
     };
 
     const handleAssignClassTeacher = async (data: AssignClassTeacherForm) => {
-        try {
-            const res = await dispatch(assignClassTeacher(data))
-            if (assignClassTeacher.fulfilled.match(res)) {
-                toast.success('Class Teacher assigned successfully')
-            } else {
-                toast.error('Error assigning Class Teacher')
-            }
-        } catch (error) {
-            toast.error('Error assigning Class teacher')
-            console.error('Error assigning Class teacher', error)
-        }
+        assignClassTeacherMutate.mutate(data, {
+            onSuccess: () => setIsAssignClassTeacherModalOpen(false)
+        })
     }
 
     return (

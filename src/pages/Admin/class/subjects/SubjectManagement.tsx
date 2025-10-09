@@ -1,19 +1,17 @@
-import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
-import toast from "react-hot-toast";
+import { useState } from "react";
 import { Sidebar } from "../../../../components/Admin/layout/Sidebar";
 import { AdminDashboardHeader } from "../../../../components/Admin/layout/DashboardHeader";
 import { useParams } from "react-router-dom";
 import { SubjectHeader } from "../../../../components/Admin/class/subject/SubjectHeader";
 import { SubjectStats } from "../../../../components/Admin/class/subject/SubjectStats";
 import { SubjectTable } from "../../../../components/Admin/class/subject/SubjectTable";
-import { addSubject, assignSubjectsToTeacher, deleteSubject, getAllSubjectsByClass, updateSubject } from "../../../../features/subjectSlice";
 import { AddSubjectModal } from "../../../../components/Admin/class/subject/AddSubjectModal";
-import { getAllTeachers } from "../../../../features/teacherSlice";
 import { AssignTeacherModal, type AssignTeacherForm } from "../../../../components/Admin/class/subject/AssignTeacherModal";
 import EditSubjectModal from "../../../../components/Admin/class/subject/EditSubjectModal";
 import type { Subject, SubjectForm } from "../../../../types/class.types";
 import { useClassDetails } from "../../../../hooks/useClasses";
+import { useAddSubject, useAssignSubjectToTeacher, useDeleteSubject, useSubjectsByClass, useUpdateSubject } from "../../../../hooks/useSubjects";
+import { useTeachers } from "../../../../hooks/useTeachers";
 
 
 const SubjectManagement: React.FC = () => {
@@ -23,25 +21,21 @@ const SubjectManagement: React.FC = () => {
     const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
     const [isAssignTeacherModalOpen, setIsAssignTeacherModalOpen] = useState(false);
 
-
-    const dispatch = useAppDispatch();
     const { id } = useParams<{ id: string }>()
     const classId: string = id ?? "";
-    console.log(classId)
 
+    const { data: teachers = [] } = useTeachers();
     const { data: classDetails } = useClassDetails(classId);
-    const { subjectsByClass, loading } = useAppSelector(state => state.subject)
-    const { teachers } = useAppSelector(state => state.teacher)
+    const { data: subjectsByClass = [], isLoading: loading } = useSubjectsByClass(classId);
 
+    const addSubjectMutation = useAddSubject();
+    const updateSubjectMutation = useUpdateSubject();
+    const deleteSubjectMutation = useDeleteSubject();
+    const assignTeacherMutation = useAssignSubjectToTeacher();
 
-
-    useEffect(() => {
-        dispatch(getClassDetails(classId))
-        dispatch(getAllSubjectsByClass(classId))
-        dispatch(getAllTeachers())
-    }, [dispatch])
-
-    const filteredTeachers = teachers?.filter((teacher) => teacher?.subjects?.length === 0);
+    const filteredTeachers = (teachers ?? []).filter(
+        (teacher) => teacher?.subjects?.length === 0
+    );
 
     console.log("filterd teacher", filteredTeachers)
 
@@ -50,19 +44,9 @@ const SubjectManagement: React.FC = () => {
     }
 
     const handleAddSubject = async (subjectData: any) => {
-        try {
-            const res = await dispatch(addSubject(subjectData))
-            if (addSubject.fulfilled.match(res)) {
-                toast.success('Subject added successfully')
-                setIsModalOpen(false);
-            } else {
-                const errorMessage = typeof res.payload === "string" ? res.payload : 'Error adding Subject'
-                toast.error(errorMessage);;
-            }
-        } catch (error) {
-            toast.error('Error adding Subject')
-            console.error('Error adding Subject', error)
-        }
+        addSubjectMutation.mutate(subjectData, {
+            onSuccess: () => setIsModalOpen(false),
+        });
     }
 
     const handleEditSubject = (subject: Subject) => {
@@ -71,32 +55,13 @@ const SubjectManagement: React.FC = () => {
     }
 
     const handleUpdateSubject = async (id: string, updates: SubjectForm) => {
-        try {
-            console.log("subjecdata", updates)
-            const res = await dispatch(updateSubject({ id, updates }))
-            if (updateSubject.fulfilled.match(res)) {
-                toast.success('Subject updated successfully')
-            } else {
-                toast.error('Error updating Subject')
-            }
-        } catch (error) {
-            toast.error('Error updating Subject')
-            console.error('Error updating Subject', error)
-        }
+        updateSubjectMutation.mutate({ id, updates }, {
+            onSuccess: () => setIsEditModalOpen(false),
+        });
     }
 
     const handleDeleteSubject = async (classId: any) => {
-        try {
-            const res = await dispatch(deleteSubject(classId))
-            if (deleteSubject.fulfilled.match(res)) {
-                toast.success('Subject deleted successfully')
-            } else {
-                toast.error('Error deleting subject')
-            }
-        } catch (error) {
-            toast.error('Error deleting subject')
-            console.error('Error deleting subject', error)
-        }
+        deleteSubjectMutation.mutate(classId);
     }
 
     const assignTeacher = (subject: Subject) => {
@@ -105,18 +70,9 @@ const SubjectManagement: React.FC = () => {
     }
 
     const handleAssignTeacher = async (data: AssignTeacherForm) => {
-        try {
-            const res = await dispatch(assignSubjectsToTeacher(data))
-            if (assignSubjectsToTeacher.fulfilled.match(res)) {
-                toast.success('Teacher assigned to subject successfully')
-            } else {
-                toast.error('Error assigning Teacher')
-            }
-        } catch (error) {
-            toast.error('Error assigning Teacher')
-            console.error('Error assigning Teacher', error)
-        }
+        assignTeacherMutation.mutate(data);
     }
+
     return (
         <div className="flex h-full bg-gray-50">
             {/* Sidebar */}
@@ -137,7 +93,7 @@ const SubjectManagement: React.FC = () => {
                         />
                         <SubjectStats />
                         <SubjectTable
-                            subjects={subjectsByClass}
+                            subjects={subjectsByClass} // subjectsByClass is undefined, the component receives an empty array.
                             onAssignTeacher={assignTeacher}
                             onEdit={handleEditSubject}
                             onDelete={handleDeleteSubject}
@@ -149,7 +105,6 @@ const SubjectManagement: React.FC = () => {
                             onClose={() => setIsModalOpen(false)}
                             onSubmit={handleAddSubject}
                             isLoading={loading}
-                            teachers={teachers}
                         />
 
                         <EditSubjectModal

@@ -1,17 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { UserPlus } from 'lucide-react';
 import ParentStats from '../../../components/Admin/parents/ParentStats';
 import TeacherFilters from '../../../components/Admin/teachers/TeacherFilters';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addParent, deleteParent, getAllParents, updateParent } from '../../../features/parentSlice';
 import { ParentGrid } from '../../../components/Admin/parents/ParentGrid';
 import AddParentModal from '../../../components/Admin/parents/AddParentModal';
-import toast from 'react-hot-toast';
 import type { Parent } from '../../../types/parent.types';
 import EditParentModal from '../../../components/Admin/parents/EditParentModal';
 import { useStudentsBySchool } from '../../../hooks/useStudents';
+import { useAddParent, useDeleteParent, useParents, useUpdateParent } from '../../../hooks/useParents';
 
 export default function ParentsManagement() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -22,27 +20,17 @@ export default function ParentsManagement() {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedParent, setSelectedParent] = useState<Parent | null>(null);
 
-    const dispatch = useAppDispatch();
-    const { parents, loading } = useAppSelector(state => state.parent)
+    const { data: parents = [], isLoading: loading } = useParents();
     const { data: students = [] } = useStudentsBySchool();
-    useEffect(() => {
-        dispatch(getAllParents())
-    }, [dispatch])
+
+    const addParentMutation = useAddParent();
+    const updateParentMutation = useUpdateParent();
+    const deleteParentMutation = useDeleteParent();
 
     const handleAddParent = async (parentData: any) => {
-        try {
-            const res = await dispatch(addParent(parentData))
-            if (addParent.fulfilled.match(res)) {
-                toast.success('Parent added successfully')
-                setIsModalOpen(false)
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to add parent'
-                toast.error(errorMsg)
-            }
-        } catch (error) {
-            toast.error('Error adding teacher')
-            console.error('Error adding teacher', error)
-        }
+        addParentMutation.mutate(parentData, {
+            onSuccess: () => setIsModalOpen(false)
+        })
     }
 
     const handleEditParent = (parent: Parent) => {
@@ -51,32 +39,13 @@ export default function ParentsManagement() {
     }
 
     const handleUpdateParent = async (parentData: any) => {
-        try {
-            const res = await dispatch(updateParent(parentData))
-            if (updateParent.fulfilled.match(res)) {
-                toast.success('Parent updated successfully')
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to update parent'
-                toast.error(errorMsg)
-            }
-        } catch (error) {
-            toast.error('Error updating parent')
-            console.error('Error updating parent', error)
-        }
+        updateParentMutation.mutate(parentData, {
+            onSuccess: () => setIsEditModalOpen(false)
+        })
     }
 
-    const handleDeleteParent = async (parentId: number) => {
-        try {
-            const res = await dispatch(deleteParent(parentId))
-            if (deleteParent.fulfilled.match(res)) {
-                toast.success('Parent removed successfully')
-            } else {
-                toast.error('Error removing parent')
-            }
-        } catch (error) {
-            toast.error('Error removing parent')
-            console.error('Error removing parent', error)
-        }
+    const handleDeleteParent = async (parentId: string) => {
+        deleteParentMutation.mutate(parentId);
     }
 
     return (

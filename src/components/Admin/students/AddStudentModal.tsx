@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { X } from "lucide-react";
 import type { Grade } from "../../../types/class.types";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { getSectionsByClass } from "../../../features/sectionSlice";
+import { useSectionsByClass } from "../../../hooks/useSection";
 
 interface StudentForm {
   firstName: string;
@@ -42,27 +41,18 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
     dateOfBirth: "",
     address: "",
   });
-  
-  const { sections } = useAppSelector(state => state.section)
-  const dispatch = useAppDispatch();
+
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Load sections when class changes
-  useEffect(() => {
-    if (formData.class_id) {
-      const selectedClass = classes.find(cls => cls.id === formData.class_id);
-      if (selectedClass) {
-        dispatch(getSectionsByClass(selectedClass?.id));
-      }
-    }
-  }, [formData.class_id, classes, dispatch]);
+  // Use React Query hook directly at the top level
+  const { data: sections = [] } = useSectionsByClass(formData.class_id);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     // Prevent input changes during loading
     if (loading) return;
-    
+
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -108,7 +98,7 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
   const handleSubmit = () => {
     // Prevent multiple submissions
     if (loading) return;
-    
+
     if (validateForm()) {
       onSubmit(formData);
       // Reset form only on successful validation
@@ -144,11 +134,10 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
           <button
             onClick={handleClose}
             disabled={loading}
-            className={`p-2 rounded-full transition-colors ${
-              loading 
-                ? 'text-gray-400 cursor-not-allowed' 
-                : 'text-gray-500 hover:bg-gray-100'
-            }`}
+            className={`p-2 rounded-full transition-colors ${loading
+              ? 'text-gray-400 cursor-not-allowed'
+              : 'text-gray-500 hover:bg-gray-100'
+              }`}
           >
             <X className="w-6 h-6" />
           </button>
@@ -170,9 +159,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   value={formData.firstName}
                   onChange={handleInputChange}
                   disabled={loading}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.firstName ? 'border-red-500' : 'border-gray-300'
-                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.firstName ? 'border-red-500' : 'border-gray-300'
+                    } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                   placeholder="Enter first name"
                 />
                 {errors.firstName && <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>}
@@ -188,9 +176,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   value={formData.lastName}
                   onChange={handleInputChange}
                   disabled={loading}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.lastName ? 'border-red-500' : 'border-gray-300'
-                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.lastName ? 'border-red-500' : 'border-gray-300'
+                    } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                   placeholder="Enter last name"
                 />
                 {errors.lastName && <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>}
@@ -208,9 +195,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   value={formData.email}
                   onChange={handleInputChange}
                   disabled={loading}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.email ? 'border-red-500' : 'border-gray-300'
-                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? 'border-red-500' : 'border-gray-300'
+                    } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                   placeholder="Enter email address"
                 />
                 {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
@@ -225,9 +211,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   value={formData.gender}
                   onChange={handleInputChange}
                   disabled={loading}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.gender ? 'border-red-500' : 'border-gray-300'
-                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.gender ? 'border-red-500' : 'border-gray-300'
+                    } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                 >
                   <option value="">Select gender</option>
                   <option value="male">Male</option>
@@ -248,9 +233,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   value={formData.class_id}
                   onChange={handleInputChange}
                   disabled={loading}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.class ? 'border-red-500' : 'border-gray-300'
-                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.class ? 'border-red-500' : 'border-gray-300'
+                    } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                 >
                   <option value="">Select class</option>
                   {classes.map((cls) => (
@@ -271,9 +255,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   value={formData.section_id}
                   onChange={handleInputChange}
                   disabled={loading || !formData.class_id}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.section ? 'border-red-500' : 'border-gray-300'
-                  } ${(loading || !formData.class_id) ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.section ? 'border-red-500' : 'border-gray-300'
+                    } ${(loading || !formData.class_id) ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                 >
                   <option value="">Select section</option>
                   {sections.map((section: any) => (
@@ -295,9 +278,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   value={formData.rollNumber}
                   onChange={handleInputChange}
                   disabled={loading}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.rollNumber ? 'border-red-500' : 'border-gray-300'
-                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.rollNumber ? 'border-red-500' : 'border-gray-300'
+                    } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                   placeholder="Enter roll number"
                 />
                 {errors.rollNumber && <p className="mt-1 text-sm text-red-600">{errors.rollNumber}</p>}
@@ -315,9 +297,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   value={formData.dateOfBirth}
                   onChange={handleInputChange}
                   disabled={loading}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
-                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
+                    } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                 />
                 {errors.dateOfBirth && <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth}</p>}
               </div>
@@ -332,9 +313,8 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
                   onChange={handleInputChange}
                   disabled={loading}
                   rows={2}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
-                    errors.address ? 'border-red-500' : 'border-gray-300'
-                  } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${errors.address ? 'border-red-500' : 'border-gray-300'
+                    } ${loading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                   placeholder="Enter address"
                 />
                 {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address}</p>}
@@ -348,11 +328,10 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
               type="button"
               onClick={handleClose}
               disabled={loading}
-              className={`px-6 py-2 border border-gray-300 rounded-md transition-colors ${
-                loading 
-                  ? 'text-gray-400 border-gray-200 cursor-not-allowed bg-gray-50'
-                  : 'text-gray-700 hover:bg-gray-50'
-              }`}
+              className={`px-6 py-2 border border-gray-300 rounded-md transition-colors ${loading
+                ? 'text-gray-400 border-gray-200 cursor-not-allowed bg-gray-50'
+                : 'text-gray-700 hover:bg-gray-50'
+                }`}
             >
               Cancel
             </button>
@@ -360,11 +339,10 @@ export const AddStudentModal: React.FC<StudentModalProps> = ({
               type="button"
               disabled={loading}
               onClick={handleSubmit}
-              className={`px-6 py-2 rounded-md transition-colors ${
-                loading
-                  ? 'bg-blue-400 cursor-not-allowed text-white'
-                  : 'bg-blue-600 text-white hover:bg-blue-700'
-              }`}
+              className={`px-6 py-2 rounded-md transition-colors ${loading
+                ? 'bg-blue-400 cursor-not-allowed text-white'
+                : 'bg-blue-600 text-white hover:bg-blue-700'
+                }`}
             >
               {loading ? "Adding..." : "Add Student"}
             </button>

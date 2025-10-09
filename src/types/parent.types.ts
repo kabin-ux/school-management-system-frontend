@@ -1,7 +1,7 @@
 import type { Student } from "../features/studentSlice";
 
 export interface Parent {
-    id: number;
+    id: string;
     avatar?: string;
     status?: string;
     name: string;
@@ -11,4 +11,7 @@ export interface Parent {
     relation: string;
     occupation: string;
     students?: Student[];
+    createdAt?: Date;
+    updatedAt?: Date;
+    deletedAt?: Date | null;
 }

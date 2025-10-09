@@ -1,11 +1,11 @@
 import { Mail, Phone, BookOpen, GraduationCap, Trash2, Edit, UserRoundPen } from 'lucide-react';
-import type { Teacher } from '../../../types/admin-dashboard.types';
 import EmptyState from '../../../common/EmptyState';
+import type { Teacher } from '../../../types/teacher.types';
 
 interface TeacherGridProps {
   teachers: Teacher[];
   onEdit: (teacher: Teacher) => void;
-  onDelete: (teacherId: number) => void;
+  onDelete: (teacherId: string) => void;
 }
 
 export default function TeacherGrid({ teachers, onEdit, onDelete }: TeacherGridProps) {

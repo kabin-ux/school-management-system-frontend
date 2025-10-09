@@ -1,35 +1,33 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Bus } from 'lucide-react';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import toast from 'react-hot-toast';
 import type { Transportation } from '../../../types/admin-transportation.types';
 import TransportationStats from '../../../components/Admin/transportation/TransportationStats';
 import TransportationFilter from '../../../components/Admin/transportation/TransportationFilters';
 import TransportationGrid from '../../../components/Admin/transportation/TransporationGrid';
 import AddTransportationModal from '../../../components/Admin/transportation/AddTransportationModal';
-import { createTransportation, deleteTransportation, getAllTransportation, updateTransportation } from '../../../features/transportationSlice';
 import EditTransportationModal from '../../../components/Admin/transportation/EditTransporationModal';
+import { useAllTransportation, useCreateTransportation, useDeleteTransportation, useUpdateTransportation } from '../../../hooks/useTransportation';
 
 export default function TransportationManagement() {
     // Filter states
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedStatus, setSelectedStatus] = useState("All");
 
-    const dispatch = useAppDispatch();
-    const { items, loading } = useAppSelector((state) => state.transportation)
+    const { data: transportations = [], isLoading: loading } = useAllTransportation();
+    const addTransportationMutation = useCreateTransportation();
+    const updateTransportationMutation = useUpdateTransportation();
+    const deleteTransportationMutation = useDeleteTransportation();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedTransportation, setSelectedTransportation] = useState<Transportation | null>(null);
 
-    useEffect(() => {
-        dispatch(getAllTransportation())
-    }, [dispatch])
 
     // Filtered list
     const filteredTransportations = useMemo(() => {
-        return items.filter((t) => {
+        return transportations.filter((t: Transportation) => {
             const matchesStatus =
                 selectedStatus === "All" || t.status === selectedStatus;
             const matchesSearch =
@@ -37,23 +35,12 @@ export default function TransportationManagement() {
                 t.driverName.toLowerCase().includes(searchTerm.toLowerCase());
             return matchesStatus && matchesSearch;
         });
-    }, [items, searchTerm, selectedStatus]);
+    }, [transportations, searchTerm, selectedStatus]);
 
     const handleAddTransportation = async (transportationData: any) => {
-        try {
-            console.log(transportationData)
-            const res = await dispatch(createTransportation(transportationData))
-            if (createTransportation.fulfilled.match(res)) {
-                toast.success('Transportation added successfully')
-                setIsModalOpen(false)
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to add Transportation'
-                toast.error(errorMsg)
-            }
-        } catch (error) {
-            toast.error('Error adding Transportation')
-            console.error('Error adding Transportation', error)
-        }
+        addTransportationMutation.mutate(transportationData, {
+            onSuccess: () => setIsModalOpen(false)
+        })
     }
 
     const handleEditTransportation = (transportation: Transportation) => {
@@ -62,36 +49,13 @@ export default function TransportationManagement() {
     }
 
     const handleUpdateTransportation = async (transportationData: any) => {
-        try {
-            const res = await dispatch(updateTransportation(transportationData))
-            if (updateTransportation.fulfilled.match(res)) {
-                toast.success('Transportation updated successfully')
-                setIsEditModalOpen(false)
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to update Transportation'
-                toast.error(errorMsg)
-            }
-            toast.success('Transportation updated successfully')
-        } catch (error) {
-            toast.error('Error updating Transportation')
-            console.error('Error updating Transportation', error)
-        }
+        updateTransportationMutation.mutate(transportationData, {
+            onSuccess: () => setIsEditModalOpen(false)
+        })
     }
 
     const handleDeleteTransportation = async (transportationId: string) => {
-        try {
-            const res = await dispatch(deleteTransportation(transportationId))
-            if (deleteTransportation.fulfilled.match(res)) {
-                toast.success('Transportation deleted successfully')
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to delete Transportation'
-                toast.error(errorMsg)
-            }
-            toast.success('Transportation removed successfully')
-        } catch (error) {
-            toast.error('Error removing Transportation')
-            console.error('Error removing Transportation', error)
-        }
+        deleteTransportationMutation.mutate(transportationId);
     }
 
     return (
@@ -107,11 +71,11 @@ export default function TransportationManagement() {
 
                     <div className="max-w-7xl mx-auto">
                         {/* Header */}
-                        <div className="flex justify-between items-center mb-8">
+                        <div className="flex justify-between transportations-center mb-8">
                             <div>
                                 <h1 className="text-3xl font-bold text-gray-900">Transportation Management</h1>
                             </div>
-                            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center gap-2"
+                            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex transportations-center gap-2"
                                 onClick={() => setIsModalOpen(true)}
                             >
                                 <Bus className="w-4 h-4" />

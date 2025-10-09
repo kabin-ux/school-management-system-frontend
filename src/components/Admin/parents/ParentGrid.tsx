@@ -6,7 +6,7 @@ import EmptyState from '../../../common/EmptyState';
 interface ParentGridModalProps {
   parents: Parent[]
   onEdit: (parent: Parent) => void;
-  onDelete: (parentId: number) => void;
+  onDelete: (parentId: string) => void;
 }
 
 export const ParentGrid: FC<ParentGridModalProps> = ({ parents, onEdit, onDelete }) => {

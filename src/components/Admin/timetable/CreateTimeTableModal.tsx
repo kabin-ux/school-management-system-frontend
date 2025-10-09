@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { X } from "lucide-react";
 import type { Grade } from "../../../types/class.types";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { getSectionsByClass } from "../../../features/sectionSlice";
+import { useSectionsByClass } from "../../../hooks/useSection";
 
 export interface TimeTableForm {
     classId: string,
@@ -31,19 +30,9 @@ export const CreateTimeTableModal: React.FC<TimeTableModalProps> = ({
         name: ""
     });
 
-    const { sections } = useAppSelector(state => state.section)
-    const dispatch = useAppDispatch();
     const [errors, setErrors] = useState<Record<string, string>>({});
 
-    // Load sections when class changes
-    useEffect(() => {
-        if (formData.classId) {
-            const selectedClass = classes.find(cls => cls.id === formData.classId);
-            if (selectedClass) {
-                dispatch(getSectionsByClass(selectedClass?.id));
-            }
-        }
-    }, [formData.classId, classes, dispatch]);
+    const { data: sections = [] } = useSectionsByClass(formData.classId);
 
     const handleInputChange = (
         e: React.ChangeEvent<

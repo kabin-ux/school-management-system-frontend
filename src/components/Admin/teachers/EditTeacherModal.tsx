@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { X, User } from 'lucide-react';
-import type { Teacher, TeacherForm } from '../../../types/admin-dashboard.types';
+import type { Teacher } from '../../../types/teacher.types';
+import type { TeacherForm } from '../../../types/admin-dashboard.types';
 
 interface EditTeacherModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (updates: TeacherForm) => void;
-    teacher?: Teacher | null;
+    onSubmit: (id: string, updates: TeacherForm) => void;
+    teacher: Teacher | null;
     isLoading?: boolean;
 }
 
@@ -120,7 +121,7 @@ const EditTeacherModal: React.FC<EditTeacherModalProps> = ({
         e.preventDefault();
         setTouched(Object.keys(formData).reduce((acc, field) => ({ ...acc, [field]: true }), {}));
         if (validateForm() && teacher) {
-            onSubmit(formData);
+            onSubmit(teacher.id, formData);
             onClose();
         }
     };

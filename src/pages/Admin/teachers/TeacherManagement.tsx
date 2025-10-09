@@ -1,16 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { UserPlus } from 'lucide-react';
 import TeacherStats from '../../../components/Admin/teachers/TeacherStats';
 import TeacherFilters from '../../../components/Admin/teachers/TeacherFilters';
 import TeacherGrid from '../../../components/Admin/teachers/TeacherGrid';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addTeacher, deleteTeacher, getAllTeachers, updateTeacher } from '../../../features/teacherSlice';
 import AddTeacherModal from '../../../components/Admin/teachers/AddTeacherModal';
-import toast from 'react-hot-toast';
-import type { Teacher } from '../../../types/admin-dashboard.types';
 import EditTeacherModal from '../../../components/Admin/teachers/EditTeacherModal';
+import { useAddTeacher, useDeleteTeacher, useTeachers, useUpdateTeacher } from '../../../hooks/useTeachers';
+import type { Teacher } from '../../../types/teacher.types';
 
 export default function TeacherManagement() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -18,31 +16,19 @@ export default function TeacherManagement() {
     const [selectedSubject, setSelectedSubject] = useState('All Subjects');
     const [selectedDepartment, setSelectedDepartment] = useState('All Departments');
 
-    const dispatch = useAppDispatch();
-    const { teachers, loading } = useAppSelector((state) => state.teacher)
+    const { data: teachers = [], isLoading: loading } = useTeachers();
+    const addTeacherMutation = useAddTeacher();
+    const updateTeacherMutation = useUpdateTeacher();
+    const deleteTeacherMutation = useDeleteTeacher();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
 
-    useEffect(() => {
-        dispatch(getAllTeachers())
-    }, [dispatch])
-
     const handleAddTeacher = async (teacherData: any) => {
-        try {
-            console.log(teacherData)
-            const res = await dispatch(addTeacher(teacherData))
-            if (addTeacher.fulfilled.match(res)) {
-                toast.success('Teacher added successfully')
-                setIsModalOpen(false)
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to add teacher'
-                toast.error(errorMsg)
-            }
-        } catch (error) {
-            toast.error('Error adding teacher')
-            console.error('Error adding teacher', error)
-        }
+        addTeacherMutation.mutate(teacherData, {
+            onSuccess: () => setIsModalOpen(false)
+        })
     }
 
     const handleEditTeacher = (teacher: Teacher) => {
@@ -50,32 +36,14 @@ export default function TeacherManagement() {
         setSelectedTeacher(teacher);
     }
 
-    const handleUpdateTeacher = async (teacherData: any) => {
-        try {
-            const res = await dispatch(updateTeacher(teacherData))
-            if (updateTeacher.fulfilled.match(res)) {
-                toast.success('Teacher updated successfully')
-            } else {
-                toast.error('Error updating teacher')
-            }
-        } catch (error) {
-            toast.error('Error updating teacher')
-            console.error('Error updating teacher', error)
-        }
+    const handleUpdateTeacher = async (id: string, teacherData: any) => {
+        updateTeacherMutation.mutate({ id, teacherData }, {
+            onSuccess: () => setIsEditModalOpen(false)
+        })
     }
 
-    const handleDeleteTeacher = async (teacherId: number) => {
-        try {
-            const res = await dispatch(deleteTeacher(teacherId))
-            if (deleteTeacher.fulfilled.match(res)) {
-                toast.success('Teacher removed successfully')
-            } else {
-                toast.error('Error removing teacher')
-            }
-        } catch (error) {
-            toast.error('Error removing teacher')
-            console.error('Error removing teacher', error)
-        }
+    const handleDeleteTeacher = async (teacherId: string) => {
+        deleteTeacherMutation.mutate(teacherId);
     }
 
     return (

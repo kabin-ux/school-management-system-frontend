@@ -33,7 +33,7 @@ const EditSectionModal: React.FC<EditSectionModalProps> = ({
   useEffect(() => {
     if (isOpen && section) {
       setFormData({
-        section_name: section.name,
+        section_name: section.section_name,
         id: section.id,
       });
       setErrors({});

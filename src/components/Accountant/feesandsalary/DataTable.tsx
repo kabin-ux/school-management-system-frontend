@@ -13,7 +13,7 @@ interface DataTableProps {
   // onRowClick: (id: string) => void;
   onEdit: (feeStructure: FeeStructureForm) => void;
   onDelete: (feeStructureId: string) => void;
-  onEditSalary: (salary: SalaryStructureForm) => void;
+  onEditSalary: (salary: Salary) => void;
   onDeleteSalary: (salaryId: string) => void;
 }
 

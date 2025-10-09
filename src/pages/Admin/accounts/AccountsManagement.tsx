@@ -1,39 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { AccountantManagementHeader } from '../../../components/Admin/accountmanagement/AccountManagementHeader';
 import { AccountantManagementContent } from '../../../components/Admin/accountmanagement/AccountMangementContent';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addAccountantBySchool, deleteAccountant, getAllAccountantBySchool, updateAccountant, type Accountant } from '../../../features/accountantSlice';
-import toast from 'react-hot-toast';
 import AddAccountantModal from '../../../components/Admin/accountmanagement/AddAccountantModal';
 import EditAccountantModal from '../../../components/Admin/accountmanagement/EditAccountantModal';
+import { useAddAccountant, useAllAccountantsBySchool, useDeleteAccountant, useUpdateAccountant } from '../../../hooks/useAccountant';
+import type { Accountant } from '../../../types/accountant-dashboard.types';
 
 const AccountantManagement: React.FC = () => {
-    const dispatch = useAppDispatch();
-    const { accountantBySchool, loading } = useAppSelector((state) => state.accountant)
+    const { data: accountantBySchool = [], isLoading: loading } = useAllAccountantsBySchool();
+    const addAccountantMutation = useAddAccountant();
+    const updateAccountantMutation = useUpdateAccountant();
+    const deleteAccountantMutation = useDeleteAccountant();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedAccountant, setSelectedAccountant] = useState<Accountant | null>(null);
 
-    useEffect(() => {
-        dispatch(getAllAccountantBySchool())
-    }, [dispatch])
 
     const handleAddAccountant = async (accountantData: any) => {
-        try {
-            console.log(accountantData)
-            const res = await dispatch(addAccountantBySchool(accountantData))
-            if (addAccountantBySchool.fulfilled.match(res)) {
-                toast.success('Accountant added successfully')
-                setIsModalOpen(false)
-            } else {
-                toast.error('Error adding accountant')
-            }
-        } catch (error) {
-            toast.error('Error adding accountant')
-            console.error('Error adding accountant', error)
-        }
+        addAccountantMutation.mutate(accountantData, {
+            onSuccess: () => setIsModalOpen(false)
+        })
     }
 
     const handleEditAccountant = (accountant: Accountant) => {
@@ -42,31 +31,13 @@ const AccountantManagement: React.FC = () => {
     }
 
     const handleUpdateAccountant = async (accountantData: any) => {
-        try {
-            const res = await dispatch(updateAccountant(accountantData))
-            if (updateAccountant.fulfilled.match(res)) {
-                toast.success('Accountant updated successfully')
-            } else {
-                toast.error('Error adding accountant')
-            }
-        } catch (error) {
-            toast.error('Error updating accountant')
-            console.error('Error updating accountant', error)
-        }
+        updateAccountantMutation.mutate(accountantData, {
+            onSuccess: () => setIsEditModalOpen(false)
+        })
     }
 
     const handleDeleteAccountant = async (id: any) => {
-        try {
-            const res = await dispatch(deleteAccountant(id))
-            if (deleteAccountant.fulfilled.match(res)) {
-                toast.success('Accountant removed successfully')
-            } else {
-                toast.error('Error deleting accountant')
-            }
-        } catch (error) {
-            toast.error('Error removing accountant')
-            console.error('Error removing accountant', error)
-        }
+        deleteAccountantMutation.mutate(id);
     }
 
     return (

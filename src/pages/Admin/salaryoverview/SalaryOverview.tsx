@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { SalaryOverviewTable } from '../../../components/Admin/salary/SalaryOverviewTable';
 import { SalaryOverviewHeader } from '../../../components/Admin/salary/SalaryOverviewHeader';
 import { SalaryOverviewFilter } from '../../../components/Admin/salary/SalaryOverviewFilters';
 import { SalaryOverviewStats } from '../../../components/Admin/salary/SalaryOverviewStats';
-import { getMySchoolSalaryStructures } from '../../../features/salarySlice';
+import { useMySchoolSalaryStructures } from '../../../hooks/useSalary';
 
 const SalaryOverview: React.FC = () => {
     const [searchStudent, setSearchStudent] = useState('');
@@ -14,12 +13,7 @@ const SalaryOverview: React.FC = () => {
     const [selectedSection, setSelectedSection] = useState('');
     const [selectedTerminal, setSelectedTerminal] = useState('');
     const [selectedDateRange, setSelectedDateRange] = useState('');
-    const { salaryStructures } = useAppSelector(state => state.salary)
-    const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        dispatch(getMySchoolSalaryStructures())
-    }, [dispatch])
+    const { data: salaryStructures = [] } = useMySchoolSalaryStructures();
 
     return (
         <div className="flex h-full bg-gray-50">

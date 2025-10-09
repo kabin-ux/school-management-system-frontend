@@ -8,7 +8,7 @@ interface EditFeeStructureModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (updates: FeeStructureAttributes) => void;
-  feeStructure?: FeeStructureAttributes | null;
+  feeStructure: FeeStructureAttributes | null;
   classes: Grade[];
   transportOptions: Transportation[];
   isLoading?: boolean;

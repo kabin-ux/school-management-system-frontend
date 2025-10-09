@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FeeOverviewHeader } from '../../../components/Admin/feeoverview/FeeOverviewHeader';
 import { FeeOverviewFilters } from '../../../components/Admin/feeoverview/FeeOverviewFilters';
 import { FeeOverviewStats } from '../../../components/Admin/feeoverview/FeeOverviewStats';
 import { FeeOverviewTable } from '../../../components/Admin/feeoverview/FeeOverviewTable';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { getMySchoolFeesStructures } from '../../../features/feesSlice';
+import { useMySchoolFeesStructures } from '../../../hooks/useFees';
 
 const FeeOverview: React.FC = () => {
     const [searchStudent, setSearchStudent] = useState('');
@@ -14,12 +13,7 @@ const FeeOverview: React.FC = () => {
     const [selectedSection, setSelectedSection] = useState('');
     const [selectedTerminal, setSelectedTerminal] = useState('');
     const [selectedDateRange, setSelectedDateRange] = useState('');
-    const { feeStructures } = useAppSelector(state => state.fees)
-    const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        dispatch(getMySchoolFeesStructures())
-    }, [dispatch])
+    const { data: feeStructures = [] } = useMySchoolFeesStructures();
 
     return (
         <div className="flex h-full bg-gray-50">
@@ -46,7 +40,9 @@ const FeeOverview: React.FC = () => {
                             setSelectedDateRange={setSelectedDateRange}
                         />
                         <FeeOverviewStats />
-                        <FeeOverviewTable feeData={feeStructures} />
+                        <FeeOverviewTable
+                            feeData={feeStructures}
+                        />
                     </div>
                 </main>
             </div>

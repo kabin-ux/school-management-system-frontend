@@ -1,3 +1,5 @@
+import type { Subject } from "./class.types";
+
 export interface Teacher {
   id: string;
   firstName: string;
@@ -15,4 +17,6 @@ export interface Teacher {
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
+
+  subjects?: Subject[];
 }

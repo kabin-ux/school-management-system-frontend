@@ -208,7 +208,7 @@ const supportTicketSlice = createSlice({
                 state.tickets = state.tickets.filter((t) => t.id !== action.payload);
             })
 
-              // Get School
+            // Get School
             .addCase(getSupportTicketBySchool.pending, (state) => {
                 state.loading = true;
             })

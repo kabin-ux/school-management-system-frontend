@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, User } from 'lucide-react';
 import type { Grade } from '../../../types/class.types';
 import type { Student, StudentForm } from '../../../types/student.types';
-import { getSectionsByClass } from '../../../features/sectionSlice';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useSectionsByClass } from '../../../hooks/useSection';
 
 interface EditStudentModalProps {
   isOpen: boolean;
@@ -36,8 +35,6 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
-  const dispatch = useAppDispatch();
-  const { sections } = useAppSelector(state => state.section)
 
   useEffect(() => {
     if (isOpen && student) {
@@ -71,14 +68,9 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
     }
   }, [isOpen, student]);
 
-  useEffect(() => {
-    if (formData.class_id) {
-      const selectedClass = classes.find(cls => cls.id === formData.class_id);
-      if (selectedClass) {
-        dispatch(getSectionsByClass(selectedClass?.id));
-      }
-    }
-  }, [formData.class_id, classes, dispatch]);
+  const { data: sections = [] } = useSectionsByClass(formData.class_id);
+
+
   const validateField = (name: string, value: any) => {
     switch (name) {
       case 'firstName':

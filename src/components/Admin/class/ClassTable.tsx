@@ -65,7 +65,7 @@ export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSect
                       </td>
                       <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.totalSubjects}</td>
                       <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.totalStudents}</td>
-                      <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.class_teacher_id}</td>
+                      <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.classTeacher.firstName} {grade?.classTeacher.lastName}</td>
                       <td className="p-4">
                         <div className="flex items-center gap-2">
                           <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"

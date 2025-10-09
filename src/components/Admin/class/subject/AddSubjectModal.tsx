@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
-import type { Teacher } from "../../../../types/teacher.types";
 
 interface SubjectForm {
     name: string;
@@ -15,7 +14,6 @@ interface SubjectModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSubmit: (section: Omit<SubjectForm, 'id'>) => void;
-    teachers: Teacher[]
     isLoading: boolean;
 }
 

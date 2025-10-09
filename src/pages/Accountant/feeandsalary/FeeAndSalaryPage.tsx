@@ -1,24 +1,22 @@
 import { Banknote } from 'lucide-react';
 import { useFeeSalary } from '../../../hooks/useFeeSalary';
-import type { Salary, SalaryStructureForm, Teacher } from '../../../types/fee-salary.types';
+import type { Salary, SalaryStructureForm } from '../../../types/fee-salary.types';
 import { FilterSection } from '../../../components/Accountant/feesandsalary/FilterSection';
 import { StudentDetailView } from '../../../components/Accountant/feesandsalary/StudentDetailView';
 import { DataTable } from '../../../components/Accountant/feesandsalary/DataTable';
 import { AccountantDashboardHeader } from '../../../components/Accountant/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Accountant/layout/Sidebar';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { useEffect, useState } from 'react';
-import { addFeesStructure, deleteFeesStructure, getMySchoolFeesStructures, updateFeesStructure } from '../../../features/feesSlice';
-import { getAllTransportation } from '../../../features/transportationSlice';
+import { useState } from 'react';
 import { AddFeeStructureModal, type FeeStructureForm } from '../../../components/Accountant/feesandsalary/AddFeeStructureModal';
-import toast from 'react-hot-toast';
 import EditFeeStructureModal from '../../../components/Accountant/feesandsalary/EditFeeStructureModal';
-import { createSalaryStructure, deleteSalaryStructure, getMySchoolSalaryStructures, updateSalaryStructure } from '../../../features/salarySlice';
 import { AddSalaryStructureModal } from '../../../components/Accountant/feesandsalary/salary/AddSalaryStructureModal';
-import { getAllTeachers } from '../../../features/teacherSlice';
-import { getAllAccountantBySchool } from '../../../features/accountantSlice';
 import EditSalaryStructureModal from '../../../components/Accountant/feesandsalary/salary/EditSalaryStructureModal';
 import { useClasses } from '../../../hooks/useClasses';
+import { useTeachers } from '../../../hooks/useTeachers';
+import { useAddFeeStructure, useDeleteFeeStructure, useMySchoolFeesStructures, useUpdateFeeStructure } from '../../../hooks/useFees';
+import { useCreateSalaryStructure, useDeleteSalaryStructure, useMySchoolSalaryStructures, useUpdateSalaryStructure } from '../../../hooks/useSalary';
+import { useAllTransportation } from '../../../hooks/useTransportation';
+import { useAllAccountantsBySchool } from '../../../hooks/useAccountant';
 
 export default function FeeAndSalaryPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,22 +26,21 @@ export default function FeeAndSalaryPage() {
     const [selectedFeeStructure, setSelectedFeeStructure] = useState<FeeStructureForm | null>(null);
     const [selectedSalaryStructure, setSelectedSalaryStructure] = useState<Salary | null>(null);
 
-    const dispatch = useAppDispatch();
-    const { feeStructures, loading } = useAppSelector(state => state.fees);
-    const { salaryStructures, isLoading } = useAppSelector(state => state.salary);
+    const { data: feeStructures = [], isLoading: loading } = useMySchoolFeesStructures();
+    const addFeeStructureMutation = useAddFeeStructure();
+    const updateFeeStructureMutation = useUpdateFeeStructure();
+    const deleteFeeStructureMutation = useDeleteFeeStructure();
+
+
+    const { data: salaryStructures = [], isLoading } = useMySchoolSalaryStructures();
+    const addSalaryStructureMutation = useCreateSalaryStructure();
+    const updateSalaryStructureMutation = useUpdateSalaryStructure();
+    const deleteSalaryStructureMutation = useDeleteSalaryStructure();
+
     const { data: classes = [] } = useClasses();
-    const { items } = useAppSelector(state => state.transportation);
-    const { teachers } = useAppSelector(state => state.teacher);
-    const { accountantBySchool } = useAppSelector(state => state.accountant);
-
-    useEffect(() => {
-        dispatch(getMySchoolFeesStructures())
-        dispatch(getAllTransportation())
-        dispatch(getMySchoolSalaryStructures())
-
-        dispatch(getAllTeachers())
-        dispatch(getAllAccountantBySchool())
-    }, [])
+    const { data: transportations = [] } = useAllTransportation();
+    const { data: teachers = [] } = useTeachers();
+    const { data: accountantBySchool = [] } = useAllAccountantsBySchool();
 
     const {
         activeView,
@@ -71,6 +68,17 @@ export default function FeeAndSalaryPage() {
         resetPaymentForm();
     };
 
+    const handleCreateFeeStructure = async (feeData: FeeStructureForm) => {
+        addFeeStructureMutation.mutate(feeData, {
+            onSuccess: () => setIsModalOpen(true)
+        })
+    }
+
+    const handleCreateSalaryStructure = async (salaryData: SalaryStructureForm) => {
+        addSalaryStructureMutation.mutate(salaryData, {
+            onSuccess: () => setIsModalOpen(true)
+        })
+    }
 
     const handleEditFeeStructureData = (feeStructure: FeeStructureForm) => {
         setIsEditModalOpen(true);
@@ -78,18 +86,9 @@ export default function FeeAndSalaryPage() {
     }
 
     const handleUpdateFeeStructure = async (feeStructureData: any) => {
-        try {
-            const res = await dispatch(updateFeesStructure(feeStructureData))
-            if (updateFeesStructure.fulfilled.match(res)) {
-                toast.success('Fee Structure updated successfully')
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to update fee structure'
-                toast.error(errorMsg)
-            }
-        } catch (error) {
-            toast.error('Error updating Fee Structure')
-            console.error('Error updating Fee Structure', error)
-        }
+        updateFeeStructureMutation.mutate(feeStructureData, {
+            onSuccess: () => setIsEditModalOpen(false)
+        })
     }
 
     const handleEditSalaryStructureData = (salaryStructure: Salary) => {
@@ -98,80 +97,17 @@ export default function FeeAndSalaryPage() {
     }
 
     const handleUpdateSalaryStructure = async (id: string, data: SalaryStructureForm) => {
-        try {
-            const res = await dispatch(updateSalaryStructure({id, data}))
-            if (updateSalaryStructure.fulfilled.match(res)) {
-                toast.success('Salary Structure updated successfully')
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to update Salary structure'
-                toast.error(errorMsg)
-            }
-        } catch (error) {
-            toast.error('Error updating Salary Structure')
-            console.error('Error updating Salary Structure', error)
-        }
+        updateSalaryStructureMutation.mutate({ id, data }, {
+            onSuccess: () => setIsEditModalOpen(false)
+        })
     }
 
     const handleDeleteFeeStructureData = async (feeStructureId: string) => {
-        try {
-            const res = await dispatch(deleteFeesStructure(feeStructureId))
-            if (deleteFeesStructure.fulfilled.match(res)) {
-                toast.success('Fee Structure removed successfully')
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to remove fee structure'
-                toast.error(errorMsg)
-            }
-        } catch (error) {
-            toast.error('Error removing Fee Structure')
-            console.error('Error removing Fee Structure', error)
-        }
+        deleteFeeStructureMutation.mutate(feeStructureId);
     }
 
     const handleDeleteSalaryStructureData = async (salaryStructureId: string) => {
-        try {
-            const res = await dispatch(deleteSalaryStructure(salaryStructureId))
-            if (deleteSalaryStructure.fulfilled.match(res)) {
-                toast.success('Salary Structure removed successfully')
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to remove Salary structure'
-                toast.error(errorMsg)
-            }
-        } catch (error) {
-            toast.error('Error removing Salary Structure')
-            console.error('Error removing Salary Structure', error)
-        }
-    }
-
-    const handleCreateFeeStructure = async (feeData: FeeStructureForm) => {
-        try {
-            console.log(feeData)
-            const res = await dispatch(addFeesStructure(feeData))
-            if (addFeesStructure.fulfilled.match(res)) {
-                toast.success('Fee Structure added successfully')
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to add fee structure'
-                toast.error(errorMsg)
-            }
-        } catch (error) {
-            toast.error('Error adding Fee Structure')
-            console.error('Error adding Fee Structure', error)
-        }
-    }
-
-    const handleCreateSalaryStructure = async (salaryData: SalaryStructureForm) => {
-        try {
-            console.log("salary", salaryData)
-            const res = await dispatch(createSalaryStructure(salaryData))
-            if (createSalaryStructure.fulfilled.match(res)) {
-                toast.success('Salary Structure created successfully')
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to create salary structure'
-                toast.error(errorMsg)
-            }
-        } catch (error) {
-            toast.error('Error adding Salary Structure')
-            console.error('Error adding Salary Structure', error)
-        }
+        deleteSalaryStructureMutation.mutate(salaryStructureId)
     }
 
     if (selectedStudent) {
@@ -271,7 +207,7 @@ export default function FeeAndSalaryPage() {
                         onClose={() => setIsModalOpen(false)}
                         onSubmit={handleCreateFeeStructure}
                         classes={classes}
-                        items={items}
+                        items={transportations}
                         isLoading={loading}
                     />
 
@@ -284,7 +220,7 @@ export default function FeeAndSalaryPage() {
                         onSubmit={handleUpdateFeeStructure}
                         feeStructure={selectedFeeStructure}
                         classes={classes}
-                        transportOptions={items}
+                        transportOptions={transportations}
                         isLoading={loading}
                     />
 

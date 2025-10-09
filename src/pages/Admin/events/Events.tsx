@@ -1,54 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { EventsHeader } from '../../../components/Admin/events/EventsHeader';
-import { EventsTabs } from '../../../components/Admin/events/EventsTabs';
 import { EventsCalendar } from '../../../components/Admin/events/EventsCalendar';
 import { EventsTable } from '../../../components/Admin/events/EventsTable';
 import { CreateEventForm } from '../../../components/Admin/events/CreateEventForm';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { createEvent, deleteEvent, getAllEventsBySchool } from '../../../features/eventsSlice';
-import toast from 'react-hot-toast';
 import type { EventForm } from '../../../types/events.types';
+import { useAddEvent, useDeleteEvent, useEventsBySchool } from '../../../hooks/useEvents';
 
 const Events: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState<number | null>(null);
 
-    const dispatch = useAppDispatch();
-    const { events, loading } = useAppSelector(state => state.event);
+    const { data: events = [], isLoading: loading } = useEventsBySchool();
+    const addEventMutation = useAddEvent();
+    // const updateEventMutation = useUpdateEvent();
+    const deleteEventMutation = useDeleteEvent();
 
-    useEffect(() => {
-        dispatch(getAllEventsBySchool())
-    }, [dispatch])
 
     const handleCreateEvent = async (eventData: EventForm) => {
-        try {
-            const res = await dispatch(createEvent(eventData))
-            if (createEvent.fulfilled.match(res)) {
-                toast.success('Event created successfully')
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to create event'
-                toast.error(errorMsg)
-            }
-        } catch (error) {
-            toast.error('Error creating event')
-            console.error('Error creating event', error)
-        }
+        addEventMutation.mutate(eventData)
     }
 
     const handleDeleteEvent = async (eventId: string) => {
-        try {
-            const res = await dispatch(deleteEvent(eventId))
-            if (deleteEvent.fulfilled.match(res)) {
-                toast.success('Event deleted successfully')
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to delete event'
-                toast.error(errorMsg)
-            }
-        } catch (error) {
-            toast.error('Error deleting event')
-            console.error('Error deleting event', error)
-        }
+        deleteEventMutation.mutate(eventId);
     }
 
     return (

@@ -58,7 +58,7 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
               </tr>
             </thead>
             <tbody>
-              {feeData.map((record, index) => {
+              {feeData?.map((record, index) => {
                 const total =
                   Number(record.monthly_fee) +
                   Number(record.exam_fee) +
