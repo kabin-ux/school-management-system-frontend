@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
 import { FaApple, FaGooglePlay } from 'react-icons/fa';
 import MobileAppMockups from '../../../components/LandingPage/MobileAppMockups';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useNavigate } from 'react-router-dom';
-import { loginAccountant } from '../../../features/authSlice';
+import { useAuthUser, useLoginAccountant } from '../../../hooks/useAuth';
 
 const AccountantLoginPage: React.FC = () => {
-    const dispatch = useAppDispatch();
-    const { user, loading, error } = useAppSelector((state) => state.auth);
+    const { data: user, isLoading } = useAuthUser();
+    const loginMutation = useLoginAccountant();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -22,7 +21,7 @@ const AccountantLoginPage: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(loginAccountant({ email, password }));
+        loginMutation.mutate({ email, password })
     }
 
     return (
@@ -84,15 +83,15 @@ const AccountantLoginPage: React.FC = () => {
                                 <Lock className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
                             </div>
                         </div>
-                        {error && <p className="text-red-500 text-sm">{error}</p>}
+                        {loginMutation.isPending && <p className="text-red-500 text-sm">{loginMutation.isPending}</p>}
 
                         <button
                             type="submit"
-                            disabled={loading}
+                            disabled={isLoading}
                             className="w-full bg-[#E6F242] text-white py-3 rounded-lg font-semibold hover:bg-[#dbe465] transition-colors"
                             onClick={handleSubmit}
                         >
-                            {loading ? 'Logging in...' : 'Login'}
+                            {isLoading ? 'Logging in...' : 'Login'}
                         </button>
 
                         <div className="text-center">

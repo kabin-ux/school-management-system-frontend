@@ -9,9 +9,10 @@ import SystemStatus from "../../../components/Admin/dashboard/SystemStatus";
 import { AdminDashboardHeader } from "../../../components/Admin/layout/DashboardHeader";
 import { Sidebar } from "../../../components/Admin/layout/Sidebar";
 import { getSchoolAdminDashboard } from "../../../features/dashboardSlice";
+import { useAuthUser } from "../../../hooks/useAuth";
 
 export default function AdminDashboard() {
-  const { user } = useAppSelector(state => state.auth);
+  const { data: user } = useAuthUser();
   const { schoolAdmin } = useAppSelector(state => state.dashboard);
   const dispatch = useAppDispatch();
 

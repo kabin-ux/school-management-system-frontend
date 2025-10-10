@@ -27,9 +27,9 @@ export const DataTable: React.FC<DataTableProps> = ({
   onEditSalary,
   onDeleteSalary
 }) => {
-  const data = activeView === 'Student' ? students : teachers;
+  const structure = activeView === 'Student' ? students : teachers;
 
-  console.log(students)
+  console.log("data received",structure)
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100">
@@ -50,7 +50,7 @@ export const DataTable: React.FC<DataTableProps> = ({
       </div>
 
       <div className="overflow-x-auto">
-        {!data || data.length === 0 ? (
+        {!structure || structure.length === 0 ? (
           <EmptyState
             title="No fee structure found"
             description="There are currently no any fee structure in the system. Click on button above to create a fee structure"
@@ -87,7 +87,7 @@ export const DataTable: React.FC<DataTableProps> = ({
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {data?.map((item, index) => {
+              {structure?.map((item, index) => {
                 if (activeView === 'Student') {
                   const student = item as FeeStructureAttributes;
                   const total =

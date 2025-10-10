@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import authReducer from "../features/authSlice";
+// import authReducer from "../features/authSlice";
 import schoolReducer from "../features/schoolSlice";
 // import teacherReducer from "../features/teacherSlice";
 // import studentReducer from "../features/studentSlice";
@@ -16,7 +16,7 @@ import timetableReducer from "../features/timetableSlice";
 // import eventReducer from '../features/eventsSlice';
 // import subjectReducer from '../features/subjectSlice';
 import dashboardReducer from '../features/dashboardSlice';
-import supportTicketReducer from '../features/supportTicketSlice';
+// import supportTicketReducer from '../features/supportTicketSlice';
 // import salaryReducer from '../features/salarySlice';
 import timeSlotReducer from "../features/timeSlotSlice";
 import paymentReducer from "../features/paymentSlice";
@@ -29,7 +29,7 @@ const persistConfig = {
 };
 
 // Wrap auth reducer
-const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+// const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 const persistedSchoolReducer = persistReducer(persistConfig, schoolReducer);
 // const persistedTeacherReducer = persistReducer(persistConfig, teacherReducer);
 // const persistedStudentReducer = persistReducer(persistConfig, studentReducer);
@@ -44,14 +44,14 @@ const persistedTimetableReducer = persistReducer(persistConfig, timetableReducer
 // const persistedEventReducer = persistReducer(persistConfig, eventReducer);
 // const persistedSubjectReducer = persistReducer(persistConfig, subjectReducer);
 const persistedDashboardReducer = persistReducer(persistConfig, dashboardReducer);
-const persistedSupportTicketReducer = persistReducer(persistConfig, supportTicketReducer);
+// const persistedSupportTicketReducer = persistReducer(persistConfig, supportTicketReducer);
 // const persistedSalaryReducer = persistReducer(persistConfig, salaryReducer);
 const persistedTimeSlotReducer = persistReducer(persistConfig, timeSlotReducer);
 const persistedPaymentReducer = persistReducer(persistConfig, paymentReducer);
 
 export const store = configureStore({
   reducer: {
-    auth: persistedAuthReducer,
+    // auth: persistedAuthReducer,
     school: persistedSchoolReducer,
     // teacher: persistedTeacherReducer,
     // student: persistedStudentReducer,
@@ -66,7 +66,7 @@ export const store = configureStore({
     // event: persistedEventReducer,
     // subject: persistedSubjectReducer,
     dashboard: persistedDashboardReducer,
-    supportTicket: persistedSupportTicketReducer,
+    // supportTicket: persistedSupportTicketReducer,
     // salary: persistedSalaryReducer,
     timeSlot: persistedTimeSlotReducer,
     payment: persistedPaymentReducer,

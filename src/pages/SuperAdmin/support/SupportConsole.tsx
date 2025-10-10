@@ -1,13 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../../components/SuperAdmin/layout/Sidebar';
 import { DashboardHeader } from '../../../components/SuperAdmin/layout/DashboardHeader';
 import SupportFilters from '../../../components/SuperAdmin/support/SupportFilters';
 import SupportStats from '../../../components/SuperAdmin/support/SupportStats';
 import SupportTicketsTable from '../../../components/SuperAdmin/support/SupportTicketsTable';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { deleteSupportTicket, getAllSupportTickets } from '../../../features/supportTicketSlice';
-import toast from 'react-hot-toast';
+import { useDeleteSupportTicket, useSupportTickets } from '../../../hooks/useSupportTickets';
 
 export default function SupportConsole() {
     const [userType, setUserType] = useState('All');
@@ -17,34 +15,16 @@ export default function SupportConsole() {
     const [ticketId, setTicketId] = useState('');
     const navigate = useNavigate();
 
-    const dispatch = useAppDispatch();
-    const { tickets } = useAppSelector(state => state.supportTicket);
-
-    useEffect(() => {
-        dispatch(getAllSupportTickets());
-    }, [dispatch])
+    const { data: tickets = [] } = useSupportTickets();
+    const deleteSupportTicketMutation = useDeleteSupportTicket();
 
     const handleViewTicket = (ticketId: string) => {
-        console.log('Viewing ticket:', ticketId);
-
         navigate(`/super-admin/support/details/${ticketId}`)
     };
 
     const handleDeleteSupportTicket = async (supportTicketId: string) => {
-        try {
-            const res = await dispatch(deleteSupportTicket(supportTicketId))
-            if (deleteSupportTicket.fulfilled.match(res)) {
-                toast.success('Support Ticket deleted successfully')
-            } else {
-                const errorMsg = typeof res.payload === 'string' ? res.payload : 'Failed to delete Support Ticket'
-                toast.error(errorMsg)
-            }
-        } catch (error) {
-            toast.error('Error removing Support Ticket')
-            console.error('Error removing Support Ticket', error)
-        }
+        deleteSupportTicketMutation.mutate(supportTicketId);
     }
-
 
     return (
         <div className="flex h-screen bg-gray-50">

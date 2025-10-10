@@ -20,7 +20,7 @@ const ClassDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>()
     const classId: string = id ?? "";
 
-    const { data: classDetails } = useClassDetails(classId);
+    const { data: classDetails = {} } = useClassDetails(classId);
     const { data: sections = [] } = useSectionsByClass(classId);
 
     const createSection = useCreateSection();

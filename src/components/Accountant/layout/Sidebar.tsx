@@ -8,8 +8,7 @@ import {
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { SidebarItem } from "../../../types/sidebar-item.types";
-import { useAppDispatch } from "../../../app/hooks";
-import { logoutAccountant } from "../../../features/authSlice";
+import { useLogoutAccountant } from "../../../hooks/useAuth";
 
 const sidebarItems: SidebarItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/accountant/dashboard" },
@@ -19,12 +18,12 @@ const sidebarItems: SidebarItem[] = [
 ];
 
 export const Sidebar: React.FC = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
+  const logOutMutation = useLogoutAccountant();
   const handleLogout = () => {
-    dispatch(logoutAccountant());
+    logOutMutation.mutate();
     navigate("/admin"); // Redirect to login page
   };
   return (

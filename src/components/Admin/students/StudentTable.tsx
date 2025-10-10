@@ -95,7 +95,7 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
 
                   {/* Date of Birth */}
                   <td className="px-6 py-4 text-sm text-gray-500">
-                    <td>{new Date(student.dateOfBirth).toLocaleDateString()}</td>
+                    {new Date(student.dateOfBirth).toLocaleDateString()}
                   </td>
 
                   {/* Gender */}

@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
 import { FaApple, FaGooglePlay } from 'react-icons/fa';
 import MobileAppMockups from '../../../components/LandingPage/MobileAppMockups';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useNavigate } from 'react-router-dom';
-import { loginAdmin } from '../../../features/authSlice';
+import { useAuthUser, useLoginAdmin } from '../../../hooks/useAuth';
 
 const AdminLoginPage: React.FC = () => {
-    const dispatch = useAppDispatch();
-    const { user, loading, error } = useAppSelector((state) => state.auth);
+    const loginMutation = useLoginAdmin();
+    const { data: user, isLoading } = useAuthUser();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -23,7 +22,7 @@ const AdminLoginPage: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(loginAdmin({ email, password, rememberMe }));
+        loginMutation.mutate({ email, password, rememberMe });
     }
     return (
         <section className="min-h-screen bg-gray-50 flex">
@@ -74,14 +73,14 @@ const AdminLoginPage: React.FC = () => {
                                 <Lock className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
                             </div>
                         </div>
-                        {error && <p className="text-red-500 text-sm">{error}</p>}
+                        {loginMutation.isError && <p className="text-red-500 text-sm">{loginMutation.isError}</p>}
                         <div className='flex items-center justify-between'>
                             <label className='flex items-center text-sm text-gray-500'>
-                                <input 
-                                type="checkbox"
-                                checked={rememberMe}
-                                onChange={(e) => setRememberMe(e.target.checked)}
-                                className='mr-2 h-4 w-4 text-lime-400 border-gray-300 rounded focus:ring-lime-400'
+                                <input
+                                    type="checkbox"
+                                    checked={rememberMe}
+                                    onChange={(e) => setRememberMe(e.target.checked)}
+                                    className='mr-2 h-4 w-4 text-lime-400 border-gray-300 rounded focus:ring-lime-400'
                                 />
                                 Remember Me
                             </label>
@@ -89,10 +88,10 @@ const AdminLoginPage: React.FC = () => {
                         <a href="#" className='text-sm text-[#CBD72B] hover:underline'>Forgot Password</a>
                         <button
                             type="submit"
-                            disabled={loading}
+                            disabled={loginMutation.isPending}
                             className="w-full bg-[#E6F242] text-white py-3 rounded-lg font-semibold hover:bg-[#dbe465] transition-colors"
                         >
-                            {loading ? 'Logging in...' : 'Login'}
+                            {isLoading ? "Logging in..." : "Login"}
                         </button>
 
                         <div className="text-center">

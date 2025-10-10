@@ -70,13 +70,13 @@ export default function FeeAndSalaryPage() {
 
     const handleCreateFeeStructure = async (feeData: FeeStructureForm) => {
         addFeeStructureMutation.mutate(feeData, {
-            onSuccess: () => setIsModalOpen(true)
+            onSuccess: () => setIsModalOpen(false)
         })
     }
 
     const handleCreateSalaryStructure = async (salaryData: SalaryStructureForm) => {
         addSalaryStructureMutation.mutate(salaryData, {
-            onSuccess: () => setIsModalOpen(true)
+            onSuccess: () => setIsModalOpen(false)
         })
     }
 

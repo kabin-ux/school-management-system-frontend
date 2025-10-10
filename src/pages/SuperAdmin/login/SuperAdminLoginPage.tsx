@@ -1,14 +1,15 @@
 import { Mail, Lock } from 'lucide-react';
 import { FaApple, FaGooglePlay } from 'react-icons/fa';
 import MobileAppMockups from '../../../components/LandingPage/MobileAppMockups';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import React, { useEffect, useState } from 'react';
-import { loginSuperAdmin, sendPasswordResetMail } from '../../../features/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { useAuthUser, useLoginSuperAdmin, useSendPasswordResetMail } from '../../../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 export default function SuperAdminLoginPage() {
-    const dispatch = useAppDispatch();
-    const { user, loading, error } = useAppSelector((state) => state.auth);
+    const loginMutation = useLoginSuperAdmin();
+    const resetMutation = useSendPasswordResetMail();
+    const { data: user } = useAuthUser();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -20,18 +21,29 @@ export default function SuperAdminLoginPage() {
         if (user) {
             navigate('/super-admin/dashboard');
         }
-    }, [user]);
+    }, [user, navigate]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(loginSuperAdmin({ email, password }));
+        loginMutation.mutate({ email, password }, {
+            onSuccess: () => navigate("/super-admin/dashboard")
+        })
     };
 
     const handlePasswordReset = () => {
-        if (!resetEmail) return;
-        dispatch(sendPasswordResetMail({ email: resetEmail }));
-        setShowResetDialog(false);
-        setResetEmail('');
+        if (!resetEmail) {
+            toast.error("Please enter your email");
+            return;
+        }
+
+        resetMutation.mutate(
+            { email: resetEmail }, {
+            onSuccess: () => {
+                setShowResetDialog(false);
+                setResetEmail("");
+            },
+        }
+        );
     };
 
     return (
@@ -93,14 +105,14 @@ export default function SuperAdminLoginPage() {
                             </div>
                         </div>
 
-                        {error && <p className="text-red-500 text-sm">{error}</p>}
+                        {/* {error && <p className="text-red-500 text-sm">{error}</p>} */}
 
                         <button
                             type="submit"
-                            disabled={loading}
+                            disabled={loginMutation.isPending}
                             className="w-full bg-[#E6F242] text-white py-3 rounded-lg font-semibold hover:bg-[#dbe465] transition-colors"
                         >
-                            {loading ? 'Logging in...' : 'Login'}
+                            {loginMutation.isPending ? "Logging in..." : "Login"}
                         </button>
 
                         <div className="text-center">

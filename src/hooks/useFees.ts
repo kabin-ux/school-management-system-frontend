@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 // Fetch My School Fee Structures
 export const useMySchoolFeesStructures = () => {
-    return useQuery({
+    return useQuery<FeeStructureAttributes[]>({
         queryKey: ['mySchoolFeesStructures'],
         queryFn: async () => {
             const res = await api.get('/fees/my-school');
@@ -20,7 +20,7 @@ export const useAllSchoolsFeesStructures = () => {
         queryKey: ['allSchoolFeesStructures'],
         queryFn: async () => {
             const res = await api.get('/fees');
-            return res.data.data.feesStructures as FeeStructureAttributes[];
+            return res.data.data as FeeStructureAttributes[];
         },
     });
 };

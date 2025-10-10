@@ -12,8 +12,7 @@ import {
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { SidebarItem } from "../../../types/sidebar-item.types";
-import { useAppDispatch } from "../../../app/hooks";
-import { logoutSuperAdmin } from "../../../features/authSlice";
+import { useLogoutSuperAdmin } from "../../../hooks/useAuth";
 
 const sidebarItems: SidebarItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/super-admin/dashboard" },
@@ -27,12 +26,12 @@ const sidebarItems: SidebarItem[] = [
 ];
 
 export const Sidebar: React.FC = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
+  const logoutMutation = useLogoutSuperAdmin();
   const handleLogout = () => {
-    dispatch(logoutSuperAdmin());
+    logoutMutation.mutate();
     navigate("/admin"); // Redirect to login page
   };
 

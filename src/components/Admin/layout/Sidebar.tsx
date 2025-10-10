@@ -18,8 +18,7 @@ import {
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { SidebarItem } from "../../../types/sidebar-item.types";
-import { useAppDispatch } from "../../../app/hooks";
-import { logoutSchool } from "../../../features/authSlice";
+import { useLogoutSchool } from "../../../hooks/useAuth";
 
 const sidebarItems: SidebarItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/admin/dashboard" },
@@ -43,10 +42,10 @@ export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const dispatch = useAppDispatch();
+  const logOutMutation = useLogoutSchool();
 
   const handleLogout = () => {
-    dispatch(logoutSchool());
+    logOutMutation.mutate()
     navigate("/admin"); // Redirect to login page
   };
 

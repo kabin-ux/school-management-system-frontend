@@ -9,10 +9,9 @@ interface TicketDetailProps {
   onClose: (id: string) => void;
   onBack: () => void;
   isLoading?: boolean
-  isLoadingClose?: boolean
 }
 
-export default function TicketDetail({ selectedTicket, onAccept, onResolve, onBack, onClose, isLoading, isLoadingClose }: TicketDetailProps) {
+export default function TicketDetail({ selectedTicket, onAccept, onResolve, onBack, onClose, isLoading }: TicketDetailProps) {
   const handleClick = () => {
     if (selectedTicket?.status === 'in_progress') {
       onResolve(selectedTicket.id);
@@ -287,10 +286,10 @@ export default function TicketDetail({ selectedTicket, onAccept, onResolve, onBa
              hover:bg-red-700 transition-colors 
              disabled:bg-red-300 disabled:text-gray-200 disabled:cursor-not-allowed
              font-medium flex items-center justify-center gap-2"
-                  disabled={isLoadingClose || selectedTicket?.status === 'closed'}
+                  disabled={isLoading || selectedTicket?.status === 'closed'}
                   onClick={handleClose}
                 >
-                  {isLoadingClose ? (
+                  {isLoading ? (
                     <>
                       <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
                       <span>Closing...</span>
