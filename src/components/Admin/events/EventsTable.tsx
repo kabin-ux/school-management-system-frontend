@@ -1,14 +1,15 @@
 import React from 'react';
 import type { Event } from '../../../types/events.types';
-import { Calendar, Trash2 } from 'lucide-react';
+import { Calendar, Edit, Trash2 } from 'lucide-react';
 import EmptyState from '../../../common/EmptyState';
 
 interface EventsTableProps {
   events: Event[];
+  onEdit: (event: Event) => void;
   onDelete: (eventId: string) => void;
 }
 
-export const EventsTable: React.FC<EventsTableProps> = ({ events, onDelete }) => {
+export const EventsTable: React.FC<EventsTableProps> = ({ events, onEdit, onDelete }) => {
   return (
     <div className="border border-gray-200">
       <div className="p-6 border-b border-gray-200">
@@ -25,8 +26,8 @@ export const EventsTable: React.FC<EventsTableProps> = ({ events, onDelete }) =>
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event Title</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event Date</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Audience</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event Type</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
@@ -81,6 +82,12 @@ export const EventsTable: React.FC<EventsTableProps> = ({ events, onDelete }) =>
                   {/* Actions */}
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
+                      <button
+                        className="p-1 rounded hover:bg-gray-200 text-blue-500"
+                        onClick={() => onEdit(event)}
+                      >
+                        <Edit className="w-5 h-5" />
+                      </button>
                       <button
                         className="p-1 rounded hover:bg-gray-200 text-red-500"
                         onClick={() => onDelete(event.id)}

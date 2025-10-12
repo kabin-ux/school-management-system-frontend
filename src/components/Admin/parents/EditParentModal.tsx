@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { X, User } from 'lucide-react';
-import type { Parent } from '../../../types/parent.types';
+import type { Parent, ParentForm } from '../../../types/parent.types';
 
 interface EditParentModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (updates: Parent) => void;
+    onSubmit: (id: string, updates: ParentForm) => void;
     parent?: Parent | null;
     isLoading?: boolean;
 }
@@ -17,8 +17,7 @@ const EditParentModal: React.FC<EditParentModalProps> = ({
     parent,
     isLoading = false,
 }) => {
-    const [formData, setFormData] = useState<Parent>({
-        id: 0,
+    const [formData, setFormData] = useState<ParentForm>({
         name: '',
         email: '',
         phone: '',
@@ -37,7 +36,6 @@ const EditParentModal: React.FC<EditParentModalProps> = ({
             setTouched({});
         } else if (!isOpen) {
             setFormData({
-                id: 0,
                 name: '',
                 email: '',
                 phone: '',
@@ -101,7 +99,7 @@ const EditParentModal: React.FC<EditParentModalProps> = ({
         e.preventDefault();
         setTouched(Object.keys(formData).reduce((acc, field) => ({ ...acc, [field]: true }), {}));
         if (validateForm() && parent) {
-            onSubmit(formData);
+            onSubmit(parent.id, formData);
             onClose();
         }
     };

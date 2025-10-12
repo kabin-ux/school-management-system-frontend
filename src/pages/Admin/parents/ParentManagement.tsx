@@ -38,8 +38,9 @@ export default function ParentsManagement() {
         setSelectedParent(parent);
     }
 
-    const handleUpdateParent = async (parentData: any) => {
-        updateParentMutation.mutate(parentData, {
+    const handleUpdateParent = async (id: string, updateData: any) => {
+        console.log("updatedata", updateData)
+        updateParentMutation.mutate({ id, updateData }, {
             onSuccess: () => setIsEditModalOpen(false)
         })
     }

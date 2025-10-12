@@ -71,7 +71,7 @@ export const useDeleteSalaryStructure = () => {
 
     return useMutation({
         mutationFn: async (id: string) => {
-            await api.delete("/salary", { data: { id } });
+            await api.delete(`/salary/${id}`);
             return id;
         },
         onSuccess: () => {

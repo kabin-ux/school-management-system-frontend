@@ -5,14 +5,13 @@ import type { Grade } from "../../../types/class.types";
 interface EditClassForm {
   name: string;
   has_section: boolean;
-  id: string;
 }
 
 interface EditClassModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (updates: EditClassForm) => void;
-  cls?: Grade | null;
+  onSubmit: (id: string, updates: EditClassForm) => void;
+  cls: Grade | null;
   isLoading?: boolean;
 }
 
@@ -26,7 +25,6 @@ const EditClassModal: React.FC<EditClassModalProps> = ({
   const [formData, setFormData] = useState<EditClassForm>({
     name: "",
     has_section: false,
-    id: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -37,7 +35,6 @@ const EditClassModal: React.FC<EditClassModalProps> = ({
       setFormData({
         name: cls.name,
         has_section: cls.has_section,
-        id: cls.id,
       });
       setErrors({});
       setTouched({});
@@ -45,7 +42,6 @@ const EditClassModal: React.FC<EditClassModalProps> = ({
       setFormData({
         name: "",
         has_section: false,
-        id: "",
       });
       setErrors({});
       setTouched({});
@@ -93,8 +89,8 @@ const EditClassModal: React.FC<EditClassModalProps> = ({
         {}
       )
     );
-    if (validateForm()) {
-      onSubmit(formData);
+    if (validateForm() && cls) {
+      onSubmit(cls.id, formData);
       onClose();
     }
   };
@@ -127,9 +123,8 @@ const EditClassModal: React.FC<EditClassModalProps> = ({
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.name ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.name ? "border-red-500" : "border-gray-300"
+                  }`}
                 placeholder="Enter class name"
               />
               {errors.name && (

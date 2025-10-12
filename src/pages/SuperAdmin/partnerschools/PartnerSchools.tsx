@@ -1,43 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../../components/SuperAdmin/layout/Sidebar';
 import { DashboardHeader } from '../../../components/SuperAdmin/layout/DashboardHeader';
 import { PartnerSchoolsTable } from '../../../components/SuperAdmin/partnerschools/PartnerSchoolsTable';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addSchoolBySuperAdmin, getAllSchools } from '../../../features/schoolSlice';
 import { AddSchoolModal } from '../../../components/SuperAdmin/partnerschools/AddSchoolModal';
 import { PlusIcon } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { useAddSchool, useSchools } from '../../../hooks/useSchools';
 
 export const PartnerSchools: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const { schools, loading } = useAppSelector((state) => state.school)
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data: schools, isLoading: loading } = useSchools();
+  const addSchoolMutation = useAddSchool();
 
-  useEffect(() => {
-    dispatch(getAllSchools())
-  }, [dispatch])
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleViewPartnerSchoolDetails = (schoolCode: string) => {
     navigate(`/super-admin/partner-schools/details/${schoolCode}`)
-
   };
 
   const handleAddSchool = async (schoolData: any) => {
-    try {
-      const res = await dispatch(addSchoolBySuperAdmin(schoolData))
-      if (addSchoolBySuperAdmin.fulfilled.match(res)) {
-        toast.success('School added successfully')
-        setIsModalOpen(false)
-      } else {
-        const errorMessage = typeof res.payload === "string" ? res.payload : 'Error adding super admin'
-        toast.error(errorMessage);
-      }
-    } catch (error) {
-      console.error('Error adding school', error)
-    }
+    addSchoolMutation.mutate(schoolData, {
+      onSuccess: () => setIsModalOpen(false)
+    })
   }
+
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar />

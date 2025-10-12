@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { X, Bus } from 'lucide-react';
-import type { Transportation } from '../../../types/admin-transportation.types';
+import type { Transportation, TransportationForm } from '../../../types/admin-transportation.types';
 
 interface EditTransportationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (updates: Transportation) => void;
+  onSubmit: (id: string, updates: TransportationForm) => void;
   transportation?: Transportation | null;
   isLoading?: boolean;
 }
@@ -15,10 +15,9 @@ const EditTransportationModal: React.FC<EditTransportationModalProps> = ({
   onClose,
   onSubmit,
   transportation,
-  isLoading = false,
+  isLoading,
 }) => {
-  const [formData, setFormData] = useState<Transportation>({
-    id: '',
+  const [formData, setFormData] = useState<TransportationForm>({
     vehicleNumber: '',
     driverName: '',
     driverPhone: '',
@@ -38,7 +37,6 @@ const EditTransportationModal: React.FC<EditTransportationModalProps> = ({
       setTouched({});
     } else if (!isOpen) {
       setFormData({
-        id: '',
         vehicleNumber: '',
         driverName: '',
         driverPhone: '',
@@ -109,7 +107,7 @@ const EditTransportationModal: React.FC<EditTransportationModalProps> = ({
     e.preventDefault();
     setTouched(Object.keys(formData).reduce((acc, field) => ({ ...acc, [field]: true }), {}));
     if (validateForm() && transportation) {
-      onSubmit(formData);
+      onSubmit(transportation.id, formData);
       onClose();
     }
   };
@@ -142,9 +140,8 @@ const EditTransportationModal: React.FC<EditTransportationModalProps> = ({
                 value={formData.vehicleNumber}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg ${
-                  errors.vehicleNumber ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg ${errors.vehicleNumber ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {errors.vehicleNumber && (
                 <p className="text-xs text-red-500">{errors.vehicleNumber}</p>
@@ -160,9 +157,8 @@ const EditTransportationModal: React.FC<EditTransportationModalProps> = ({
                 value={formData.driverName}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg ${
-                  errors.driverName ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg ${errors.driverName ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {errors.driverName && <p className="text-xs text-red-500">{errors.driverName}</p>}
             </div>
@@ -176,9 +172,8 @@ const EditTransportationModal: React.FC<EditTransportationModalProps> = ({
                 value={formData.driverPhone}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg ${
-                  errors.driverPhone ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg ${errors.driverPhone ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {errors.driverPhone && <p className="text-xs text-red-500">{errors.driverPhone}</p>}
             </div>
@@ -204,9 +199,8 @@ const EditTransportationModal: React.FC<EditTransportationModalProps> = ({
                 value={formData.capacity}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg ${
-                  errors.capacity ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg ${errors.capacity ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {errors.capacity && <p className="text-xs text-red-500">{errors.capacity}</p>}
             </div>
@@ -220,9 +214,8 @@ const EditTransportationModal: React.FC<EditTransportationModalProps> = ({
                 value={formData.price}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg ${
-                  errors.price ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg ${errors.price ? 'border-red-500' : 'border-gray-300'
+                  }`}
               />
               {errors.price && <p className="text-xs text-red-500">{errors.price}</p>}
             </div>

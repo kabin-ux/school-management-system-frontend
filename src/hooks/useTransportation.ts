@@ -49,14 +49,14 @@ export const useUpdateTransportation = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (data: any) => {
-            const res = await api.put("/transportation", data);
+        mutationFn: async ({ id, updates }: { id: string, updates: any }) => {
+            const res = await api.put(`/transportation/${id}`, updates);
             return res.data.data;
         },
-        onSuccess: (data) => {
+        onSuccess: (updates) => {
             toast.success("Transportation updated successfully");
             queryClient.invalidateQueries({ queryKey: ["transportations"] });
-            queryClient.invalidateQueries({ queryKey: ["transportation", data.id] });
+            queryClient.invalidateQueries({ queryKey: ["transportation", updates.id] });
         },
         onError: (error: any) => {
             toast.error(error.response?.data?.error || "Failed to update transportation");
@@ -70,7 +70,7 @@ export const useDeleteTransportation = () => {
 
     return useMutation({
         mutationFn: async (id: string) => {
-            await api.delete("/transportation", { data: { id } });
+            await api.delete(`/transportation/${id}`);
             return id;
         },
         onSuccess: () => {

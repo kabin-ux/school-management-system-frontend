@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 // import authReducer from "../features/authSlice";
-import schoolReducer from "../features/schoolSlice";
+// import schoolReducer from "../features/schoolSlice";
 // import teacherReducer from "../features/teacherSlice";
 // import studentReducer from "../features/studentSlice";
 import superAdminReducer from "../features/superAdminSlice";
@@ -30,7 +30,7 @@ const persistConfig = {
 
 // Wrap auth reducer
 // const persistedAuthReducer = persistReducer(persistConfig, authReducer);
-const persistedSchoolReducer = persistReducer(persistConfig, schoolReducer);
+// const persistedSchoolReducer = persistReducer(persistConfig, schoolReducer);
 // const persistedTeacherReducer = persistReducer(persistConfig, teacherReducer);
 // const persistedStudentReducer = persistReducer(persistConfig, studentReducer);
 const persistedSuperAdminReducer = persistReducer(persistConfig, superAdminReducer);
@@ -52,7 +52,7 @@ const persistedPaymentReducer = persistReducer(persistConfig, paymentReducer);
 export const store = configureStore({
   reducer: {
     // auth: persistedAuthReducer,
-    school: persistedSchoolReducer,
+    // school: persistedSchoolReducer,
     // teacher: persistedTeacherReducer,
     // student: persistedStudentReducer,
     superAdmin: persistedSuperAdminReducer,

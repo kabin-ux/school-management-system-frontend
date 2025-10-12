@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { X, User } from 'lucide-react';
-import type { Accountant } from '../../../features/accountantSlice';
+import type { Accountant, AccountantForm } from '../../../types/accountant-dashboard.types';
 
 interface EditAccountantModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (updates: Accountant & { password?: string }) => void;
+    onSubmit: (id: string, updates: AccountantForm) => void;
     accountant?: Accountant | null;
     isLoading?: boolean;
 }
@@ -17,8 +17,7 @@ const EditAccountantModal: React.FC<EditAccountantModalProps> = ({
     accountant,
     isLoading = false,
 }) => {
-    const [formData, setFormData] = useState<Accountant & { password?: string }>({
-        id: '',
+    const [formData, setFormData] = useState<AccountantForm>({
         firstName: '',
         lastName: '',
         email: '',
@@ -30,9 +29,6 @@ const EditAccountantModal: React.FC<EditAccountantModalProps> = ({
         state: '',
         postal_code: '',
         school_id: '',
-        createdAt: '',
-        updatedAt: '',
-        deletedAt: null,
         password: '',
     });
 
@@ -40,11 +36,10 @@ const EditAccountantModal: React.FC<EditAccountantModalProps> = ({
 
     useEffect(() => {
         if (isOpen && accountant) {
-            setFormData({ ...accountant, password: '' });
+            setFormData({ ...accountant });
             setErrors({});
         } else if (!isOpen) {
             setFormData({
-                id: '',
                 firstName: '',
                 lastName: '',
                 email: '',
@@ -56,9 +51,6 @@ const EditAccountantModal: React.FC<EditAccountantModalProps> = ({
                 state: '',
                 postal_code: '',
                 school_id: '',
-                createdAt: '',
-                updatedAt: '',
-                deletedAt: null,
                 password: '',
             });
             setErrors({});
@@ -90,7 +82,7 @@ const EditAccountantModal: React.FC<EditAccountantModalProps> = ({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (validateForm() && accountant) {
-            onSubmit(formData);
+            onSubmit(accountant.id, formData);
             onClose();
         }
     };
@@ -122,7 +114,7 @@ const EditAccountantModal: React.FC<EditAccountantModalProps> = ({
                                 {field === 'address' ? (
                                     <textarea
                                         name={field}
-                                        value={formData[field as keyof typeof formData] || ''}
+                                        value={formData[field as keyof typeof formData] ? String(formData[field as keyof typeof formData]) : ''}
                                         onChange={handleInputChange}
                                         rows={3}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg"
@@ -131,11 +123,10 @@ const EditAccountantModal: React.FC<EditAccountantModalProps> = ({
                                     <input
                                         type={field === 'password' ? 'password' : field === 'dateOfBirth' ? 'date' : 'text'}
                                         name={field}
-                                        value={formData[field as keyof typeof formData] || ''}
+                                        value={formData[field as keyof typeof formData] ? String(formData[field as keyof typeof formData]) : ''}
                                         onChange={handleInputChange}
-                                        className={`w-full px-3 py-2 border rounded-lg ${
-                                            errors[field] ? 'border-red-500' : 'border-gray-300'
-                                        }`}
+                                        className={`w-full px-3 py-2 border rounded-lg ${errors[field] ? 'border-red-500' : 'border-gray-300'
+                                            }`}
                                     />
                                 )}
                                 {errors[field] && <p className="text-xs text-red-500">{errors[field]}</p>}

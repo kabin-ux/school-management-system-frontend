@@ -2,14 +2,16 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { SupportTicket } from '../../../types/support.types';
 import EmptyState from '../../../common/EmptyState';
-import { Tags } from 'lucide-react';
+import { Edit, Tags, Trash2 } from 'lucide-react';
 import { getStatusAction, getTicketType } from '../../../lib/utils';
 
 interface RecentTicketsProps {
   tickets: SupportTicket[];
+  onEdit: (ticket: SupportTicket) => void;
+  onDelete: (ticketId: string) => void;
 }
 
-export const RecentTickets: React.FC<RecentTicketsProps> = ({ tickets }) => {
+export const RecentTickets: React.FC<RecentTicketsProps> = ({ tickets, onEdit, onDelete }) => {
   const navigate = useNavigate();
 
   const handleViewTicket = (ticketId: string) => {
@@ -41,6 +43,7 @@ export const RecentTickets: React.FC<RecentTicketsProps> = ({ tickets }) => {
                 <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Description</th>
                 <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Status</th>
                 <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Latest Modified</th>
+                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -48,7 +51,7 @@ export const RecentTickets: React.FC<RecentTicketsProps> = ({ tickets }) => {
                 <tr
                   key={index}
                   className="border-b border-gray-100 hover:bg-blue-50 cursor-pointer transition-all duration-200 hover:shadow-sm group"
-                  onClick={() => handleViewTicket(ticket.id)}
+                // onClick={() => handleViewTicket(ticket.id)}
                 >
                   {/* Created Date */}
                   <td className="p-4 text-sm text-gray-600 whitespace-nowrap">
@@ -132,6 +135,20 @@ export const RecentTickets: React.FC<RecentTicketsProps> = ({ tickets }) => {
                           : ""}
                       </span>
                     </div>
+                  </td>
+                  <td className="mt-4 flex justify-center">
+                    <button
+                      onClick={() => onEdit(ticket)}
+                      className="p-2 rounded hover:bg-gray-100 transition"
+                    >
+                      <Edit className="w-4 h-4 text-blue-500 hover:text-blue-700" />
+                    </button>
+                    <button
+                      onClick={() => onDelete(ticket.id)}
+                      className=" p-2 rounded hover:bg-gray-100 transition"
+                    >
+                      <Trash2 className="w-4 h-4 text-red-500 hover:text-red-700" />
+                    </button>
                   </td>
                 </tr>
               ))}

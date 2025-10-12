@@ -30,8 +30,8 @@ const AccountantManagement: React.FC = () => {
         setSelectedAccountant(accountant)
     }
 
-    const handleUpdateAccountant = async (accountantData: any) => {
-        updateAccountantMutation.mutate(accountantData, {
+    const handleUpdateAccountant = async (id: string, accountantData: any) => {
+        updateAccountantMutation.mutate({ id, accountantData }, {
             onSuccess: () => setIsEditModalOpen(false)
         })
     }

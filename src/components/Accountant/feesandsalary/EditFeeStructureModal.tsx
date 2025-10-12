@@ -3,11 +3,12 @@ import { X } from 'lucide-react';
 import type { FeeStructureAttributes } from '../../../types/fee-salary.types';
 import type { Grade } from '../../../types/class.types';
 import type { Transportation } from '../../../types/admin-transportation.types';
+import type { FeeStructureForm } from './AddFeeStructureModal';
 
 interface EditFeeStructureModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (updates: FeeStructureAttributes) => void;
+  onSubmit: (id: string, updates: FeeStructureForm) => void;
   feeStructure: FeeStructureAttributes | null;
   classes: Grade[];
   transportOptions: Transportation[];
@@ -23,8 +24,7 @@ const EditFeeStructureModal: React.FC<EditFeeStructureModalProps> = ({
   transportOptions,
   isLoading,
 }) => {
-  const [formData, setFormData] = useState<FeeStructureAttributes>({
-    id: '',
+  const [formData, setFormData] = useState<FeeStructureForm>({
     class_id: '',
     monthly_fee: 0,
     exam_fee: 0,
@@ -39,7 +39,16 @@ const EditFeeStructureModal: React.FC<EditFeeStructureModalProps> = ({
 
   useEffect(() => {
     if (isOpen && feeStructure) {
-      setFormData({ ...feeStructure });
+      setFormData({
+        class_id: feeStructure.class_id ?? '',
+        monthly_fee: feeStructure.monthly_fee ?? 0,
+        exam_fee: feeStructure.exam_fee ?? 0,
+        tution_fee: feeStructure.tution_fee ?? 0,
+        computer_fee: feeStructure.computer_fee ?? 0,
+        laboratory_fee: feeStructure.laboratory_fee ?? 0,
+        transport_fee: feeStructure.transport_fee ?? '',
+        other_fee: feeStructure.other_fee ?? 0,
+      });
       setErrors({});
     }
   }, [isOpen, feeStructure]);
@@ -86,7 +95,7 @@ const EditFeeStructureModal: React.FC<EditFeeStructureModalProps> = ({
 
     if (validateForm() && feeStructure) {
       // Coerce numeric fields to numbers before sending
-      const payload: FeeStructureAttributes = {
+      const payload: FeeStructureForm = {
         ...formData,
         monthly_fee: Number(formData.monthly_fee),
         exam_fee: Number(formData.exam_fee),
@@ -97,7 +106,7 @@ const EditFeeStructureModal: React.FC<EditFeeStructureModalProps> = ({
         transport_fee: formData.transport_fee, // if backend expects id keep as string, else convert to number
       };
 
-      onSubmit(payload);
+      onSubmit(feeStructure.id, payload);
       onClose();
     }
   };
@@ -158,7 +167,7 @@ const EditFeeStructureModal: React.FC<EditFeeStructureModalProps> = ({
                 <input
                   type="number"
                   name={fee}
-                  value={formData[fee as keyof FeeStructureAttributes] || 0}
+                  value={formData[fee as keyof FeeStructureForm] || 0}
                   onChange={handleChange}
                   className="w-full border px-3 py-2 rounded-lg"
                 />

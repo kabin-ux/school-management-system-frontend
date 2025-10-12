@@ -70,7 +70,6 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
 
   const { data: sections = [] } = useSectionsByClass(formData.class_id);
 
-
   const validateField = (name: string, value: any) => {
     switch (name) {
       case 'firstName':

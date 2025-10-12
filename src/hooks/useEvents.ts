@@ -50,8 +50,8 @@ export const useAddEvent = () => {
 export const useUpdateEvent = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (updateData: any) => {
-            const res = await api.put("/event", updateData);
+        mutationFn: async ({ id, updateData }: { id: string, updateData: any }) => {
+            const res = await api.put(`/event/${id}`, updateData);
             return res.data?.data;
         },
         onSuccess: (_, updatedEvent) => {
@@ -70,7 +70,7 @@ export const useDeleteEvent = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (id: string) => {
-            await api.delete("/event", { data: { id } });
+            await api.delete(`/event/${id}`);
             return id;
         },
         onSuccess: () => {

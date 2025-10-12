@@ -58,8 +58,8 @@ export const useAddAccountant = () => {
 export const useUpdateAccountant = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (data: Partial<Accountant>) => {
-            const res = await api.put("/accountant", data);
+        mutationFn: async ({ id, accountantData }: { id: string, accountantData: Partial<Accountant> }) => {
+            const res = await api.put(`/accountant/${id}`, accountantData);
             return res.data.data;
         },
         onSuccess: () => {
@@ -78,7 +78,7 @@ export const useDeleteAccountant = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (id: string) => {
-            await api.delete("/accountant", { data: { id } });
+            await api.delete(`/accountant/${id}`);
         },
         onSuccess: () => {
             toast.success("Accountant deleted successfully");

@@ -5,20 +5,33 @@ import { EventsTable } from '../../../components/Admin/events/EventsTable';
 import { CreateEventForm } from '../../../components/Admin/events/CreateEventForm';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
-import type { EventForm } from '../../../types/events.types';
-import { useAddEvent, useDeleteEvent, useEventsBySchool } from '../../../hooks/useEvents';
+import type { Event, EventForm } from '../../../types/events.types';
+import { useAddEvent, useDeleteEvent, useEventsBySchool, useUpdateEvent } from '../../../hooks/useEvents';
+import { EditEventModal } from '../../../components/Admin/events/EditEventModal';
 
 const Events: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState<number | null>(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
     const { data: events = [], isLoading: loading } = useEventsBySchool();
     const addEventMutation = useAddEvent();
-    // const updateEventMutation = useUpdateEvent();
+    const updateEventMutation = useUpdateEvent();
     const deleteEventMutation = useDeleteEvent();
 
 
     const handleCreateEvent = async (eventData: EventForm) => {
         addEventMutation.mutate(eventData)
+    }
+
+    const handleEditEvent = (event: Event) => {
+        setIsEditModalOpen(true);
+        setSelectedEvent(event);
+    }
+    const handleUpdateEvent = async (id: string, updateData: EventForm) => {
+        updateEventMutation.mutate({ id, updateData }, {
+            onSuccess: () => setIsEditModalOpen(false)
+        })
     }
 
     const handleDeleteEvent = async (eventId: string) => {
@@ -57,7 +70,19 @@ const Events: React.FC = () => {
                         </div>
                         <EventsTable
                             events={events}
+                            onEdit={handleEditEvent}
                             onDelete={handleDeleteEvent}
+                        />
+
+                        <EditEventModal
+                            isOpen={isEditModalOpen}
+                            onClose={() => {
+                                setIsEditModalOpen(false);
+                                setSelectedEvent(null);
+                            }}
+                            onSubmit={handleUpdateEvent}
+                            event={selectedEvent}
+                            isLoading={loading}
                         />
                     </div>
                 </main>

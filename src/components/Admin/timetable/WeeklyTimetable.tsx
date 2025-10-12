@@ -21,16 +21,16 @@ interface Timetable {
 
 interface WeeklyTimetableProps {
   timetables: Timetable[];
-  onAddTimeSlot?: (timetableId: string, dayOfWeek: string, startTime: string) => void;
   onEditTimeSlot: (timeSlot: TimeSlot) => void;
   onDeleteTimeSlot: (timeSlotId: string) => void;
+  onDeleteTimeTable: (timetableId: string) => void;
 }
 
 export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({
   timetables,
-  onAddTimeSlot,
   onEditTimeSlot,
-  onDeleteTimeSlot
+  onDeleteTimeSlot,
+  onDeleteTimeTable
 }) => {
 
   if (!timetables || timetables.length === 0) {
@@ -46,12 +46,12 @@ export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({
   return (
     <div className="space-y-8">
       {timetables?.map((timetable) => {
-        // ✅ Collect unique time slots across all days
+        // Collect unique time slots across all days
         const allTimes = timetable.timeslots && timetable.timeslots.length > 0
           ? Array.from(new Set(timetable.timeslots.map(ts => ts.startTime))).sort()
-          : ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00"];
+          : ["10:00", "10:45", "11:30", "12:15", "13:00", "13:45", "14:30", "15:15"];
 
-        // ✅ Group timeslots by day
+        // Group timeslots by day
         const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday"];
         const slotsByDay: Record<string, Timeslot[]> = {};
         days.forEach(day => {
@@ -68,7 +68,9 @@ export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({
                   >
                     <Edit className="w-4 h-4" />
                   </button>
-                  <button className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                  <button className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    onClick={() => onDeleteTimeTable(timetable.id)}
+                  >
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
@@ -121,7 +123,6 @@ export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({
                               </div>
                             ) : (
                               <button
-                                onClick={() => onAddTimeSlot?.(timetable.id, day, time)}
                                 className="w-full h-16 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 hover:border-blue-400 hover:text-blue-600 transition-colors text-sm flex items-center justify-center gap-2"
                               >
                                 <Plus className="w-4 h-4" />

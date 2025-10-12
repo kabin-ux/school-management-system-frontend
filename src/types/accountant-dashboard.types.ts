@@ -1,3 +1,5 @@
+import type { School } from "./partner-school.types";
+
 export interface Transaction {
   id: string;
   studentName: string;
@@ -12,18 +14,39 @@ export interface Accountant {
   id: string;
   firstName: string;
   lastName: string;
-  status?: "Active" | "Inactive" | string; // or just string if status can vary
   email: string;
+  school?: School;
   phone: string;
-  dateOfBirth: string; // or Date if you parse it
+  password: string;
+  status?: "Active" | "Inactive" | string;
+  school_id: string;
+  dateOfBirth: Date | string | null;
   address: string;
   district: string;
   city: string;
   state: string;
-  postal_code: string;
+  postal_code?: string | null;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
+}
+
+export interface AccountantForm {
+  firstName: string;
+  lastName: string;
+  email: string;
+  school?: School;
+  phone: string;
+  password: string;
+  status?: "Active" | "Inactive" | string;
   school_id: string;
-  role: string;
-  createdAt: string; // or Date
-  updatedAt: string; // or Date
-  deletedAt: string | null;
+  dateOfBirth: Date | string | null;
+  address: string;
+  district: string;
+  city: string;
+  state: string;
+  postal_code?: string | null;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
 }

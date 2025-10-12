@@ -189,7 +189,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
             student_capacity: Number(formData.student_capacity) || "",
             school_code: Number(formData.school_code) || "",
         };
-        console.log("payload",payload)
+        console.log("payload", payload)
 
         onSubmit(payload, school?.id);
         onClose();
@@ -613,7 +613,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
                             onClick={handleSubmit}
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                         >
-                            Add School
+                            Edit School
                         </button>
                     </div>
                 </div>

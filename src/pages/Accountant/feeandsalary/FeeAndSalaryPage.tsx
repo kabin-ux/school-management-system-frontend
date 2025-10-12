@@ -1,6 +1,6 @@
 import { Banknote } from 'lucide-react';
 import { useFeeSalary } from '../../../hooks/useFeeSalary';
-import type { Salary, SalaryStructureForm } from '../../../types/fee-salary.types';
+import type { FeeStructureAttributes, Salary, SalaryStructureForm } from '../../../types/fee-salary.types';
 import { FilterSection } from '../../../components/Accountant/feesandsalary/FilterSection';
 import { StudentDetailView } from '../../../components/Accountant/feesandsalary/StudentDetailView';
 import { DataTable } from '../../../components/Accountant/feesandsalary/DataTable';
@@ -23,7 +23,7 @@ export default function FeeAndSalaryPage() {
     const [isSalaryModalOpen, setIsSalaryModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isEditSalaryModalOpen, setIsEditSalaryModalOpen] = useState(false);
-    const [selectedFeeStructure, setSelectedFeeStructure] = useState<FeeStructureForm | null>(null);
+    const [selectedFeeStructure, setSelectedFeeStructure] = useState<FeeStructureAttributes | null>(null);
     const [selectedSalaryStructure, setSelectedSalaryStructure] = useState<Salary | null>(null);
 
     const { data: feeStructures = [], isLoading: loading } = useMySchoolFeesStructures();
@@ -80,13 +80,13 @@ export default function FeeAndSalaryPage() {
         })
     }
 
-    const handleEditFeeStructureData = (feeStructure: FeeStructureForm) => {
+    const handleEditFeeStructureData = (feeStructure: FeeStructureAttributes) => {
         setIsEditModalOpen(true);
         setSelectedFeeStructure(feeStructure);
     }
 
-    const handleUpdateFeeStructure = async (feeStructureData: any) => {
-        updateFeeStructureMutation.mutate(feeStructureData, {
+    const handleUpdateFeeStructure = async (id: string, feeStructureData: any) => {
+        updateFeeStructureMutation.mutate({ id, feeStructureData }, {
             onSuccess: () => setIsEditModalOpen(false)
         })
     }

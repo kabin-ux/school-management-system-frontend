@@ -2,7 +2,41 @@ import React, { useState } from "react";
 import { X, School, MapPin, Phone, User, Users } from "lucide-react";
 
 export interface SchoolData {
-    id?: string;
+    id: string;
+    name: string;
+    address: string;
+    district: string;
+    city: string;
+    state: string;
+    postal_code: string | number;
+    latitude: string | number;
+    longitude: string | number;
+    phone: string;
+    email: string;
+    password: string;
+    image: string;
+    verified: boolean;
+    principal_name: string;
+    principal_contact: string;
+    contact: string;
+    school_type: string;
+    status?: string;
+    totalStudents?: number;
+    totalTeachers?: number;
+    totalParents?: number;
+    subscription?: string;
+    payment?: string;
+    has_transport: boolean;
+    established_year: string | number;
+    student_capacity: string | number;
+    school_code: string | number;
+    details: string;
+    grade_range: string;
+    has_hostel: boolean;
+    school_logo: string;
+}
+
+export interface SchoolDataForm {
     name: string;
     address: string;
     district: string;
@@ -39,7 +73,7 @@ export interface SchoolData {
 interface AddSchoolModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: SchoolData) => void;
+    onSubmit: (data: SchoolDataForm) => void;
     isLoading: boolean;
 }
 
@@ -49,7 +83,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
     onSubmit,
     isLoading
 }) => {
-    const [formData, setFormData] = useState<SchoolData>({
+    const [formData, setFormData] = useState<SchoolDataForm>({
         name: "",
         address: "",
         district: "",
@@ -146,7 +180,7 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
 
         if (!validateForm()) return;
 
-        const payload: SchoolData = {
+        const payload: SchoolDataForm = {
             ...formData,
             postal_code: Number(formData.postal_code) || "",
             latitude: Number(formData.latitude) || "",

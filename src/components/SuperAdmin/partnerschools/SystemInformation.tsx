@@ -1,17 +1,20 @@
-import type { Admin } from "../../../types/partner-school.types";
+import type { Admin, School } from "../../../types/partner-school.types";
+import type { SchoolData } from "./AddSchoolModal";
 
 interface SystemInformationProps {
+  school: SchoolData;
   onEditSchool: () => void;
-  onDeleteSchool: () => void;
+  onDeleteSchool: (id: string) => void;
 }
 
-export default function SystemInformation({onEditSchool, onDeleteSchool }: SystemInformationProps) {
+export default function SystemInformation({ school, onEditSchool, onDeleteSchool }: SystemInformationProps) {
 
   const admins: Admin[] = [
     { name: 'Sarah Johnson', role: 'Primary Admin', initials: 'SJ', bgColor: 'bg-blue-100 text-blue-600' },
     { name: 'Mike Chen', role: 'Secondary Admin', initials: 'MC', bgColor: 'bg-green-100 text-green-600' },
     { name: 'Alex Doe', role: 'Accountant', initials: 'AD', bgColor: 'bg-orange-100 text-orange-600' }
   ];
+  console.log(school)
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6">
@@ -57,12 +60,12 @@ export default function SystemInformation({onEditSchool, onDeleteSchool }: Syste
       {/* Action Buttons */}
       <div className="space-y-2">
         <button className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors text-sm font-medium"
-        onClick={onEditSchool}
+          onClick={onEditSchool}
         >
           Reset Schools Information
         </button>
         <button className="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
-          onClick={onDeleteSchool}
+          onClick={() => onDeleteSchool(school.id)}
         >
           Remove School From Partnered Schools
         </button>

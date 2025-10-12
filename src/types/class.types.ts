@@ -39,5 +39,5 @@ export interface Grade {
   createdAt: string;
   updatedAt: string;
 
-  school?: School[];
+  school?: School;
 }

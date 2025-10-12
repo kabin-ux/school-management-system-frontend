@@ -1,19 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Printer, Download, Save, Plus } from 'lucide-react';
 import TimetableFilters from '../../../components/Admin/timetable/TimetableFilters';
 import { WeeklyTimetable } from '../../../components/Admin/timetable/WeeklyTimetable';
-import TimetableSidebar from '../../../components/Admin/timetable/TimetableSidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { getAllTimetables, createTimetable } from '../../../features/timetableSlice';
-import { getAllTimeSlotsByTimetableId, createTimeSlot, updateTimeSlot, deleteTimeSlot } from '../../../features/timeSlotSlice';
-import toast from 'react-hot-toast';
 import { getEndTime } from '../../../lib/utils';
 import { CreateTimeTableModal, type TimeTableForm } from '../../../components/Admin/timetable/CreateTimeTableModal';
 import { EditTimeSlotModal, type EditTimeSlotForm } from '../../../components/Admin/timetable/EditTimeSlotModal';
 import type { TimeSlot } from '../../../types/timetable.types';
 import { useClasses } from '../../../hooks/useClasses';
+import { useAllTimetables, useCreateTimetable, useDeleteTimetable } from '../../../hooks/useTimeTable';
+import {  useDeleteTimeSlot, useUpdateTimeSlot } from '../../../hooks/useTimeSlot';
 
 export default function TimetableManagement() {
     const [selectedClass, setSelectedClass] = useState('Grade 10');
@@ -24,80 +21,37 @@ export default function TimetableManagement() {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(null);
 
-    const dispatch = useAppDispatch();
     const { data: classes = [] } = useClasses();
-    const { timetables, loading } = useAppSelector(state => state.timetable);
-    const { slots } = useAppSelector(state => state.timeSlot);
+    const { data: timetables, isLoading: loading } = useAllTimetables();
+    const createTimeTableMutation = useCreateTimetable();
+    const deleteTimeTableMutation = useDeleteTimetable();
 
-    useEffect(() => {
-        dispatch(getAllTimetables())
-    }, [dispatch])
+    const updateTimeslotMutation = useUpdateTimeSlot();
+    const deleteTimeslotMutation = useDeleteTimeSlot();
 
     const handleCreateTimetable = async (timetableData: TimeTableForm) => {
-        try {
-            const res = await dispatch(createTimetable(timetableData));
-            if (createTimetable.fulfilled.match(res)) {
-                toast.success('Timetable created successfully')
-                setIsModalOpen(false)
-            } else {
-                toast.error('Error creating timetable')
-            }
-        } catch (error) {
-            console.error('Error creating timetable', error)
-        }
+        createTimeTableMutation.mutate(timetableData, {
+            onSuccess: () => setIsModalOpen(false)
+        })
     };
 
-    const handleAddTimeSlot = async (timetableId: string, dayOfWeek: string, startTime: string) => {
-        const newTimeSlot = {
-            timetableId,
-            dayOfWeek,
-            startTime,
-            endTime: getEndTime(startTime),
-            label: 'New Subject',
-            subject: 'New Subject',
-            teacher: 'TBD'
-        };
-        const res = await dispatch(createTimeSlot(newTimeSlot));
-        if (createTimeSlot.fulfilled.match(res)) {
-            toast.success('Time Slot added successfully')
-        } else {
-            const errorMessage = typeof res.payload === "string" ? res.payload : 'Error adding time slot'
-            toast.error(errorMessage);
-        }
-    };
+    const handleDeleteTimeTable = async (timetableId: string) => {
+        deleteTimeTableMutation.mutate(timetableId)
+    }
 
     const handleEditTimeSlot = (timeSlot: TimeSlot) => {
         setIsEditModalOpen(true);
         setSelectedTimeSlot(timeSlot);
-        console.log(timeSlot)
     }
 
-    const handleUpdateTimeSlot = async (timeslotData: EditTimeSlotForm, id: string) => {
-        try {
-            const res = await dispatch(updateTimeSlot({ timeslotData, id }))
-            if (updateTimeSlot.fulfilled.match(res)) {
-                toast.success('Timeslot updated successfully')
-            } else {
-                toast.error('Error updating timeslot')
-            }
-        } catch (error) {
-            toast.error('Error updating timeslot')
-            console.error('Error updating timeslot', error)
-        }
+    const handleUpdateTimeSlot = async (id: string, timeslotData: EditTimeSlotForm) => {
+        updateTimeslotMutation.mutate({ id, timeslotData }, {
+            onSuccess: () => setIsEditModalOpen(false)
+        })
     }
 
     const handleDeleteTimeSlot = async (timeSlotId: string) => {
-        try {
-            const res = await dispatch(deleteTimeSlot(timeSlotId))
-            if (deleteTimeSlot.fulfilled.match(res)) {
-                toast.success('Timeslot removed successfully')
-            } else {
-                toast.error('Error removing timeslot')
-            }
-        } catch (error) {
-            toast.error('Error removing timeslot')
-            console.error('Error removing timeslot', error)
-        }
+        deleteTimeslotMutation.mutate(timeSlotId)
     }
 
     return (
@@ -156,9 +110,9 @@ export default function TimetableManagement() {
                             <div className="lg:col-span-3">
                                 <WeeklyTimetable
                                     timetables={timetables}
-                                    onAddTimeSlot={handleAddTimeSlot}
                                     onEditTimeSlot={handleEditTimeSlot}
                                     onDeleteTimeSlot={handleDeleteTimeSlot}
+                                    onDeleteTimeTable={handleDeleteTimeTable}
                                 />
                             </div>
 

@@ -61,8 +61,8 @@ export const useUpdateFeeStructure = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (data: any) => {
-            const res = await api.put('/fees', data);
+        mutationFn: async ({ id, feeStructureData }: { id: string, feeStructureData: any }) => {
+            const res = await api.put(`/fees/${id}`, feeStructureData);
             return res.data.data as FeeStructureAttributes;
         },
         onSuccess: () => {
@@ -81,7 +81,7 @@ export const useDeleteFeeStructure = () => {
 
     return useMutation({
         mutationFn: async (id: string) => {
-            await api.delete('/fees', { data: { id } });
+            await api.delete(`/fees/${id}`);
             return id;
         },
         onSuccess: () => {

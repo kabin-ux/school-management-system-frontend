@@ -47,6 +47,7 @@ export const useCreateSupportTicket = () => {
     },
     onSuccess: () => {
       toast.success("Support Ticket added successfully");
+      queryClient.invalidateQueries({ queryKey: ["supportTicketsBySchool"] });
       queryClient.invalidateQueries({ queryKey: ["supportTickets"] });
     },
     onError: (error: any) => {
@@ -109,12 +110,30 @@ export const useCloseSupportTicket = () => {
   });
 };
 
+// Update support ticket
+export const useUpdateSupportTicket = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, updates }: { id: string, updates: any }) => {
+      const res = await api.put(`/support/${id}`, updates);
+      return res.data.data;
+    },
+    onSuccess: () => {
+      toast.success("Support Ticket details updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["supportTicketsBySchool"] });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.error || "Failed to update support ticket details");
+    },
+  });
+};
+
 // Delete support ticket
 export const useDeleteSupportTicket = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      await api.delete(`/support`, { data: { id } });
+      await api.delete(`/support/${id}`);
       return id;
     },
     onSuccess: (id) => {

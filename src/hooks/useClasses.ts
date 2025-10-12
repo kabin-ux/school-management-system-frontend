@@ -48,8 +48,8 @@ export const useAddClass = () => {
 export const useUpdateClass = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (updates: any) => {
-            const res = await api.put('/class', updates);
+        mutationFn: async ({ id, updates }: { id: string, updates: any }) => {
+            const res = await api.put(`/class/${id}`, updates);
             return res.data.data;
         },
         onSuccess: (updatedClass) => {
@@ -57,6 +57,7 @@ export const useUpdateClass = () => {
             queryClient.setQueryData(['classes'], (old: any) =>
                 old?.map((cls: any) => (cls.id === updatedClass.id ? updatedClass : cls))
             );
+            queryClient.invalidateQueries({ queryKey: ["classes"] });
             queryClient.invalidateQueries({ queryKey: ["class", updatedClass.id] });
             toast.success('Class updated successfully');
         },
@@ -72,7 +73,7 @@ export const useDeleteClass = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (id: number) => {
-            const res = await api.delete('/class', { data: { id } });
+            const res = await api.delete(`/class/${id}`);
             return { id, ...res.data };
         },
         onSuccess: (deleted) => {

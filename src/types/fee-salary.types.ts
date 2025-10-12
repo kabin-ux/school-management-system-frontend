@@ -1,6 +1,7 @@
-import type { Accountant } from "../features/accountantSlice";
+import type { Accountant } from "./accountant-dashboard.types";
 import type { Transportation } from "./admin-transportation.types";
 import type { Grade } from "./class.types";
+import type { Teacher } from "./teacher.types";
 
 export interface FeeStructureAttributes {
   id: string;
@@ -12,8 +13,8 @@ export interface FeeStructureAttributes {
   laboratory_fee?: number;
   transport_fee?: string;
   other_fee?: number;
-  class?: Grade[];
-  transportation?: Transportation[];
+  class?: Grade;
+  transportation: Transportation;
 }
 
 export interface Salary {
@@ -28,9 +29,9 @@ export interface Salary {
   updatedAt?: Date;
   deletedAt?: Date | null;
 
-  creator: Accountant[];
-  teacherEmployee?: Teacher[];
-  accountantEmployee?: Accountant[];
+  creator: Accountant;
+  teacherEmployee?: Teacher;
+  accountantEmployee?: Accountant;
 }
 
 export interface SalaryStructureForm {
@@ -41,15 +42,15 @@ export interface SalaryStructureForm {
   remarks?: string;
 }
 
-export interface Teacher {
-  id: string;
-  name: string;
-  department: string;
-  lastPaid: string;
-  totalSalary: string;
-  dueAmount: string;
-  status: 'Paid' | 'Unpaid' | 'Pending';
-}
+// export interface Teacher {
+//   id: string;
+//   name: string;
+//   department: string;
+//   lastPaid: string;
+//   totalSalary: string;
+//   dueAmount: string;
+//   status: 'Paid' | 'Unpaid' | 'Pending';
+// }
 
 export interface PaymentHistoryItem {
   date: string;

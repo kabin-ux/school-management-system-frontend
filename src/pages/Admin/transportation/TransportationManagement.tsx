@@ -48,8 +48,8 @@ export default function TransportationManagement() {
         setSelectedTransportation(transportation);
     }
 
-    const handleUpdateTransportation = async (transportationData: any) => {
-        updateTransportationMutation.mutate(transportationData, {
+    const handleUpdateTransportation = async (id: string, updates: any) => {
+        updateTransportationMutation.mutate({ id, updates }, {
             onSuccess: () => setIsEditModalOpen(false)
         })
     }
@@ -116,6 +116,7 @@ export default function TransportationManagement() {
                             }}
                             onSubmit={handleUpdateTransportation}
                             transportation={selectedTransportation}
+                            isLoading={loading}
                         />
                     </div>
                 </main>

@@ -40,8 +40,8 @@ const ClassManagement: React.FC = () => {
         setSelectedClass(cls);
     }
 
-    const handleUpdateClass = async (updates: any) => {
-        updateClassMutation.mutate({ updates }, {
+    const handleUpdateClass = async (id: string, updates: any) => {
+        updateClassMutation.mutate({ id, updates }, {
             onSuccess: () => setIsEditModalOpen(false),
         });
     }

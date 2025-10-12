@@ -1,18 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SupportConsoleHeader } from '../../../components/Admin/support/SupportConsoleHeader';
 import { SupportConsoleStats } from '../../../components/Admin/support/SupportConsoleStats';
 import { NewSupportTicket } from '../../../components/Admin/support/NewSupportTicket';
 import { RecentTickets } from '../../../components/Admin/support/RecentTickets';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
-import { useCreateSupportTicket, useSupportTicketsBySchool } from '../../../hooks/useSupportTickets';
+import { useCreateSupportTicket, useDeleteSupportTicket, useSupportTicketsBySchool, useUpdateSupportTicket } from '../../../hooks/useSupportTickets';
+import type { SupportTicket } from '../../../types/support.types';
+import { EditSupportTicketModal } from '../../../components/Admin/support/EditSupportTicketModal';
 
 const AdminSupportConsole: React.FC = () => {
     const { data: tickets = [], isLoading: loading } = useSupportTicketsBySchool();
+
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [selectedSupportTicket, setSelectedSupportTicket] = useState<SupportTicket | null>(null);
+
     const createSupportTicketMutation = useCreateSupportTicket();
+    const updateSupportTicketMutation = useUpdateSupportTicket();
+    const deleteSupportTicketMutation = useDeleteSupportTicket();
 
     const handleAddSupportTicket = async (supportTicketData: any) => {
-      createSupportTicketMutation.mutate(supportTicketData)
+        createSupportTicketMutation.mutate(supportTicketData)
+    }
+
+    const handleEditSupportTicket = (ticket: SupportTicket) => {
+        setIsEditModalOpen(true);
+        setSelectedSupportTicket(ticket)
+    }
+
+    const handleUpdateSupportTicket = async (id: string, updates: any) => {
+        updateSupportTicketMutation.mutate({ id, updates }, {
+            onSuccess: () => setIsEditModalOpen(false)
+        })
+    }
+
+    const handleDeleteSupportTicket = async (id: string) => {
+        deleteSupportTicketMutation.mutate(id, {
+            onSuccess: () => setIsEditModalOpen(false)
+        })
     }
 
     return (
@@ -34,6 +59,19 @@ const AdminSupportConsole: React.FC = () => {
                         />
                         <RecentTickets
                             tickets={tickets}
+                            onEdit={handleEditSupportTicket}
+                            onDelete={handleDeleteSupportTicket}
+                        />
+
+                        <EditSupportTicketModal
+                            isOpen={isEditModalOpen}
+                            onClose={() => {
+                                setIsEditModalOpen(false);
+                                setSelectedSupportTicket(null);
+                            }}
+                            onSubmit={handleUpdateSupportTicket}
+                            ticket={selectedSupportTicket}
+                            isLoading={loading}
                         />
                     </div>
                 </main>

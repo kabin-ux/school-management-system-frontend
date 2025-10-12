@@ -1,8 +1,7 @@
 import React from 'react';
-import type { FeeStructureAttributes, Salary, SalaryStructureForm, Teacher, ViewType } from '../../../types/fee-salary.types';
+import type { FeeStructureAttributes, Salary, ViewType } from '../../../types/fee-salary.types';
 import { StatusBadge } from './StatusBadge';
 import { DollarSign, Edit, Trash2 } from 'lucide-react';
-import type { FeeStructureForm } from './AddFeeStructureModal';
 import EmptyState from '../../../common/EmptyState';
 import { getRoleAction } from '../../../lib/utils';
 
@@ -11,7 +10,7 @@ interface DataTableProps {
   students: FeeStructureAttributes[];
   teachers: Salary[];
   // onRowClick: (id: string) => void;
-  onEdit: (feeStructure: FeeStructureForm) => void;
+  onEdit: (feeStructure: FeeStructureAttributes) => void;
   onDelete: (feeStructureId: string) => void;
   onEditSalary: (salary: Salary) => void;
   onDeleteSalary: (salaryId: string) => void;
@@ -29,7 +28,7 @@ export const DataTable: React.FC<DataTableProps> = ({
 }) => {
   const structure = activeView === 'Student' ? students : teachers;
 
-  console.log("data received",structure)
+  console.log("data received", structure)
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100">
@@ -96,7 +95,8 @@ export const DataTable: React.FC<DataTableProps> = ({
                     Number(student.tution_fee) +
                     Number(student.other_fee) +
                     Number(student.computer_fee) +
-                    Number(student.laboratory_fee);
+                    Number(student.laboratory_fee) +
+                    Number(student.transportation?.price);
 
                   return (
                     <tr

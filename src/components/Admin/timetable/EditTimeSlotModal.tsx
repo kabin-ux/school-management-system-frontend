@@ -12,7 +12,7 @@ interface EditTimeSlotModalProps {
     isOpen: boolean;
     timeSlot: TimeSlot | null;
     onClose: () => void;
-    onSubmit: (timeSlotData: EditTimeSlotForm, id: string) => void;
+    onSubmit: (id: string, timeSlotData: EditTimeSlotForm) => void;
     isLoading: boolean;
 }
 
@@ -87,7 +87,7 @@ export const EditTimeSlotModal: React.FC<EditTimeSlotModalProps> = ({
         // console.log("form", formData)
 
         if (validateForm()) {
-            onSubmit(formData, timeSlot.id);
+            onSubmit(timeSlot.id, formData);
             console.log("form", formData)
 
             setFormData({

@@ -59,14 +59,13 @@ export const useAddParent = () => {
 export const useUpdateParent = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async (updateData: any) => {
-            const res = await api.put("/parent", updateData);
+        mutationFn: async ({ id, updateData }: { id: string, updateData: any }) => {
+            const res = await api.put(`/parent/${id}`, updateData);
             return res.data?.data;
         },
-        onSuccess: (_, updatedParent) => {
+        onSuccess: () => {
             toast.success("Parent updated successfully");
             queryClient.invalidateQueries({ queryKey: ["parents"] });
-            queryClient.invalidateQueries({ queryKey: ["parent", updatedParent.id] });
         },
         onError: (error: any) => {
             toast.error(error.response?.data?.error || "Failed to update parent");
@@ -79,7 +78,7 @@ export const useDeleteParent = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (id: string) => {
-            await api.delete("/parent", { data: { id } });
+            await api.delete(`/parent/${id}`);
             return id;
         },
         onSuccess: () => {
