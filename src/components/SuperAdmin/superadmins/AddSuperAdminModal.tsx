@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { X, User, Mail, Phone, MapPin, Lock, Image } from 'lucide-react';
-import type { SuperAdmin } from '../../../features/superAdminSlice';
+import { X, User } from 'lucide-react';
+import type { SuperAdmin } from '../../../hooks/useSuperAdmin';
 
 interface AddSuperAdminModalProps {
   isOpen: boolean;
@@ -13,7 +13,7 @@ const AddSuperAdminModal: React.FC<AddSuperAdminModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
-  isLoading = false
+  isLoading
 }) => {
   const [formData, setFormData] = useState<Omit<SuperAdmin, 'id'>>({
     firstName: '',

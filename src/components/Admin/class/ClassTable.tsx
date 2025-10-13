@@ -1,12 +1,12 @@
 import React from 'react';
-import { BookCheck, BookOpenCheck, BookUser, Edit, Eye, Trash2 } from 'lucide-react';
+import { BookCheck, BookOpenCheck, BookUser, Check, Edit, Eye, Trash2 } from 'lucide-react';
 import type { Grade } from '../../../types/class.types';
 import EmptyState from '../../../common/EmptyState';
 
 interface ClassTableProps {
   grades: Grade[];
-  onNavigateToSection: (classId: number) => void;
-  onNavigateToSubject: (classId: number) => void;
+  onNavigateToSection: (classId: string) => void;
+  onNavigateToSubject: (classId: string) => void;
   onAssignClassTeacher: (cls: Grade) => void;
   onEdit: (cls: Grade) => void;
   onDelete: (classId: string) => void;
@@ -59,12 +59,12 @@ export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSect
                       <td className="p-4 border-r border-gray-200">
                         <div className="flex gap-2">
                           <span className="inline-flex items-center justify-center w-6 h-6 bg-blue-100 text-blue-800 text-sm rounded">
-                            {grade?.has_section}
+                            {grade?.has_section ? <Check />: ''}
                           </span>
                         </div>
                       </td>
-                      <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.totalSubjects}</td>
-                      <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.totalStudents}</td>
+                      <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.totalSubject}</td>
+                      <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.totalStudent}</td>
                       <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.classTeacher?.firstName} {grade?.classTeacher?.lastName}</td>
                       <td className="p-4">
                         <div className="flex items-center gap-2">

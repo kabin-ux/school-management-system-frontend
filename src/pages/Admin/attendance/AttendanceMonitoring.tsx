@@ -6,19 +6,19 @@ import { AttendanceCharts } from '../../../components/Admin/attendance/Attendanc
 import { AttendanceTable } from '../../../components/Admin/attendance/AttendanceTable';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
+import { useStudentAttendanceByClassSection } from '../../../hooks/useAttendance';
+import { useClasses } from '../../../hooks/useClasses';
+import { useSectionsByClass } from '../../../hooks/useSection';
 const AttendanceMonitoring: React.FC = () => {
     const [viewType, setViewType] = useState('Student');
     const [selectedDate, setSelectedDate] = useState('mm/dd/yyyy');
     const [selectedClass, setSelectedClass] = useState('Select Class');
     const [selectedSection, setSelectedSection] = useState('Select Section');
 
-    const attendanceData = Array.from({ length: 10 }, () => ({
-        id:1,
-        name: 'Biswas Poudel',
-        classSection: 'Class: 12, A',
-        date: '12th July 2025',
-        status: 'Present'
-    }));
+
+    const { data: classes } = useClasses();
+    const { data: sections } = useSectionsByClass(selectedClass.id);
+    const { data: attendanceData } = useStudentAttendanceByClassSection('45355777-5b2d-44be-863d-8a7caa9550c1', 'd2b88fcd-4fa5-4a1b-a677-618f582189c7', '2025-10-01', '2025-10-31')
 
     return (
         <div className="flex h-full bg-gray-50">

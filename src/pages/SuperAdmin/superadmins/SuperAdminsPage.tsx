@@ -1,46 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../../components/SuperAdmin/layout/Sidebar';
 import { DashboardHeader } from '../../../components/SuperAdmin/layout/DashboardHeader';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { PlusIcon } from 'lucide-react';
-import toast from 'react-hot-toast';
 import { SuperAdminTable } from '../../../components/SuperAdmin/superadmins/SuperAdminTable';
-import { createSuperAdmin, deleteSuperAdmin, fetchSuperAdmins, updateSuperAdmin, type SuperAdmin } from '../../../features/superAdminSlice';
 import AddSuperAdminModal from '../../../components/SuperAdmin/superadmins/AddSuperAdminModal';
 import EditSuperAdminModal from '../../../components/SuperAdmin/superadmins/EditSuperAdminModal';
+import { useCreateSuperAdmin, useDeleteSuperAdmin, useSuperAdmins, useUpdateSuperAdmin, type SuperAdmin } from '../../../hooks/useSuperAdmin';
+import type { SuperAdminForm } from '../../../types/super-admin-super-admins.types';
 
 export const SuperAdminsPage: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const { superAdmins } = useAppSelector((state) => state.superAdmin)
+
+  const { data: superAdmins, isLoading } = useSuperAdmins();
+  const createSuperAdminMutation = useCreateSuperAdmin();
+  const updateSuperAdminMutation = useUpdateSuperAdmin();
+  const deleteSuperAdminMutation = useDeleteSuperAdmin();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedSuperAdmin, setSelectedSuperAdmin] = useState<SuperAdmin | null>(null);
-
-  useEffect(() => {
-    dispatch(fetchSuperAdmins())
-  }, [dispatch])
-  console.log(superAdmins)
-
 
   const handleViewPartnerSchoolDetails = (schoolCode: string) => {
     navigate(`/super-admin/partner-schools/details/${schoolCode}`)
   };
 
   const handleAddSuperAdmin = async (superAdminData: any) => {
-    try {
-      const res = await dispatch(createSuperAdmin(superAdminData))
-      console.log("Response",res)
-      if (createSuperAdmin.fulfilled.match(res)) {
-        toast.success('Super admin created successfully')
-      } else {
-        toast.error(res.payload || 'Error adding super admin');
-      }
-    } catch (error) {
-      toast.error('Error adding super admin')
-      console.error('Error adding super admin', error)
-    }
+    createSuperAdminMutation.mutate(superAdminData, {
+      onSuccess: () => setIsModalOpen(false)
+    })
   }
 
   const handleEditSuperAdmin = (superAdmin: SuperAdmin) => {
@@ -48,22 +36,14 @@ export const SuperAdminsPage: React.FC = () => {
     setIsEditModalOpen(true);
   };
 
-  const handleUpdateSuperAdmin = (data: SuperAdmin) => {
-    try {
-      dispatch(updateSuperAdmin(data))
-      toast.success('Super admin details updated successfully')
-    } catch (error) {
-      console.error('Error editing super admin', error)
-    }
+  const handleUpdateSuperAdmin = (id: string, data: SuperAdminForm) => {
+    updateSuperAdminMutation.mutate({ id, data }, {
+      onSuccess: () => setIsEditModalOpen(false)
+    })
   }
 
   const handleDeleteSuperAdmin = (id: any) => {
-    try {
-      dispatch(deleteSuperAdmin(id))
-      toast.success('Super admin removed successfully')
-    } catch (error) {
-      console.error('Error removing super admin', error)
-    }
+    deleteSuperAdminMutation.mutate(id)
   }
   return (
     <div className="flex h-screen bg-gray-50">
@@ -101,6 +81,7 @@ export const SuperAdminsPage: React.FC = () => {
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
               onSubmit={handleAddSuperAdmin}
+              isLoading={isLoading}
             />
 
             <EditSuperAdminModal
@@ -111,6 +92,7 @@ export const SuperAdminsPage: React.FC = () => {
               }}
               onSubmit={handleUpdateSuperAdmin}
               superAdmin={selectedSuperAdmin}
+              isLoading={isLoading}
             />
           </div>
         </div>

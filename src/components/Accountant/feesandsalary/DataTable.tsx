@@ -50,11 +50,19 @@ export const DataTable: React.FC<DataTableProps> = ({
 
       <div className="overflow-x-auto">
         {!structure || structure.length === 0 ? (
-          <EmptyState
-            title="No fee structure found"
-            description="There are currently no any fee structure in the system. Click on button above to create a fee structure"
-            icon={<DollarSign className="w-14 h-14" />}
-          />
+          (activeView === 'Student' ? (
+            <EmptyState
+              title="No fee structure found"
+              description="There are currently no any fee structure in the system. Click on button above to create a fee structure"
+              icon={<DollarSign className="w-14 h-14" />}
+            />
+          ) : (
+            <EmptyState
+              title="No salary structure found"
+              description="There are currently no any salary structure in the system. Click on button above to create a salary structure"
+              icon={<DollarSign className="w-14 h-14" />}
+            />
+          ))
         ) : (
           <table className="w-full">
             <thead className="bg-gray-50">

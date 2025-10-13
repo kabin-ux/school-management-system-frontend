@@ -7,12 +7,12 @@ interface AttendanceTableProps {
 }
 
 export const AttendanceTable: React.FC<AttendanceTableProps> = ({ attendanceData }) => {
-      const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const handleViewAttendance = (id: number) => {
+    const handleViewAttendance = (id: string) => {
 
-    navigate(`/admin/attendance-monitoring/history/${id}`)
-  };
+        navigate(`/admin/attendance-monitoring/history/${id}`)
+    };
     return (
         <div className="bg-white rounded-lg shadow-sm border-gray-200">
             <div className="p-6 border-gray-600">
@@ -30,12 +30,12 @@ export const AttendanceTable: React.FC<AttendanceTableProps> = ({ attendanceData
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                        {attendanceData.map((record, index) => (
+                        {attendanceData?.map((record, index) => (
                             <tr key={index} className="hover:bg-gray-50 cursor-pointer"
-                            onClick={() => handleViewAttendance(record.id)}
+                                onClick={() => handleViewAttendance(record.id)}
                             >
-                                <td className="p-4 border-r border-gray-200">{record.name}</td>
-                                <td className="p-4 border-r border-gray-200">{record.classSection}</td>
+                                <td className="p-4 border-r border-gray-200">{record.studentName}</td>
+                                <td className="p-4 border-r border-gray-200">{record.className} '{record.sectionName}'</td>
                                 <td className="p-4 border-r border-gray-200">{record.date}</td>
                                 <td className="p-4">
                                     <span className="inline-flex px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">

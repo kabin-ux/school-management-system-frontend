@@ -35,9 +35,12 @@ export interface Grade {
   name: string;
   has_section: boolean;
   school_id: string;
+  totalStudent: number;
+  totalSubject: number;
   class_teacher_id: string | null;
   createdAt: string;
   updatedAt: string;
 
+  classTeacher?: Teacher;
   school?: School;
 }

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { X, User } from 'lucide-react';
-import type { SuperAdmin } from '../../../features/superAdminSlice';
+import type { SuperAdmin } from '../../../hooks/useSuperAdmin';
+import type { SuperAdminForm } from '../../../types/super-admin-super-admins.types';
 
 interface EditSuperAdminModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (superAdmin: SuperAdmin) => void;
+    onSubmit: (id: string, superAdmin: SuperAdminForm) => void;
     superAdmin: SuperAdmin | null;
     isLoading?: boolean;
 }
@@ -15,10 +16,9 @@ const EditSuperAdminModal: React.FC<EditSuperAdminModalProps> = ({
     onClose,
     onSubmit,
     superAdmin,
-    isLoading = false
+    isLoading
 }) => {
-    const [formData, setFormData] = useState<SuperAdmin>({
-        id: '',
+    const [formData, setFormData] = useState<SuperAdminForm>({
         firstName: '',
         lastName: '',
         email: '',
@@ -43,7 +43,6 @@ const EditSuperAdminModal: React.FC<EditSuperAdminModalProps> = ({
             setTouched({});
         } else if (!isOpen) {
             setFormData({
-                id: '',
                 firstName: '',
                 lastName: '',
                 email: '',
@@ -110,13 +109,13 @@ const EditSuperAdminModal: React.FC<EditSuperAdminModalProps> = ({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setTouched(Object.keys(formData).reduce((acc, field) => ({ ...acc, [field]: true }), {}));
-        if (validateForm()) {
+        if (validateForm() && superAdmin) {
             // If password is empty, remove it from the update data
             const updateData = { ...formData };
             if (!updateData || !updateData.password?.trim()) {
                 delete updateData.password;
             }
-            onSubmit(updateData);
+            onSubmit(superAdmin?.id, updateData);
             onClose();
         }
     };

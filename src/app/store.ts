@@ -5,7 +5,7 @@ import storage from "redux-persist/lib/storage";
 // import schoolReducer from "../features/schoolSlice";
 // import teacherReducer from "../features/teacherSlice";
 // import studentReducer from "../features/studentSlice";
-import superAdminReducer from "../features/superAdminSlice";
+// import superAdminReducer from "../features/superAdminSlice";
 // import accountantReducer from "../features/accountantSlice";
 import timetableReducer from "../features/timetableSlice";
 // import classReducer from "../features/classSlice";
@@ -33,7 +33,7 @@ const persistConfig = {
 // const persistedSchoolReducer = persistReducer(persistConfig, schoolReducer);
 // const persistedTeacherReducer = persistReducer(persistConfig, teacherReducer);
 // const persistedStudentReducer = persistReducer(persistConfig, studentReducer);
-const persistedSuperAdminReducer = persistReducer(persistConfig, superAdminReducer);
+// const persistedSuperAdminReducer = persistReducer(persistConfig, superAdminReducer);
 // const persistedAccountantReducer = persistReducer(persistConfig, accountantReducer);
 const persistedTimetableReducer = persistReducer(persistConfig, timetableReducer);
 // const persistedClassReducer = persistReducer(persistConfig, classReducer);
@@ -55,7 +55,7 @@ export const store = configureStore({
     // school: persistedSchoolReducer,
     // teacher: persistedTeacherReducer,
     // student: persistedStudentReducer,
-    superAdmin: persistedSuperAdminReducer,
+    // superAdmin: persistedSuperAdminReducer,
     // accountant: persistedAccountantReducer,
     timetable: persistedTimetableReducer,
     // class: persistedClassReducer,

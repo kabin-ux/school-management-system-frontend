@@ -1,9 +1,15 @@
 export interface AttendanceRecord {
-    id:number
-    name: string;
-    classSection: string;
-    date: string;
-    status: string;
+  id: string;
+  studentId: string;
+  teacherId: string;
+  status: "present" | "absent" | "leave";
+  createdAt: string;
+  updatedAt?: string;
+
+  studentName: string;
+  className: string;
+  sectionName: string;
+  date: string;
 }
 
 export interface Subject {
