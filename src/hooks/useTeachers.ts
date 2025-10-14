@@ -15,6 +15,18 @@ export const useTeachers = () => {
     });
 };
 
+// Fetch Teachers by Class
+export const useTeachersByClass = (classId: string) => {
+    return useQuery({
+        queryKey: ["teachersByClass", classId],
+        queryFn: async () => {
+            const res = await api.get(`/teacher/by-class/${classId}`);
+            return res.data.data as Teacher[];
+        },
+        enabled: !!classId
+    });
+};
+
 // Add Teacher
 export const useAddTeacher = () => {
     const queryClient = useQueryClient();

@@ -10,7 +10,7 @@ import type { Grade } from '../../../types/class.types';
 import EditClassModal from '../../../components/Admin/class/EditClassModal';
 import { AssignClassTeacherModal, type AssignClassTeacherForm } from '../../../components/Admin/class/AssignClassTeacherModal';
 import { useAddClass, useClasses, useDeleteClass, useUpdateClass } from '../../../hooks/useClasses';
-import { useAssignClassTeacher, useTeachers } from '../../../hooks/useTeachers';
+import { useAssignClassTeacher, useTeachers, useTeachersByClass } from '../../../hooks/useTeachers';
 
 const ClassManagement: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -26,7 +26,8 @@ const ClassManagement: React.FC = () => {
     const updateClassMutation = useUpdateClass();
     const deleteClassMutation = useDeleteClass();
 
-    const { data: teachers = [] } = useTeachers();
+    console.log("class", selectedClass)
+    const { data: teachers = [] } = useTeachersByClass(selectedClass ? selectedClass.id : '');
     const assignClassTeacherMutate = useAssignClassTeacher();
 
     const handleAddClass = async (classData: any) => {
