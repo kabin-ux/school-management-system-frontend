@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=http://backend:4000
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ../school-management-system-api  # Adjust this path to your backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongodb:27017/school_management
+      - JWT_SECRET=your_jwt_secret
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+
+volumes:
+  mongodb_data:

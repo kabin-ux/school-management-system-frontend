@@ -1,8 +1,7 @@
-import type { LucideIcon } from 'lucide-react';
 import React from 'react';
 
 interface StatsCardProps {
-  icon: LucideIcon;
+  icon: React.ReactNode;
   title: string;
   value: string;
   change: string;
@@ -14,7 +13,7 @@ interface StatsCardProps {
 const getIconColor = (color: string) => {
   switch (color) {
     case 'blue': return 'text-blue-600 bg-blue-50';
-    case 'green': return 'text-green-600 bg-green-50'; 
+    case 'green': return 'text-green-600 bg-green-50';
     case 'purple': return 'text-purple-600 bg-purple-50';
     case 'orange': return 'text-orange-600 bg-orange-50';
     default: return 'text-gray-600 bg-gray-50';
@@ -26,7 +25,7 @@ const getChangeColor = (change: string) => {
 };
 
 export const StatsCard: React.FC<StatsCardProps> = ({
-  icon: Icon,
+  icon,
   title,
   value,
   change,
@@ -38,7 +37,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
       <div className="flex items-center justify-between mb-4">
         <div className={`p-2 rounded-lg ${getIconColor(color)}`}>
-          <Icon className="w-6 h-6" />
+          {icon}
         </div>
       </div>
       <div className="mb-2">

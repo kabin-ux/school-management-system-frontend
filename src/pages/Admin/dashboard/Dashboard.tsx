@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import AttendanceChart from "../../../components/Admin/dashboard/AttendanceChart";
 import AttendancePieChart from "../../../components/Admin/dashboard/AttendancePieChart";
 import DashboardStats from "../../../components/Admin/dashboard/DashboardStats";
@@ -8,17 +6,13 @@ import RecentActivity from "../../../components/Admin/dashboard/RecentActivity";
 import SystemStatus from "../../../components/Admin/dashboard/SystemStatus";
 import { AdminDashboardHeader } from "../../../components/Admin/layout/DashboardHeader";
 import { Sidebar } from "../../../components/Admin/layout/Sidebar";
-import { getSchoolAdminDashboard } from "../../../features/dashboardSlice";
 import { useAuthUser } from "../../../hooks/useAuth";
+import { useSchoolAdminDashboard } from "../../../hooks/useDashboard";
 
 export default function AdminDashboard() {
   const { data: user } = useAuthUser();
-  const { schoolAdmin } = useAppSelector(state => state.dashboard);
-  const dispatch = useAppDispatch();
+  const { data: schoolAdmin } = useSchoolAdminDashboard();
 
-  useEffect(() => {
-    dispatch(getSchoolAdminDashboard());
-  }, [dispatch])
 
   console.log(user)
   return (
@@ -47,7 +41,9 @@ export default function AdminDashboard() {
 
             {/* Charts Section */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              <AttendanceChart />
+              <AttendanceChart
+                data={schoolAdmin}
+              />
               <AttendancePieChart />
             </div>
 

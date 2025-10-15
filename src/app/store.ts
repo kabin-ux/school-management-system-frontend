@@ -15,7 +15,7 @@ import storage from "redux-persist/lib/storage";
 // import transportationReducer from '../features/transportationSlice';
 // import eventReducer from '../features/eventsSlice';
 // import subjectReducer from '../features/subjectSlice';
-import dashboardReducer from '../features/dashboardSlice';
+// import dashboardReducer from '../features/dashboardSlice';
 // import supportTicketReducer from '../features/supportTicketSlice';
 // import salaryReducer from '../features/salarySlice';
 // import timeSlotReducer from "../features/timeSlotSlice";
@@ -43,7 +43,7 @@ const persistConfig = {
 // const persistedTransportationReducer = persistReducer(persistConfig, transportationReducer);
 // const persistedEventReducer = persistReducer(persistConfig, eventReducer);
 // const persistedSubjectReducer = persistReducer(persistConfig, subjectReducer);
-const persistedDashboardReducer = persistReducer(persistConfig, dashboardReducer);
+// const persistedDashboardReducer = persistReducer(persistConfig, dashboardReducer);
 // const persistedSupportTicketReducer = persistReducer(persistConfig, supportTicketReducer);
 // const persistedSalaryReducer = persistReducer(persistConfig, salaryReducer);
 // const persistedTimeSlotReducer = persistReducer(persistConfig, timeSlotReducer);
@@ -65,7 +65,7 @@ export const store = configureStore({
     // transportation: persistedTransportationReducer,
     // event: persistedEventReducer,
     // subject: persistedSubjectReducer,
-    dashboard: persistedDashboardReducer,
+    // dashboard: persistedDashboardReducer,
     // supportTicket: persistedSupportTicketReducer,
     // salary: persistedSalaryReducer,
     // timeSlot: persistedTimeSlotReducer,

@@ -1,5 +1,4 @@
 import { DashboardHeader } from "../../../components/SuperAdmin/layout/DashboardHeader";
-import { statsCards } from "../../../data/statsData";
 import { Sidebar } from "../../../components/SuperAdmin/layout/Sidebar";
 import { StatsCard } from "../../../components/SuperAdmin/dashboard/StatsCard";
 import { FeesCollected } from "../../../components/SuperAdmin/dashboard/FeesCollected";
@@ -7,11 +6,16 @@ import { RecentNotifications } from "../../../components/SuperAdmin/dashboard/Re
 import SupportTickets from "../../../components/SuperAdmin/partnerschools/SupportTickets";
 import { FeeCollectionTrend } from "../../../components/SuperAdmin/dashboard/FeeCollectionTrend";
 import { QuickActions } from "../../../components/SuperAdmin/dashboard/QuickActions";
+import { useSuperAdminDashboard } from "../../../hooks/useDashboard";
+import { GraduationCap, School, Users, UsersIcon } from "lucide-react";
 
 
 function SuperAdminDashboard() {
+  const { data: superAdminDashboard } = useSuperAdminDashboard();
+
+  console.log(superAdminDashboard)
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen gray-50">
       <Sidebar />
 
       {/* Main Content */}
@@ -25,9 +29,48 @@ function SuperAdminDashboard() {
           </div>
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {statsCards.map((card, index) => (
-              <StatsCard key={index} {...card} />
-            ))}
+            <StatsCard
+              title="Total Schools"
+              value={superAdminDashboard?.totalSchools ? superAdminDashboard.totalSchools.toString() : ''}
+              change="+240 this Year"
+              icon={<School className="w-6 h-6 text-blue-600" />}
+              color="blue"
+            />
+            <StatsCard
+              title="Total Students"
+              value={superAdminDashboard?.totalStudents ? superAdminDashboard?.totalStudents.toString() : ''}
+              change="+240 this Year"
+              icon={<GraduationCap className="w-6 h-6 text-green-600" />}
+              color="green"
+            />
+            <StatsCard
+              title="Total Teachers"
+              value={superAdminDashboard?.totalTeachers ? superAdminDashboard?.totalTeachers.toString() : ''}
+              change="98%"
+              icon={<Users className="w-6 h-6 text-purple-600" />}
+              color="purple"
+            />
+            <StatsCard
+              title="Total Parents"
+              value={superAdminDashboard?.totalParents ? superAdminDashboard.totalParents.toString() : ''}
+              change="Active teaching staff"
+              icon={<UsersIcon className="w-6 h-6 text-orange-600" />}
+              color="orange"
+            />
+            <StatsCard
+              title="Total Accountants"
+              value={superAdminDashboard?.totalAccountants ? superAdminDashboard.totalAccountants.toString() : ''}
+              change="+240 this Year"
+              icon={<UsersIcon className="w-6 h-6 text-pink-600" />}
+              color="pink"
+            />
+            {/* <StatsCard
+              title="Open Support Tickets"
+              value={data?.totalSupportTicket || 0}
+              change=""
+              icon={<Headphones className="w-6 h-6 text-indigo-600" />}
+              color="indigo"
+            /> */}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

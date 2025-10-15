@@ -5,8 +5,13 @@ import QuickActions from '../../../components/Accountant/dashboard/QuickActions'
 import TransactionTable from '../../../components/Accountant/dashboard/TransactionTable';
 import { Sidebar } from '../../../components/Accountant/layout/Sidebar';
 import { AccountantDashboardHeader } from '../../../components/Accountant/layout/DashboardHeader';
+import { useAccountantDashboard } from '../../../hooks/useDashboard';
 
 export default function AccountantDashboard() {
+    const {data: accountantDashboard} = useAccountantDashboard();
+
+    console.log(accountantDashboard)
+
     return (
         <div className="flex h-full bg-gray-50">
             {/* Sidebar */}
