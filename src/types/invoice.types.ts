@@ -1,3 +1,4 @@
+import type { Accountant } from "./accountant-dashboard.types";
 import type { Student } from "./student.types";
 
 export interface Invoice {
@@ -15,6 +16,7 @@ export interface Invoice {
   deletedAt?: Date | null;
 
   student: Student
+  accountant: Accountant
 }
 
 export interface DefaulterSummary {

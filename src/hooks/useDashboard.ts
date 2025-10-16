@@ -33,8 +33,17 @@ export interface SuperAdminDashboard {
   totalParents: number;
 }
 
-export interface AccountantDashboard{
-    
+export interface PaymentData {
+  status: string;
+  totalAmount: number;
+}
+
+export interface AccountantDashboard {
+  totalStudents: number;
+  totalTeachers: number;
+  totalclass: number;
+  totalPayment: PaymentData[];
+  todayTransaction: number;
 }
 
 // Fetch School Admin Dashboard

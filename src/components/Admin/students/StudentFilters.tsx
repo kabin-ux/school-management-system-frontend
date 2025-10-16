@@ -60,13 +60,13 @@ export default function StudentFilters({
           </select>
         </div>
       </div>
-
+{/* 
       <div className="bg-purple-100 rounded-lg p-3">
         <p className="text-purple-800 text-sm">
           <span className="font-medium">Current Selection :</span> Grade 10 - Section A
           <span className="float-right text-purple-600 cursor-pointer">Click on time slots to add/edit subjects</span>
         </p>
-      </div>
+      </div> */}
     </div>
   );
 }

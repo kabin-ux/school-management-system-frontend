@@ -39,55 +39,66 @@ const Events: React.FC = () => {
     }
 
     return (
-        <div className="flex h-full bg-gray-50">
-            {/* Sidebar */}
-            <Sidebar />
+      <div className="flex h-screen bg-gray-50 overflow-hidden">
+  {/* Sidebar */}
+  <Sidebar />
 
-            {/* Main Content Area */}
-            <div className="flex flex-col flex-1">
-                {/* Header */}
-                <AdminDashboardHeader />
-                <main className="flex-1 p-6 overflow-y-auto">
-                    <div className="max-w-7xl mx-auto">
-                        <EventsHeader />
-                        {/* <EventsTabs /> */}
+  {/* Main Content Area */}
+  <div className="flex flex-col flex-1 overflow-hidden">
+    {/* Header */}
+    <AdminDashboardHeader />
 
-                        <div className="flex gap-8">
-                            <div className="flex-1">
-                                <EventsCalendar
-                                    events={events}
-                                    selectedDate={selectedDate}
-                                    setSelectedDate={setSelectedDate}
-                                />
-                            </div>
+    {/* Scrollable Content */}
+    <main className="flex-1 p-4 sm:p-6 overflow-y-auto">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Page Header */}
+        <EventsHeader />
 
-                            <div className="w-80">
-                                <CreateEventForm
-                                    onAdd={handleCreateEvent}
-                                    isLoading={loading}
-                                />
-                            </div>
-                        </div>
-                        <EventsTable
-                            events={events}
-                            onEdit={handleEditEvent}
-                            onDelete={handleDeleteEvent}
-                        />
+        {/* Calendar + Form */}
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Calendar */}
+          <div className="flex-1">
+            <EventsCalendar
+              events={events}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+            />
+          </div>
 
-                        <EditEventModal
-                            isOpen={isEditModalOpen}
-                            onClose={() => {
-                                setIsEditModalOpen(false);
-                                setSelectedEvent(null);
-                            }}
-                            onSubmit={handleUpdateEvent}
-                            event={selectedEvent}
-                            isLoading={loading}
-                        />
-                    </div>
-                </main>
-            </div>
+          {/* Form */}
+          <div className="lg:w-80 flex-shrink-0">
+            <CreateEventForm
+              onAdd={handleCreateEvent}
+              isLoading={loading}
+            />
+          </div>
         </div>
+
+        {/* Events Table */}
+        <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
+          <EventsTable
+            events={events}
+            onEdit={handleEditEvent}
+            onDelete={handleDeleteEvent}
+          />
+        </div>
+
+        {/* Edit Event Modal */}
+        <EditEventModal
+          isOpen={isEditModalOpen}
+          onClose={() => {
+            setIsEditModalOpen(false);
+            setSelectedEvent(null);
+          }}
+          onSubmit={handleUpdateEvent}
+          event={selectedEvent}
+          isLoading={loading}
+        />
+      </div>
+    </main>
+  </div>
+</div>
+
     );
 };
 

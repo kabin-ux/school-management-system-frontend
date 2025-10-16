@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { DefaulterSummary, FilterValues, Invoice } from "../../../types/invoice.types";
 import { Sidebar } from "../../../components/Accountant/layout/Sidebar";
 import { AccountantDashboardHeader } from "../../../components/Accountant/layout/DashboardHeader";
 import { InvoiceFilters } from "../../../components/Accountant/invoice/InvoiceFilters";
 import { InvoiceTable } from "../../../components/Accountant/invoice/InvoiceTable";
 import { DefaulterList } from "../../../components/Accountant/invoice/DefaulterList";
-import { getAllPayments } from "../../../features/paymentSlice";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { useAllPayments } from "../../../hooks/usePayments";
+import { useClasses } from "../../../hooks/useClasses";
 
 export default function InvoicesPage() {
     const [filters, setFilters] = useState<FilterValues>({
@@ -16,18 +16,14 @@ export default function InvoicesPage() {
         class: ''
     });
     const [currentPage, setCurrentPage] = useState(1);
-    const dispatch = useAppDispatch();
-    const { payments } = useAppSelector(state => state.payment);
-
-    useEffect(() => {
-        dispatch(getAllPayments());
-    }, [dispatch])
+    const { data: payments = [] } = useAllPayments();
+    const { data: classes = [] } = useClasses();
 
     // Mock data - replace with actual API calls
-    const invoices: Invoice[] = [
-        { id: 'TC-001', studentName: 'Ramesh Prasad', class: '12', date: 'Jan 3,2025', dueAmount: 'Rs 50,000', outstanding: 'Jan 12', lastReminder: 'Jan 15', status: 'Paid' },
-        // ... other invoice data
-    ];
+    // const invoices: Invoice[] = [
+    //     { id: 'TC-001', studentName: 'Ramesh Prasad', class: '12', date: 'Jan 3,2025', dueAmount: 'Rs 50,000', outstanding: 'Jan 12', lastReminder: 'Jan 15', status: 'Paid' },
+    //     // ... other invoice data
+    // ];
 
     const teacherInvoices: Invoice[] = [
         { id: 'TCH-001', studentName: 'John Smith', class: 'Science', date: 'Jan 3,2025', dueAmount: '$3,000', outstanding: 'Jan 12', lastReminder: 'Jan 15', status: 'Paid' },
@@ -71,15 +67,16 @@ export default function InvoicesPage() {
     };
 
     // Get the correct data source based on viewType
-    const currentInvoices = filters.viewType === 'Student' ? invoices : teacherInvoices;
+    const currentInvoices = filters.viewType === 'Student' ? payments : teacherInvoices;
     const currentDefaulters = filters.viewType === 'Student' ? defaulterData : teacherDefaulterData;
 
     // Filtered invoices based on current filters
     const filteredInvoices = useMemo(() => {
-        return currentInvoices.filter(invoice => {
-            const matchesSearch = invoice.studentName.toLowerCase().includes(filters.search.toLowerCase());
+        return currentInvoices.filter((invoice: Invoice) => {
+            const fullName = `${invoice.student?.firstName || ""} ${invoice.student?.lastName || ""}`.toLowerCase();
+            const matchesSearch = fullName.includes(filters.search.toLowerCase());
             const matchesStatus = !filters.paymentStatus || invoice.status === filters.paymentStatus;
-            const matchesClass = !filters.class || invoice.class === filters.class;
+            const matchesClass = !filters.class || invoice.student.class.name === filters.class;
 
             return matchesSearch && matchesStatus && matchesClass;
         });
@@ -88,12 +85,12 @@ export default function InvoicesPage() {
     const totalPages = Math.ceil(filteredInvoices.length / 10);
 
     return (
-        <div className="flex h-full bg-gray-50">
+        <div className="flex h-screen bg-gray-50 overflow-hidden">
             {/* Sidebar */}
             <Sidebar />
 
             {/* Main Content Area */}
-            <div className="flex flex-col flex-1">
+            <div className="flex flex-col flex-1 overflow-hidden">
                 {/* Header */}
                 <AccountantDashboardHeader />
 
@@ -110,10 +107,11 @@ export default function InvoicesPage() {
                     <InvoiceFilters
                         filters={filters}
                         onFiltersChange={setFilters}
+                        classes={classes}
                     />
 
                     <InvoiceTable
-                        invoices={payments}
+                        invoices={filteredInvoices}
                         currentPage={currentPage}
                         totalPages={totalPages}
                         onPageChange={setCurrentPage}

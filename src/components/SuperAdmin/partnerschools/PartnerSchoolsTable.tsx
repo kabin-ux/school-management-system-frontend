@@ -44,7 +44,7 @@ export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({ schoolD
         </div>
 
         {/* Filters */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 overflow-hidden">
           <div className="relative">
             <input
               type="text"
@@ -135,20 +135,6 @@ export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({ schoolD
               )}
           </tbody>
         </table>
-      </div>
-
-      {/* Pagination */}
-      <div className="px-6 py-4 border-t border-gray-200">
-        <div className="flex items-center justify-center space-x-2">
-          {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'].map((letter) => (
-            <button
-              key={letter}
-              className="w-8 h-8 text-sm text-gray-600 hover:bg-gray-100 rounded flex items-center justify-center"
-            >
-              {letter}
-            </button>
-          ))}
-        </div>
       </div>
     </div>
   );

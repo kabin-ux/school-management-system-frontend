@@ -10,7 +10,7 @@ import type { Grade } from '../../../types/class.types';
 import EditClassModal from '../../../components/Admin/class/EditClassModal';
 import { AssignClassTeacherModal, type AssignClassTeacherForm } from '../../../components/Admin/class/AssignClassTeacherModal';
 import { useAddClass, useClasses, useDeleteClass, useUpdateClass } from '../../../hooks/useClasses';
-import { useAssignClassTeacher, useTeachers, useTeachersByClass } from '../../../hooks/useTeachers';
+import { useAssignClassTeacher, useTeachersByClass } from '../../../hooks/useTeachers';
 
 const ClassManagement: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -51,11 +51,11 @@ const ClassManagement: React.FC = () => {
         deleteClassMutation.mutate(classId);
     }
 
-    const navigateToDetail = (classId: number) => {
+    const navigateToDetail = (classId: string) => {
         navigate(`/admin/class-management/details/${classId}`)
     };
 
-    const navigateToSubject = (classId: number) => {
+    const navigateToSubject = (classId: string) => {
         navigate(`/admin/class-management/subject/${classId}`)
     };
 
@@ -71,12 +71,12 @@ const ClassManagement: React.FC = () => {
     }
 
     return (
-        <div className="flex h-full bg-gray-50">
+        <div className="flex h-full bg-gray-50 overflow-hidden">
             {/* Sidebar */}
             <Sidebar />
 
             {/* Main Content Area */}
-            <div className="flex flex-col flex-1">
+            <div className="flex flex-col flex-1 overflow-hidden">
                 {/* Header */}
                 <AdminDashboardHeader />
                 <main className="flex-1 p-6 overflow-y-auto">

@@ -152,56 +152,69 @@ export default function FeeAndSalaryPage() {
     }
 
     return (
-        <div className="flex h-screen bg-gray-50">
+        <div className="flex h-screen bg-gray-50 overflow-hidden">
             {/* Sidebar */}
             <Sidebar />
 
             {/* Main Content Area */}
-            <div className="flex flex-col flex-1">
+            <div className="flex flex-col flex-1 overflow-hidden">
                 {/* Header */}
                 <AccountantDashboardHeader />
+
                 {/* Scrollable Content */}
-                <main className="flex-1 p-6 overflow-y-auto">
-                    <div className="mb-8 flex items-center justify-between">
+                <main className="flex-1 p-4 sm:p-6 overflow-y-auto">
+                    {/* Page Title and Action */}
+                    <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900">Fee and Salary</h1>
-                            <p className="text-gray-600 mt-1">Manage student fees, staff salary, payments, and receipts</p>
+                            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                                Fee and Salary
+                            </h1>
+                            <p className="text-gray-600 mt-1 text-sm sm:text-base">
+                                Manage student fees, staff salary, payments, and receipts
+                            </p>
                         </div>
-                        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+
+                        <button
+                            className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
                             onClick={() => {
                                 if (activeView === "Student") {
                                     setIsModalOpen(true);
                                 } else {
                                     setIsSalaryModalOpen(true);
                                 }
-                            }}                        >
+                            }}
+                        >
                             <Banknote className="h-4 w-4 mr-2" />
-                            {activeView === 'Student' ? 'Create Fee Structure' : 'Create Salary Structure'}
+                            {activeView === "Student"
+                                ? "Create Fee Structure"
+                                : "Create Salary Structure"}
                         </button>
-                        {/* <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center">
-                            <Download className="h-4 w-4 mr-2" />
-                            Download report
-                        </button> */}
                     </div>
 
-                    <FilterSection
-                        activeView={activeView}
-                        filters={filters}
-                        onViewChange={handleViewChange}
-                        onFilterChange={handleFilterChange}
-                    />
+                    {/* Filters */}
+                    <div className="mb-6 overflow-x-auto">
+                        <FilterSection
+                            activeView={activeView}
+                            filters={filters}
+                            onViewChange={handleViewChange}
+                            onFilterChange={handleFilterChange}
+                        />
+                    </div>
 
-                    <DataTable
-                        activeView={activeView}
-                        students={feeStructures}
-                        teachers={salaryStructures}
-                        // onRowClick={handleStudentSelect}
-                        onEdit={handleEditFeeStructureData}
-                        onDelete={handleDeleteFeeStructureData}
-                        onEditSalary={handleEditSalaryStructureData}
-                        onDeleteSalary={handleDeleteSalaryStructureData}
-                    />
+                    {/* Data Table */}
+                    <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
+                        <DataTable
+                            activeView={activeView}
+                            students={feeStructures}
+                            teachers={salaryStructures}
+                            onEdit={handleEditFeeStructureData}
+                            onDelete={handleDeleteFeeStructureData}
+                            onEditSalary={handleEditSalaryStructureData}
+                            onDeleteSalary={handleDeleteSalaryStructureData}
+                        />
+                    </div>
 
+                    {/* Fee Structure Modals */}
                     <AddFeeStructureModal
                         isOpen={isModalOpen}
                         onClose={() => setIsModalOpen(false)}
@@ -224,6 +237,7 @@ export default function FeeAndSalaryPage() {
                         isLoading={loading}
                     />
 
+                    {/* Salary Structure Modals */}
                     <AddSalaryStructureModal
                         isOpen={isSalaryModalOpen}
                         teachers={teachers}
@@ -248,5 +262,6 @@ export default function FeeAndSalaryPage() {
                 </main>
             </div>
         </div>
+
     );
 }

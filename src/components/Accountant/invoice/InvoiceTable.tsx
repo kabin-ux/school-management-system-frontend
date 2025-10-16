@@ -89,7 +89,7 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
                                     {invoice.amount}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                                    {invoice.accountant_id}
+                                    {invoice.accountant.firstName} {invoice.accountant.lastName}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                     {invoice.method}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookCheck, BookOpenCheck, BookUser, Check, Edit, Eye, Trash2 } from 'lucide-react';
+import { BookCheck, BookOpenCheck, BookUser, Edit, Eye, Trash2 } from 'lucide-react';
 import type { Grade } from '../../../types/class.types';
 import EmptyState from '../../../common/EmptyState';
 
@@ -30,7 +30,7 @@ export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSect
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Class</th>
-                <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Sections</th>
+                <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Total Sections</th>
                 <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Total Subjects</th>
                 <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Total Students</th>
                 <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Class Teacher</th>
@@ -57,11 +57,7 @@ export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSect
                         </button>
                       </td>
                       <td className="p-4 border-r border-gray-200">
-                        <div className="flex gap-2">
-                          <span className="inline-flex items-center justify-center w-6 h-6 bg-blue-100 text-blue-800 text-sm rounded">
-                            {grade?.has_section ? <Check />: ''}
-                          </span>
-                        </div>
+                        {grade?.totalSection}
                       </td>
                       <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.totalSubject}</td>
                       <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.totalStudent}</td>

@@ -16,12 +16,12 @@ const SalaryOverview: React.FC = () => {
     const { data: salaryStructures = [] } = useMySchoolSalaryStructures();
 
     return (
-        <div className="flex h-full bg-gray-50">
+        <div className="flex h-full bg-gray-50 overflow-hidden">
             {/* Sidebar */}
             <Sidebar />
 
             {/* Main Content Area */}
-            <div className="flex flex-col flex-1">
+            <div className="flex flex-col flex-1 overflow-hidden">
                 {/* Header */}
                 <AdminDashboardHeader />
                 <main className="flex-1 p-6 overflow-y-auto">

@@ -33,7 +33,7 @@ export const AccountantManagementContent: React.FC<AccountantManagementContentPr
 }) => {
 
   return (
-    <div>
+    <div className='overflow-hidden'>
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
@@ -66,8 +66,7 @@ export const AccountantManagementContent: React.FC<AccountantManagementContentPr
       </div>
 
       {/* Accountants Grid */}
-      <div className='bg-gray-50'>
-
+      <div className='bg-gray-50 overflow-hidden'>
         {
           !accountantBySchool || accountantBySchool.length === 0 ? (
             <EmptyState

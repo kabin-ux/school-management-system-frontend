@@ -97,7 +97,7 @@ export const EventsCalendar: React.FC<EventsCalendarProps> = ({
             <ChevronRight className="w-5 h-5" />
           </button>
         </div>
-        <input
+        {/* <input
           type="text"
           placeholder="Search Event..."
           className="px-4 py-2 w-64 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -106,7 +106,7 @@ export const EventsCalendar: React.FC<EventsCalendarProps> = ({
           <option>Day View</option>
           <option>Week View</option>
           <option>Month View</option>
-        </select>
+        </select> */}
       </div>
 
       {/* Calendar Grid */}
