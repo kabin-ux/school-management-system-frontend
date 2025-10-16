@@ -78,18 +78,6 @@ export default function TimetableManagement() {
                                     <Plus className="w-4 h-4" />
                                     Create Timetable
                                 </button>
-                                <button className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors font-medium flex items-center gap-2">
-                                    <Printer className="w-4 h-4" />
-                                    Print Timetable
-                                </button>
-                                <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium flex items-center gap-2">
-                                    <Download className="w-4 h-4" />
-                                    Export PDF
-                                </button>
-                                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center gap-2">
-                                    <Save className="w-4 h-4" />
-                                    Save Timetable
-                                </button>
                             </div>
                         </div>
 

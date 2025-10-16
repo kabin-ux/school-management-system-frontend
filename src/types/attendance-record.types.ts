@@ -9,6 +9,7 @@ export interface AttendanceRecord {
   studentName: string;
   className: string;
   sectionName: string;
+  subjectName: string;
   date: string;
 }
 

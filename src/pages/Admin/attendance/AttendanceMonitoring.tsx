@@ -42,8 +42,8 @@ const AttendanceMonitoring: React.FC = () => {
                             selectedSection={selectedSection}
                             setSelectedSection={setSelectedSection}
                         />
-                        <AttendanceStats />
-                        <AttendanceCharts />
+                        {/* <AttendanceStats />
+                        <AttendanceCharts /> */}
                         <AttendanceTable attendanceData={attendanceData} />
                     </div>
                 </main>
