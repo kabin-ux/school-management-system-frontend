@@ -1,4 +1,4 @@
-import type { Student } from "../features/studentSlice";
+import type { Student } from "./student.types";
 
 export interface Parent {
     id: string;

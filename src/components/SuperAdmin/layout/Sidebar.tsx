@@ -24,7 +24,7 @@ const sidebarItems: SidebarItem[] = [
   // { icon: Shield, label: "Permissions", path: "/super-admin/permissions" },
   { icon: HeadphonesIcon, label: "Support Console", path: "/super-admin/support" },
   { icon: ShieldUser, label: "Super Admins", path: "/super-admin/super-admins" },
-  { icon: Settings, label: "Settings", path: "/super-admin/settings" },
+  // { icon: Settings, label: "Settings", path: "/super-admin/settings" },
 ];
 
 export const Sidebar: React.FC = () => {
@@ -57,7 +57,7 @@ export const Sidebar: React.FC = () => {
         />
       )}
       <div className={`
-        fixed lg:static inset-y-0 left-0 z-60 w-64 bg-white border-r border-gray-200 flex flex-col
+        fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 flex flex-col
         transform transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>      {/* Header */}

@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { UserPlus } from 'lucide-react';
 import ParentStats from '../../../components/Admin/parents/ParentStats';
-import TeacherFilters from '../../../components/Admin/teachers/TeacherFilters';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { ParentGrid } from '../../../components/Admin/parents/ParentGrid';
@@ -10,18 +9,28 @@ import type { Parent } from '../../../types/parent.types';
 import EditParentModal from '../../../components/Admin/parents/EditParentModal';
 import { useStudentsBySchool } from '../../../hooks/useStudents';
 import { useAddParent, useDeleteParent, useParents, useUpdateParent } from '../../../hooks/useParents';
+import ParentFilters from '../../../components/Admin/parents/ParentFilters';
+import { useClasses } from '../../../hooks/useClasses';
+import type { Student } from '../../../types/student.types';
+
+export interface FilterValues {
+    search: string;
+    class: string;
+}
 
 export default function ParentsManagement() {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedClass, setSelectedClass] = useState('All classes');
-    const [selectedSubject, setSelectedSubject] = useState('All Subjects');
-    const [selectedDepartment, setSelectedDepartment] = useState('All Departments');
+    const [filters, setFilters] = useState<FilterValues>({
+        search: '',
+        class: ''
+    });
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedParent, setSelectedParent] = useState<Parent | null>(null);
 
     const { data: parents = [], isLoading: loading } = useParents();
     const { data: students = [] } = useStudentsBySchool();
+    const { data: classes = [] } = useClasses();
 
     const addParentMutation = useAddParent();
     const updateParentMutation = useUpdateParent();
@@ -48,6 +57,19 @@ export default function ParentsManagement() {
     const handleDeleteParent = async (parentId: string) => {
         deleteParentMutation.mutate(parentId);
     }
+
+    // Filtered students based on current filters
+    const filteredParents = useMemo(() => {
+        return parents.filter((parent: Parent) => {
+            const textinput = `${parent?.name || ""} ${parent?.email || ""}`.toLowerCase();
+            const matchesSearch = textinput.includes(filters.search.toLowerCase());
+            // console.log("cls", parent?.students.class.name)
+            const matchesClass =
+                !filters.class ||
+                parent.students?.some((student: Student) => student.class?.name === filters.class);
+            return matchesSearch && matchesClass;
+        });
+    }, [parents, filters]);
 
     return (
         <div className="flex h-full bg-gray-50">
@@ -78,20 +100,15 @@ export default function ParentsManagement() {
                         <ParentStats />
 
                         {/* Filters */}
-                        <TeacherFilters
-                            searchTerm={searchTerm}
-                            selectedClass={selectedClass}
-                            selectedSubject={selectedSubject}
-                            selectedDepartment={selectedDepartment}
-                            onSearchChange={setSearchTerm}
-                            onClassChange={setSelectedClass}
-                            onSubjectChange={setSelectedSubject}
-                            onDepartmentChange={setSelectedDepartment}
+                        <ParentFilters
+                            classes={classes}
+                            filters={filters}
+                            onFiltersChange={setFilters}
                         />
 
                         {/* Parent Grid */}
                         <ParentGrid
-                            parents={parents}
+                            parents={filteredParents}
                             onEdit={handleEditParent}
                             onDelete={handleDeleteParent}
                         />

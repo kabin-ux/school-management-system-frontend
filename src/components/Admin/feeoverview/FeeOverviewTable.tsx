@@ -28,31 +28,31 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
-                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">
+                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
                   S.N
                 </th>
-                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">
+                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
                   School
                 </th>
-                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">
+                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
                   Class
                 </th>
-                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">
+                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
                   Monthly Fee
                 </th>
-                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">
+                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
                   Exam Fee
                 </th>
-                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">
+                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
                   Tuition Fee
                 </th>
-                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">
+                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
                   Transport
                 </th>
-                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">
+                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
                   Total
                 </th>
-                <th className="text-left p-4 font-medium text-gray-900 border-gray-200">
+                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
                   Actions
                 </th>
               </tr>
@@ -77,16 +77,16 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
                     <td className="p-4 text-gray-900">{index + 1}</td>
                     <td className="p-4 text-gray-900">{record.class?.school?.name}</td>
                     <td className="p-4 text-gray-900">{record.class?.name}</td>
-                    <td className="p-4 text-gray-900">{Number(record.monthly_fee).toLocaleString()}</td>
-                    <td className="p-4 text-gray-900">{Number(record.exam_fee).toLocaleString()}</td>
-                    <td className="p-4 text-gray-900">{Number(record.tution_fee).toLocaleString()}</td>
+                    <td className="p-4 text-gray-900">Rs. {Number(record.monthly_fee).toLocaleString()}</td>
+                    <td className="p-4 text-gray-900">Rs. {Number(record.exam_fee).toLocaleString()}</td>
+                    <td className="p-4 text-gray-900">Rs. {Number(record.tution_fee).toLocaleString()}</td>
                     <td className="p-4 text-gray-900">
-                      {record.transportation
+                     Rs. {record.transportation
                         ? `${record.transportation.vehicleNumber} (${record.transportation.price.toLocaleString()})`
                         : "N/A"}
                     </td>
                     <td className="p-4 text-gray-900 font-semibold">
-                      {total.toLocaleString()}
+                      Rs. {total.toLocaleString()}
                     </td>
                     <td className="p-4">
                       <button

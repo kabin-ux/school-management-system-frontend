@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { SalaryOverviewTable } from '../../../components/Admin/salary/SalaryOverviewTable';
@@ -6,14 +6,29 @@ import { SalaryOverviewHeader } from '../../../components/Admin/salary/SalaryOve
 import { SalaryOverviewFilter } from '../../../components/Admin/salary/SalaryOverviewFilters';
 import { SalaryOverviewStats } from '../../../components/Admin/salary/SalaryOverviewStats';
 import { useMySchoolSalaryStructures } from '../../../hooks/useSalary';
+import type { Salary } from '../../../types/fee-salary.types';
+
+export interface FilterValues {
+    search: string;
+    role: string;
+}
 
 const SalaryOverview: React.FC = () => {
-    const [searchStudent, setSearchStudent] = useState('');
-    const [selectedClass, setSelectedClass] = useState('');
-    const [selectedSection, setSelectedSection] = useState('');
-    const [selectedTerminal, setSelectedTerminal] = useState('');
-    const [selectedDateRange, setSelectedDateRange] = useState('');
+    const [filters, setFilters] = useState<FilterValues>({
+        search: '',
+        role: '',
+    });
     const { data: salaryStructures = [] } = useMySchoolSalaryStructures();
+
+    const filteredSalaryStructure = useMemo(() => {
+        return salaryStructures.filter((salaryStructure: Salary) => {
+            const textinput = `${salaryStructure?.teacherEmployee?.firstName || ""} ${salaryStructure?.teacherEmployee?.lastName || ""} ${salaryStructure?.accountantEmployee?.firstName || ""} ${salaryStructure?.accountantEmployee?.lastName || ""}`.toLowerCase();
+            const matchesSearch = textinput.includes(filters.search.toLowerCase());
+            const matchesRole = !filters.role || salaryStructure.role === filters.role;
+
+            return matchesSearch && matchesRole;
+        });
+    }, [salaryStructures, filters]);
 
     return (
         <div className="flex h-full bg-gray-50 overflow-hidden">
@@ -28,19 +43,11 @@ const SalaryOverview: React.FC = () => {
                     <div className="max-w-7xl mx-auto">
                         <SalaryOverviewHeader />
                         <SalaryOverviewFilter
-                            searchStudent={searchStudent}
-                            setSearchStudent={setSearchStudent}
-                            selectedClass={selectedClass}
-                            setSelectedClass={setSelectedClass}
-                            selectedSection={selectedSection}
-                            setSelectedSection={setSelectedSection}
-                            selectedTerminal={selectedTerminal}
-                            setSelectedTerminal={setSelectedTerminal}
-                            selectedDateRange={selectedDateRange}
-                            setSelectedDateRange={setSelectedDateRange}
+                            filters={filters}
+                            onFiltersChange={setFilters}
                         />
                         <SalaryOverviewStats />
-                        <SalaryOverviewTable salaryData={salaryStructures} />
+                        <SalaryOverviewTable salaryData={filteredSalaryStructure} />
                     </div>
                 </main>
             </div>

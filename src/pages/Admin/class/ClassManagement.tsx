@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ClassHeader } from '../../../components/Admin/class/ClassHeader';
 import { ClassStats } from '../../../components/Admin/class/ClassStats';
 import { ClassTable } from '../../../components/Admin/class/ClassTable';
@@ -12,8 +12,14 @@ import { AssignClassTeacherModal, type AssignClassTeacherForm } from '../../../c
 import { useAddClass, useClasses, useDeleteClass, useUpdateClass } from '../../../hooks/useClasses';
 import { useAssignClassTeacher, useTeachersByClass } from '../../../hooks/useTeachers';
 
+export interface FilterValues {
+    search: string;
+}
+
 const ClassManagement: React.FC = () => {
-    const [searchTerm, setSearchTerm] = useState('');
+    const [filters, setFilters] = useState<FilterValues>({
+        search: '',
+    });
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedClass, setSelectedClass] = useState<Grade | null>(null);
@@ -26,7 +32,7 @@ const ClassManagement: React.FC = () => {
     const updateClassMutation = useUpdateClass();
     const deleteClassMutation = useDeleteClass();
 
-    console.log("class", selectedClass)
+
     const { data: teachers = [] } = useTeachersByClass(selectedClass ? selectedClass.id : '');
     const assignClassTeacherMutate = useAssignClassTeacher();
 
@@ -70,6 +76,15 @@ const ClassManagement: React.FC = () => {
         })
     }
 
+    const filteredClasses = useMemo(() => {
+        return classes.filter((cls: Grade) => {
+            const textinput = `${cls?.name || ""}`.toLowerCase();
+            const matchesSearch = textinput.includes(filters.search.toLowerCase());
+
+            return matchesSearch;
+        });
+    }, [classes, filters]);
+
     return (
         <div className="flex h-full bg-gray-50 overflow-hidden">
             {/* Sidebar */}
@@ -83,13 +98,13 @@ const ClassManagement: React.FC = () => {
                     <div className="max-w-7xl mx-auto">
 
                         <ClassHeader
-                            searchTerm={searchTerm}
-                            setSearchTerm={setSearchTerm}
+                            filters={filters}
+                            onFiltersChange={setFilters}
                             onAdd={() => setIsModalOpen(true)}
                         />
                         <ClassStats />
                         <ClassTable
-                            grades={classes}
+                            grades={filteredClasses}
                             onNavigateToSection={navigateToDetail}
                             onNavigateToSubject={navigateToSubject}
                             onAssignClassTeacher={addClassTeacher}

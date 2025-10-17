@@ -75,15 +75,15 @@ export const ParentGrid: FC<ParentGridModalProps> = ({ parents, onEdit, onDelete
               </div>
 
               <div className="space-y-2">
-                <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-2">
+                {/* <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-2">
                   <MessageCircle className="w-4 h-4" />
                   Message
                 </button>
                 <button className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center justify-center gap-2">
                   <Unlink className="w-4 h-4" />
                   Unlink
-                </button>
-                <button className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center justify-center gap-2"
+                </button> */}
+                <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center justify-center gap-2"
                   onClick={() => onEdit(parent)}
                 >
                   <Edit className='w-4 h-4' />

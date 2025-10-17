@@ -113,7 +113,7 @@ const EditSalaryStructureModal: React.FC<EditSalaryStructureModalProps> = ({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl">
                 {/* Header */}
                 <div className="bg-blue-600 text-white p-4 flex justify-between items-center rounded-t-lg">

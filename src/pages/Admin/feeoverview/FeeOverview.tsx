@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FeeOverviewHeader } from '../../../components/Admin/feeoverview/FeeOverviewHeader';
 import { FeeOverviewFilters } from '../../../components/Admin/feeoverview/FeeOverviewFilters';
 import { FeeOverviewStats } from '../../../components/Admin/feeoverview/FeeOverviewStats';
@@ -6,14 +6,30 @@ import { FeeOverviewTable } from '../../../components/Admin/feeoverview/FeeOverv
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { useMySchoolFeesStructures } from '../../../hooks/useFees';
+import { useClasses } from '../../../hooks/useClasses';
+import type { FeeStructureAttributes } from '../../../types/fee-salary.types';
 
+export interface FilterValues {
+    search: string;
+    class: string;
+}
 const FeeOverview: React.FC = () => {
-    const [searchStudent, setSearchStudent] = useState('');
-    const [selectedClass, setSelectedClass] = useState('');
-    const [selectedSection, setSelectedSection] = useState('');
-    const [selectedTerminal, setSelectedTerminal] = useState('');
-    const [selectedDateRange, setSelectedDateRange] = useState('');
+    const [filters, setFilters] = useState<FilterValues>({
+        search: '',
+        class: ''
+    });
     const { data: feeStructures = [] } = useMySchoolFeesStructures();
+    const { data: classes = [] } = useClasses();
+
+    const filteredFeeStructure = useMemo(() => {
+        return feeStructures.filter((feeStructure: FeeStructureAttributes) => {
+            const textinput = `${feeStructure?.class?.name || ""}`.toLowerCase();
+            const matchesSearch = textinput.includes(filters.search.toLowerCase());
+            const matchesClass = !filters.class || feeStructure.class?.name === filters.class;
+
+            return matchesSearch && matchesClass;
+        });
+    }, [feeStructures, filters]);
 
     return (
         <div className="flex h-full bg-gray-50 overflow-hidden">
@@ -28,20 +44,13 @@ const FeeOverview: React.FC = () => {
                     <div className="max-w-7xl mx-auto">
                         <FeeOverviewHeader />
                         <FeeOverviewFilters
-                            searchStudent={searchStudent}
-                            setSearchStudent={setSearchStudent}
-                            selectedClass={selectedClass}
-                            setSelectedClass={setSelectedClass}
-                            selectedSection={selectedSection}
-                            setSelectedSection={setSelectedSection}
-                            selectedTerminal={selectedTerminal}
-                            setSelectedTerminal={setSelectedTerminal}
-                            selectedDateRange={selectedDateRange}
-                            setSelectedDateRange={setSelectedDateRange}
+                            classes={classes}
+                            filters={filters}
+                            onFiltersChange={setFilters}
                         />
                         <FeeOverviewStats />
                         <FeeOverviewTable
-                            feeData={feeStructures}
+                            feeData={filteredFeeStructure}
                         />
                     </div>
                 </main>

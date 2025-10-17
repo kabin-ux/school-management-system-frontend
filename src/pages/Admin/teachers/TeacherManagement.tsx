@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { UserPlus } from 'lucide-react';
 import TeacherStats from '../../../components/Admin/teachers/TeacherStats';
 import TeacherFilters from '../../../components/Admin/teachers/TeacherFilters';
@@ -9,17 +9,26 @@ import AddTeacherModal from '../../../components/Admin/teachers/AddTeacherModal'
 import EditTeacherModal from '../../../components/Admin/teachers/EditTeacherModal';
 import { useAddTeacher, useDeleteTeacher, useTeachers, useUpdateTeacher } from '../../../hooks/useTeachers';
 import type { Teacher } from '../../../types/teacher.types';
+import { useClasses } from '../../../hooks/useClasses';
+
+export interface FilterValues {
+    search: string;
+    subject: string;
+    class: string;
+}
 
 export default function TeacherManagement() {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedClass, setSelectedClass] = useState('All classes');
-    const [selectedSubject, setSelectedSubject] = useState('All Subjects');
-    const [selectedDepartment, setSelectedDepartment] = useState('All Departments');
-
+    const [filters, setFilters] = useState<FilterValues>({
+        search: '',
+        subject: '',
+        class: ''
+    });
     const { data: teachers = [], isLoading: loading } = useTeachers();
     const addTeacherMutation = useAddTeacher();
     const updateTeacherMutation = useUpdateTeacher();
     const deleteTeacherMutation = useDeleteTeacher();
+
+    const { data: classes = [] } = useClasses();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -45,6 +54,18 @@ export default function TeacherManagement() {
     const handleDeleteTeacher = async (teacherId: string) => {
         deleteTeacherMutation.mutate(teacherId);
     }
+
+    // Filtered teachers based on current filters
+    const filteredTeachers = useMemo(() => {
+        return teachers.filter((teacher: Teacher) => {
+            const fullName = `${teacher?.firstName || ""} ${teacher?.lastName || ""}`.toLowerCase();
+            const matchesSearch = fullName.includes(filters.search.toLowerCase());
+            // const matchesSection = !filters.subject || teacher.subjects.includes(filters.subject);
+            // const matchesClass = !filters.class || teacher?.class?.name === filters.class;
+
+            return matchesSearch ;
+        });
+    }, [teachers, filters]);
 
     return (
         <div className="flex h-full bg-gray-50">
@@ -76,19 +97,14 @@ export default function TeacherManagement() {
 
                         {/* Filters */}
                         <TeacherFilters
-                            searchTerm={searchTerm}
-                            selectedClass={selectedClass}
-                            selectedSubject={selectedSubject}
-                            selectedDepartment={selectedDepartment}
-                            onSearchChange={setSearchTerm}
-                            onClassChange={setSelectedClass}
-                            onSubjectChange={setSelectedSubject}
-                            onDepartmentChange={setSelectedDepartment}
+                            classes={classes}
+                            filters={filters}
+                            onFiltersChange={setFilters}
                         />
 
                         {/* Teacher Grid */}
                         <TeacherGrid
-                            teachers={teachers}
+                            teachers={filteredTeachers}
                             onEdit={handleEditTeacher}
                             onDelete={handleDeleteTeacher}
                         />

@@ -65,13 +65,13 @@ export const Sidebar: React.FC = () => {
       {/* Overlay for mobile */}
       {isOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/30 bg-opacity-100 z-50"
+          className="lg:hidden fixed inset-0 bg-black/50 bg-opacity-100 z-50"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       <div className={`
-        fixed lg:static inset-y-0 left-0 z-60 w-64 bg-white border-r border-gray-200 flex flex-col
+        fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 flex flex-col
         transform transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>

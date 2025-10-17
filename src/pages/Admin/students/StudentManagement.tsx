@@ -1,4 +1,4 @@
-import {  useState } from 'react';
+import { useMemo, useState } from 'react';
 import { UserPlus } from 'lucide-react';
 import StudentStats from '../../../components/Admin/students/StudentStats';
 import StudentFilters from '../../../components/Admin/students/StudentFilters';
@@ -11,10 +11,18 @@ import type { Student, StudentForm } from '../../../types/student.types';
 import { useAddStudent, useDeleteStudent, useStudentsBySchool, useUpdateStudent } from '../../../hooks/useStudents';
 import { useClasses } from '../../../hooks/useClasses';
 
+export interface FilterValues {
+    search: string;
+    section: string;
+    class: string;
+}
+
 export default function StudentManagement() {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedClass, setSelectedClass] = useState('Grade 10');
-    const [selectedSection, setSelectedSection] = useState('Section A');
+    const [filters, setFilters] = useState<FilterValues>({
+        search: '',
+        section: '',
+        class: ''
+    });
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -48,6 +56,18 @@ export default function StudentManagement() {
         deleteStudentMutation.mutate(id);
     };
 
+    // Filtered students based on current filters
+    const filteredStudents = useMemo(() => {
+        return students.filter((student: Student) => {
+            const fullName = `${student?.firstName || ""} ${student?.lastName || ""}`.toLowerCase();
+            const matchesSearch = fullName.includes(filters.search.toLowerCase());
+            const matchesSection = !filters.section || student.section.section_name === filters.section;
+            const matchesClass = !filters.class || student.class.name === filters.class;
+
+            return matchesSearch && matchesSection && matchesClass;
+        });
+    }, [students, filters]);
+
     return (
         <div className="flex h-full bg-gray-50 overflow-hidden">
             {/* Sidebar */}
@@ -79,17 +99,14 @@ export default function StudentManagement() {
 
                         {/* Filters */}
                         <StudentFilters
-                            searchTerm={searchTerm}
-                            selectedClass={selectedClass}
-                            selectedSection={selectedSection}
-                            onSearchChange={setSearchTerm}
-                            onClassChange={setSelectedClass}
-                            onSectionChange={setSelectedSection}
+                            classes={classes}
+                            filters={filters}
+                            onFiltersChange={setFilters}
                         />
 
                         {/* Student Table */}
                         <StudentTable
-                            students={students}
+                            students={filteredStudents}
                             onEdit={handleEditStudent}
                             onDelete={handleDeleteStudent}
                         />

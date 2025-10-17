@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import type { Salary } from "../../../types/fee-salary.types";
 import EmptyState from "../../../common/EmptyState";
 import { DollarSign } from "lucide-react";
+import { getRoleAction } from "../../../lib/utils";
 
 interface SalaryOverviewTableProps {
     salaryData: Salary[];
@@ -70,12 +71,21 @@ export const SalaryOverviewTable: React.FC<SalaryOverviewTableProps> = ({ salary
                                                     ? `${record.accountantEmployee.firstName} ${record.accountantEmployee.lastName}`
                                                     : "N/A"}
                                         </td>
-                                        <td className="p-4 text-gray-900">{Number(record.basic).toLocaleString()}</td>
-                                        <td className="p-4 text-gray-900">{Number(record.allowances).toLocaleString()}</td>
-                                        <td className="p-4 text-gray-900">{record.role}</td>
+                                        <td className="p-4 text-gray-900">Rs. {Number(record.basic).toLocaleString()}</td>
+                                        <td className="p-4 text-gray-900">Rs. {Number(record.allowances).toLocaleString()}</td>
+                                        <td className="p-4 text-gray-900">{(() => {
+                                            const statusInfo = getRoleAction(record.role);
+                                            return (
+                                                <span
+                                                    className={`inline-flex px-3 py-1 rounded-full text-xs font-medium  ${statusInfo.bgColor} ${statusInfo.textColor}`}
+                                                >
+                                                    {statusInfo.label}
+                                                </span>
+                                            );
+                                        })()}</td>
                                         <td className="p-4 text-gray-900">{record.creator.firstName} {record.creator.lastName}</td>
                                         <td className="p-4 text-gray-900 font-semibold">
-                                            {total.toLocaleString()}
+                                            Rs. {total.toLocaleString()}
                                         </td>
                                     </tr>
                                 );
