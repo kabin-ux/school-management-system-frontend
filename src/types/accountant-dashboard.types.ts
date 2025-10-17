@@ -25,6 +25,7 @@ export interface Accountant {
   district: string;
   city: string;
   state: string;
+  role?:string;
   postal_code?: string | null;
   createdAt?: Date;
   updatedAt?: Date;

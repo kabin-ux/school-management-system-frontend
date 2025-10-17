@@ -7,14 +7,14 @@ import SystemStatus from "../../../components/Admin/dashboard/SystemStatus";
 import { AdminDashboardHeader } from "../../../components/Admin/layout/DashboardHeader";
 import { Sidebar } from "../../../components/Admin/layout/Sidebar";
 import { useAuthUser } from "../../../hooks/useAuth";
-import { useSchoolAdminDashboard } from "../../../hooks/useDashboard";
+import { useSchoolAdminDashboard, useSchoolAdminDashboardLineChart, useSchoolAdminDashboardPieChart } from "../../../hooks/useDashboard";
 
 export default function AdminDashboard() {
   const { data: user } = useAuthUser();
   const { data: schoolAdmin } = useSchoolAdminDashboard();
+  const { data: lineChartData = [] } = useSchoolAdminDashboardLineChart();
+  const { data: pieChartData} = useSchoolAdminDashboardPieChart();
 
-
-  console.log(user)
   return (
     <div className="flex h-full bg-gray-50">
       {/* Sidebar */}
@@ -30,7 +30,7 @@ export default function AdminDashboard() {
           <div className="max-w-7xl mx-auto">
             {/* Page Title */}
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-gray-900">Welcome, Admin ({user.name})</h1>
+              <h1 className="text-3xl font-bold text-gray-900">Welcome, Admin ({user.name ? user.name : ''})</h1>
               <p className="text-gray-600 mt-1">Monday, August 4, 2025</p>
             </div>
 
@@ -42,9 +42,11 @@ export default function AdminDashboard() {
             {/* Charts Section */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               <AttendanceChart
-                data={schoolAdmin}
+                data={lineChartData}
               />
-              <AttendancePieChart />
+              <AttendancePieChart
+                data={pieChartData}
+              />
             </div>
 
             {/* Bottom Section */}

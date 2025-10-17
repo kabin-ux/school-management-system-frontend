@@ -17,9 +17,8 @@ function StatCard({ title, value, change, changeType, icon, iconBg }: StatCardPr
         <div className={`p-2 rounded-lg ${iconBg}`}>
           {icon}
         </div>
-        <span className={`text-sm font-medium ${
-          changeType === 'positive' ? 'text-green-600' : 'text-red-600'
-        }`}>
+        <span className={`text-sm font-medium ${changeType === 'positive' ? 'text-green-600' : 'text-red-600'
+          }`}>
           {change}
         </span>
       </div>
@@ -46,17 +45,16 @@ function ProgressCard({ title, value, percentage, change, changeType, icon, icon
         <div className={`p-2 rounded-lg ${iconBg}`}>
           {icon}
         </div>
-        <span className={`text-sm font-medium ${
-          changeType === 'positive' ? 'text-green-600' : 'text-red-600'
-        }`}>
+        <span className={`text-sm font-medium ${changeType === 'positive' ? 'text-green-600' : 'text-red-600'
+          }`}>
           {change}
         </span>
       </div>
       <h3 className="text-sm font-medium text-gray-600 mb-1">{title}</h3>
       <p className="text-2xl font-bold text-gray-900 mb-3">{value}</p>
       <div className="w-full bg-gray-200 rounded-full h-2">
-        <div 
-          className="bg-blue-600 h-2 rounded-full" 
+        <div
+          className="bg-blue-600 h-2 rounded-full"
           style={{ width: `${percentage}%` }}
         ></div>
       </div>
@@ -64,13 +62,13 @@ function ProgressCard({ title, value, percentage, change, changeType, icon, icon
   );
 }
 
-export default function SchoolStats() {
+export default function SchoolStats({ schoolData }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
       {/* Top Row */}
       <StatCard
         title="Total Students"
-        value="1,247"
+        value={schoolData.totalStudents}
         change="+12%"
         changeType="positive"
         icon={<GraduationCap className="w-5 h-5 text-blue-600" />}
@@ -78,7 +76,7 @@ export default function SchoolStats() {
       />
       <StatCard
         title="Total Teacher"
-        value="78"
+        value={schoolData.totalTeachers}
         change="+3.2%"
         changeType="positive"
         icon={<Users className="w-5 h-5 text-green-600" />}
@@ -86,13 +84,13 @@ export default function SchoolStats() {
       />
       <StatCard
         title="Total Parents"
-        value="892"
+        value={schoolData.totalParents}
         change="+8%"
         changeType="positive"
         icon={<UserCheck className="w-5 h-5 text-purple-600" />}
         iconBg="bg-purple-50"
       />
-      
+
       {/* Bottom Row */}
       <ProgressCard
         title="Daily Usage"

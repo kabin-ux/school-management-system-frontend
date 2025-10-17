@@ -29,7 +29,7 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
                 Student Name
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Admission Number
+                Parent Name
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Class/Section
@@ -84,7 +84,7 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
 
                   {/* Roll Number */}
                   <td className="px-6 py-4 text-sm text-gray-900">
-                    {student.rollNumber || '-'}
+                    {student.parent?.name || '-'}
                   </td>
 
                   {/* Class & Section */}

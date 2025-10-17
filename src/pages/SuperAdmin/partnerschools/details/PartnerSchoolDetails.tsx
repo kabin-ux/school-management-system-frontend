@@ -73,6 +73,7 @@ export default function PartnerSchoolDetails() {
 
                     {/* School Statistics */}
                     <SchoolStats
+                    schoolData={currentSchool}
                     />
 
                     {/* Bottom Section */}

@@ -1,4 +1,5 @@
 import type { Grade, Section } from "./class.types";
+import type { Parent } from "./parent.types";
 
 export type GenderType = "male" | "female" | "other";
 
@@ -23,6 +24,7 @@ export interface Student {
   // Relations
   class: Grade;
   section: Section;
+  parent: Parent;
 }
 
 export interface StudentForm {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, User, Mail, Phone, Calendar, MapPin, GraduationCap, Briefcase } from 'lucide-react';
+import { X, User, Mail, Phone, Calendar, MapPin, GraduationCap } from 'lucide-react';
 
 interface Teacher {
   id?: number;
@@ -177,17 +177,17 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="bg-blue-600 text-white p-6 flex justify-between items-center">
+        <div className=" text-black p-6 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <User className="w-6 h-6" />
             <h2 className="text-xl font-semibold">Add New Teacher</h2>
           </div>
           <button
             onClick={onClose}
-            className="text-white hover:text-gray-200 transition-colors"
+            className="text-black hover:text-gray-200 transition-colors"
             disabled={isLoading}
           >
             <X className="w-6 h-6" />

@@ -1,59 +1,87 @@
+import { Pie } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title,
+} from "chart.js";
 
-export default function AttendancePieChart() {
-  const grades = [
-    { name: 'Grade 3', percentage: 10, color: '#10b981' },
-    { name: 'Grade 2', percentage: 11, color: '#06b6d4' },
-    { name: 'Grade 4', percentage: 13, color: '#f59e0b' },
-    { name: 'Grade 1', percentage: 11, color: '#8b5cf6' },
-    { name: 'Grade 5', percentage: 11, color: '#ef4444' },
-    { name: 'Others', percentage: 44, color: '#6b7280' }
-  ];
+// Register components
+ChartJS.register(ArcElement, Tooltip, Legend, Title);
+
+interface AttendanceData {
+  grade: string;
+  percentage: number;
+}
+
+interface AttendancePieChartProps {
+  data?: AttendanceData[];
+}
+
+export default function AttendancePieChart({ data = [] }: AttendancePieChartProps) {
+  if (!data.length) {
+    return (
+      <div className="bg-white rounded-lg border border-gray-200 p-6 text-center text-gray-500">
+        No attendance data available
+      </div>
+    );
+  }
+
+  // Filter out zero-percentage grades for cleaner display
+  const filteredData = data.filter((item) => item.percentage > 0);
+
+  const chartData = {
+    labels: filteredData.map((d) => `Grade ${d.grade}`),
+    datasets: [
+      {
+        data: filteredData.map((d) => d.percentage),
+        backgroundColor: [
+          "#60A5FA", // Blue
+          "#34D399", // Green
+          "#FBBF24", // Yellow
+          "#F87171", // Red
+          "#A78BFA", // Purple
+          "#FB923C", // Orange
+        ],
+        borderWidth: 15,
+        borderColor: "#fff",
+        hoverOffset: 10,
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false, // allows manual height control
+    plugins: {
+      legend: {
+        position: "bottom" as const,
+        labels: {
+          font: { size: 13 },
+          color: "#374151", // text-gray-700
+        },
+      },
+      // title: {
+      //   display: true,
+      //   text: "Student Attendance by Grade",
+      //   font: { size: 16, weight: "bold" },
+      //   color: "#111827", // text-gray-900
+      // },
+      tooltip: {
+        callbacks: {
+          label: function (context: any) {
+            return `${context.label}: ${context.parsed}%`;
+          },
+        },
+      },
+    },
+  };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-6">Student Attendance Graph</h3>
-      
-      <div className="flex items-center justify-center">
-        <div className="relative w-48 h-48">
-          <svg className="w-48 h-48 transform -rotate-90" viewBox="0 0 100 100">
-            {grades.map((grade, index) => {
-              const startAngle = grades.slice(0, index).reduce((sum, g) => sum + g.percentage, 0) * 3.6;
-              const endAngle = startAngle + grade.percentage * 3.6;
-              const largeArcFlag = grade.percentage > 50 ? 1 : 0;
-              
-              const x1 = 50 + 40 * Math.cos((startAngle * Math.PI) / 180);
-              const y1 = 50 + 40 * Math.sin((startAngle * Math.PI) / 180);
-              const x2 = 50 + 40 * Math.cos((endAngle * Math.PI) / 180);
-              const y2 = 50 + 40 * Math.sin((endAngle * Math.PI) / 180);
-              
-              return (
-                <path
-                  key={grade.name}
-                  d={`M 50 50 L ${x1} ${y1} A 40 40 0 ${largeArcFlag} 1 ${x2} ${y2} Z`}
-                  fill={grade.color}
-                  stroke="white"
-                  strokeWidth="1"
-                />
-              );
-            })}
-          </svg>
-        </div>
-      </div>
-
-      <div className="mt-6 space-y-2">
-        {grades.map((grade) => (
-          <div key={grade.name} className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div 
-                className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: grade.color }}
-              ></div>
-              <span className="text-sm text-gray-700">{grade.name}</span>
-            </div>
-            <span className="text-sm font-medium text-gray-900">{grade.percentage}%</span>
-          </div>
-        ))}
-      </div>
+    <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm w-160 h-100" >
+      <h3 className="text-lg font-semibold text-gray-900">Student Attendance Graph By Grade</h3>
+      <Pie data={chartData} options={options} />
     </div>
   );
 }

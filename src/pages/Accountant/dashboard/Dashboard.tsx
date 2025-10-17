@@ -88,10 +88,10 @@ export default function AccountantDashboard() {
                                     <tbody className="bg-white divide-y divide-gray-200">
                                         {accountantDashboard.totalPayment?.map((p: any, index: number) => (
                                             <tr key={index} className="hover:bg-gray-50 transition-colors">
-                                                <td className="px-4 md:px-6 py-2 whitespace-nowrap text-sm md:text-base text-gray-900">
+                                                <td className="px-4 md:px-6 py-2 whitespace-nowrap text-sm md:text-sm text-gray-900">
                                                     {p.status}
                                                 </td>
-                                                <td className="px-4 md:px-6 py-2 whitespace-nowrap text-sm md:text-base text-gray-900">
+                                                <td className="px-4 md:px-6 py-2 whitespace-nowrap text-sm md:text-sm text-gray-900">
                                                     Rs. {p.totalAmount}
                                                 </td>
                                             </tr>

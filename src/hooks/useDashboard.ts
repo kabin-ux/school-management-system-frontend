@@ -58,6 +58,28 @@ export const useSchoolAdminDashboard = () => {
   });
 };
 
+export const useSchoolAdminDashboardLineChart = () => {
+  return useQuery<SchoolAdminDashboard>({
+    queryKey: ["school-admin-dashboard-line-chart"],
+    queryFn: async () => {
+      const res = await api.get("/attendance/dashboard/weekly");
+      return res.data.data;
+    },
+    staleTime: 1000 * 60 * 5, // cache for 5 minutes
+  });
+};
+
+export const useSchoolAdminDashboardPieChart = () => {
+  return useQuery<SchoolAdminDashboard>({
+    queryKey: ["school-admin-dashboard-pie-chart"],
+    queryFn: async () => {
+      const res = await api.get("/attendance/dashboard/grade-summary");
+      return res.data.data;
+    },
+    staleTime: 1000 * 60 * 5, // cache for 5 minutes
+  });
+};
+
 // Fetch Super Admin Dashboard
 export const useSuperAdminDashboard = () => {
   return useQuery<SuperAdminDashboard>({

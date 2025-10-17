@@ -71,22 +71,22 @@ export const DataTable: React.FC<DataTableProps> = ({
                   S.N
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? 'Fee ID' : 'Employee Name'}
+                  {activeView === 'Student' ? 'Class' : 'Employee Name'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? 'Class' : 'Basic Salary'}
+                  {activeView === 'Student' ? 'Monthly Fee' : 'Basic Salary'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? 'Monthly Fee' : 'Allowances'}
+                  {activeView === 'Student' ? 'Exam Fee' : 'Allowances'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? 'Exam Fee' : 'Role'}
+                  {activeView === 'Student' ? 'Status' : 'Role'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? 'Status' : 'Creator'}
+                  {activeView === 'Student' ? 'Total Fees' : 'Creator'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? 'Total Fees' : 'Total Salary'}
+                  {activeView === 'Student' ? '' : 'Total Salary'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
@@ -114,9 +114,6 @@ export const DataTable: React.FC<DataTableProps> = ({
                     >
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">
                         {index + 1}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">
-                        {student.id}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         {student.class?.name ?? '-'}

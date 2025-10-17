@@ -1,6 +1,6 @@
 import React from 'react';
 import { GraduationCap, Users, BookOpen, Calendar, Headphones } from 'lucide-react';
-import type { SchoolAdminDashboard } from '../../../features/dashboardSlice';
+import type { SchoolAdminDashboard } from '../../../hooks/useDashboard';
 
 interface StatCardProps {
   title: string;

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
 import type { Teacher } from "../../../../types/teacher.types";
-import type { Accountant } from "../../../../features/accountantSlice";
 import type { SalaryStructureForm } from "../../../../types/fee-salary.types";
+import type { Accountant } from "../../../../types/accountant-dashboard.types";
 
 interface SalaryStructureModalProps {
     isOpen: boolean;
@@ -95,7 +95,7 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
                 {/* Header */}
                 <div className="flex justify-between items-center p-6 border-b border-gray-200">
