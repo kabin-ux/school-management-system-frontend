@@ -82,8 +82,7 @@ export interface Note {
 
 export interface FilterOptions {
   search: string;
-  status: string;
-  classOrDepartment: string;
+  classOrRole: string;
 }
 
 export interface FeeRecord {

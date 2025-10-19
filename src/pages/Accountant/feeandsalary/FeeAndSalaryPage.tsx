@@ -6,7 +6,7 @@ import { StudentDetailView } from '../../../components/Accountant/feesandsalary/
 import { DataTable } from '../../../components/Accountant/feesandsalary/DataTable';
 import { AccountantDashboardHeader } from '../../../components/Accountant/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Accountant/layout/Sidebar';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { AddFeeStructureModal, type FeeStructureForm } from '../../../components/Accountant/feesandsalary/AddFeeStructureModal';
 import EditFeeStructureModal from '../../../components/Accountant/feesandsalary/EditFeeStructureModal';
 import { AddSalaryStructureModal } from '../../../components/Accountant/feesandsalary/salary/AddSalaryStructureModal';
@@ -110,6 +110,28 @@ export default function FeeAndSalaryPage() {
         deleteSalaryStructureMutation.mutate(salaryStructureId)
     }
 
+    // Filtered fees structure based on current filters
+    const filteredFeeStructure = useMemo(() => {
+        return feeStructures.filter((feeStructure: FeeStructureAttributes) => {
+            const fullName = `${feeStructure?.class?.name || ""}`.toLowerCase();
+            const matchesSearch = fullName.includes(filters.search.toLowerCase());
+            const matchesClass = !filters.classOrRole || feeStructure.class?.name === filters.classOrRole;
+
+            return matchesSearch && matchesClass;
+        });
+    }, [feeStructures, filters]);
+
+    // Filtered students based on current filters
+    const filteredSalaryStructure = useMemo(() => {
+        return salaryStructures.filter((salaryStructure: Salary) => {
+            const textinput = `${salaryStructure?.teacherEmployee?.firstName || ""} ${salaryStructure?.teacherEmployee?.lastName || ""} ${salaryStructure?.accountantEmployee?.firstName || ""} ${salaryStructure?.accountantEmployee?.lastName || ""}`.toLowerCase();
+            const matchesSearch = textinput.includes(filters.search.toLowerCase());
+            const matchesRole = !filters.classOrRole || salaryStructure.role === filters.classOrRole;
+
+            return matchesSearch && matchesRole;
+        });
+    }, [salaryStructures, filters]);
+
     if (selectedStudent) {
         return (
             <div className="p-6 bg-gray-50 min-h-screen">
@@ -127,6 +149,7 @@ export default function FeeAndSalaryPage() {
                 </div>
 
                 <FilterSection
+                    classes={classes}
                     activeView={activeView}
                     filters={filters}
                     onViewChange={handleViewChange}
@@ -194,6 +217,7 @@ export default function FeeAndSalaryPage() {
                     {/* Filters */}
                     <div className="mb-6 overflow-x-auto">
                         <FilterSection
+                            classes={classes}
                             activeView={activeView}
                             filters={filters}
                             onViewChange={handleViewChange}
@@ -205,8 +229,8 @@ export default function FeeAndSalaryPage() {
                     <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
                         <DataTable
                             activeView={activeView}
-                            students={feeStructures}
-                            teachers={salaryStructures}
+                            students={filteredFeeStructure}
+                            teachers={filteredSalaryStructure}
                             onEdit={handleEditFeeStructureData}
                             onDelete={handleDeleteFeeStructureData}
                             onEditSalary={handleEditSalaryStructureData}

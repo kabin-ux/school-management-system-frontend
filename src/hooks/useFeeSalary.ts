@@ -7,8 +7,7 @@ export const useFeeSalary = () => {
   const [activeTab, setActiveTab] = useState<TabType>('Fee Structure');
   const [filters, setFilters] = useState<FilterOptions>({
     search: '',
-    status: '',
-    classOrDepartment: ''
+    classOrRole: ''
   });
 
   // Payment form state
@@ -33,6 +32,7 @@ export const useFeeSalary = () => {
   const handleFilterChange = useCallback((newFilters: Partial<FilterOptions>) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
   }, []);
+  
 
   const resetPaymentForm = useCallback(() => {
     setPaymentAmount('');

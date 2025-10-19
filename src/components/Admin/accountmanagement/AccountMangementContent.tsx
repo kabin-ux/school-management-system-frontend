@@ -55,7 +55,7 @@ export const AccountantManagementContent: React.FC<AccountantManagementContentPr
             <div>
               <h3 className="text-gray-600 text-sm font-medium">On Leave</h3>
               <p className="text-3xl font-bold text-gray-900 mt-1">
-                {/* {accountantBySchool?.filter((a) => a.status === "On Leave").length} */}
+                {accountantBySchool?.filter((a) => a.status === "On Leave").length}
               </p>
             </div>
             <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">

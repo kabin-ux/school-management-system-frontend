@@ -43,9 +43,6 @@ export const DataTable: React.FC<DataTableProps> = ({
               : 'Employee salary and payment details'}
           </p>
         </div>
-        <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-          View All
-        </button>
       </div>
 
       <div className="overflow-x-auto">
@@ -86,11 +83,13 @@ export const DataTable: React.FC<DataTableProps> = ({
                   {activeView === 'Student' ? 'Total Fees' : 'Creator'}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeView === 'Student' ? '' : 'Total Salary'}
+                  {activeView === 'Student' ? 'Actions' : 'Total Salary'}
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
+                {activeView !== 'Student' && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
+                )}
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">

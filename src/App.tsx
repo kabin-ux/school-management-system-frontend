@@ -64,7 +64,7 @@ function App() {
             sender: "sender_id",
             senderName: "",
             receiverName: "",
-            attachment:""
+            attachment: ""
         })
     }, [])
 
@@ -223,7 +223,11 @@ function App() {
                             <AccountantManagement />
                         </ProtectedRoute>
                     } />
-                    <Route path='/admin/support' element={<AdminSupportConsole />} />
+                    <Route path='/admin/support' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <AdminSupportConsole />
+                        </ProtectedRoute>
+                    } />
                     <Route path='/admin/support/details/:id' element={<AdminSupportTicketDetailPage />} />
                     <Route path='/admin/settings' element={<AdminSettings />} />
 
@@ -233,8 +237,16 @@ function App() {
                             <AccountantDashboard />
                         </ProtectedRoute>
                     } />
-                    <Route path='/accountant/fee-salary' element={<FeeAndSalaryPage />} />
-                    <Route path='/accountant/invoices' element={<InvoicesPage />} />
+                    <Route path='/accountant/fee-salary' element={
+                        <ProtectedRoute allowedRoles={['accountant']}>
+                            <FeeAndSalaryPage />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/accountant/invoices' element={
+                        <ProtectedRoute allowedRoles={['accountant']}>
+                            <InvoicesPage />
+                        </ProtectedRoute>
+                    } />
                     <Route path='/accountant/settings' element={<SettingsPage />} />
                 </Routes>
             </Router >
