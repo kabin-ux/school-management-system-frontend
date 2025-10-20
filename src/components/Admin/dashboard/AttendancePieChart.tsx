@@ -6,6 +6,8 @@ import {
   Legend,
   Title,
 } from "chart.js";
+import EmptyState from "../../../common/EmptyState";
+import { PieChart } from "lucide-react";
 
 // Register components
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -22,9 +24,14 @@ interface AttendancePieChartProps {
 export default function AttendancePieChart({ data = [] }: AttendancePieChartProps) {
   if (!data.length) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-6 text-center text-gray-500">
-        No attendance data available
+      <div className='bg-white border border-gray-200 flex justify-center'>
+        <EmptyState
+          title='No Grade wise Attendance Data Found'
+          description='There are currently no class records. Click the button above to add a new class.'
+          icon={<PieChart className='w-14 h-14' />}
+        />
       </div>
+
     );
   }
 
@@ -79,9 +86,11 @@ export default function AttendancePieChart({ data = [] }: AttendancePieChartProp
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm w-160 h-100" >
-      <h3 className="text-lg font-semibold text-gray-900">Student Attendance Graph By Grade</h3>
-      <Pie data={chartData} options={options} />
+    <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">Student Attendance Graph By Grade</h3>
+      <div className="h-80">
+        <Pie data={chartData} options={options} />
+      </div>
     </div>
   );
 }

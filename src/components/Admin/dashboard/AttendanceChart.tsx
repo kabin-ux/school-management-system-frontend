@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Chart as ChartJS,
   LineElement,
@@ -10,6 +9,8 @@ import {
   Title,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import EmptyState from "../../../common/EmptyState";
+import { Donut, LineChart, PieChart } from "lucide-react";
 
 // Register Chart.js components
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title);
@@ -28,9 +29,14 @@ interface AttendanceChartProps {
 export default function AttendanceChart({ data = [] }: AttendanceChartProps) {
   if (!data.length) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-6 text-center text-gray-500">
-        No attendance data available
+      <div className='bg-white border border-gray-200 flex justify-center'>
+        <EmptyState
+          title='No Attendance Data Found'
+          description='There are currently no class records. Click the button above to add a new class.'
+          icon={<LineChart className='w-14 h-14' />}
+        />
       </div>
+
     );
   }
 

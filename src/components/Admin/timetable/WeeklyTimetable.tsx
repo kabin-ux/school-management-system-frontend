@@ -64,10 +64,10 @@ export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({
               <div className="flex justify-between items-center">
                 <h2 className="text-lg font-semibold text-gray-900">{timetable.name}</h2>
                 <div className="flex gap-2">
-                  <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  {/* <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                   >
                     <Edit className="w-4 h-4" />
-                  </button>
+                  </button> */}
                   <button className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                     onClick={() => onDeleteTimeTable(timetable.id)}
                   >

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../lib/axios';
 import toast from 'react-hot-toast';
+import type { Section } from '../types/class.types';
 
 // Create Section
 export const useCreateSection = () => {
@@ -23,7 +24,7 @@ export const useCreateSection = () => {
 
 //  Get Sections by Class
 export const useSectionsByClass = (classId: string | number | null) => {
-    return useQuery({
+    return useQuery<Section[]>({
         queryKey: ['sections', classId],
         queryFn: async () => {
             const res = await api.get(`/section/class/${classId}`);

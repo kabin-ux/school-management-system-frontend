@@ -13,7 +13,7 @@ export default function AdminDashboard() {
   const { data: user } = useAuthUser();
   const { data: schoolAdmin } = useSchoolAdminDashboard();
   const { data: lineChartData = [] } = useSchoolAdminDashboardLineChart();
-  const { data: pieChartData} = useSchoolAdminDashboardPieChart();
+  const { data: pieChartData } = useSchoolAdminDashboardPieChart();
 
   return (
     <div className="flex h-full bg-gray-50">
