@@ -6,7 +6,7 @@ interface EditTransportationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (id: string, updates: TransportationForm) => void;
-  transportation?: Transportation | null;
+  transportation: Transportation | null;
   isLoading?: boolean;
 }
 

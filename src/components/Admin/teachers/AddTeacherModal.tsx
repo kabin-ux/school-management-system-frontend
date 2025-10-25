@@ -1,38 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { X, User, Mail, Phone, Calendar, MapPin, GraduationCap } from 'lucide-react';
-
-interface Teacher {
-  id?: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  dateOfBirth: string;
-  gender: 'Male' | 'Female' | 'Other';
-  address?: string;
-  qualification: string;
-  classIds: number[];
-  subjectIds: number[];
-}
-
-interface Class {
-  id: number;
-  name: string;
-  grade: string;
-}
-
-interface Subject {
-  id: number;
-  name: string;
-  code: string;
-}
+import type { TeacherForm } from '../../../types/teacher.types';
 
 interface AddTeacherModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (teacher: Omit<Teacher, 'id'>) => void;
-  classes?: Class[];
-  subjects?: Subject[];
+  onSubmit: (teacher: TeacherForm) => void;
   isLoading?: boolean;
 }
 
@@ -44,7 +17,7 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
   // classes,
   // subjects,
 }) => {
-  const [formData, setFormData] = useState<Omit<Teacher, 'id'>>({
+  const [formData, setFormData] = useState<TeacherForm>({
     firstName: '',
     lastName: '',
     email: '',

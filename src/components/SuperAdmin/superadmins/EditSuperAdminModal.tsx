@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, User } from 'lucide-react';
-import type { SuperAdmin } from '../../../hooks/useSuperAdmin';
-import type { SuperAdminForm } from '../../../types/super-admin-super-admins.types';
+import type { SuperAdmin, SuperAdminForm } from '../../../types/super-admin-dashboard.types';
 
 interface EditSuperAdminModalProps {
     isOpen: boolean;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
-import type { TimeSlot } from "../../../types/TimeSlot.types";
+import type { TimeSlot } from "../../../types/timetable.types";
 
 export interface EditTimeSlotForm {
     label: string,
@@ -86,7 +86,7 @@ export const EditTimeSlotModal: React.FC<EditTimeSlotModalProps> = ({
         if (isLoading) return;
         // console.log("form", formData)
 
-        if (validateForm()) {
+        if (validateForm() && timeSlot) {
             onSubmit(timeSlot.id, formData);
             console.log("form", formData)
 

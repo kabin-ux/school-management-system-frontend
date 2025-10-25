@@ -29,25 +29,25 @@ export const SalaryOverviewTable: React.FC<SalaryOverviewTableProps> = ({ salary
                     <table className="w-full">
                         <thead className="bg-gray-50">
                             <tr>
-                                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
+                                <th className="text-left p-4 font-extralight uppercase text-sm text-gray-500 border-gray-200 tracking-wider">
                                     S.N
                                 </th>
-                                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
+                                <th className="text-left p-4 font-extralight uppercase text-sm text-gray-500 border-gray-200 tracking-wider">
                                     Teacher Name
                                 </th>
-                                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
+                                <th className="text-left p-4 font-extralight uppercase text-sm text-gray-500 border-gray-200 tracking-wider">
                                     Basic Salary
                                 </th>
-                                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
+                                <th className="text-left p-4 font-extralight uppercase text-sm text-gray-500 border-gray-200 tracking-wider">
                                     Allowences
                                 </th>
-                                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
+                                <th className="text-left p-4 font-extralight uppercase text-sm text-gray-500 border-gray-200 tracking-wider">
                                     Role
                                 </th>
-                                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
+                                <th className="text-left p-4 font-extralight uppercase text-sm text-gray-500 border-gray-200 tracking-wider">
                                     Creator
                                 </th>
-                                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
+                                <th className="text-left p-4 font-extralight uppercase text-sm text-gray-500 border-gray-200 tracking-wider">
                                     Total Salary
                                 </th>
                             </tr>

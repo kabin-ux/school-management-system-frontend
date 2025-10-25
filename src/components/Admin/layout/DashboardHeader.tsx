@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Bell, User } from 'lucide-react';
+import { Bell, User } from 'lucide-react';
 
 export const AdminDashboardHeader: React.FC = () => {
   return (

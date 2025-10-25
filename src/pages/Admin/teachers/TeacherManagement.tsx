@@ -63,7 +63,7 @@ export default function TeacherManagement() {
             // const matchesSection = !filters.subject || teacher.subjects.includes(filters.subject);
             // const matchesClass = !filters.class || teacher?.class?.name === filters.class;
 
-            return matchesSearch ;
+            return matchesSearch;
         });
     }, [teachers, filters]);
 

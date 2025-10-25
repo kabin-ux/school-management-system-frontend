@@ -6,7 +6,7 @@ interface AddSectionModalProps {
     classId: string;
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (section: Omit<SectionForm, 'id'>) => void;
+    onSubmit: (section: SectionForm) => void;
 }
 
 const AddSectionModal: React.FC<AddSectionModalProps> = ({
@@ -15,7 +15,7 @@ const AddSectionModal: React.FC<AddSectionModalProps> = ({
     onClose,
     onSubmit,
 }) => {
-    const [formData, setFormData] = useState<Omit<SectionForm, 'id'>>({
+    const [formData, setFormData] = useState<SectionForm>({
         section_name: '',
         class_id: '',
     });

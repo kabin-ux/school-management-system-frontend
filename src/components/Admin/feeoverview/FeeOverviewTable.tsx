@@ -25,85 +25,111 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
         />
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
-                  S.N
-                </th>
-                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
-                  School
-                </th>
-                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
-                  Class
-                </th>
-                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
-                  Monthly Fee
-                </th>
-                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
-                  Exam Fee
-                </th>
-                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
-                  Tuition Fee
-                </th>
-                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
-                  Transport
-                </th>
-                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
-                  Total
-                </th>
-                <th className="text-left p-4 font-medium text-gray-500 border-gray-200">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {feeData?.map((record, index) => {
-                const total =
-                  Number(record.monthly_fee) +
-                  Number(record.exam_fee) +
-                  Number(record.tution_fee) +
-                  Number(record.computer_fee) +
-                  Number(record.laboratory_fee) +
-                  Number(record.other_fee) +
-                  (record.transportation?.price ?? 0);
+          <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+                  <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
+                    S.N
+                  </th>
+                  <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
+                    School
+                  </th>
+                  <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
+                    Class
+                  </th>
+                  <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
+                    Monthly Fee
+                  </th>
+                  <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
+                    Exam Fee
+                  </th>
+                  <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
+                    Tuition Fee
+                  </th>
+                  <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
+                    Transport
+                  </th>
+                  <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
+                    Total
+                  </th>
+                  <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {feeData?.map((record, index) => {
+                  const total =
+                    Number(record.monthly_fee) +
+                    Number(record.exam_fee) +
+                    Number(record.tution_fee) +
+                    Number(record.computer_fee) +
+                    Number(record.laboratory_fee) +
+                    Number(record.other_fee) +
+                    (record.transportation?.price ?? 0);
 
-                return (
-                  <tr
-                    key={record.id}
-                    className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer"
-                    onClick={() => handleShowDetails(record.id)}
-                  >
-                    <td className="p-4 text-gray-900">{index + 1}</td>
-                    <td className="p-4 text-gray-900">{record.class?.school?.name}</td>
-                    <td className="p-4 text-gray-900">{record.class?.name}</td>
-                    <td className="p-4 text-gray-900">Rs. {Number(record.monthly_fee).toLocaleString()}</td>
-                    <td className="p-4 text-gray-900">Rs. {Number(record.exam_fee).toLocaleString()}</td>
-                    <td className="p-4 text-gray-900">Rs. {Number(record.tution_fee).toLocaleString()}</td>
-                    <td className="p-4 text-gray-900">
-                     Rs. {record.transportation
-                        ? `${record.transportation.vehicleNumber} (${record.transportation.price.toLocaleString()})`
-                        : "N/A"}
-                    </td>
-                    <td className="p-4 text-gray-900 font-semibold">
-                      Rs. {total.toLocaleString()}
-                    </td>
-                    <td className="p-4">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleShowDetails(record.id);
-                        }}
-                        className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                      >
-                        View Details
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                  return (
+                    <tr
+                      key={record.id}
+                      className="hover:bg-blue-50 transition-colors duration-150 cursor-pointer group"
+                      onClick={() => handleShowDetails(record.id)}
+                    >
+                      <td className="p-4 text-gray-600 font-medium">{index + 1}</td>
+                      <td className="p-4 text-gray-900 font-medium">
+                        {record.class?.school?.name}
+                      </td>
+                      <td className="p-4 text-gray-900">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          {record.class?.name}
+                        </span>
+                      </td>
+                      <td className="p-4 text-gray-700">
+                        Rs. {Number(record.monthly_fee).toLocaleString()}
+                      </td>
+                      <td className="p-4 text-gray-700">
+                        Rs. {Number(record.exam_fee).toLocaleString()}
+                      </td>
+                      <td className="p-4 text-gray-700">
+                        Rs. {Number(record.tution_fee).toLocaleString()}
+                      </td>
+                      <td className="p-4 text-gray-700">
+                        {record.transportation ? (
+                          <div className="flex flex-col">
+                            <span className="text-xs text-gray-500">
+                              {record.transportation.vehicleNumber}
+                            </span>
+                            <span className="font-medium">
+                              Rs. {record.transportation.price.toLocaleString()}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="text-gray-400 italic">N/A</span>
+                        )}
+                      </td>
+                      <td className="p-4">
+                        <span className="text-gray-900 font-bold text-base">
+                          Rs. {total.toLocaleString()}
+                        </span>
+                      </td>
+                      <td className="p-4">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleShowDetails(record.id);
+                          }}
+                          className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium text-blue-600 hover:text-white hover:bg-blue-600 transition-all duration-200 border border-blue-600 group-hover:shadow-md"
+                        >
+                          View Details
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
         </div>
       )}
 

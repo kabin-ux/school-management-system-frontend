@@ -1,7 +1,7 @@
 import React from 'react';
 import { Users, FileText, Landmark } from 'lucide-react';
-import type { Accountant } from '../../../features/accountantSlice';
 import EmptyState from '../../../common/EmptyState';
+import type { Accountant } from '../../../types/accountant-dashboard.types';
 
 // interface Accountant {
 //   id: string | number;
@@ -119,7 +119,7 @@ export const AccountantManagementContent: React.FC<AccountantManagementContentPr
                     </div>
                   </div>
 
-                  <div className="mb-4">
+                  {/* <div className="mb-4">
                     <p className="text-sm text-gray-600 mb-2">
                       {acct.permissions?.reduce(
                         (sum, cat) =>
@@ -133,11 +133,11 @@ export const AccountantManagementContent: React.FC<AccountantManagementContentPr
                       )}{" "}
                       permissions assigned
                     </p>
-                  </div>
+                  </div> */}
 
                   {/* Permissions */}
                   <div className="space-y-4">
-                    {acct.permissions?.map((cat, idx) => (
+                    {/* {acct.permissions?.map((cat, idx) => (
                       <div key={idx} className="border-t border-gray-300 pt-3">
                         <div className="flex items-center gap-2 mb-2">
                           <FileText
@@ -168,7 +168,7 @@ export const AccountantManagementContent: React.FC<AccountantManagementContentPr
                           ))}
                         </div>
                       </div>
-                    ))}
+                    ))} */}
 
                     {/* <div className="flex gap-2 pt-4">
                     <button className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">

@@ -6,17 +6,29 @@ export interface Teacher {
   lastName: string;
   email: string;
   phone: string;
-  dateOfBirth: Date;
-  status: 'Active' | 'Inactive';
-  password: string;
+  dateOfBirth: string;
   gender: 'Male' | 'Female' | 'Other';
-  address?: string | null;
-  role: string;
+  address?: string;
   qualification: string;
-  school_id: string;
+  classIds: number[];
+  subjectIds: number[];
+  status?: string;
+  subjects?: Subject[];
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
+}
 
-  subjects?: Subject[];
+export interface TeacherForm {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  gender: 'Male' | 'Female' | 'Other';
+  address?: string;
+  qualification: string;
+  classIds: number[];
+  subjectIds: number[];
+  status?: string;
 }

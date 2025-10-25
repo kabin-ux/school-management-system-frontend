@@ -28,7 +28,6 @@ export const AssignClassTeacherModal: React.FC<AssignClassTeacherModalProps> = (
         classId: classId ?? "",
         teacherId: ""
     });
-    console.log("subject", classId, teachers)
 
     const [errors, setErrors] = useState<Record<string, string>>({});
 

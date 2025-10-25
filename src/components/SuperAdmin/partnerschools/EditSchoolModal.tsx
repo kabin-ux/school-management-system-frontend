@@ -1,40 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { X, School, MapPin, Phone, User, Users } from "lucide-react";
-import type { SchoolData } from "./AddSchoolModal";
-
-// interface SchoolData {
-//     name: string;
-//     address: string;
-//     district: string;
-//     city: string;
-//     state: string;
-//     postal_code: string | number;
-//     latitude: string | number;
-//     longitude: string | number;
-//     phone: string;
-//     email: string;
-//     password: string;
-//     image: string;
-//     verified: boolean;
-//     principal_name: string;
-//     principal_contact: string;
-//     contact: string;
-//     school_type: string;
-//     has_transport: boolean;
-//     established_year: string | number;
-//     student_capacity: string | number;
-//     school_code: string | number;
-//     details: string;
-//     grade_range: string;
-//     has_hostel: boolean;
-//     school_logo: string;
-// }
+import type { SchoolData, SchoolDataForm } from "../../../types/partner-school.types";
 
 interface EditSchoolModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: SchoolData, id: any) => void;
-    school?: SchoolData
+    onSubmit: (data: SchoolDataForm, id: any) => void;
+    school: SchoolData
 }
 
 export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
@@ -43,7 +15,7 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
     onSubmit,
     school,
 }) => {
-    const [formData, setFormData] = useState<SchoolData>({
+    const [formData, setFormData] = useState<SchoolDataForm>({
         name: "",
         address: "",
         district: "",
@@ -77,13 +49,36 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
     useEffect(() => {
         if (isOpen && school) {
             setFormData({
-                ...school,
+                name: school.name,
+                address: school.address,
+                district: school.district,
+                city: school.city,
+                state: school.state,
+                postal_code: school.postal_code,
+                latitude: school.latitude,
+                longitude: school.longitude,
+                phone: school.phone,
+                email: school.email,
+                image: school.image,
+                verified: school.verified,
+                principal_name: school.principal_name,
+                principal_contact: school.principal_contact,
+                contact: school.contact,
+                school_type: school.school_type,
+                has_transport: school.has_transport,
+                established_year: school.established_year,
+                student_capacity: school.student_capacity,
+                school_code: school.school_code,
+                details: school.details,
+                grade_range: school.grade_range,
+                has_hostel: school.has_hostel,
+                school_logo: school.school_logo,
+
                 password: '', // Don't pre-fill password for security
             });
             setErrors({});
         } else if (!isOpen) {
             setFormData({
-                id: "",
                 name: "",
                 address: "",
                 district: "",
@@ -176,11 +171,9 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
     };
 
     const handleSubmit = () => {
-        console.log("Submit clicked");  // Debug
-
         if (!validateForm()) return;
 
-        const payload: SchoolData = {
+        const payload: SchoolDataForm = {
             ...formData,
             postal_code: Number(formData.postal_code) || "",
             latitude: Number(formData.latitude) || "",
@@ -189,7 +182,6 @@ export const EditSchoolModal: React.FC<EditSchoolModalProps> = ({
             student_capacity: Number(formData.student_capacity) || "",
             school_code: Number(formData.school_code) || "",
         };
-        console.log("payload", payload)
 
         onSubmit(payload, school?.id);
         onClose();

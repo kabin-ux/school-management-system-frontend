@@ -13,6 +13,7 @@ export interface FilterValues {
     search: string;
     class: string;
 }
+
 const FeeOverview: React.FC = () => {
     const [filters, setFilters] = useState<FilterValues>({
         search: '',

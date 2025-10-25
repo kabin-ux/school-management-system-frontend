@@ -1,23 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../lib/axios";
 import toast from "react-hot-toast";
-
-// TYPES
-export interface SuperAdmin {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    password?: string;
-    address: string;
-    created_by: string | null;
-    status: "active" | "inactive" | string;
-    profile_image: string | null;
-    phone_number: string;
-    createdAt?: string;
-    updatedAt?: string;
-    deletedAt?: string | null;
-}
+import type { SuperAdmin } from "../types/super-admin-dashboard.types";
 
 // QUERY HOOKS
 

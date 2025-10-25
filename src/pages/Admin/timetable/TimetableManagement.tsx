@@ -4,9 +4,9 @@ import TimetableFilters from '../../../components/Admin/timetable/TimetableFilte
 import { WeeklyTimetable } from '../../../components/Admin/timetable/WeeklyTimetable';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
-import { CreateTimeTableModal, type TimetableAttributes, type TimeTableForm } from '../../../components/Admin/timetable/CreateTimeTableModal';
+import { CreateTimeTableModal, type TimeTableForm } from '../../../components/Admin/timetable/CreateTimeTableModal';
 import { EditTimeSlotModal, type EditTimeSlotForm } from '../../../components/Admin/timetable/EditTimeSlotModal';
-import type { TimeSlot } from '../../../types/timetable.types';
+import type { TimeSlot, TimetableAttributes } from '../../../types/timetable.types';
 import { useClasses } from '../../../hooks/useClasses';
 import { useAllTimetables, useCreateTimetable, useDeleteTimetable } from '../../../hooks/useTimeTable';
 import { useDeleteTimeSlot, useUpdateTimeSlot } from '../../../hooks/useTimeSlot';

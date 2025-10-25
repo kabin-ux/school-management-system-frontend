@@ -1,4 +1,4 @@
-import { Mail, Phone, Users, MessageCircle, Unlink, Edit, Trash2 } from 'lucide-react';
+import { Mail, Phone, Users, Edit, Trash2 } from 'lucide-react';
 import type { Parent } from '../../../types/parent.types';
 import type { FC } from 'react';
 import EmptyState from '../../../common/EmptyState';
@@ -24,7 +24,7 @@ export const ParentGrid: FC<ParentGridModalProps> = ({ parents, onEdit, onDelete
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {parents?.map((parent) => (
-            <div key={parent?.id} className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div key={parent?.id} className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer">
               <div className="flex flex-col items-center text-center mb-4">
                 <img
                   src={parent?.avatar}
@@ -75,15 +75,7 @@ export const ParentGrid: FC<ParentGridModalProps> = ({ parents, onEdit, onDelete
               </div>
 
               <div className="space-y-2">
-                {/* <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-2">
-                  <MessageCircle className="w-4 h-4" />
-                  Message
-                </button>
-                <button className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center justify-center gap-2">
-                  <Unlink className="w-4 h-4" />
-                  Unlink
-                </button> */}
-                <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center justify-center gap-2"
+                <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-2"
                   onClick={() => onEdit(parent)}
                 >
                   <Edit className='w-4 h-4' />

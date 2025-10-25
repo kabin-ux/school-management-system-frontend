@@ -6,8 +6,9 @@ import { PlusIcon } from 'lucide-react';
 import { SuperAdminTable } from '../../../components/SuperAdmin/superadmins/SuperAdminTable';
 import AddSuperAdminModal from '../../../components/SuperAdmin/superadmins/AddSuperAdminModal';
 import EditSuperAdminModal from '../../../components/SuperAdmin/superadmins/EditSuperAdminModal';
-import { useCreateSuperAdmin, useDeleteSuperAdmin, useSuperAdmins, useUpdateSuperAdmin, type SuperAdmin } from '../../../hooks/useSuperAdmin';
+import { useCreateSuperAdmin, useDeleteSuperAdmin, useSuperAdmins, useUpdateSuperAdmin } from '../../../hooks/useSuperAdmin';
 import type { SuperAdminForm } from '../../../types/super-admin-super-admins.types';
+import type { SuperAdmin } from '../../../types/super-admin-dashboard.types';
 
 export const SuperAdminsPage: React.FC = () => {
   const navigate = useNavigate();

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import type { SchoolData } from './AddSchoolModal';
 import EmptyState from '../../../common/EmptyState';
 import { School } from 'lucide-react';
+import type { SchoolData } from '../../../types/partner-school.types';
 
 interface PartnerSchoolTableProps {
   schoolData?: SchoolData[];

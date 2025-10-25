@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, User } from 'lucide-react';
-import type { Teacher } from '../../../types/teacher.types';
-import type { TeacherForm } from '../../../types/admin-dashboard.types';
+import type { Teacher, TeacherForm } from '../../../types/teacher.types';
 
 interface EditTeacherModalProps {
     isOpen: boolean;

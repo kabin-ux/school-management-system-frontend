@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { X, User } from "lucide-react";
-import type { Section } from "./AddSectionModal";
+import type { Section } from "../../../types/class.types";
 
 interface EditSectionForm {
   section_name: string;
@@ -11,7 +11,7 @@ interface EditSectionModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (updates: EditSectionForm) => void;
-  section?: Section | null;
+  section: Section | null;
   isLoading?: boolean;
 }
 
@@ -123,9 +123,8 @@ const EditSectionModal: React.FC<EditSectionModalProps> = ({
                 name="section_name"
                 value={formData.section_name}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.name ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.name ? "border-red-500" : "border-gray-300"
+                  }`}
                 placeholder="Enter section name"
               />
               {errors.section_name && (

@@ -3,20 +3,10 @@ import { Edit, Trash2, Plus, ClipboardClock } from "lucide-react";
 import type { TimeSlot } from "../../../types/timetable.types";
 import EmptyState from "../../../common/EmptyState";
 
-interface Timeslot {
-  id: string;
-  dayOfWeek: string; // e.g., "sunday"
-  label: string;     // e.g., "First Period"
-  startTime: string; // "08:00:00"
-  endTime: string;   // "09:00:00"
-  subject?: string;
-  teacher?: string;
-}
-
 interface Timetable {
   id: string;
   name: string;
-  timeslots: Timeslot[];
+  timeslots: TimeSlot[];
 }
 
 interface WeeklyTimetableProps {
@@ -53,7 +43,7 @@ export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({
 
         // Group timeslots by day
         const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday"];
-        const slotsByDay: Record<string, Timeslot[]> = {};
+        const slotsByDay: Record<string,  TimeSlot[]> = {};
         days.forEach(day => {
           slotsByDay[day] = timetable.timeslots ? timetable.timeslots.filter(ts => ts.dayOfWeek === day) : [];
         });

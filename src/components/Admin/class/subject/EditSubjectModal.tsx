@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { X, User } from "lucide-react";
 import type { Subject, SubjectForm } from "../../../../types/class.types";
 
-
 interface EditSubjectModalProps {
     isOpen: boolean;
     onClose: () => void;

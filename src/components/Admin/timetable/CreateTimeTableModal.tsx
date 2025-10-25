@@ -3,16 +3,6 @@ import { X } from "lucide-react";
 import type { Grade } from "../../../types/class.types";
 import { useSectionsByClass } from "../../../hooks/useSection";
 
-export interface TimetableAttributes {
-    id: string;
-    classId: string;
-    sectionId?: string | null;
-    name: string;
-    createdAt?: Date;
-    updatedAt?: Date;
-    deletedAt?: Date | null;
-}
-
 export interface TimeTableForm {
     classId: string,
     sectionId: string,

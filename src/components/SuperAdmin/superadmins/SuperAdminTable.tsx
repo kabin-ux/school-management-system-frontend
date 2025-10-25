@@ -1,7 +1,7 @@
 import React from 'react';
-import type { SuperAdmin } from '../../../features/superAdminSlice';
 import { Eye, Search, Trash2, Edit } from 'lucide-react';
 import { Pagination } from '../../../common/Pagination';
+import type { SuperAdmin } from '../../../types/super-admin-dashboard.types';
 
 interface SuperAdminTableProps {
     superAdminData?: SuperAdmin[];
@@ -42,7 +42,7 @@ export const SuperAdminTable: React.FC<SuperAdminTableProps> = ({ superAdminData
                                 "ID",
                                 "Name",
                                 "Location",
-                                "Email Address",
+                                "Email",
                                 "Contact No.",
                                 "Status",
                                 "Created By",

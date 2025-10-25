@@ -5,10 +5,11 @@ import { ClassDetailsHeader } from "../../../../components/Admin/class/ClassDeta
 import { ClassDetailsStats } from "../../../../components/Admin/class/ClassDetailsStats";
 import ClassSections from "../../../../components/Admin/class/ClassDetailsOverview";
 import { useParams } from "react-router-dom";
-import AddSectionModal, { type Section } from "../../../../components/Admin/section/AddSectionModal";
 import EditSectionModal from "../../../../components/Admin/section/EditSectionModal";
 import { useClassDetails } from "../../../../hooks/useClasses";
 import { useCreateSection, useDeleteSection, useSectionsByClass, useUpdateSection } from "../../../../hooks/useSection";
+import type { Section } from "../../../../types/class.types";
+import AddSectionModal from "../../../../components/Admin/section/AddSectionModal";
 
 
 const ClassDetails: React.FC = () => {

@@ -1,3 +1,13 @@
+export interface TimetableAttributes {
+    id: string;
+    classId: string;
+    sectionId?: string | null;
+    name: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+    deletedAt?: Date | null;
+}
+
 export interface TimeSlot {
   id: string;
   dayOfWeek: string; // e.g., "sunday"

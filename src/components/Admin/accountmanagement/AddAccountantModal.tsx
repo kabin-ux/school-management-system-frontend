@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, User, Mail, Phone, Calendar, MapPin } from 'lucide-react';
 
-interface Accountant {
-  id?: number;
+export interface AccountantForm {
   firstName: string;
   lastName: string;
   email: string;
@@ -19,7 +18,7 @@ interface Accountant {
 interface AddAccountantModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (accountant: Omit<Accountant, 'id'>) => void;
+  onSubmit: (accountant: AccountantForm) => void;
   isLoading?: boolean;
 }
 
@@ -29,7 +28,7 @@ const AddAccountantModal: React.FC<AddAccountantModalProps> = ({
   onSubmit,
   isLoading,
 }) => {
-  const [formData, setFormData] = useState<Omit<Accountant, 'id'>>({
+  const [formData, setFormData] = useState<AccountantForm>({
     firstName: '',
     lastName: '',
     email: '',

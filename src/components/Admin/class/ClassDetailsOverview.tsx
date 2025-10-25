@@ -1,6 +1,6 @@
 import { Trash2, Edit, Layers, Clock, Calendar } from 'lucide-react';
 import EmptyState from '../../../common/EmptyState';
-import type { Section } from '../section/AddSectionModal';
+import type { Section } from '../../../types/class.types';
 
 interface ClassSectionsProps {
     sections: Section[];

@@ -12,12 +12,12 @@ import { useSectionsByClass } from '../../../hooks/useSection';
 const AttendanceMonitoring: React.FC = () => {
     const [viewType, setViewType] = useState('Student');
     const [selectedDate, setSelectedDate] = useState('mm/dd/yyyy');
-    const [selectedClass, setSelectedClass] = useState('Select Class');
+    const [selectedClass, setSelectedClass] = useState(null);
     const [selectedSection, setSelectedSection] = useState('Select Section');
 
 
     const { data: classes } = useClasses();
-    const { data: sections } = useSectionsByClass(selectedClass.id);
+    // const { data: sections } = useSectionsByClass(selectedClass.id);
     const { data: attendanceData } = useStudentAttendanceByClassSection('45355777-5b2d-44be-863d-8a7caa9550c1', 'd2b88fcd-4fa5-4a1b-a677-618f582189c7', '2025-10-01', '2025-10-31')
 
     return (

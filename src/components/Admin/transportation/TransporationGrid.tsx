@@ -33,11 +33,10 @@ export default function TransportationGrid({ transportations, onEdit, onDelete }
                   <h3 className="font-semibold text-gray-900">{transportation.driverName}</h3>
                   <p className="text-sm text-gray-500 mb-2">{transportation.vehicleNumber}</p>
                   <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      transportation.status === 'Active'
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${transportation.status === 'Active'
                         ? 'bg-green-100 text-green-800'
                         : 'bg-gray-100 text-gray-800'
-                    }`}
+                      }`}
                   >
                     {transportation.status}
                   </span>

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { X, Phone, Hash, DollarSign, MapPin, Car, CheckCircle } from 'lucide-react';
-import type { Transportation } from '../../../types/admin-transportation.types';
+import type { TransportationForm } from '../../../types/admin-transportation.types';
 
 interface AddTransportationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (transport: Omit<Transportation, 'id'>) => void;
+  onSubmit: (transport: TransportationForm) => void;
   isLoading?: boolean;
 }
 
@@ -15,7 +15,7 @@ const AddTransportationModal: React.FC<AddTransportationModalProps> = ({
   onSubmit,
   isLoading
 }) => {
-  const [formData, setFormData] = useState<Omit<Transportation, 'id'>>({
+  const [formData, setFormData] = useState<TransportationForm>({
     vehicleNumber: '',
     driverName: '',
     driverPhone: '',

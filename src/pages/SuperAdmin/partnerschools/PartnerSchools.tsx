@@ -8,10 +8,10 @@ import { PlusIcon } from 'lucide-react';
 import { useAddSchool, useSchools } from '../../../hooks/useSchools';
 
 export const PartnerSchools: React.FC = () => {
-  const navigate = useNavigate();
   const { data: schools, isLoading: loading } = useSchools();
   const addSchoolMutation = useAddSchool();
 
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleViewPartnerSchoolDetails = (schoolCode: string) => {

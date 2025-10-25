@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, User, Mail, Phone, MapPin, Users } from 'lucide-react'; // Added Users icon
 import type { Student } from '../../../types/student.types';
 
-interface Parent {
-    id?: number;
+export interface ParentForm {
     name: string;
     email: string;
     phone: string;
@@ -16,7 +15,7 @@ interface Parent {
 interface AddParentModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (parent: Omit<Parent, 'id'>) => void;
+    onSubmit: (parent: ParentForm) => void;
     isLoading?: boolean;
     students: Student[]; // Provided list of students
 }
@@ -28,7 +27,7 @@ const AddParentModal: React.FC<AddParentModalProps> = ({
     isLoading = false,
     students
 }) => {
-    const [formData, setFormData] = useState<Omit<Parent, 'id'>>({
+    const [formData, setFormData] = useState<ParentForm>({
         name: '',
         email: '',
         phone: '',

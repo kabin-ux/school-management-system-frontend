@@ -2,18 +2,7 @@ import React, { useState } from "react";
 import { X } from "lucide-react";
 import type { Grade } from "../../../types/class.types";
 import { useSectionsByClass } from "../../../hooks/useSection";
-
-interface StudentForm {
-  firstName: string;
-  lastName: string;
-  email: string;
-  class_id: string;
-  section_id: string;
-  rollNumber: string;
-  gender: string;
-  dateOfBirth: string;
-  address: string;
-}
+import type { StudentForm } from "../../../types/student.types";
 
 interface StudentModalProps {
   isOpen: boolean;

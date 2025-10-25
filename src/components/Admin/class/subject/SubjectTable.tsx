@@ -1,7 +1,7 @@
 import React from 'react';
 import { BookUser, Edit, Equal, Trash2 } from 'lucide-react';
 import EmptyState from '../../../../common/EmptyState';
-import type { Subject } from '../../../../features/subjectSlice';
+import type { Subject } from '../../../../types/class.types';
 
 interface SubjectTableProps {
     subjects: Subject[];

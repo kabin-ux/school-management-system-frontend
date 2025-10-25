@@ -1,33 +1,71 @@
-// export interface School {
-//   id: string;
-//   schoolCode: string;
-//   name: string;
-//   location: string;
-//   totalStudents: number;
-//   totalTeachers: number;
-//   totalParents: number;
-//   status: 'Active' | 'Inactive';
-//   subscription: 'Premium' | 'Basic';
-//   payment: 'Fully paid' | 'Partial paid';
-// }
-
-export interface School {
+export interface SchoolData {
     id: string;
     name: string;
+    address: string;
+    district: string;
+    city: string;
+    state: string;
+    postal_code: string | number;
+    latitude: string | number;
+    longitude: string | number;
+    phone: string;
     email: string;
+    password: string;
+    image: string;
+    verified: boolean;
+    principal_name: string;
+    principal_contact: string;
     contact: string;
-    status: string;
-    school_code: string;
-    [key: string]: any;
+    school_type: string;
+    status?: string;
+    totalStudents?: number;
+    totalTeachers?: number;
+    totalParents?: number;
+    subscription?: string;
+    payment?: string;
+    has_transport: boolean;
+    established_year: string | number;
+    student_capacity: string | number;
+    school_code: string | number;
+    details: string;
+    grade_range: string;
+    has_hostel: boolean;
+    school_logo: string;
 }
 
-export interface Ticket {
-  id: string;
-  title: string;
-  priority: 'High' | 'Medium' | 'Low';
-  assignee: string;
-  timeAgo: string;
-  status: 'Open' | 'In progress' | 'Resolved';
+
+export interface SchoolDataForm {
+    name: string;
+    address: string;
+    district: string;
+    city: string;
+    state: string;
+    postal_code: string | number;
+    latitude: string | number;
+    longitude: string | number;
+    phone: string;
+    email: string;
+    password: string;
+    image: string;
+    verified: boolean;
+    principal_name: string;
+    principal_contact: string;
+    contact: string;
+    school_type: string;
+    status?: string;
+    totalStudents?: number;
+    totalTeachers?: number;
+    totalParents?: number;
+    subscription?: string;
+    payment?: string;
+    has_transport: boolean;
+    established_year: string | number;
+    student_capacity: string | number;
+    school_code: string | number;
+    details: string;
+    grade_range: string;
+    has_hostel: boolean;
+    school_logo: string;
 }
 
 export interface Admin {
