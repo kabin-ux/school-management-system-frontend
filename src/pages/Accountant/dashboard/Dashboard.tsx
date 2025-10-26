@@ -2,7 +2,7 @@ import { FileText, GraduationCap, UsersIcon, Book } from 'lucide-react';
 import StatCard from '../../../components/Accountant/dashboard/StatsCard';
 import FeeChart from '../../../components/Accountant/dashboard/FeeChart';
 import QuickActions from '../../../components/Accountant/dashboard/QuickActions';
-import TransactionTable from '../../../components/Accountant/dashboard/TransactionTable';
+import { TransactionTable } from '../../../components/Accountant/dashboard/TransactionTable';
 import { Sidebar } from '../../../components/Accountant/layout/Sidebar';
 import { AccountantDashboardHeader } from '../../../components/Accountant/layout/DashboardHeader';
 import { useAccountantDashboard, useRecentPayments } from '../../../hooks/useDashboard';

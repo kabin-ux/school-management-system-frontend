@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../../components/SuperAdmin/layout/Sidebar';
 import { DashboardHeader } from '../../../components/SuperAdmin/layout/DashboardHeader';
 import SupportFilters from '../../../components/SuperAdmin/support/SupportFilters';
-import SupportStats from '../../../components/SuperAdmin/support/SupportStats';
+import { SupportStats } from '../../../components/SuperAdmin/support/SupportStats';
 import SupportTicketsTable from '../../../components/SuperAdmin/support/SupportTicketsTable';
 import { useDeleteSupportTicket, useSupportTickets, useSupportTicketSuperAdminDashboardData } from '../../../hooks/useSupportTickets';
 
