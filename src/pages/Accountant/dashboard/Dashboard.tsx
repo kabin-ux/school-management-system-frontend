@@ -5,10 +5,11 @@ import QuickActions from '../../../components/Accountant/dashboard/QuickActions'
 import TransactionTable from '../../../components/Accountant/dashboard/TransactionTable';
 import { Sidebar } from '../../../components/Accountant/layout/Sidebar';
 import { AccountantDashboardHeader } from '../../../components/Accountant/layout/DashboardHeader';
-import { useAccountantDashboard } from '../../../hooks/useDashboard';
+import { useAccountantDashboard, useRecentPayments } from '../../../hooks/useDashboard';
 
 export default function AccountantDashboard() {
     const { data: accountantDashboard = null } = useAccountantDashboard();
+    const { data: recentPayments = [] } = useRecentPayments();
 
     return (
         <div className="flex h-screen bg-gray-50 overflow-hidden">
@@ -114,7 +115,9 @@ export default function AccountantDashboard() {
 
                     {/* Recent Transactions */}
                     <div className="overflow-x-auto">
-                        <TransactionTable />
+                        <TransactionTable
+                            recentPayments={recentPayments}
+                        />
                     </div>
                 </main>
             </div>

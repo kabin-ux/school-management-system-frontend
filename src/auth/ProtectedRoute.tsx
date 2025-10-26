@@ -27,6 +27,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles 
     }
 
     try {
+        console.log(user)
+        console.log(token)
         const decoded = jwtDecode<DecodedToken>(token || "");
         const currentTime = Date.now() / 1000;
 

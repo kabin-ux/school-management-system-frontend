@@ -1,5 +1,6 @@
 import React from 'react';
-import { Ticket, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Ticket, Clock, CheckCircle, AlertTriangle, BookOpenTextIcon } from 'lucide-react';
+import type { SupportTicketDashboardData } from '../../../hooks/useSupportTickets';
 
 interface StatCardProps {
   title: string;
@@ -7,6 +8,10 @@ interface StatCardProps {
   icon: React.ReactNode;
   bgColor: string;
   iconColor: string;
+}
+
+interface SupportStatsProps {
+  ticketStats: SupportTicketDashboardData
 }
 
 function StatCard({ title, value, icon, bgColor, iconColor }: StatCardProps) {
@@ -27,36 +32,36 @@ function StatCard({ title, value, icon, bgColor, iconColor }: StatCardProps) {
   );
 }
 
-export default function SupportStats() {
+export const SupportStats: React.FC<SupportStatsProps> = ({ ticketStats }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
       <StatCard
         title="Total Tickets"
-        value="105"
+        value={ticketStats.totalSupportTickets.toString()}
         icon={<Ticket className="w-6 h-6" />}
         bgColor="bg-blue-50"
         iconColor="text-blue-600"
       />
       <StatCard
         title="In Progress"
-        value="26"
+        value={ticketStats.totalInProgressTickets.toString()}
         icon={<Clock className="w-6 h-6" />}
         bgColor="bg-yellow-50"
         iconColor="text-yellow-600"
       />
       <StatCard
+        title="Open"
+        value={ticketStats.totalOpenTickets.toString()}
+        icon={<BookOpenTextIcon className="w-6 h-6" />}
+        bgColor="bg-pink-50"
+        iconColor="text-pink-600"
+      />
+      <StatCard
         title="Resolved"
-        value="59"
+        value={ticketStats.totalResolvedTickets.toString()}
         icon={<CheckCircle className="w-6 h-6" />}
         bgColor="bg-green-50"
         iconColor="text-green-600"
-      />
-      <StatCard
-        title="High Priority"
-        value="20"
-        icon={<AlertTriangle className="w-6 h-6" />}
-        bgColor="bg-red-50"
-        iconColor="text-red-600"
       />
     </div>
   );

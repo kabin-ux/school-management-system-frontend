@@ -5,12 +5,13 @@ import { NewSupportTicket } from '../../../components/Admin/support/NewSupportTi
 import { RecentTickets } from '../../../components/Admin/support/RecentTickets';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
-import { useCreateSupportTicket, useDeleteSupportTicket, useSupportTicketsBySchool, useUpdateSupportTicket } from '../../../hooks/useSupportTickets';
+import { useCreateSupportTicket, useDeleteSupportTicket, useSupportTicketAdminDashboardData, useSupportTicketsBySchool, useUpdateSupportTicket } from '../../../hooks/useSupportTickets';
 import type { SupportTicket } from '../../../types/support.types';
 import { EditSupportTicketModal } from '../../../components/Admin/support/EditSupportTicketModal';
 
 const AdminSupportConsole: React.FC = () => {
-    const { data: tickets = [], isLoading: loading } = useSupportTicketsBySchool();
+    const { data: tickets = [], isLoading: loading } = useSupportTicketsBySchool('');
+    const { data: ticketStats } = useSupportTicketAdminDashboardData();
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedSupportTicket, setSelectedSupportTicket] = useState<SupportTicket | null>(null);
@@ -52,7 +53,9 @@ const AdminSupportConsole: React.FC = () => {
                 <main className="flex-1 p-6 overflow-y-auto">
                     <div className="max-w-7xl mx-auto">
                         <SupportConsoleHeader />
-                        <SupportConsoleStats />
+                        <SupportConsoleStats
+                            ticketStats={ticketStats ?? { totalSupportTickets: 0, totalOpenTickets: 0, totalResolvedTickets: 0, totalClosedTickets: 0, totalInProgressTickets: 0 }}
+                        />
                         <NewSupportTicket
                             onAdd={handleAddSupportTicket}
                             isLoading={loading}

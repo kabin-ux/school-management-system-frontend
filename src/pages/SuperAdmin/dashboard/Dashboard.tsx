@@ -3,7 +3,7 @@ import { Sidebar } from "../../../components/SuperAdmin/layout/Sidebar";
 import { StatsCard } from "../../../components/SuperAdmin/dashboard/StatsCard";
 import { FeesCollected } from "../../../components/SuperAdmin/dashboard/FeesCollected";
 import { RecentNotifications } from "../../../components/SuperAdmin/dashboard/RecentNotifications";
-import SupportTickets from "../../../components/SuperAdmin/partnerschools/SupportTickets";
+import { SupportTickets } from "../../../components/SuperAdmin/partnerschools/SupportTickets";
 import { FeeCollectionTrend } from "../../../components/SuperAdmin/dashboard/FeeCollectionTrend";
 import { QuickActions } from "../../../components/SuperAdmin/dashboard/QuickActions";
 import { useSuperAdminDashboard } from "../../../hooks/useDashboard";

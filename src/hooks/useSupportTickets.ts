@@ -3,6 +3,14 @@ import api from "../lib/axios";
 import type { SupportTicket } from "../types/support.types";
 import toast from "react-hot-toast";
 
+export interface SupportTicketDashboardData {
+  totalOpenTickets: number;
+  totalInProgressTickets: number;
+  totalResolvedTickets: number;
+  totalClosedTickets: number;
+  totalSupportTickets: number;
+}
+
 // Get all support tickets
 export const useSupportTickets = () => {
   return useQuery<SupportTicket[]>({
@@ -27,11 +35,12 @@ export const useSupportTicketById = (id: string) => {
 };
 
 // Get support tickets by school ID
-export const useSupportTicketsBySchool = () => {
+export const useSupportTicketsBySchool = (id: string) => {
   return useQuery<SupportTicket[]>({
     queryKey: ["supportTicketsBySchool"],
     queryFn: async () => {
-      const res = await api.get(`/support/my-school`);
+      const url = id ? `/support/my-school?id=${id}` : 'support/my-school';
+      const res = await api.get(url);
       return res.data.data;
     },
   });
@@ -144,6 +153,26 @@ export const useDeleteSupportTicket = () => {
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.error || "Failed to delete support ticket");
+    },
+  });
+};
+
+export const useSupportTicketSuperAdminDashboardData = () => {
+  return useQuery<SupportTicketDashboardData>({
+    queryKey: ["supportTicketDashboard"],
+    queryFn: async () => {
+      const res = await api.get("/dashboard/support-ticket");
+      return res.data.data;
+    },
+  });
+};
+
+export const useSupportTicketAdminDashboardData = () => {
+  return useQuery<SupportTicketDashboardData>({
+    queryKey: ["supportTicketDashboard"],
+    queryFn: async () => {
+      const res = await api.get("/dashboard/support-ticket/my-school");
+      return res.data.data;
     },
   });
 };

@@ -5,7 +5,7 @@ import { DashboardHeader } from '../../../components/SuperAdmin/layout/Dashboard
 import SupportFilters from '../../../components/SuperAdmin/support/SupportFilters';
 import SupportStats from '../../../components/SuperAdmin/support/SupportStats';
 import SupportTicketsTable from '../../../components/SuperAdmin/support/SupportTicketsTable';
-import { useDeleteSupportTicket, useSupportTickets } from '../../../hooks/useSupportTickets';
+import { useDeleteSupportTicket, useSupportTickets, useSupportTicketSuperAdminDashboardData } from '../../../hooks/useSupportTickets';
 
 export default function SupportConsole() {
     const [userType, setUserType] = useState('All');
@@ -16,6 +16,8 @@ export default function SupportConsole() {
     const navigate = useNavigate();
 
     const { data: tickets = [] } = useSupportTickets();
+    const { data: ticketStats } = useSupportTicketSuperAdminDashboardData();
+
     const deleteSupportTicketMutation = useDeleteSupportTicket();
 
     const handleViewTicket = (ticketId: string) => {
@@ -42,7 +44,9 @@ export default function SupportConsole() {
                     </div>
 
                     {/* Stats Cards */}
-                    <SupportStats />
+                    <SupportStats
+                        ticketStats={ticketStats}
+                    />
 
                     {/* Filters */}
                     <SupportFilters

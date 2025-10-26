@@ -46,6 +46,27 @@ export interface AccountantDashboard {
   todayTransaction: number;
 }
 
+export interface RecentPayment {
+  id: string;
+  amount: number;
+  createdAt: string;
+  student: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    class: {
+      id: string;
+      name: string;
+    };
+  };
+  accountant: {
+    id: string;
+    name: string;
+    email: string;
+  };
+}
+
 // Fetch School Admin Dashboard
 export const useSchoolAdminDashboard = () => {
   return useQuery<SchoolAdminDashboard>({
@@ -110,4 +131,14 @@ export const useInvalidateDashboard = () => {
     queryClient.invalidateQueries({ queryKey: ["school-admin-dashboard"] });
     queryClient.invalidateQueries({ queryKey: ["super-admin-dashboard"] });
   };
+};
+
+export const useRecentPayments = (limit = 10) => {
+  return useQuery<RecentPayment[]>({
+    queryKey: ["recentPayments", limit],
+    queryFn: async () => {
+      const res = await api.get(`/payment/recent?limit=${limit}`);
+      return res.data.data;
+    },
+  });
 };

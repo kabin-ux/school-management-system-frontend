@@ -6,18 +6,19 @@ import FinancialOverview from "../../../../components/SuperAdmin/partnerschools/
 import SchoolHeader from "../../../../components/SuperAdmin/partnerschools/SchoolHeader";
 import SchoolPlan from "../../../../components/SuperAdmin/partnerschools/SchoolPlan";
 import SchoolStats from "../../../../components/SuperAdmin/partnerschools/SchoolStats";
-import SupportTickets from "../../../../components/SuperAdmin/partnerschools/SupportTickets";
+import { SupportTickets } from "../../../../components/SuperAdmin/partnerschools/SupportTickets";
 import SystemInformation from "../../../../components/SuperAdmin/partnerschools/SystemInformation";
 import Loading from "../../../../common/Loading";
-import type { SchoolData } from "../../../../components/SuperAdmin/partnerschools/AddSchoolModal";
-import toast from "react-hot-toast";
 import { EditSchoolModal } from "../../../../components/SuperAdmin/partnerschools/EditSchoolModal";
 import { useDeleteSchool, useSchoolDetails, useUpdateSchool } from "../../../../hooks/useSchools";
+import type { SchoolData } from "../../../../types/partner-school.types";
+import { useSupportTicketsBySchool } from "../../../../hooks/useSupportTickets";
 
 export default function PartnerSchoolDetails() {
     const { id } = useParams<{ id: string }>(); // expects URL like /super-admin/partner-schools/:id
 
-    const { data: currentSchool, isLoading: loading, isError: error } = useSchoolDetails(id)
+    const { data: currentSchool, isLoading: loading, isError: error } = useSchoolDetails(id ? id : '');
+    const { data: supportTickets = [] } = useSupportTicketsBySchool(id ? id : '')
     const updateSchoolMutation = useUpdateSchool();
     const deleteSchoolMutation = useDeleteSchool();
 
@@ -73,7 +74,7 @@ export default function PartnerSchoolDetails() {
 
                     {/* School Statistics */}
                     <SchoolStats
-                    schoolData={currentSchool}
+                        schoolData={currentSchool}
                     />
 
                     {/* Bottom Section */}
@@ -81,7 +82,9 @@ export default function PartnerSchoolDetails() {
                         {/* Financial Overview - spans 2 columns */}
                         <div className="lg:col-span-2">
                             <FinancialOverview />
-                            <SupportTickets />
+                            <SupportTickets
+                                supportTickets={supportTickets}
+                            />
                         </div>
 
                         {/* System Information - spans 1 column */}
