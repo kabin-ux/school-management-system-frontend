@@ -9,6 +9,7 @@ interface InvoiceTableProps {
     currentPage: number;
     totalPages: number;
     onPageChange: (page: number) => void;
+    onClearPayment: (id: string) => void;
     viewType: 'Student' | 'Teacher'; // Add this prop
 }
 
@@ -17,6 +18,7 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
     currentPage,
     totalPages,
     onPageChange,
+    onClearPayment,
     viewType
 }) => {
     return (
@@ -99,7 +101,7 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     {invoice.status === 'Completed' ? '' : <button
-                                        // onClick={}
+                                        onClick={() => onClearPayment(invoice.id)}
                                         className="text-blue-600 hover:text-blue-800 font-medium"
                                     >
                                         <Eraser className="w-4 h-4" />

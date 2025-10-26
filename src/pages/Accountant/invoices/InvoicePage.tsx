@@ -5,7 +5,7 @@ import { AccountantDashboardHeader } from "../../../components/Accountant/layout
 import { InvoiceFilters } from "../../../components/Accountant/invoice/InvoiceFilters";
 import { InvoiceTable } from "../../../components/Accountant/invoice/InvoiceTable";
 import { DefaulterList } from "../../../components/Accountant/invoice/DefaulterList";
-import { useAllPayments } from "../../../hooks/usePayments";
+import { useAllPayments, useClearFeePayment } from "../../../hooks/usePayments";
 import { useClasses } from "../../../hooks/useClasses";
 
 export default function InvoicesPage() {
@@ -17,7 +17,13 @@ export default function InvoicesPage() {
     });
     const [currentPage, setCurrentPage] = useState(1);
     const { data: payments = [] } = useAllPayments();
+    const clearFeeMutation = useClearFeePayment();
     const { data: classes = [] } = useClasses();
+
+    const handleClearPayment = (id: string) => {
+        clearFeeMutation.mutate(id)
+
+    };
 
     // Mock data - replace with actual API calls
     // const invoices: Invoice[] = [
@@ -116,6 +122,7 @@ export default function InvoicesPage() {
                         totalPages={totalPages}
                         onPageChange={setCurrentPage}
                         viewType={filters.viewType}
+                        onClearPayment={handleClearPayment}
                     />
 
                     <DefaulterList

@@ -69,7 +69,7 @@ export const useClearFeePayment = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const res = await api.put(`/payment/clear/${id}`);
+      const res = await api.put(`/payment/clear-fee/${id}`);
       return res.data.data;
     },
     onSuccess: () => {
