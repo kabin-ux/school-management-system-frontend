@@ -1,10 +1,9 @@
 import { DollarSign } from "lucide-react";
 import EmptyState from "../../../common/EmptyState";
-import type { RecentPayment } from "../../../hooks/useDashboard";
-import type { Transaction } from "../../../types/accountant-dashboard.types";
+import type { Invoice } from "../../../types/invoice.types";
 
 interface TransactionTableProps {
-  recentPayments: RecentPayment[]
+  recentPayments: Invoice[]
 }
 
 export const TransactionTable: React.FC<TransactionTableProps> = ({ recentPayments }) => {
@@ -79,13 +78,15 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({ recentPaymen
                     {transaction.student.class.name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    {transaction.createdAt}
+                    {transaction.payment_date
+                      ? new Date(transaction.payment_date).toLocaleDateString()
+                      : "N/A"}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
                     Rs. {transaction.amount}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    Cash
+                    {transaction.method}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={getStatusBadge(transaction.status)}>

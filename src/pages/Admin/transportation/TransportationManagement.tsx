@@ -3,12 +3,12 @@ import { Bus } from 'lucide-react';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import type { Transportation } from '../../../types/admin-transportation.types';
-import TransportationStats from '../../../components/Admin/transportation/TransportationStats';
+import { TransportationStats } from '../../../components/Admin/transportation/TransportationStats';
 import TransportationFilter from '../../../components/Admin/transportation/TransportationFilters';
 import TransportationGrid from '../../../components/Admin/transportation/TransporationGrid';
 import AddTransportationModal from '../../../components/Admin/transportation/AddTransportationModal';
 import EditTransportationModal from '../../../components/Admin/transportation/EditTransporationModal';
-import { useAllTransportation, useCreateTransportation, useDeleteTransportation, useUpdateTransportation } from '../../../hooks/useTransportation';
+import { useAllTransportation, useCreateTransportation, useDeleteTransportation, useTransportationDashboardData, useUpdateTransportation } from '../../../hooks/useTransportation';
 
 export default function TransportationManagement() {
     // Filter states
@@ -16,6 +16,8 @@ export default function TransportationManagement() {
     const [selectedStatus, setSelectedStatus] = useState("All");
 
     const { data: transportations = [], isLoading: loading } = useAllTransportation();
+    const { data: transportationDashboardData } = useTransportationDashboardData();
+
     const addTransportationMutation = useCreateTransportation();
     const updateTransportationMutation = useUpdateTransportation();
     const deleteTransportationMutation = useDeleteTransportation();
@@ -23,7 +25,6 @@ export default function TransportationManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedTransportation, setSelectedTransportation] = useState<Transportation | null>(null);
-
 
     // Filtered list
     const filteredTransportations = useMemo(() => {
@@ -84,7 +85,9 @@ export default function TransportationManagement() {
                         </div>
 
                         {/* Stats Cards */}
-                        <TransportationStats />
+                        <TransportationStats
+                            transportationDashboardData={transportationDashboardData ?? { totalVehicles: 0, totalDrivers: 0, totalRoutes: 0 }}
+                        />
 
                         {/* Filters */}
                         <TransportationFilter

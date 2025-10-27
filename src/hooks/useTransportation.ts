@@ -2,6 +2,12 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../lib/axios";
 import toast from "react-hot-toast";
 
+export interface TransportationDashboardData {
+    totalVehicles: number,
+    totalDrivers: number,
+    totalRoutes: number
+}
+
 // Get All Transportation Records
 export const useAllTransportation = () => {
     return useQuery({
@@ -83,4 +89,12 @@ export const useDeleteTransportation = () => {
     });
 };
 
-
+export const useTransportationDashboardData = () => {
+    return useQuery<TransportationDashboardData>({
+        queryKey: ["transportationDashboardData"],
+        queryFn: async () => {
+            const res = await api.get("/dashboard/transportation");
+            return res.data.data;
+        },
+    });
+};

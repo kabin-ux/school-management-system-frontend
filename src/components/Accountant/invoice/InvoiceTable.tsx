@@ -88,7 +88,7 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
                                         : "N/A"}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                                    {invoice.amount}
+                                    Rs. {invoice.amount}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
                                     {invoice.accountant.firstName} {invoice.accountant.lastName}

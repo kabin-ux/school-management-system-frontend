@@ -2,6 +2,13 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../lib/axios";
 import toast from "react-hot-toast";
 
+export interface ParentDashboardData {
+    totalParents: number,
+    linkedStudents: number,
+    totalParentRegisterOnThisMonth: number
+
+}
+
 // Fetch All Parents
 export const useParents = () => {
     return useQuery({
@@ -87,6 +94,16 @@ export const useDeleteParent = () => {
         },
         onError: (error: any) => {
             toast.error(error.response?.data?.error || "Failed to delete parent");
+        },
+    });
+};
+
+export const useParentDashboardData = () => {
+    return useQuery<ParentDashboardData>({
+        queryKey: ["parentDashboardData"],
+        queryFn: async () => {
+            const res = await api.get("/dashboard/parent");
+            return res.data.data;
         },
     });
 };

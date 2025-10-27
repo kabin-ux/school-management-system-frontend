@@ -1,5 +1,6 @@
 import React from 'react';
-import { Users, UserCheck, Link, UserPlus } from 'lucide-react';
+import { Users, Link, UserPlus } from 'lucide-react';
+import type { ParentDashboardData } from '../../../hooks/useParents';
 
 interface StatCardProps {
   title: string;
@@ -8,6 +9,10 @@ interface StatCardProps {
   changeType: 'positive' | 'negative';
   icon: React.ReactNode;
   bgColor: string;
+}
+
+interface ParentStatsProps {
+  parentDashboardData: ParentDashboardData
 }
 
 function StatCard({ title, value, change, changeType, icon, bgColor }: StatCardProps) {
@@ -20,37 +25,28 @@ function StatCard({ title, value, change, changeType, icon, bgColor }: StatCardP
       </div>
       <h3 className="text-sm font-medium text-gray-600 mb-1">{title}</h3>
       <p className="text-3xl font-bold text-gray-900 mb-2">{value}</p>
-      <p className={`text-sm font-medium ${
-        changeType === 'positive' ? 'text-green-600' : 'text-red-600'
-      }`}>
+      <p className={`text-sm font-medium ${changeType === 'positive' ? 'text-green-600' : 'text-red-600'
+        }`}>
         {change}
       </p>
     </div>
   );
 }
 
-export default function ParentStats() {
+export const ParentStats: React.FC<ParentStatsProps> = ({ parentDashboardData }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <StatCard
         title="Total Parents"
-        value="324"
+        value={parentDashboardData.totalParents.toString()}
         change="+12 this month"
         changeType="positive"
         icon={<Users className="w-6 h-6 text-blue-600" />}
         bgColor="bg-blue-50"
       />
       <StatCard
-        title="Active Parents"
-        value="298"
-        change="90%"
-        changeType="positive"
-        icon={<UserCheck className="w-6 h-6 text-green-600" />}
-        bgColor="bg-green-50"
-      />
-      <StatCard
         title="Linked Students Count"
-        value="456"
+        value={parentDashboardData.linkedStudents.toString()}
         change="-2.5%"
         changeType="negative"
         icon={<Link className="w-6 h-6 text-purple-600" />}
@@ -58,7 +54,7 @@ export default function ParentStats() {
       />
       <StatCard
         title="Parents Registered This Month"
-        value="18"
+        value={parentDashboardData.totalParentRegisterOnThisMonth.toString()}
         change="This month"
         changeType="positive"
         icon={<UserPlus className="w-6 h-6 text-orange-600" />}

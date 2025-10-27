@@ -1,5 +1,6 @@
 import React from 'react';
-import { Users, UserCheck, UserMinus, UserPlus } from 'lucide-react';
+import { Users, UserCheck, UserPlus } from 'lucide-react';
+import type { TeacherDashboardData } from '../../../hooks/useTeachers';
 
 interface StatCardProps {
   title: string;
@@ -8,6 +9,10 @@ interface StatCardProps {
   changeType: 'positive' | 'negative';
   icon: React.ReactNode;
   bgColor: string;
+}
+
+interface TeacherStatsProps {
+  teacherDashboardData: TeacherDashboardData
 }
 
 function StatCard({ title, value, change, changeType, icon, bgColor }: StatCardProps) {
@@ -20,21 +25,20 @@ function StatCard({ title, value, change, changeType, icon, bgColor }: StatCardP
       </div>
       <h3 className="text-sm font-medium text-gray-600 mb-1">{title}</h3>
       <p className="text-3xl font-bold text-gray-900 mb-2">{value}</p>
-      <p className={`text-sm font-medium ${
-        changeType === 'positive' ? 'text-green-600' : 'text-red-600'
-      }`}>
+      <p className={`text-sm font-medium ${changeType === 'positive' ? 'text-green-600' : 'text-red-600'
+        }`}>
         {change}
       </p>
     </div>
   );
 }
 
-export default function TeacherStats() {
+export const TeacherStats: React.FC<TeacherStatsProps> = ({ teacherDashboardData }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <StatCard
         title="Total Teachers"
-        value="156"
+        value={teacherDashboardData.totalTeachers.toString()}
         change="+12 this month"
         changeType="positive"
         icon={<Users className="w-6 h-6 text-blue-600" />}
@@ -42,23 +46,15 @@ export default function TeacherStats() {
       />
       <StatCard
         title="Active Teachers"
-        value="150"
+        value={teacherDashboardData.totalActiveTeachers.toString()}
         change="96%"
         changeType="positive"
         icon={<UserCheck className="w-6 h-6 text-green-600" />}
         bgColor="bg-green-50"
       />
       <StatCard
-        title="Teachers on leave"
-        value="6"
-        change="-2.5%"
-        changeType="negative"
-        icon={<UserMinus className="w-6 h-6 text-purple-600" />}
-        bgColor="bg-purple-50"
-      />
-      <StatCard
         title="New Teachers"
-        value="8"
+        value={teacherDashboardData.totalTeacherRegisterOnThisMonth.toString()}
         change="This month"
         changeType="positive"
         icon={<UserPlus className="w-6 h-6 text-orange-600" />}

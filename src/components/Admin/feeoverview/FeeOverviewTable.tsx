@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import type { FeeStructureAttributes } from "../../../types/fee-salary.types";
 import EmptyState from "../../../common/EmptyState";
 import { DollarSign } from "lucide-react";
@@ -9,11 +8,6 @@ interface FeeOverviewTableProps {
 }
 
 export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) => {
-  const navigate = useNavigate();
-
-  const handleShowDetails = (id: string) => {
-    navigate(`/admin/fee-overview/details/${id}`);
-  };
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
@@ -48,13 +42,10 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
                     Tuition Fee
                   </th>
                   <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
-                    Transport
+                    Transport Fee
                   </th>
                   <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
-                    Total
-                  </th>
-                  <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
-                    Actions
+                    Total Fees
                   </th>
                 </tr>
               </thead>
@@ -73,14 +64,13 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
                     <tr
                       key={record.id}
                       className="hover:bg-blue-50 transition-colors duration-150 cursor-pointer group"
-                      onClick={() => handleShowDetails(record.id)}
                     >
                       <td className="p-4 text-gray-600 font-medium">{index + 1}</td>
                       <td className="p-4 text-gray-900 font-medium">
                         {record.class?.school?.name}
                       </td>
                       <td className="p-4 text-gray-900">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-semibold bg-blue-100 text-blue-700">
                           {record.class?.name}
                         </span>
                       </td>
@@ -112,40 +102,14 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
                           Rs. {total.toLocaleString()}
                         </span>
                       </td>
-                      <td className="p-4">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleShowDetails(record.id);
-                          }}
-                          className="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-medium text-blue-600 hover:text-white hover:bg-blue-600 transition-all duration-200 border border-blue-600 group-hover:shadow-md"
-                        >
-                          View Details
-                        </button>
-                      </td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
           </div>
-
         </div>
       )}
-
-      {/* Pagination (optional - can adapt later) */}
-      {/* <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-center">
-        <div className="flex space-x-1">
-          {Array.from({ length: 26 }, (_, i) => (
-            <button
-              key={i}
-              className="w-8 h-8 text-sm border border-gray-200 rounded text-gray-700 hover:bg-gray-100"
-            >
-              {String.fromCharCode(65 + i)}
-            </button>
-          ))}
-        </div>
-      </div> */}
     </div>
   );
 };

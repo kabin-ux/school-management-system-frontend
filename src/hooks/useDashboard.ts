@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import api from "../lib/axios";
+import type { Invoice } from "../types/invoice.types";
 
 // Types
 export interface AttendanceData {
@@ -44,27 +45,6 @@ export interface AccountantDashboard {
   totalclass: number;
   totalPayment: PaymentData[];
   todayTransaction: number;
-}
-
-export interface RecentPayment {
-  id: string;
-  amount: number;
-  createdAt: string;
-  student: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    class: {
-      id: string;
-      name: string;
-    };
-  };
-  accountant: {
-    id: string;
-    name: string;
-    email: string;
-  };
 }
 
 // Fetch School Admin Dashboard
@@ -134,7 +114,7 @@ export const useInvalidateDashboard = () => {
 };
 
 export const useRecentPayments = (limit = 10) => {
-  return useQuery<RecentPayment[]>({
+  return useQuery<Invoice[]>({
     queryKey: ["recentPayments", limit],
     queryFn: async () => {
       const res = await api.get(`/payment/recent?limit=${limit}`);

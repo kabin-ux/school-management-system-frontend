@@ -16,7 +16,7 @@ const sidebarItems: SidebarItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/accountant/dashboard" },
   { icon: GraduationCap, label: "Fee and Salary", path: "/accountant/fee-salary" },
   { icon: Users, label: "Invoices", path: "/accountant/invoices" },
-  { icon: User, label: "Settings", path: "/accountant/settings" }
+  // { icon: User, label: "Settings", path: "/accountant/settings" }
 ];
 
 export const Sidebar: React.FC = () => {

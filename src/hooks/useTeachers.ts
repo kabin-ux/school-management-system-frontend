@@ -3,6 +3,12 @@ import api from "../lib/axios";
 import toast from "react-hot-toast";
 import type { Teacher } from "../types/teacher.types";
 
+export interface TeacherDashboardData {
+    totalTeachers: number,
+    totalActiveTeachers: number,
+    totalTeacherRegisterOnThisMonth: number
+
+}
 
 // Fetch All Teachers
 export const useTeachers = () => {
@@ -111,6 +117,16 @@ export const useAssignClassTeacher = () => {
         },
         onError: (error: any) => {
             toast.error(error.response?.data?.error || "Failed to assign class teacher");
+        },
+    });
+};
+
+export const useTeacherDashboardData = () => {
+    return useQuery<TeacherDashboardData>({
+        queryKey: ["teacherDashboardData"],
+        queryFn: async () => {
+            const res = await api.get("/dashboard/teacher");
+            return res.data.data;
         },
     });
 };

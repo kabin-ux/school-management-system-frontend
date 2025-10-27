@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { UserPlus } from 'lucide-react';
-import ParentStats from '../../../components/Admin/parents/ParentStats';
+import { ParentStats } from '../../../components/Admin/parents/ParentStats';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
 import { ParentGrid } from '../../../components/Admin/parents/ParentGrid';
@@ -8,7 +8,7 @@ import AddParentModal from '../../../components/Admin/parents/AddParentModal';
 import type { Parent } from '../../../types/parent.types';
 import EditParentModal from '../../../components/Admin/parents/EditParentModal';
 import { useStudentsBySchool } from '../../../hooks/useStudents';
-import { useAddParent, useDeleteParent, useParents, useUpdateParent } from '../../../hooks/useParents';
+import { useAddParent, useDeleteParent, useParentDashboardData, useParents, useUpdateParent } from '../../../hooks/useParents';
 import ParentFilters from '../../../components/Admin/parents/ParentFilters';
 import { useClasses } from '../../../hooks/useClasses';
 import type { Student } from '../../../types/student.types';
@@ -31,6 +31,7 @@ export default function ParentsManagement() {
     const { data: parents = [], isLoading: loading } = useParents();
     const { data: students = [] } = useStudentsBySchool();
     const { data: classes = [] } = useClasses();
+    const { data: parentDashboardData } = useParentDashboardData();
 
     const addParentMutation = useAddParent();
     const updateParentMutation = useUpdateParent();
@@ -48,7 +49,6 @@ export default function ParentsManagement() {
     }
 
     const handleUpdateParent = async (id: string, updateData: any) => {
-        console.log("updatedata", updateData)
         updateParentMutation.mutate({ id, updateData }, {
             onSuccess: () => setIsEditModalOpen(false)
         })
@@ -97,7 +97,9 @@ export default function ParentsManagement() {
                         </div>
 
                         {/* Stats Cards */}
-                        <ParentStats />
+                        <ParentStats
+                            parentDashboardData={parentDashboardData ?? { totalParents: 0, totalParentRegisterOnThisMonth: 0, linkedStudents: 0 }}
+                        />
 
                         {/* Filters */}
                         <ParentFilters
