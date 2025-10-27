@@ -46,7 +46,7 @@ const SalaryOverview: React.FC = () => {
                             filters={filters}
                             onFiltersChange={setFilters}
                         />
-                        <SalaryOverviewStats />
+                        {/* <SalaryOverviewStats /> */}
                         <SalaryOverviewTable salaryData={filteredSalaryStructure} />
                     </div>
                 </main>

@@ -2,6 +2,11 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../lib/axios';
 import toast from 'react-hot-toast';
 
+export interface ClassDashboardData {
+    totalClasses: number,
+    totalSubjects: number
+}
+
 // Fetch all classes for logged-in school
 export const useClasses = () => {
     return useQuery({
@@ -85,6 +90,16 @@ export const useDeleteClass = () => {
         onError: (err: any) => {
             const message = err.response?.data || 'Error deleting class';
             toast.error(message);
+        },
+    });
+};
+
+export const useClassDashboardData = () => {
+    return useQuery<ClassDashboardData>({
+        queryKey: ["classDashboard"],
+        queryFn: async () => {
+            const res = await api.get("/dashboard/class");
+            return res.data.data;
         },
     });
 };

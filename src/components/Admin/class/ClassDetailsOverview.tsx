@@ -1,6 +1,8 @@
 import { Trash2, Edit, Layers, Clock, Calendar } from 'lucide-react';
 import EmptyState from '../../../common/EmptyState';
 import type { Section } from '../../../types/class.types';
+import { useState } from 'react';
+import { Pagination } from '../../../common/Pagination';
 
 interface ClassSectionsProps {
     sections: Section[];
@@ -9,6 +11,15 @@ interface ClassSectionsProps {
 }
 
 export default function ClassSections({ sections, onEdit, onDelete }: ClassSectionsProps) {
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8;
+
+    const totalPages = Math.ceil(sections.length / itemsPerPage);
+
+    const paginatedData = sections.slice(
+        (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+    )
+
     return (
         <div>
             {!sections || sections.length === 0 ? (
@@ -21,7 +32,7 @@ export default function ClassSections({ sections, onEdit, onDelete }: ClassSecti
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {sections.map((section) => (
+                    {paginatedData.map((section) => (
                         <div
                             key={section.id}
                             className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow flex flex-col justify-between"
@@ -72,6 +83,13 @@ export default function ClassSections({ sections, onEdit, onDelete }: ClassSecti
                     ))}
 
                 </div>
+            )}
+            {totalPages > 1 && (
+                <Pagination
+                    currentPage={currentPage}
+                    onPageChange={setCurrentPage}
+                    totalPages={totalPages}
+                />
             )}
         </div>
     );

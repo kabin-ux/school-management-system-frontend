@@ -3,6 +3,11 @@ import api from "../lib/axios";
 import toast from "react-hot-toast";
 import type { Student, StudentForm } from "../types/student.types";
 
+export interface StudentDashboardData {
+  totalStudents: number,
+  totalStudentRegisterOnThisMonth: number
+}
+
 // Fetch all students by school
 export const useStudentsBySchool = () => {
   return useQuery({
@@ -67,6 +72,16 @@ export const useDeleteStudent = () => {
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.error || "Failed to delete student");
+    },
+  });
+};
+
+export const useStudentDashboardData = () => {
+  return useQuery<StudentDashboardData>({
+    queryKey: ["studentDashboardData"],
+    queryFn: async () => {
+      const res = await api.get("/dashboard/school");
+      return res.data.data;
     },
   });
 };

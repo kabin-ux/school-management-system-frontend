@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Edit, Trash2, Plus, ClipboardClock } from "lucide-react";
 import type { TimeSlot } from "../../../types/timetable.types";
 import EmptyState from "../../../common/EmptyState";
+import { Pagination } from "../../../common/Pagination";
 
 interface Timetable {
   id: string;
@@ -23,6 +24,15 @@ export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({
   onDeleteTimeTable
 }) => {
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 2;
+
+  const totalPages = Math.ceil(timetables.length / itemsPerPage);
+
+  const paginatedData = timetables.slice(
+    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+  )
+
   if (!timetables || timetables.length === 0) {
     return (
       <EmptyState
@@ -35,7 +45,7 @@ export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({
 
   return (
     <div className="space-y-8">
-      {timetables?.map((timetable) => {
+      {paginatedData?.map((timetable) => {
         // Collect unique time slots across all days
         const allTimes = timetable.timeslots && timetable.timeslots.length > 0
           ? Array.from(new Set(timetable.timeslots.map(ts => ts.startTime))).sort()
@@ -43,7 +53,7 @@ export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({
 
         // Group timeslots by day
         const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday"];
-        const slotsByDay: Record<string,  TimeSlot[]> = {};
+        const slotsByDay: Record<string, TimeSlot[]> = {};
         days.forEach(day => {
           slotsByDay[day] = timetable.timeslots ? timetable.timeslots.filter(ts => ts.dayOfWeek === day) : [];
         });
@@ -130,6 +140,16 @@ export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({
           </div>
         );
       })}
+
+      {
+        totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            totalPages={totalPages}
+          />
+        )
+      }
     </div>
   );
 }

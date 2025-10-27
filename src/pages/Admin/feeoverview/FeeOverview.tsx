@@ -49,7 +49,7 @@ const FeeOverview: React.FC = () => {
                             filters={filters}
                             onFiltersChange={setFilters}
                         />
-                        <FeeOverviewStats />
+                        {/* <FeeOverviewStats /> */}
                         <FeeOverviewTable
                             feeData={filteredFeeStructure}
                         />

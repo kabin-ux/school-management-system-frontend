@@ -1,7 +1,8 @@
 import { Mail, Phone, Users, Edit, Trash2 } from 'lucide-react';
 import type { Parent } from '../../../types/parent.types';
-import type { FC } from 'react';
+import { useState, type FC } from 'react';
 import EmptyState from '../../../common/EmptyState';
+import { Pagination } from '../../../common/Pagination';
 
 interface ParentGridModalProps {
   parents: Parent[]
@@ -10,7 +11,14 @@ interface ParentGridModalProps {
 }
 
 export const ParentGrid: FC<ParentGridModalProps> = ({ parents, onEdit, onDelete }) => {
-  console.log("parents", parents)
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+
+  const totalPages = Math.ceil(parents.length / itemsPerPage);
+
+  const paginatedData = parents.slice(
+    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+  )
   return (
     <div>
       {!parents || parents.length === 0 ? (
@@ -23,7 +31,7 @@ export const ParentGrid: FC<ParentGridModalProps> = ({ parents, onEdit, onDelete
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {parents?.map((parent) => (
+          {paginatedData?.map((parent) => (
             <div key={parent?.id} className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer">
               <div className="flex flex-col items-center text-center mb-4">
                 <img
@@ -90,6 +98,13 @@ export const ParentGrid: FC<ParentGridModalProps> = ({ parents, onEdit, onDelete
             </div>
           ))}
         </div>
+      )}
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalPages={totalPages}
+        />
       )}
     </div>
   );

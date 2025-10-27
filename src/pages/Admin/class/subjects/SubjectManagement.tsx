@@ -10,7 +10,7 @@ import { AssignTeacherModal, type AssignTeacherForm } from "../../../../componen
 import EditSubjectModal from "../../../../components/Admin/class/subject/EditSubjectModal";
 import type { Subject, SubjectForm } from "../../../../types/class.types";
 import { useClassDetails } from "../../../../hooks/useClasses";
-import { useAddSubject, useAssignSubjectToTeacher, useDeleteSubject, useSubjectsByClass, useUpdateSubject } from "../../../../hooks/useSubjects";
+import { useAddSubject, useAssignSubjectToTeacher, useDeleteSubject, useSubjectDashboardData, useSubjectsByClass, useUpdateSubject } from "../../../../hooks/useSubjects";
 import { useTeachers } from "../../../../hooks/useTeachers";
 
 
@@ -27,6 +27,7 @@ const SubjectManagement: React.FC = () => {
     const { data: teachers = [] } = useTeachers();
     const { data: classDetails } = useClassDetails(classId);
     const { data: subjectsByClass = [], isLoading: loading } = useSubjectsByClass(classId);
+    const { data: subjectDashboardData } = useSubjectDashboardData(id ? id : '');
 
     const addSubjectMutation = useAddSubject();
     const updateSubjectMutation = useUpdateSubject();
@@ -91,7 +92,9 @@ const SubjectManagement: React.FC = () => {
                             setSearchTerm={setSearchTerm}
                             onAdd={openModal}
                         />
-                        <SubjectStats />
+                        <SubjectStats
+                            subjectDashboardData={subjectDashboardData ?? { totalSubjects: 0, totalTeacher: 0 }}
+                        />
                         <SubjectTable
                             subjects={subjectsByClass} // subjectsByClass is undefined, the component receives an empty array.
                             onAssignTeacher={assignTeacher}

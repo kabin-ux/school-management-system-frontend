@@ -1,20 +1,23 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import type { Salary } from "../../../types/fee-salary.types";
 import EmptyState from "../../../common/EmptyState";
 import { DollarSign } from "lucide-react";
 import { getRoleAction } from "../../../lib/utils";
+import { Pagination } from "../../../common/Pagination";
 
 interface SalaryOverviewTableProps {
     salaryData: Salary[];
 }
 
 export const SalaryOverviewTable: React.FC<SalaryOverviewTableProps> = ({ salaryData }) => {
-    const navigate = useNavigate();
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
 
-    const handleShowDetails = (id: string) => {
-        navigate(`/admin/fee-overview/details/${id}`);
-    };
+    const totalPages = Math.ceil(salaryData.length / itemsPerPage);
+
+    const paginatedData = salaryData.slice(
+        (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+    )
 
     return (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
@@ -53,7 +56,7 @@ export const SalaryOverviewTable: React.FC<SalaryOverviewTableProps> = ({ salary
                             </tr>
                         </thead>
                         <tbody>
-                            {salaryData.map((record, index) => {
+                            {paginatedData.map((record, index) => {
                                 const total =
                                     Number(record.basic) +
                                     Number(record.allowances)
@@ -94,20 +97,15 @@ export const SalaryOverviewTable: React.FC<SalaryOverviewTableProps> = ({ salary
                     </table>
                 </div>
             )}
-
-            {/* Pagination (optional - can adapt later) */}
-            {/* <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-center">
-        <div className="flex space-x-1">
-          {Array.from({ length: 26 }, (_, i) => (
-            <button
-              key={i}
-              className="w-8 h-8 text-sm border border-gray-200 rounded text-gray-700 hover:bg-gray-100"
-            >
-              {String.fromCharCode(65 + i)}
-            </button>
-          ))}
-        </div>
-      </div> */}
+            {
+                totalPages > 1 && (
+                    <Pagination
+                        currentPage={currentPage}
+                        onPageChange={setCurrentPage}
+                        totalPages={totalPages}
+                    />
+                )
+            }
         </div>
     );
 };

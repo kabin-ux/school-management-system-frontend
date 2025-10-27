@@ -13,7 +13,7 @@ export interface Teacher {
   classIds: number[];
   subjectIds: number[];
   status?: string;
-  subjects?: Subject[];
+  subjects: Subject[];
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;

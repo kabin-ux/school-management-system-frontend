@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, UserCheck, UserMinus, UserPlus } from 'lucide-react';
+import { Users, UserCheck, UserMinus } from 'lucide-react';
 import type { TransportationDashboardData } from '../../../hooks/useTransportation';
 
 interface StatCardProps {
@@ -35,7 +35,7 @@ function StatCard({ title, value, change, changeType, icon, bgColor }: StatCardP
 
 export const TransportationStats: React.FC<TransportationStatsProps> = ({ transportationDashboardData }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <StatCard
         title="Total Buses"
         value={transportationDashboardData.totalVehicles.toString()}
@@ -59,14 +59,6 @@ export const TransportationStats: React.FC<TransportationStatsProps> = ({ transp
         changeType="negative"
         icon={<UserMinus className="w-6 h-6 text-purple-600" />}
         bgColor="bg-purple-50"
-      />
-      <StatCard
-        title="New Drivers"
-        value="8"
-        change="This month"
-        changeType="positive"
-        icon={<UserPlus className="w-6 h-6 text-orange-600" />}
-        bgColor="bg-orange-50"
       />
     </div>
   );

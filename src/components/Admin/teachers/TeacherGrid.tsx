@@ -1,6 +1,8 @@
 import { Mail, Phone, BookOpen, GraduationCap, Trash2, Edit, UserRoundPen } from 'lucide-react';
 import EmptyState from '../../../common/EmptyState';
 import type { Teacher } from '../../../types/teacher.types';
+import { Pagination } from '../../../common/Pagination';
+import { useState } from 'react';
 
 interface TeacherGridProps {
   teachers: Teacher[];
@@ -9,7 +11,14 @@ interface TeacherGridProps {
 }
 
 export default function TeacherGrid({ teachers, onEdit, onDelete }: TeacherGridProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
+  const totalPages = Math.ceil(teachers.length / itemsPerPage);
+
+  const paginatedData = teachers.slice(
+    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+  )
   return (
     <div>
       {!teachers || teachers.length === 0 ? (
@@ -24,7 +33,7 @@ export default function TeacherGrid({ teachers, onEdit, onDelete }: TeacherGridP
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-          {teachers.map((teacher) => (
+          {paginatedData.map((teacher) => (
             <div
               key={teacher.id}
               className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow flex flex-col justify-between"
@@ -62,7 +71,7 @@ export default function TeacherGrid({ teachers, onEdit, onDelete }: TeacherGridP
                   <div className="flex items-start gap-2 text-gray-600">
                     <BookOpen className="w-4 h-4 mt-0.5" />
                     <div className="flex flex-wrap gap-1">
-                      {teacher?.subjects?.map((subject, index) => (
+                      {teacher.subjects?.map((subject, index) => (
                         <span key={index} className="text-blue-600 text-xs">
                           {subject.name}
                           {index < teacher.subjects.length - 1 ? ',' : ''}
@@ -102,6 +111,13 @@ export default function TeacherGrid({ teachers, onEdit, onDelete }: TeacherGridP
             </div>
           ))}
         </div>
+      )}
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalPages={totalPages}
+        />
       )}
     </div>
   );

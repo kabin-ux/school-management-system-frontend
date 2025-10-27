@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Event } from '../../../types/events.types';
 import { Calendar, Edit, Trash2 } from 'lucide-react';
 import EmptyState from '../../../common/EmptyState';
+import { Pagination } from '../../../common/Pagination';
 
 interface EventsTableProps {
   events: Event[];
@@ -10,6 +11,15 @@ interface EventsTableProps {
 }
 
 export const EventsTable: React.FC<EventsTableProps> = ({ events, onEdit, onDelete }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const totalPages = Math.ceil(events.length / itemsPerPage);
+
+  const paginatedData = events.slice(
+    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+  )
+
   return (
     <div className="border border-gray-200">
       <div className="p-6 border-b border-gray-200">
@@ -36,7 +46,7 @@ export const EventsTable: React.FC<EventsTableProps> = ({ events, onEdit, onDele
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {events.map((event, index) => (
+              {paginatedData.map((event, index) => (
                 <tr
                   key={index}
                   className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
@@ -101,11 +111,15 @@ export const EventsTable: React.FC<EventsTableProps> = ({ events, onEdit, onDele
               ))}
             </tbody>
           </table>
-        )
-
-        }
-
+        )}
       </div>
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalPages={totalPages}
+        />
+      )}
     </div>
   );
 };

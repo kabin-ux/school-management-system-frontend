@@ -5,9 +5,7 @@ interface StatsCardProps {
   title: string;
   value: string;
   change: string;
-  period: string;
-  subtitle: string;
-  color: 'blue' | 'green' | 'purple' | 'orange';
+  color: 'blue' | 'green' | 'purple' | 'orange' | 'pink';
 }
 
 const getIconColor = (color: string) => {
@@ -16,6 +14,7 @@ const getIconColor = (color: string) => {
     case 'green': return 'text-green-600 bg-green-50';
     case 'purple': return 'text-purple-600 bg-purple-50';
     case 'orange': return 'text-orange-600 bg-orange-50';
+    case 'pink': return 'text-pink-600 bg-pink-50';
     default: return 'text-gray-600 bg-gray-50';
   }
 };
@@ -29,8 +28,6 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   title,
   value,
   change,
-  period,
-  subtitle,
   color
 }) => {
   return (
@@ -48,9 +45,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
         <span className={`font-medium ${getChangeColor(change)}`}>
           {change}
         </span>
-        <span className="text-gray-500">{period}</span>
       </div>
-      <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
     </div>
   );
 };

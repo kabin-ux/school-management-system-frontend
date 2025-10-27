@@ -1,9 +1,9 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import type { SupportTicket } from '../../../types/support.types';
 import EmptyState from '../../../common/EmptyState';
 import { Edit, Tags, Trash2 } from 'lucide-react';
 import { getStatusAction, getTicketType } from '../../../lib/utils';
+import { Pagination } from '../../../common/Pagination';
 
 interface RecentTicketsProps {
   tickets: SupportTicket[];
@@ -12,13 +12,14 @@ interface RecentTicketsProps {
 }
 
 export const RecentTickets: React.FC<RecentTicketsProps> = ({ tickets, onEdit, onDelete }) => {
-  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
-  const handleViewTicket = (ticketId: string) => {
-    console.log('Viewing ticket:', ticketId);
+  const totalPages = Math.ceil(tickets.length / itemsPerPage);
 
-    navigate(`/admin/support/details/${ticketId}`)
-  };
+  const paginatedData = tickets.slice(
+    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+  )
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
@@ -47,7 +48,7 @@ export const RecentTickets: React.FC<RecentTicketsProps> = ({ tickets, onEdit, o
               </tr>
             </thead>
             <tbody>
-              {tickets.map((ticket, index) => (
+              {paginatedData.map((ticket, index) => (
                 <tr
                   key={index}
                   className="border-b border-gray-100 hover:bg-blue-50 cursor-pointer transition-all duration-200 hover:shadow-sm group"
@@ -155,22 +156,16 @@ export const RecentTickets: React.FC<RecentTicketsProps> = ({ tickets, onEdit, o
             </tbody>
           </table>
         </div>
-      )
-
+      )}
+      {
+        totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            totalPages={totalPages}
+          />
+        )
       }
-
-
-
-      {/* Pagination */}
-      <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-between items-center">
-        <span className="text-sm text-gray-600">Previous</span>
-        <div className="flex space-x-1">
-          <button className="w-8 h-8 text-sm bg-blue-600 text-white rounded">1</button>
-          <button className="w-8 h-8 text-sm border border-gray-200 rounded text-gray-700 hover:bg-gray-100">2</button>
-        </div>
-        <span className="text-sm text-gray-600">Next</span>
-        <span className="text-sm text-gray-600">Page 1 of 5</span>
-      </div>
     </div>
   );
 };

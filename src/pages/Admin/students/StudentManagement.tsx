@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { UserPlus } from 'lucide-react';
-import StudentStats from '../../../components/Admin/students/StudentStats';
+import { StudentStats } from '../../../components/Admin/students/StudentStats';
 import StudentFilters from '../../../components/Admin/students/StudentFilters';
 import StudentTable from '../../../components/Admin/students/StudentTable';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
@@ -8,7 +8,7 @@ import { AdminDashboardHeader } from '../../../components/Admin/layout/Dashboard
 import { AddStudentModal } from '../../../components/Admin/students/AddStudentModal';
 import EditStudentModal from '../../../components/Admin/students/EditStudentModal';
 import type { Student, StudentForm } from '../../../types/student.types';
-import { useAddStudent, useDeleteStudent, useStudentsBySchool, useUpdateStudent } from '../../../hooks/useStudents';
+import { useAddStudent, useDeleteStudent, useStudentDashboardData, useStudentsBySchool, useUpdateStudent } from '../../../hooks/useStudents';
 import { useClasses } from '../../../hooks/useClasses';
 
 export interface FilterValues {
@@ -30,6 +30,7 @@ export default function StudentManagement() {
 
     const { data: students = [], isLoading: loading } = useStudentsBySchool();
     const { data: classes = [] } = useClasses();
+    const { data: studentDashboardData } = useStudentDashboardData();
 
     const addStudentMutation = useAddStudent();
     const updateStudentMutation = useUpdateStudent();
@@ -95,7 +96,9 @@ export default function StudentManagement() {
                         </div>
 
                         {/* Stats Cards */}
-                        <StudentStats />
+                        <StudentStats
+                            studentDashboardData={studentDashboardData ?? { totalStudents: 0, totalStudentRegisterOnThisMonth: 0 }}
+                        />
 
                         {/* Filters */}
                         <StudentFilters

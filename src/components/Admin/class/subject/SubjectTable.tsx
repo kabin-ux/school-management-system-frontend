@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BookUser, Edit, Equal, Trash2 } from 'lucide-react';
 import EmptyState from '../../../../common/EmptyState';
 import type { Subject } from '../../../../types/class.types';
+import { Pagination } from '../../../../common/Pagination';
 
 interface SubjectTableProps {
     subjects: Subject[];
@@ -11,6 +12,14 @@ interface SubjectTableProps {
 }
 
 export const SubjectTable: React.FC<SubjectTableProps> = ({ subjects, onAssignTeacher, onEdit, onDelete }) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8;
+
+    const totalPages = Math.ceil(subjects.length / itemsPerPage);
+
+    const paginatedData = subjects.slice(
+        (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+    )
     return (
         <div className="bg-white rounded-lg shadow-sm">
 
@@ -34,43 +43,46 @@ export const SubjectTable: React.FC<SubjectTableProps> = ({ subjects, onAssignTe
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200">
-                            {
-                                subjects.map((subject) => (
-                                    <React.Fragment key={subject.id}>
-                                        <tr className="hover:bg-gray-50 cursor-pointer"
-                                        >
-                                            <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.name}</td>
-                                            <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.code}</td>
-                                            <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.teacher?.firstName} {subject?.teacher?.lastName}</td>
-                                            <td className="p-4">
-                                                <div className="flex items-center gap-2">
-                                                    <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
-                                                        onClick={() => onAssignTeacher(subject)}
-                                                    >
-                                                        <Equal className="w-4 h-4" />
-                                                    </button>
-                                                    <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
-                                                        onClick={() => onEdit(subject)}
-                                                    >
-                                                        <Edit className="w-4 h-4" />
-                                                    </button>
-                                                    <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-red-600"
-                                                        onClick={() => onDelete(subject.id)}
-                                                    >
-                                                        <Trash2 className="w-4 h-4" />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </React.Fragment>
-                                ))
+                            {paginatedData.map((subject) => (
+                                <tr key={subject.id} className="hover:bg-gray-50 cursor-pointer"
+                                >
+                                    <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.name}</td>
+                                    <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.code}</td>
+                                    <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.teacher?.firstName} {subject?.teacher?.lastName}</td>
+                                    <td className="p-4">
+                                        <div className="flex items-center gap-2">
+                                            <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
+                                                onClick={() => onAssignTeacher(subject)}
+                                            >
+                                                <Equal className="w-4 h-4" />
+                                            </button>
+                                            <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
+                                                onClick={() => onEdit(subject)}
+                                            >
+                                                <Edit className="w-4 h-4" />
+                                            </button>
+                                            <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-red-600"
+                                                onClick={() => onDelete(subject.id)}
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
                             }
                         </tbody>
 
                     </table>
                 </div>
             )}
+            {totalPages > 1 && (
+                <Pagination
+                    currentPage={currentPage}
+                    onPageChange={setCurrentPage}
+                    totalPages={totalPages}
+                />
+            )}
         </div>
-
     );
 };

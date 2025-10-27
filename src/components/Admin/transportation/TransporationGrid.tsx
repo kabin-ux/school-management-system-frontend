@@ -1,6 +1,8 @@
 import { Phone, MapPin, Truck, Users, DollarSign, Trash2, Edit } from 'lucide-react';
 import EmptyState from '../../../common/EmptyState';
 import type { Transportation } from '../../../types/admin-transportation.types';
+import { useState } from 'react';
+import { Pagination } from '../../../common/Pagination';
 
 interface TransportationGridProps {
   transportations: Transportation[];
@@ -9,6 +11,15 @@ interface TransportationGridProps {
 }
 
 export default function TransportationGrid({ transportations, onEdit, onDelete }: TransportationGridProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+
+  const totalPages = Math.ceil(transportations.length / itemsPerPage);
+
+  const paginatedData = transportations.slice(
+    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+  )
+
   return (
     <div>
       {!transportations || transportations.length === 0 ? (
@@ -21,7 +32,7 @@ export default function TransportationGrid({ transportations, onEdit, onDelete }
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {transportations.map((transportation) => (
+          {paginatedData.map((transportation) => (
             <div
               key={transportation.id}
               className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow flex flex-col justify-between"
@@ -34,8 +45,8 @@ export default function TransportationGrid({ transportations, onEdit, onDelete }
                   <p className="text-sm text-gray-500 mb-2">{transportation.vehicleNumber}</p>
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${transportation.status === 'Active'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-gray-100 text-gray-800'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-gray-100 text-gray-800'
                       }`}
                   >
                     {transportation.status}
@@ -81,6 +92,13 @@ export default function TransportationGrid({ transportations, onEdit, onDelete }
             </div>
           ))}
         </div>
+      )}
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalPages={totalPages}
+        />
       )}
     </div>
   );

@@ -1,6 +1,8 @@
 import { Edit, Trash2, Users } from 'lucide-react';
 import EmptyState from '../../../common/EmptyState';
 import type { Student } from '../../../types/student.types';
+import { useState } from 'react';
+import { Pagination } from '../../../common/Pagination';
 
 interface StudentTableProps {
   students: Student[];
@@ -9,7 +11,14 @@ interface StudentTableProps {
 }
 
 export default function StudentTable({ students, onEdit, onDelete }: StudentTableProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
+  const totalPages = Math.ceil(students.length / itemsPerPage);
+
+  const paginatedData = students.slice(
+    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+  )
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
       <div className="p-6 border-b border-gray-200">
@@ -62,7 +71,7 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
                 </td>
               </tr>
             ) : (
-              students?.map((student, index) => (
+              paginatedData?.map((student, index) => (
                 <tr
                   key={student.id}
                   className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
@@ -131,6 +140,14 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
           </tbody>
         </table>
       </div>
+
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalPages={totalPages}
+        />
+      )}
     </div>
   );
 }

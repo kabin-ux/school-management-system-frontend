@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import type { Grade } from '../../../types/class.types';
 import EditClassModal from '../../../components/Admin/class/EditClassModal';
 import { AssignClassTeacherModal, type AssignClassTeacherForm } from '../../../components/Admin/class/AssignClassTeacherModal';
-import { useAddClass, useClasses, useDeleteClass, useUpdateClass } from '../../../hooks/useClasses';
+import { useAddClass, useClassDashboardData, useClasses, useDeleteClass, useUpdateClass } from '../../../hooks/useClasses';
 import { useAssignClassTeacher, useTeachersByClass } from '../../../hooks/useTeachers';
 
 export interface FilterValues {
@@ -28,12 +28,13 @@ const ClassManagement: React.FC = () => {
     const navigate = useNavigate();
 
     const { data: classes = [], isLoading: loading } = useClasses();
+    const { data: teachers = [] } = useTeachersByClass(selectedClass ? selectedClass.id : '');
+    const { data: classDashboardData } = useClassDashboardData();
+
     const addClassMutation = useAddClass();
     const updateClassMutation = useUpdateClass();
     const deleteClassMutation = useDeleteClass();
 
-
-    const { data: teachers = [] } = useTeachersByClass(selectedClass ? selectedClass.id : '');
     const assignClassTeacherMutate = useAssignClassTeacher();
 
     const handleAddClass = async (classData: any) => {
@@ -102,7 +103,9 @@ const ClassManagement: React.FC = () => {
                             onFiltersChange={setFilters}
                             onAdd={() => setIsModalOpen(true)}
                         />
-                        <ClassStats />
+                        <ClassStats
+                            classDashboardData={classDashboardData ?? { totalClasses: 0, totalSubjects: 0 }}
+                        />
                         <ClassTable
                             grades={filteredClasses}
                             onNavigateToSection={navigateToDetail}

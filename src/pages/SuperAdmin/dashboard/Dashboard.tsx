@@ -7,10 +7,12 @@ import { SupportTickets } from "../../../components/SuperAdmin/partnerschools/Su
 import { FeeCollectionTrend } from "../../../components/SuperAdmin/dashboard/FeeCollectionTrend";
 import { QuickActions } from "../../../components/SuperAdmin/dashboard/QuickActions";
 import { useSuperAdminDashboard } from "../../../hooks/useDashboard";
-import { GraduationCap, School, Users, UsersIcon } from "lucide-react";
+import { GraduationCap, Headphones, School, Users, UsersIcon } from "lucide-react";
+import { useSupportTickets } from "../../../hooks/useSupportTickets";
 
 
 function SuperAdminDashboard() {
+  const { data: supportTickets = [] } = useSupportTickets()
   const { data: superAdminDashboard } = useSuperAdminDashboard();
 
   console.log(superAdminDashboard)
@@ -28,7 +30,7 @@ function SuperAdminDashboard() {
             <p className="text-gray-600">Welcome back! Here’s what’s happening with your education platform today.</p>
           </div>
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
             <StatsCard
               title="Total Schools"
               value={superAdminDashboard?.totalSchools ? superAdminDashboard.totalSchools.toString() : ''}
@@ -64,13 +66,13 @@ function SuperAdminDashboard() {
               icon={<UsersIcon className="w-6 h-6 text-pink-600" />}
               color="pink"
             />
-            {/* <StatsCard
+            <StatsCard
               title="Open Support Tickets"
-              value={data?.totalSupportTicket || 0}
+              value={superAdminDashboard?.totalSupportTicket || 0}
               change=""
               icon={<Headphones className="w-6 h-6 text-indigo-600" />}
               color="indigo"
-            /> */}
+            />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -78,7 +80,9 @@ function SuperAdminDashboard() {
             <div className="lg:col-span-2 space-y-8">
               <FeesCollected />
               <RecentNotifications />
-              <SupportTickets />
+              <SupportTickets
+                supportTickets={supportTickets}
+              />
             </div>
 
             {/* Right Column */}

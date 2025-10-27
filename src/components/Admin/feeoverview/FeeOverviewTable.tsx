@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import type { FeeStructureAttributes } from "../../../types/fee-salary.types";
 import EmptyState from "../../../common/EmptyState";
 import { DollarSign } from "lucide-react";
+import { Pagination } from "../../../common/Pagination";
 
 interface FeeOverviewTableProps {
   feeData: FeeStructureAttributes[];
 }
 
 export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+
+  const totalPages = Math.ceil(feeData.length / itemsPerPage);
+
+  const paginatedData = feeData.slice(
+    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+  )
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
@@ -50,7 +59,7 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {feeData?.map((record, index) => {
+                {paginatedData?.map((record, index) => {
                   const total =
                     Number(record.monthly_fee) +
                     Number(record.exam_fee) +
@@ -70,7 +79,7 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
                         {record.class?.school?.name}
                       </td>
                       <td className="p-4 text-gray-900">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-semibold bg-blue-100 text-blue-700">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-semibold bg-green-100 text-green-700">
                           {record.class?.name}
                         </span>
                       </td>
@@ -110,6 +119,15 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
           </div>
         </div>
       )}
+
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalPages={totalPages}
+        />
+      )}
+
     </div>
   );
 };

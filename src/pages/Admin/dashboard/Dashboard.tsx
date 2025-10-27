@@ -2,18 +2,19 @@ import AttendanceChart from "../../../components/Admin/dashboard/AttendanceChart
 import AttendancePieChart from "../../../components/Admin/dashboard/AttendancePieChart";
 import DashboardStats from "../../../components/Admin/dashboard/DashboardStats";
 import QuickActions from "../../../components/Admin/dashboard/QuickAction";
-import RecentActivity from "../../../components/Admin/dashboard/RecentActivity";
+import  { RecentActivitySection } from "../../../components/Admin/dashboard/RecentActivity";
 import SystemStatus from "../../../components/Admin/dashboard/SystemStatus";
 import { AdminDashboardHeader } from "../../../components/Admin/layout/DashboardHeader";
 import { Sidebar } from "../../../components/Admin/layout/Sidebar";
 import { useAuthUser } from "../../../hooks/useAuth";
-import { useSchoolAdminDashboard, useSchoolAdminDashboardLineChart, useSchoolAdminDashboardPieChart } from "../../../hooks/useDashboard";
+import { useRecentActivity, useSchoolAdminDashboard, useSchoolAdminDashboardLineChart, useSchoolAdminDashboardPieChart } from "../../../hooks/useDashboard";
 
 export default function AdminDashboard() {
   const { data: user } = useAuthUser();
   const { data: schoolAdmin } = useSchoolAdminDashboard();
   const { data: lineChartData = [] } = useSchoolAdminDashboardLineChart();
   const { data: pieChartData } = useSchoolAdminDashboardPieChart();
+  const { data: recentActivity = [] } = useRecentActivity();
 
   return (
     <div className="flex h-full bg-gray-50">
@@ -53,7 +54,9 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
               {/* Recent Activity - spans 2 columns */}
               <div className="lg:col-span-2">
-                <RecentActivity />
+                <RecentActivitySection
+                  recentActivity={recentActivity}
+                />
               </div>
 
               {/* Sidebar Widgets */}

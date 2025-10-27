@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BookCheck, BookOpenCheck, BookUser, Edit, Eye, Trash2 } from 'lucide-react';
 import type { Grade } from '../../../types/class.types';
 import EmptyState from '../../../common/EmptyState';
+import { Pagination } from '../../../common/Pagination';
 
 interface ClassTableProps {
   grades: Grade[];
@@ -13,6 +14,15 @@ interface ClassTableProps {
 }
 
 export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSection, onNavigateToSubject, onAssignClassTeacher, onEdit, onDelete }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const totalPages = Math.ceil(grades.length / itemsPerPage);
+
+  const paginatedData = grades.slice(
+    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+  )
+
   return (
     <div className="bg-white rounded-lg shadow-sm">
 
@@ -39,90 +49,71 @@ export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSect
             </thead>
             <tbody className="divide-y divide-gray-200">
               {
-                grades.map((grade) => (
-                  <React.Fragment key={grade.id}>
-                    <tr className="hover:bg-gray-50 cursor-pointer"
-                    >
-                      <td className="p-4 border-r border-gray-200">
-                        <button
-                          // onClick={() => toggleGrade(grade.id)}
-                          className="flex items-center gap-2 text-gray-900 hover:text-blue-600"
-                        >
-                          {/* {expandedGrades.includes(grade.id) ? (
+                paginatedData.map((grade) => (
+                  <tr className="hover:bg-gray-50 cursor-pointer"
+                  >
+                    <td className="p-4 border-r border-gray-200">
+                      <button
+                        // onClick={() => toggleGrade(grade.id)}
+                        className="flex items-center gap-2 text-gray-900 hover:text-blue-600"
+                      >
+                        {/* {expandedGrades.includes(grade.id) ? (
                     <ChevronDown className="w-4 h-4" />
                   ) : (
                     <ChevronRight className="w-4 h-4" />
                   )} */}
-                          {grade.name}
+                        {grade.name}
+                      </button>
+                    </td>
+                    <td className="p-4 border-r border-gray-200">
+                      {grade?.totalSection}
+                    </td>
+                    <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.totalSubject}</td>
+                    <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.totalStudent}</td>
+                    <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.classTeacher?.firstName} {grade?.classTeacher?.lastName}</td>
+                    <td className="p-4">
+                      <div className="flex items-center gap-2">
+                        <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
+                          onClick={() => onNavigateToSection(grade.id)}
+                        >
+                          <Eye className="w-4 h-4" />
                         </button>
-                      </td>
-                      <td className="p-4 border-r border-gray-200">
-                        {grade?.totalSection}
-                      </td>
-                      <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.totalSubject}</td>
-                      <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.totalStudent}</td>
-                      <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.classTeacher?.firstName} {grade?.classTeacher?.lastName}</td>
-                      <td className="p-4">
-                        <div className="flex items-center gap-2">
-                          <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
-                            onClick={() => onNavigateToSection(grade.id)}
-                          >
-                            <Eye className="w-4 h-4" />
-                          </button>
-                          <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
-                            onClick={() => onNavigateToSubject(grade.id)}
-                          >
-                            <BookCheck className="w-4 h-4" />
-                          </button>
-                          <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
-                            onClick={() => onAssignClassTeacher(grade)}
-                          >
-                            <BookOpenCheck className="w-4 h-4" />
-                          </button>
-                          <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
-                            onClick={() => onEdit(grade)}
-                          >
-                            <Edit className="w-4 h-4" />
-                          </button>
-                          <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-red-600"
-                            onClick={() => onDelete(grade.id)}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    {/* {expandedGrades.includes(grade.id) && grade.subjects.length > 0 && (
-                      <tr>
-                        <td colSpan={6} className="p-4 bg-gray-50 border-t border-gray-200">
-                          <div className="ml-6">
-                            <h4 className="font-medium text-gray-900 mb-4">Subjects for {grade.name}</h4>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                              {grade.subjects.map((subject, index) => (
-                                <div key={index} className="bg-white p-4 rounded-lg border border-gray-200">
-                                  <div className="flex justify-between items-start mb-2">
-                                    <h5 className="font-medium text-gray-900">{subject.name}</h5>
-                                    <button className="text-red-500 hover:text-red-700">
-                                      <Trash2 className="w-4 h-4" />
-                                    </button>
-                                  </div>
-                                  <p className="text-sm text-gray-600 mb-1">{subject.code}</p>
-                                  <p className="text-sm text-gray-600 mb-2">{subject.teacher}</p>
-                                  <p className="text-sm text-gray-600">{subject.periods} periods/week</p>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    )} */}
-                  </React.Fragment>
+                        <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
+                          onClick={() => onNavigateToSubject(grade.id)}
+                        >
+                          <BookCheck className="w-4 h-4" />
+                        </button>
+                        <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
+                          onClick={() => onAssignClassTeacher(grade)}
+                        >
+                          <BookOpenCheck className="w-4 h-4" />
+                        </button>
+                        <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
+                          onClick={() => onEdit(grade)}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-red-600"
+                          onClick={() => onDelete(grade.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
                 ))
               }
             </tbody>
-
           </table>
         </div>
+      )}
+
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalPages={totalPages}
+        />
       )}
     </div>
 

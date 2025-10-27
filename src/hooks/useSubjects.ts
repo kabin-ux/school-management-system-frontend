@@ -3,6 +3,11 @@ import api from "../lib/axios";
 import type { Subject, SubjectForm } from "../types/class.types";
 import toast from "react-hot-toast";
 
+export interface SubjectDashboardData {
+    totalSubjects: number,
+    totalTeacher: number
+}
+
 // Fetch all subjects
 export const useAllSubjects = () => {
     return useQuery({
@@ -156,6 +161,16 @@ export const useAssignSubjectToTeacher = () => {
         },
         onError: (error: any) => {
             toast.error(error.response?.data?.error || "Failed to assign teacher");
+        },
+    });
+};
+
+export const useSubjectDashboardData = (classId: string) => {
+    return useQuery<SubjectDashboardData>({
+        queryKey: ["subjectDashboard"],
+        queryFn: async () => {
+            const res = await api.get(`/dashboard/subject/${classId}`);
+            return res.data.data;
         },
     });
 };

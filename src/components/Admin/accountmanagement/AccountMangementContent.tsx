@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Users, FileText, Landmark } from 'lucide-react';
 import EmptyState from '../../../common/EmptyState';
 import type { Accountant } from '../../../types/accountant-dashboard.types';
+import { Pagination } from '../../../common/Pagination';
 
 // interface Accountant {
 //   id: string | number;
@@ -31,6 +32,14 @@ export const AccountantManagementContent: React.FC<AccountantManagementContentPr
   onEdit,
   onRemove,
 }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const totalPages = Math.ceil(accountantBySchool.length / itemsPerPage);
+
+  const paginatedData = accountantBySchool.slice(
+    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+  )
 
   return (
     <div className='overflow-hidden'>
@@ -76,7 +85,7 @@ export const AccountantManagementContent: React.FC<AccountantManagementContentPr
             />
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {accountantBySchool?.map((acct) => (
+              {paginatedData?.map((acct) => (
                 <div
                   key={acct.id}
                   className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
@@ -118,73 +127,18 @@ export const AccountantManagementContent: React.FC<AccountantManagementContentPr
                       </button>
                     </div>
                   </div>
-
-                  {/* <div className="mb-4">
-                    <p className="text-sm text-gray-600 mb-2">
-                      {acct.permissions?.reduce(
-                        (sum, cat) =>
-                          sum + cat.items.filter((i) => i.assigned).length,
-                        0
-                      )}{" "}
-                      /{" "}
-                      {acct.permissions?.reduce(
-                        (sum, cat) => sum + cat.items.length,
-                        0
-                      )}{" "}
-                      permissions assigned
-                    </p>
-                  </div> */}
-
-                  {/* Permissions */}
-                  <div className="space-y-4">
-                    {/* {acct.permissions?.map((cat, idx) => (
-                      <div key={idx} className="border-t border-gray-300 pt-3">
-                        <div className="flex items-center gap-2 mb-2">
-                          <FileText
-                            className={`w-4 h-4 ${cat.iconColor}`}
-                          />
-                          <span className="text-sm font-medium text-gray-900">
-                            {cat.category}
-                          </span>
-                        </div>
-
-                        <div className="ml-6 space-y-2">
-                          {cat.items.map((perm, i) => (
-                            <div key={i} className="flex items-center gap-3">
-                              <input
-                                type="checkbox"
-                                defaultChecked={perm.assigned}
-                                className="rounded border-gray-300"
-                              />
-                              <div>
-                                <p className="text-sm font-medium text-gray-900">
-                                  {perm.label}
-                                </p>
-                                <p className="text-xs text-gray-500">
-                                  {perm.description}
-                                </p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))} */}
-
-                    {/* <div className="flex gap-2 pt-4">
-                    <button className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">
-                      Restore Default
-                    </button>
-                    <button className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                      Save changes
-                    </button>
-                  </div> */}
-                  </div>
                 </div>
               ))}
             </div>
-          )
-        }
+          )}
       </div>
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalPages={totalPages}
+        />
+      )}
     </div>
   );
 };
