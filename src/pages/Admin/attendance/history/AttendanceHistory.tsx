@@ -4,7 +4,7 @@ import { SubjectWiseTable } from '../../../../components/Admin/attendance/histor
 import { AttendanceHistoryStats } from '../../../../components/Admin/attendance/history/AttendanceHistoryStats';
 import { MonthlyCalendar } from '../../../../components/Admin/attendance/history/MonthlyCalendar';
 import { Sidebar } from '../../../../components/Admin/layout/Sidebar';
-import { AdminDashboardHeader } from '../../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../../components/Admin/layout/AdminDashboardHeader';
 
 const AttendanceHistory: React.FC = () => {
     const subjects = [

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Sidebar } from "../../../../components/Admin/layout/Sidebar";
-import { AdminDashboardHeader } from "../../../../components/Admin/layout/DashboardHeader";
+import { AdminDashboardHeader } from "../../../../components/Admin/layout/AdminDashboardHeader";
 import { useParams } from "react-router-dom";
 import { SubjectHeader } from "../../../../components/Admin/class/subject/SubjectHeader";
 import { SubjectStats } from "../../../../components/Admin/class/subject/SubjectStats";

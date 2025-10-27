@@ -62,7 +62,7 @@ export const RecentActivitySection: React.FC<RecentActivityProps> = ({ recentAct
           <thead>
             <tr className="border-b border-gray-200">
               <th className="text-left py-3 text-sm font-medium text-gray-600">Activity</th>
-              <th className="text-left py-3 text-sm font-medium text-gray-600">Time</th>
+              <th className="text-left py-3 text-sm font-medium text-gray-600">Date</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
@@ -76,7 +76,7 @@ export const RecentActivitySection: React.FC<RecentActivityProps> = ({ recentAct
                     <span className="text-sm text-gray-900">{activity.description}</span>
                   </div>
                 </td>
-                <td className="py-4 text-sm text-gray-500">{new Date(activity.createdAt).toLocaleDateString()}</td>
+                <td className="py-4 text-sm text-gray-500">{new Date(activity.createdAt).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>

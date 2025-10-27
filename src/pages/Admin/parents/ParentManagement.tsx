@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { UserPlus } from 'lucide-react';
 import { ParentStats } from '../../../components/Admin/parents/ParentStats';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
-import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDashboardHeader';
 import { ParentGrid } from '../../../components/Admin/parents/ParentGrid';
 import AddParentModal from '../../../components/Admin/parents/AddParentModal';
 import type { Parent } from '../../../types/parent.types';
@@ -87,6 +87,7 @@ export default function ParentsManagement() {
                         <div className="flex justify-between items-center mb-8">
                             <div>
                                 <h1 className="text-3xl font-bold text-gray-900">Parents Management</h1>
+                                <p className="text-gray-600 mt-1">Organize and manage Parents efficiently</p>
                             </div>
                             <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center gap-2"
                                 onClick={() => setIsModalOpen(true)}

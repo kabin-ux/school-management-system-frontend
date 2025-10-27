@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Sidebar } from "../../../../components/Admin/layout/Sidebar";
-import { AdminDashboardHeader } from "../../../../components/Admin/layout/DashboardHeader";
+import { AdminDashboardHeader } from "../../../../components/Admin/layout/AdminDashboardHeader";
 import { ClassDetailsHeader } from "../../../../components/Admin/class/ClassDetailsHeader";
 import { ClassDetailsStats } from "../../../../components/Admin/class/ClassDetailsStats";
 import ClassSections from "../../../../components/Admin/class/ClassDetailsOverview";

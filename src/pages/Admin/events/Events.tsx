@@ -4,7 +4,7 @@ import { EventsCalendar } from '../../../components/Admin/events/EventsCalendar'
 import { EventsTable } from '../../../components/Admin/events/EventsTable';
 import { CreateEventForm } from '../../../components/Admin/events/CreateEventForm';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
-import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDashboardHeader';
 import type { Event, EventForm } from '../../../types/events.types';
 import { useAddEvent, useDeleteEvent, useEventsBySchool, useUpdateEvent } from '../../../hooks/useEvents';
 import { EditEventModal } from '../../../components/Admin/events/EditEventModal';

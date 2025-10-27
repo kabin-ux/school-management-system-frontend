@@ -3,7 +3,7 @@ import { ClassHeader } from '../../../components/Admin/class/ClassHeader';
 import { ClassStats } from '../../../components/Admin/class/ClassStats';
 import { ClassTable } from '../../../components/Admin/class/ClassTable';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
-import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDashboardHeader';
 import { AddClassModal } from '../../../components/Admin/class/AddClassModal';
 import { useNavigate } from 'react-router-dom';
 import type { Grade } from '../../../types/class.types';

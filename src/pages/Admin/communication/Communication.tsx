@@ -3,7 +3,7 @@ import { CommunicationHeader } from '../../../components/Admin/communication/Com
 import { CommunicationTabs } from '../../../components/Admin/communication/CommunicationTabs';
 import { ChatInterface } from '../../../components/Admin/communication/ChatInterface';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
-import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDashboardHeader';
 
 const Communication: React.FC = () => {
     const [activeTab, setActiveTab] = useState('Students');

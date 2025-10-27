@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AccountantManagementHeader } from '../../../components/Admin/accountmanagement/AccountManagementHeader';
 import { AccountantManagementContent } from '../../../components/Admin/accountmanagement/AccountMangementContent';
-import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import AddAccountantModal from '../../../components/Admin/accountmanagement/AddAccountantModal';
 import EditAccountantModal from '../../../components/Admin/accountmanagement/EditAccountantModal';

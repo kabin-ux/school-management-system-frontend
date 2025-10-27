@@ -50,7 +50,7 @@ export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSect
             <tbody className="divide-y divide-gray-200">
               {
                 paginatedData.map((grade) => (
-                  <tr className="hover:bg-gray-50 cursor-pointer"
+                  <tr key={grade.id} className="hover:bg-gray-50 cursor-pointer"
                   >
                     <td className="p-4 border-r border-gray-200">
                       <button

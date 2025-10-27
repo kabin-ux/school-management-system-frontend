@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import {  Plus } from 'lucide-react';
 import TimetableFilters from '../../../components/Admin/timetable/TimetableFilters';
 import { WeeklyTimetable } from '../../../components/Admin/timetable/WeeklyTimetable';
-import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { CreateTimeTableModal, type TimeTableForm } from '../../../components/Admin/timetable/CreateTimeTableModal';
 import { EditTimeSlotModal, type EditTimeSlotForm } from '../../../components/Admin/timetable/EditTimeSlotModal';

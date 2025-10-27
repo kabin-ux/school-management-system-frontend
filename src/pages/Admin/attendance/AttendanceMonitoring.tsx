@@ -4,7 +4,7 @@ import { AttendanceFilters } from '../../../components/Admin/attendance/Attendan
 import { AttendanceStats } from '../../../components/Admin/attendance/AttendanceStats';
 import { AttendanceCharts } from '../../../components/Admin/attendance/AttendanceCharts';
 import { AttendanceTable } from '../../../components/Admin/attendance/AttendanceTable';
-import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { useStudentAttendanceByClassSection } from '../../../hooks/useAttendance';
 import { useClasses } from '../../../hooks/useClasses';

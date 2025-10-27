@@ -30,7 +30,7 @@ function StatCard({ title, value, change, changeType, icon, bgColor }: StatCardP
 }
 
 interface DashboardStatsProps {
-  data: SchoolAdminDashboard | null
+  data: SchoolAdminDashboard
 }
 
 export default function DashboardStats({ data }: DashboardStatsProps) {

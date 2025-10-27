@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { SalaryOverviewTable } from '../../../components/Admin/salary/SalaryOverviewTable';
 import { SalaryOverviewHeader } from '../../../components/Admin/salary/SalaryOverviewHeader';

@@ -22,13 +22,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles 
     }
 
     if (!user) {
-        // Not logged in → redirect to login page
+        // Not logged in --> redirect to login page
         return <Navigate to="/admin" replace />;
     }
 
     try {
-        console.log(user)
-        console.log(token)
         const decoded = jwtDecode<DecodedToken>(token || "");
         const currentTime = Date.now() / 1000;
 
@@ -44,13 +42,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles 
     }
 
     if (!role || !allowedRoles.includes(role)) {
-        // Logged in but role not allowed → redirect to unauthorized page or login
+        // Logged in but role not allowed --> redirect to unauthorized page or login
         console.log("Allowed roles:", allowedRoles);
         console.log("User role:", role);
         console.log("User object:", user);
         return <Navigate to="/unauthorized" replace />;
     }
-    return <>{children}</>; // user is allowed → render children
+    return <>{children}</>; // user is allowed --> render children
 };
 
 export default ProtectedRoute;

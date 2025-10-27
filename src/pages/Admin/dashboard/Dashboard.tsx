@@ -1,10 +1,11 @@
 import AttendanceChart from "../../../components/Admin/dashboard/AttendanceChart";
 import AttendancePieChart from "../../../components/Admin/dashboard/AttendancePieChart";
+import { DashboardHeader } from "../../../components/Admin/dashboard/DashboardHeader";
 import DashboardStats from "../../../components/Admin/dashboard/DashboardStats";
 import QuickActions from "../../../components/Admin/dashboard/QuickAction";
-import  { RecentActivitySection } from "../../../components/Admin/dashboard/RecentActivity";
+import { RecentActivitySection } from "../../../components/Admin/dashboard/RecentActivity";
 import SystemStatus from "../../../components/Admin/dashboard/SystemStatus";
-import { AdminDashboardHeader } from "../../../components/Admin/layout/DashboardHeader";
+import { AdminDashboardHeader } from "../../../components/Admin/layout/AdminDashboardHeader";
 import { Sidebar } from "../../../components/Admin/layout/Sidebar";
 import { useAuthUser } from "../../../hooks/useAuth";
 import { useRecentActivity, useSchoolAdminDashboard, useSchoolAdminDashboardLineChart, useSchoolAdminDashboardPieChart } from "../../../hooks/useDashboard";
@@ -29,15 +30,13 @@ export default function AdminDashboard() {
         {/* Scrollable Content */}
         <main className="flex-1 p-6 overflow-y-auto">
           <div className="max-w-7xl mx-auto">
-            {/* Page Title */}
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold text-gray-900">Welcome, Admin ({user.name ? user.name : ''})</h1>
-              <p className="text-gray-600 mt-1">Monday, August 4, 2025</p>
-            </div>
+            <DashboardHeader
+              user={user}
+            />
 
             {/* Stats Cards */}
             <DashboardStats
-              data={schoolAdmin}
+              data={schoolAdmin ?? { last7DaysAttendanceGraphData: [], totalStudents: 0, totalAccountant: 0, totalTeachers: 0, totalParents: 0, totalClasses: 0, totalSupportTicket: 0, last7DaysClassWiseAttendanceGraphData: [] }}
             />
 
             {/* Charts Section */}

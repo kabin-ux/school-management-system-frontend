@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../../../components/Admin/layout/Sidebar';
-import { AdminDashboardHeader } from '../../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../../components/Admin/layout/AdminDashboardHeader';
 import TicketDetail from '../../../../components/Admin/support/details/TicketDetail';
 
 export default function AdminSupportTicketDetailPage() {

@@ -3,7 +3,7 @@ import { SupportConsoleHeader } from '../../../components/Admin/support/SupportC
 import { SupportConsoleStats } from '../../../components/Admin/support/SupportConsoleStats';
 import { NewSupportTicket } from '../../../components/Admin/support/NewSupportTicket';
 import { RecentTickets } from '../../../components/Admin/support/RecentTickets';
-import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { useCreateSupportTicket, useDeleteSupportTicket, useSupportTicketAdminDashboardData, useSupportTicketsBySchool, useUpdateSupportTicket } from '../../../hooks/useSupportTickets';
 import type { SupportTicket } from '../../../types/support.types';

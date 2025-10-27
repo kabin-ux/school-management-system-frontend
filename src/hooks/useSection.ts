@@ -3,6 +3,10 @@ import api from '../lib/axios';
 import toast from 'react-hot-toast';
 import type { Section } from '../types/class.types';
 
+// export interface SectionDashboardData {
+
+// }
+
 // Create Section
 export const useCreateSection = () => {
     const queryClient = useQueryClient();

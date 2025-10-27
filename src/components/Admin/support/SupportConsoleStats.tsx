@@ -1,5 +1,5 @@
 import React from 'react';
-import { Ticket, Clock, CheckCircle, AlertTriangle, BookOpen } from 'lucide-react';
+import { Ticket, Clock, CheckCircle, BookOpen } from 'lucide-react';
 import type { SupportTicketDashboardData } from '../../../hooks/useSupportTickets';
 
 interface SupportConsoleStatsProps {
@@ -7,7 +7,6 @@ interface SupportConsoleStatsProps {
 }
 
 export const SupportConsoleStats: React.FC<SupportConsoleStatsProps> = ({ ticketStats }) => {
-  console.log("ticekts", ticketStats)
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
       <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">

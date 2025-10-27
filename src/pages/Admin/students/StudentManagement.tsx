@@ -4,7 +4,7 @@ import { StudentStats } from '../../../components/Admin/students/StudentStats';
 import StudentFilters from '../../../components/Admin/students/StudentFilters';
 import StudentTable from '../../../components/Admin/students/StudentTable';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
-import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDashboardHeader';
 import { AddStudentModal } from '../../../components/Admin/students/AddStudentModal';
 import EditStudentModal from '../../../components/Admin/students/EditStudentModal';
 import type { Student, StudentForm } from '../../../types/student.types';

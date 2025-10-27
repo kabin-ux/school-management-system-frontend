@@ -1,7 +1,7 @@
 import React from 'react';
 import { SettingsHeader } from '../../../components/Admin/settings/SettingsHeader';
 import { SettingsContent } from '../../../components/Admin/settings/SettingsContent';
-import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 
 const AdminSettings: React.FC = () => {

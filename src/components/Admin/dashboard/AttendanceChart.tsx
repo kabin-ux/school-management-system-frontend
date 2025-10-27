@@ -10,20 +10,15 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import EmptyState from "../../../common/EmptyState";
-import { Donut, LineChart, PieChart } from "lucide-react";
+import { LineChart } from "lucide-react";
+import type { AttendanceItem } from "../../../hooks/useDashboard";
 
 // Register Chart.js components
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title);
 
-interface AttendanceItem {
-  date: string;
-  present: string;
-  absent: string;
-  leave: string;
-}
 
 interface AttendanceChartProps {
-  data?: AttendanceItem[];
+  data: AttendanceItem[];
 }
 
 export default function AttendanceChart({ data = [] }: AttendanceChartProps) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FeeDetailsHeader } from '../../../../components/Admin/feeoverview/feedetails/FeeDetailsHeader';
 import { FeeDetailsContent } from '../../../../components/Admin/feeoverview/feedetails/FeeDetailsContent';
-import { AdminDashboardHeader } from '../../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../../components/Admin/layout/AdminDashboardHeader';
 import { Sidebar } from '../../../../components/Admin/layout/Sidebar';
 const FeeDetails: React.FC = () => {
     return (

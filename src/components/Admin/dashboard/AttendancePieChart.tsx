@@ -8,14 +8,10 @@ import {
 } from "chart.js";
 import EmptyState from "../../../common/EmptyState";
 import { PieChart } from "lucide-react";
+import type { AttendanceData } from "../../../hooks/useDashboard";
 
 // Register components
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
-
-interface AttendanceData {
-  grade: string;
-  percentage: number;
-}
 
 interface AttendancePieChartProps {
   data?: AttendanceData[];

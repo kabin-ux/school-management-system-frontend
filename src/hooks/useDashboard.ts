@@ -26,6 +26,18 @@ export interface SchoolAdminDashboard {
   last7DaysClassWiseAttendanceGraphData: ClassWiseAttendanceData[];
 }
 
+export interface AttendanceData {
+  grade: string;
+  percentage: number;
+}
+
+export interface AttendanceItem {
+  date: string;
+  present: string;
+  absent: string;
+  leave: string;
+}
+
 export interface SuperAdminDashboard {
   totalSchools: number;
   totalStudents: number;
@@ -69,7 +81,7 @@ export const useSchoolAdminDashboard = () => {
 };
 
 export const useSchoolAdminDashboardLineChart = () => {
-  return useQuery<SchoolAdminDashboard>({
+  return useQuery<AttendanceItem[]>({
     queryKey: ["school-admin-dashboard-line-chart"],
     queryFn: async () => {
       const res = await api.get("/attendance/dashboard/weekly");
@@ -80,7 +92,7 @@ export const useSchoolAdminDashboardLineChart = () => {
 };
 
 export const useSchoolAdminDashboardPieChart = () => {
-  return useQuery<SchoolAdminDashboard>({
+  return useQuery<AttendanceData[]>({
     queryKey: ["school-admin-dashboard-pie-chart"],
     queryFn: async () => {
       const res = await api.get("/attendance/dashboard/grade-summary");

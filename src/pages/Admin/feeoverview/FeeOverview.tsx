@@ -3,7 +3,7 @@ import { FeeOverviewHeader } from '../../../components/Admin/feeoverview/FeeOver
 import { FeeOverviewFilters } from '../../../components/Admin/feeoverview/FeeOverviewFilters';
 import { FeeOverviewStats } from '../../../components/Admin/feeoverview/FeeOverviewStats';
 import { FeeOverviewTable } from '../../../components/Admin/feeoverview/FeeOverviewTable';
-import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { useMySchoolFeesStructures } from '../../../hooks/useFees';
 import { useClasses } from '../../../hooks/useClasses';

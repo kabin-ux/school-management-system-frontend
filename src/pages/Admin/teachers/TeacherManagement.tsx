@@ -4,7 +4,7 @@ import { TeacherStats } from '../../../components/Admin/teachers/TeacherStats';
 import TeacherFilters from '../../../components/Admin/teachers/TeacherFilters';
 import TeacherGrid from '../../../components/Admin/teachers/TeacherGrid';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
-import { AdminDashboardHeader } from '../../../components/Admin/layout/DashboardHeader';
+import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDashboardHeader';
 import AddTeacherModal from '../../../components/Admin/teachers/AddTeacherModal';
 import EditTeacherModal from '../../../components/Admin/teachers/EditTeacherModal';
 import { useAddTeacher, useDeleteTeacher, useTeacherDashboardData, useTeachers, useUpdateTeacher } from '../../../hooks/useTeachers';
@@ -84,6 +84,7 @@ export default function TeacherManagement() {
                         <div className="flex justify-between items-center mb-8">
                             <div>
                                 <h1 className="text-3xl font-bold text-gray-900">Teacher Management</h1>
+                                <p className="text-gray-600 mt-1">Organize and manage Teachers efficiently</p>
                             </div>
                             <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center gap-2"
                                 onClick={() => setIsModalOpen(true)}
