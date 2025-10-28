@@ -2,15 +2,24 @@ import React, { useState } from 'react';
 import EmptyState from '../../../common/EmptyState';
 import { School } from 'lucide-react';
 import type { SchoolData } from '../../../types/partner-school.types';
+import { Pagination } from '../../../common/Pagination';
 
 interface PartnerSchoolTableProps {
-  schoolData?: SchoolData[];
+  schoolData: SchoolData[];
   onViewPartnerSchoolDetails: (schoolCode: any) => void;
 }
 
 export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({ schoolData, onViewPartnerSchoolDetails }) => {
   const [subscription, setSubscription] = useState('All Status');
   const [payment, setPayment] = useState('Payment');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+
+  const totalPages = Math.ceil(schoolData.length / itemsPerPage);
+
+  const paginatedData = schoolData.slice(
+    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+  )
 
   const getStatusBadge = (status: string | undefined) => {
     return status === 'Active'
@@ -109,7 +118,7 @@ export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({ schoolD
                   </td>
                 </tr>
               ) : (
-                schoolData?.map((school, index) => (
+                paginatedData?.map((school, index) => (
                   <tr key={index} className="border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
                     onClick={() => onViewPartnerSchoolDetails?.(school.id)}
                   >
@@ -136,6 +145,14 @@ export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({ schoolD
           </tbody>
         </table>
       </div>
+
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalPages={totalPages}
+        />
+      )}
     </div>
   );
 };

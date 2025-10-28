@@ -8,7 +8,7 @@ import { PlusIcon } from 'lucide-react';
 import { useAddSchool, useSchools } from '../../../hooks/useSchools';
 
 export const PartnerSchools: React.FC = () => {
-  const { data: schools, isLoading: loading } = useSchools();
+  const { data: schools = [], isLoading: loading } = useSchools();
   const addSchoolMutation = useAddSchool();
 
   const navigate = useNavigate();

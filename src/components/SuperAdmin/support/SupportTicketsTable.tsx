@@ -1,5 +1,5 @@
 import { EyeIcon, Tags, Trash2 } from "lucide-react";
-import { getStatusAction } from "../../../lib/utils";
+import { getStatusAction, getTicketType } from "../../../lib/utils";
 import type { SupportTicket } from "../../../types/support.types";
 import EmptyState from "../../../common/EmptyState";
 import { useState } from "react";
@@ -48,6 +48,12 @@ export default function SupportTicketsTable({ tickets, onViewTicket, onDeleteTic
                   Issue Type
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Title
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Descrption
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -61,14 +67,24 @@ export default function SupportTicketsTable({ tickets, onViewTicket, onDeleteTic
             <tbody className="bg-white divide-y divide-gray-200">
               {paginatedData.map((ticket, index) => (
                 <tr key={ticket.id} className={index % 2 === 0 ? 'bg-white cursor-pointer' : 'bg-gray-50 cursor-pointer'}>
-                  <td className="px-6 py-4 text-sm font-medium text-blue-600">
+                  <td className="px-4 py-4 text-sm font-medium text-blue-600">
                     {ticket.id}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {ticket.school?.name}
                   </td>
-                  <td className="px-6 py-4 text-gray-500">
+                  <td className="p-4 text-sm whitespace-nowrap">
+                    <div className="flex items-center">
+                      <span className="font-medium text-gray-900">
+                        {getTicketType(ticket.type)}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-gray-500 font-semibold text-sm">
                     {ticket.title}
+                  </td>
+                  <td className="px-6 py-4 text-gray-500 text-sm truncate max-w-54">
+                    {ticket.description}
                   </td>
                   <td className="px-6 py-4">
                     {(() => {
@@ -83,7 +99,21 @@ export default function SupportTicketsTable({ tickets, onViewTicket, onDeleteTic
                     })()}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
-                    {ticket.updatedAt ? new Date(ticket.updatedAt).toLocaleDateString() : "N/A"}
+                    <div className="flex flex-col">
+                      <span className="font-medium text-gray-800">
+                        {ticket?.updatedAt ? new Date(ticket.updatedAt).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric'
+                        }) : "N/A"}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {ticket?.updatedAt ? new Date(ticket.updatedAt).toLocaleTimeString('en-US', {
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        }) : ""}
+                      </span>
+                    </div>
                   </td>
                   <td className="px-6 py-4 text-sm">
                     <div className="flex items-center gap-2">

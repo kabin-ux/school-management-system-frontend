@@ -13,7 +13,7 @@ import type { SuperAdmin } from '../../../types/super-admin-dashboard.types';
 export const SuperAdminsPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const { data: superAdmins, isLoading } = useSuperAdmins();
+  const { data: superAdmins = [], isLoading } = useSuperAdmins();
   const createSuperAdminMutation = useCreateSuperAdmin();
   const updateSuperAdminMutation = useUpdateSuperAdmin();
   const deleteSuperAdminMutation = useDeleteSuperAdmin();

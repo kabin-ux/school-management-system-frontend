@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Eye, Search, Trash2, Edit } from 'lucide-react';
 import { Pagination } from '../../../common/Pagination';
 import type { SuperAdmin } from '../../../types/super-admin-dashboard.types';
 
 interface SuperAdminTableProps {
-    superAdminData?: SuperAdmin[];
+    superAdminData: SuperAdmin[];
     onViewSuperAdminDetails: (schoolCode: string) => void;
     onDelete: (id: string) => void;
     onEdit: (superAdmin: SuperAdmin) => void;
 }
 
 export const SuperAdminTable: React.FC<SuperAdminTableProps> = ({ superAdminData, onDelete, onEdit }) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8;
+
+    const totalPages = Math.ceil(superAdminData.length / itemsPerPage);
+
+    const paginatedData = superAdminData.slice(
+        (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+    )
+
     const getStatusBadge = (status: string) => {
         return status === 'active'
             ? 'bg-green-100 text-green-800'
@@ -58,7 +67,7 @@ export const SuperAdminTable: React.FC<SuperAdminTableProps> = ({ superAdminData
                         </tr>
                     </thead>
                     <tbody>
-                        {superAdminData?.map((superAdmin, index) => (
+                        {paginatedData?.map((superAdmin, index) => (
                             <tr
                                 key={index}
                                 className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
@@ -92,7 +101,7 @@ export const SuperAdminTable: React.FC<SuperAdminTableProps> = ({ superAdminData
                                 </td>
                                 <td className="py-4 px-6 flex items-center gap-3">
                                     <button
-                                        className="text-green-600 hover:text-green-800"
+                                        className="text-blue-600 hover:text-blue-800"
                                         title="Edit"
                                         onClick={() => onEdit(superAdmin)}
                                     >
@@ -113,7 +122,14 @@ export const SuperAdminTable: React.FC<SuperAdminTableProps> = ({ superAdminData
             </div>
 
             {/* Pagination */}
-            {/* <Pagination /> */}
+
+            {totalPages > 1 && (
+                <Pagination
+                    currentPage={currentPage}
+                    onPageChange={setCurrentPage}
+                    totalPages={totalPages}
+                />
+            )}
         </div>
 
     );

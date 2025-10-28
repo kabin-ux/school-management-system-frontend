@@ -1,9 +1,9 @@
 import { ArrowLeft } from 'lucide-react';
-import { getStatusAction } from '../../../lib/utils';
+import { getStatusAction, getTicketType } from '../../../lib/utils';
 import type { SupportTicket } from '../../../types/support.types';
 
 interface TicketDetailProps {
-  selectedTicket: SupportTicket | null;
+  selectedTicket: SupportTicket;
   onAccept: (id: string) => void;
   onResolve: (id: string) => void;
   onClose: (id: string) => void;
@@ -55,19 +55,19 @@ export default function TicketDetail({ selectedTicket, onAccept, onResolve, onBa
               <div>
                 <h2 className="text-xl font-semibold text-gray-900">{selectedTicket?.id}</h2>
                 <div className="mt-2 space-y-1 text-sm">
-                  <p><span className="text-gray-500">Submitted by:</span> <span className="font-medium">{selectedTicket?.created_by}</span></p>
-                  <p><span className="text-gray-500">Admin • Springfield High School</span></p>
+                  <p><span className="text-gray-500">Submitted by:</span> <span className="font-medium">{selectedTicket?.school?.name}</span></p>
+                  {/* <p><span className="text-gray-500">Admin • Springfield High School</span></p> */}
                 </div>
               </div>
               <div className="text-right">
                 <div className="mb-2">
                   <span className="text-gray-500 text-sm">Issue Type</span>
-                  <p className="font-medium">{selectedTicket?.title}</p>
+                  <p className="font-medium">{getTicketType(selectedTicket.type)}</p>
                 </div>
-                <div className="mb-2">
+                {/* <div className="mb-2">
                   <span className="text-gray-500 text-sm">Priority</span>
                   <p className="font-medium">High</p>
-                </div>
+                </div> */}
                 <div>
                   <span className="text-gray-500 text-sm">Status</span>
                   <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium">
@@ -80,7 +80,9 @@ export default function TicketDetail({ selectedTicket, onAccept, onResolve, onBa
 
           {/* Issue Description */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">
+
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Issue Description</h3>
+                        <p className="text-gray-700 leading-relaxed">{selectedTicket.title}</p>
             <p className="text-gray-700 leading-relaxed">
               {selectedTicket?.description}
             </p>
@@ -304,7 +306,7 @@ export default function TicketDetail({ selectedTicket, onAccept, onResolve, onBa
           </div>
 
           {/* Analytical Overview */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
+          {/* <div className="bg-white rounded-lg border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Analytical Overview</h3>
             <div className="space-y-4">
               <div>
@@ -326,7 +328,7 @@ export default function TicketDetail({ selectedTicket, onAccept, onResolve, onBa
                 <div className="text-xs text-gray-500 mt-1">Very high success rate</div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
