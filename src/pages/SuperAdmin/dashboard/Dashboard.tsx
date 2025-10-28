@@ -30,7 +30,7 @@ function SuperAdminDashboard() {
             <p className="text-gray-600">Welcome back! Here’s what’s happening with your education platform today.</p>
           </div>
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             <StatsCard
               title="Total Schools"
               value={superAdminDashboard?.totalSchools ? superAdminDashboard.totalSchools.toString() : ''}
@@ -68,7 +68,7 @@ function SuperAdminDashboard() {
             />
             <StatsCard
               title="Open Support Tickets"
-              value={superAdminDashboard?.totalSupportTicket || 0}
+              value={superAdminDashboard?.totalSupportTickets ? superAdminDashboard.totalSupportTickets.toString() : ''}
               change=""
               icon={<Headphones className="w-6 h-6 text-indigo-600" />}
               color="indigo"
@@ -78,8 +78,8 @@ function SuperAdminDashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column */}
             <div className="lg:col-span-2 space-y-8">
-              <FeesCollected />
-              <RecentNotifications />
+              {/* <FeesCollected />
+              <RecentNotifications /> */}
               <SupportTickets
                 supportTickets={supportTickets}
               />
@@ -87,8 +87,8 @@ function SuperAdminDashboard() {
 
             {/* Right Column */}
             <div className="space-y-8">
-              <FeeCollectionTrend />
-              <QuickActions />
+              {/* <FeeCollectionTrend />
+              <QuickActions /> */}
             </div>
           </div>
         </div>

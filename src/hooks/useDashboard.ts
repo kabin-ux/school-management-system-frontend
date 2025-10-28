@@ -44,6 +44,7 @@ export interface SuperAdminDashboard {
   totalTeachers: number;
   totalAccountants: number;
   totalParents: number;
+  totalSupportTickets: number;
 }
 
 export interface PaymentData {
