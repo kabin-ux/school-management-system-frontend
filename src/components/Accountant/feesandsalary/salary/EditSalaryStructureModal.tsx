@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import type { Salary, SalaryStructureForm } from '../../../../types/fee-salary.types';
 import type { Teacher } from '../../../../types/teacher.types';
-import type { Accountant } from '../../../../features/accountantSlice';
+import type { Accountant } from '../../../../types/accountant-dashboard.types';
 
 interface EditSalaryStructureModalProps {
     isOpen: boolean;
@@ -102,8 +102,6 @@ const EditSalaryStructureModal: React.FC<EditSalaryStructureModalProps> = ({
                 role: formData.role,
                 remarks: formData.remarks
             };
-            console.log("edit slary",payload)
-
             onSubmit(salaryStructure.id, payload);
             onClose();
         }

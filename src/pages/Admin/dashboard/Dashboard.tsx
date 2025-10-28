@@ -14,7 +14,7 @@ export default function AdminDashboard() {
   const { data: user } = useAuthUser();
   const { data: schoolAdmin = { last7DaysAttendanceGraphData: [], totalStudents: 0, totalAccountant: 0, totalTeachers: 0, totalParents: 0, totalClasses: 0, totalSupportTicket: 0, last7DaysClassWiseAttendanceGraphData: [] } } = useSchoolAdminDashboard();
   const { data: lineChartData = [] } = useSchoolAdminDashboardLineChart();
-  const { data: pieChartData } = useSchoolAdminDashboardPieChart();
+  const { data: pieChartData = [] } = useSchoolAdminDashboardPieChart();
   const { data: recentActivity = [] } = useRecentActivity();
 
   return (

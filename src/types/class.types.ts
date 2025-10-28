@@ -1,13 +1,17 @@
-import type { School } from "./partner-school.types";
+import type { SchoolData } from "./partner-school.types";
 import type { Teacher } from "./teacher.types";
 
 export interface Subject {
   id: string;
   name: string;
   code: string;
-  description: string;
-  teacher: Teacher;
-  periods: number;
+  teacher_id?: string | null;
+  description?: string | null;
+  class_id: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+
+  class: Grade;
 }
 
 export interface SubjectForm {
@@ -43,5 +47,5 @@ export interface Grade {
   updatedAt: string;
 
   classTeacher?: Teacher;
-  school?: School;
+  school?: SchoolData;
 }

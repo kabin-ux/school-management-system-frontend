@@ -67,11 +67,9 @@ export const CreateTimeTableModal: React.FC<TimeTableModalProps> = ({
 
     const handleSubmit = () => {
         if (isLoading) return;
-        // console.log("form", formData)
 
         if (validateForm()) {
             onSubmit(formData);
-            console.log("form", formData)
 
             setFormData({
                 classId: "",
@@ -81,7 +79,6 @@ export const CreateTimeTableModal: React.FC<TimeTableModalProps> = ({
             setErrors({});
             onClose();
         }
-
     };
 
     if (!isOpen) return null;

@@ -21,7 +21,6 @@ export default function NotificationForm() {
   };
 
   const handleSendNotification = () => {
-    console.log('Sending notification:', formData);
     // Handle form submission
   };
 

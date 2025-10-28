@@ -28,7 +28,6 @@ export const AssignTeacherModal: React.FC<AssignTeacherModalProps> = ({
         subjectId: subjectId ?? "",
         teacherId: ""
     });
-    console.log("subject", subjectId, teachers)
 
     const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -69,7 +68,6 @@ export const AssignTeacherModal: React.FC<AssignTeacherModalProps> = ({
         if (isLoading) return;
 
         if (validateForm()) {
-            console.log("formdata", formData)
             onSubmit(formData);
             onClose();
             setFormData({

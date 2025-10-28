@@ -38,12 +38,10 @@ export const useSettings = () => {
   }, []);
 
   const handleLogout = useCallback(() => {
-    console.log('Logging out...');
     // Implement logout logic
   }, []);
 
   const handleSafeLogout = useCallback(() => {
-    console.log('Safe logout...');
     // Implement safe logout logic
   }, []);
 

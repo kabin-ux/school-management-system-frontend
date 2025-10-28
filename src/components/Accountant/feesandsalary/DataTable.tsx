@@ -28,8 +28,6 @@ export const DataTable: React.FC<DataTableProps> = ({
 }) => {
   const structure = activeView === 'Student' ? students : teachers;
 
-  console.log("data received", structure)
-
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100">
       <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">

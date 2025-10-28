@@ -8,26 +8,16 @@ interface TicketDetailProps {
 export default function TicketDetail({ onBack }: TicketDetailProps) {
   const [newMessage, setNewMessage] = useState('');
   const [status, setStatus] = useState('Open');
-//   const [notificationMessage, setNotificationMessage] = useState('');
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
-      console.log('Sending message:', newMessage);
       setNewMessage('');
     }
   };
 
   const handleStatusChange = (newStatus: string) => {
     setStatus(newStatus);
-    console.log('Status changed to:', newStatus);
   };
-
-//   const handleSendNotification = () => {
-//     if (notificationMessage.trim()) {
-//       console.log('Sending notification:', notificationMessage);
-//       setNotificationMessage('');
-//     }
-//   };
 
   return (
     <div className="space-y-6">

@@ -35,7 +35,6 @@ export const StudentNotes: React.FC = () => {
     const handleAddNote = () => {
         if (newNote.trim()) {
             // Add note logic here
-            console.log('Adding note:', { content: newNote, type: selectedNoteType });
             setNewNote('');
         }
     };

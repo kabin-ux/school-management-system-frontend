@@ -61,10 +61,9 @@ export default function TeacherManagement() {
         return teachers.filter((teacher: Teacher) => {
             const fullName = `${teacher?.firstName || ""} ${teacher?.lastName || ""}`.toLowerCase();
             const matchesSearch = fullName.includes(filters.search.toLowerCase());
-            // const matchesSection = !filters.subject || teacher.subjects.includes(filters.subject);
-            // const matchesClass = !filters.class || teacher?.class?.name === filters.class;
+            const matchesClass = !filters.class || teacher?.subjects[0]?.class.name === filters.class;
 
-            return matchesSearch;
+            return matchesSearch && matchesClass;
         });
     }, [teachers, filters]);
 

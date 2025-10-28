@@ -37,8 +37,6 @@ export default function AccountantDashboard() {
                                 <StatCard
                                     title="Total Students"
                                     value={accountantDashboard.totalStudents}
-                                    change="10.5%"
-                                    changeType="positive"
                                     icon={GraduationCap}
                                     iconColor="text-green-600"
                                     iconBg="bg-green-100"
@@ -46,8 +44,6 @@ export default function AccountantDashboard() {
                                 <StatCard
                                     title="Total Teachers"
                                     value={accountantDashboard.totalTeachers}
-                                    change="6"
-                                    changeType="positive"
                                     icon={UsersIcon}
                                     iconColor="text-blue-600"
                                     iconBg="bg-blue-100"
@@ -55,8 +51,6 @@ export default function AccountantDashboard() {
                                 <StatCard
                                     title="Total Classes"
                                     value={accountantDashboard.totalclass}
-                                    change="6"
-                                    changeType="positive"
                                     icon={Book}
                                     iconColor="text-blue-600"
                                     iconBg="bg-blue-100"
@@ -64,8 +58,6 @@ export default function AccountantDashboard() {
                                 <StatCard
                                     title="Today's Transactions"
                                     value={accountantDashboard.todayTransaction}
-                                    change="3"
-                                    changeType="positive"
                                     icon={FileText}
                                     iconColor="text-orange-600"
                                     iconBg="bg-orange-100"
@@ -104,12 +96,9 @@ export default function AccountantDashboard() {
                     )}
 
                     {/* Chart and Quick Actions */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 mb-6">
-                        <div className="lg:col-span-2">
+                    <div className="grid grid-cols-1 lg:grid-cols-1 gap-4 md:gap-6 mb-6">
+                        <div className="lg:col-span-1">
                             <FeeChart />
-                        </div>
-                        <div>
-                            <QuickActions />
                         </div>
                     </div>
 

@@ -49,8 +49,6 @@ export const EditTimeSlotModal: React.FC<EditTimeSlotModalProps> = ({
         }
     }, [isOpen, timeSlot]);
 
-    console.log("timeslot", timeSlot)
-
     const handleInputChange = (
         e: React.ChangeEvent<
             HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -84,11 +82,9 @@ export const EditTimeSlotModal: React.FC<EditTimeSlotModalProps> = ({
 
     const handleSubmit = () => {
         if (isLoading) return;
-        // console.log("form", formData)
 
         if (validateForm() && timeSlot) {
             onSubmit(timeSlot.id, formData);
-            console.log("form", formData)
 
             setFormData({
                 label: "",

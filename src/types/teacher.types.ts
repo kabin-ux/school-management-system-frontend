@@ -14,6 +14,7 @@ export interface Teacher {
   subjectIds: number[];
   status?: string;
   subjects: Subject[];
+  role: string;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;

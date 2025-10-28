@@ -63,7 +63,6 @@ export default function FeeAndSalaryPage() {
     } = useFeeSalary();
 
     const handleSubmitPayment = () => {
-        console.log('Submitting payment:', { paymentAmount, paymentType, feeCategory, additionalNotes });
         // Add payment submission logic
         resetPaymentForm();
     };

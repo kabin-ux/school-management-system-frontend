@@ -103,15 +103,12 @@ export default function SchoolPermissionDetail() {
   ];
 
   const handlePermissionChange = (sectionTitle: string, permissionId: string, enabled: boolean) => {
-    console.log(`Permission changed: ${sectionTitle} - ${permissionId} - ${enabled}`);
   };
 
   const handleUserEdit = (userId: string) => {
-    console.log(`Edit user: ${userId}`);
   };
 
   const handleUserDelete = (userId: string) => {
-    console.log(`Delete user: ${userId}`);
   };
 
   return (

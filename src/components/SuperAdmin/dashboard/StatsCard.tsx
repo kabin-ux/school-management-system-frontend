@@ -4,7 +4,6 @@ interface StatsCardProps {
   icon: React.ReactNode;
   title: string;
   value: string;
-  change: string;
   color: 'blue' | 'green' | 'purple' | 'orange' | 'pink' | 'indigo';
 }
 
@@ -20,15 +19,10 @@ const getIconColor = (color: string) => {
   }
 };
 
-const getChangeColor = (change: string) => {
-  return change.startsWith('+') ? 'text-green-600' : 'text-red-600';
-};
-
 export const StatsCard: React.FC<StatsCardProps> = ({
   icon,
   title,
   value,
-  change,
   color
 }) => {
   return (
@@ -41,11 +35,6 @@ export const StatsCard: React.FC<StatsCardProps> = ({
       <div className="mb-2">
         <h3 className="text-sm font-medium text-gray-600 mb-1">{title}</h3>
         <p className="text-2xl font-bold text-gray-900">{value}</p>
-      </div>
-      <div className="flex items-center space-x-2 text-sm">
-        <span className={`font-medium ${getChangeColor(change)}`}>
-          {change}
-        </span>
       </div>
     </div>
   );

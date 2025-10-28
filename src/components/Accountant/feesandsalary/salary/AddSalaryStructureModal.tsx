@@ -73,12 +73,9 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
 
     const handleSubmit = () => {
         if (isLoading) return;
-        // console.log("form", formData)
 
         if (validateForm()) {
             onSubmit(formData);
-            console.log("form", formData)
-
             setFormData({
                 employee_id: "",
                 basic: 0,
@@ -89,7 +86,6 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
             setErrors({});
             onClose();
         }
-
     };
 
     if (!isOpen) return null;

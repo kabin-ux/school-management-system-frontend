@@ -1,5 +1,5 @@
-import type { Admin, School } from "../../../types/partner-school.types";
-import type { SchoolData } from "./AddSchoolModal";
+import type { Admin } from "../../../types/partner-school.types";
+import type { SchoolData } from "../../../types/permission.types";
 
 interface SystemInformationProps {
   school: SchoolData;
@@ -14,7 +14,6 @@ export default function SystemInformation({ school, onEditSchool, onDeleteSchool
     { name: 'Mike Chen', role: 'Secondary Admin', initials: 'MC', bgColor: 'bg-green-100 text-green-600' },
     { name: 'Alex Doe', role: 'Accountant', initials: 'AD', bgColor: 'bg-orange-100 text-orange-600' }
   ];
-  console.log(school)
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6">

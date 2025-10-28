@@ -21,7 +21,7 @@ interface AttendanceChartProps {
   data: AttendanceItem[];
 }
 
-export default function AttendanceChart({ data = [] }: AttendanceChartProps) {
+export default function AttendanceChart({ data }: AttendanceChartProps) {
   if (!data.length) {
     return (
       <div className='bg-white border border-gray-200 flex justify-center'>

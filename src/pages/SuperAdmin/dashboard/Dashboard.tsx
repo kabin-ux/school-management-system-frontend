@@ -15,7 +15,6 @@ function SuperAdminDashboard() {
   const { data: supportTickets = [] } = useSupportTickets()
   const { data: superAdminDashboard } = useSuperAdminDashboard();
 
-  console.log(superAdminDashboard)
   return (
     <div className="flex h-screen gray-50">
       <Sidebar />
@@ -34,42 +33,36 @@ function SuperAdminDashboard() {
             <StatsCard
               title="Total Schools"
               value={superAdminDashboard?.totalSchools ? superAdminDashboard.totalSchools.toString() : ''}
-              change="+240 this Year"
               icon={<School className="w-6 h-6 text-blue-600" />}
               color="blue"
             />
             <StatsCard
               title="Total Students"
               value={superAdminDashboard?.totalStudents ? superAdminDashboard?.totalStudents.toString() : ''}
-              change="+240 this Year"
               icon={<GraduationCap className="w-6 h-6 text-green-600" />}
               color="green"
             />
             <StatsCard
               title="Total Teachers"
               value={superAdminDashboard?.totalTeachers ? superAdminDashboard?.totalTeachers.toString() : ''}
-              change="98%"
               icon={<Users className="w-6 h-6 text-purple-600" />}
               color="purple"
             />
             <StatsCard
               title="Total Parents"
               value={superAdminDashboard?.totalParents ? superAdminDashboard.totalParents.toString() : ''}
-              change="Active teaching staff"
               icon={<UsersIcon className="w-6 h-6 text-orange-600" />}
               color="orange"
             />
             <StatsCard
               title="Total Accountants"
               value={superAdminDashboard?.totalAccountants ? superAdminDashboard.totalAccountants.toString() : ''}
-              change="+240 this Year"
               icon={<UsersIcon className="w-6 h-6 text-pink-600" />}
               color="pink"
             />
             <StatsCard
               title="Open Support Tickets"
               value={superAdminDashboard?.totalSupportTickets ? superAdminDashboard.totalSupportTickets.toString() : ''}
-              change=""
               icon={<Headphones className="w-6 h-6 text-indigo-600" />}
               color="indigo"
             />

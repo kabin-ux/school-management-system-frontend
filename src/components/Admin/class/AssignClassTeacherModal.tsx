@@ -68,7 +68,6 @@ export const AssignClassTeacherModal: React.FC<AssignClassTeacherModalProps> = (
         if (isLoading) return;
 
         if (validateForm()) {
-            console.log("formdata", formData)
             onSubmit(formData);
             onClose();
             setFormData({

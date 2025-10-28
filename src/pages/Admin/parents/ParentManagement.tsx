@@ -63,7 +63,6 @@ export default function ParentsManagement() {
         return parents.filter((parent: Parent) => {
             const textinput = `${parent?.name || ""} ${parent?.email || ""}`.toLowerCase();
             const matchesSearch = textinput.includes(filters.search.toLowerCase());
-            // console.log("cls", parent?.students.class.name)
             const matchesClass =
                 !filters.class ||
                 parent.students?.some((student: Student) => student.class?.name === filters.class);

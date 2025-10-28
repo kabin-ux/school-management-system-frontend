@@ -1,33 +1,6 @@
-import React from 'react';
 import { GraduationCap, Users, BookOpen, Calendar, Headphones } from 'lucide-react';
 import type { SchoolAdminDashboard } from '../../../hooks/useDashboard';
-
-interface StatCardProps {
-  title: string;
-  value: number | undefined;
-  change: string;
-  changeType: 'positive' | 'negative';
-  icon: React.ReactNode;
-  bgColor: string;
-}
-
-function StatCard({ title, value, change, changeType, icon, bgColor }: StatCardProps) {
-  return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <div className="flex items-center justify-between mb-4">
-        <div className={`p-3 rounded-lg ${bgColor}`}>
-          {icon}
-        </div>
-      </div>
-      <h3 className="text-sm font-medium text-gray-600 mb-1">{title}</h3>
-      <p className="text-3xl font-bold text-gray-900 mb-2">{value}</p>
-      <p className={`text-sm font-medium ${changeType === 'positive' ? 'text-green-600' : 'text-red-600'
-        }`}>
-        {change}
-      </p>
-    </div>
-  );
-}
+import { StatsCard } from './StatsCard';
 
 interface DashboardStatsProps {
   data: SchoolAdminDashboard
@@ -36,51 +9,39 @@ interface DashboardStatsProps {
 export default function DashboardStats({ data }: DashboardStatsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <StatCard
+      <StatsCard
         title="Total Students"
-        value={data?.totalStudents || 0}
-        change="+240 this Year"
-        changeType="positive"
+        value={data.totalStudents}
         icon={<GraduationCap className="w-6 h-6 text-blue-600" />}
         bgColor="bg-blue-50"
       />
-      <StatCard
+      <StatsCard
         title="Total Teachers"
-        value={data?.totalTeachers || 0}
-        change="98%"
-        changeType="positive"
+        value={data.totalTeachers}
         icon={<Users className="w-6 h-6 text-green-600" />}
         bgColor="bg-green-50"
       />
-      <StatCard
+      <StatsCard
         title="Total Parents"
-        value={data?.totalParents || 0}
-        change="Active teaching staff"
-        changeType="positive"
+        value={data.totalParents}
         icon={<Users className="w-6 h-6 text-purple-600" />}
         bgColor="bg-purple-50"
       />
-      <StatCard
+      <StatsCard
         title="Active Classes"
-        value={data?.totalClasses || 0}
-        change=""
-        changeType="positive"
+        value={data.totalClasses}
         icon={<BookOpen className="w-6 h-6 text-orange-600" />}
         bgColor="bg-orange-50"
       />
-      <StatCard
+      <StatsCard
         title="Total Accountants"
-        value={data?.totalAccountant || 0}
-        change=""
-        changeType="positive"
+        value={data.totalAccountant}
         icon={<Calendar className="w-6 h-6 text-pink-600" />}
         bgColor="bg-pink-50"
       />
-      <StatCard
+      <StatsCard
         title="Open Support Tickets"
-        value={data?.totalSupportTicket || 0}
-        change=""
-        changeType="positive"
+        value={data.totalSupportTicket}
         icon={<Headphones className="w-6 h-6 text-indigo-600" />}
         bgColor="bg-indigo-50"
       />
