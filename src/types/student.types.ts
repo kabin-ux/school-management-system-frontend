@@ -33,7 +33,6 @@ export interface StudentForm {
   email: string;
   class_id: string;
   section_id: string;
-  rollNumber: string;
   gender: string;
   dateOfBirth: string;
   address: string;

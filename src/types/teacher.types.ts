@@ -29,7 +29,5 @@ export interface TeacherForm {
   gender: 'Male' | 'Female' | 'Other';
   address?: string;
   qualification: string;
-  classIds: number[];
-  subjectIds: number[];
   status?: string;
 }

@@ -1,14 +1,13 @@
 import { FileText, GraduationCap, UsersIcon, Book } from 'lucide-react';
 import StatCard from '../../../components/Accountant/dashboard/StatsCard';
 import FeeChart from '../../../components/Accountant/dashboard/FeeChart';
-import QuickActions from '../../../components/Accountant/dashboard/QuickActions';
 import { TransactionTable } from '../../../components/Accountant/dashboard/TransactionTable';
 import { Sidebar } from '../../../components/Accountant/layout/Sidebar';
 import { AccountantDashboardHeader } from '../../../components/Accountant/layout/DashboardHeader';
 import { useAccountantDashboard, useRecentPayments } from '../../../hooks/useDashboard';
 
 export default function AccountantDashboard() {
-    const { data: accountantDashboard = null } = useAccountantDashboard();
+    const { data: accountantDashboard = { todayTransaction: 0, totalclass: 0, totalPayment: [], totalStudents: 0, totalTeachers: 0 } } = useAccountantDashboard();
     const { data: recentPayments = [] } = useRecentPayments();
 
     return (

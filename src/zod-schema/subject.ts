@@ -1,0 +1,21 @@
+import { z } from "zod";
+
+export const subjectSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  code: z.string().min(1, "Code is required"),
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters long")
+    .nullable()
+    .default(null),
+  class_id: z.uuid("Invalid class ID"),
+  teacher_id: z.uuid("Invalid teacher ID").optional().nullable().default(null),
+});
+
+export type SubjectSchema = z.infer<typeof subjectSchema>;
+
+export const updateSubjectSchema = subjectSchema
+  .omit({
+    class_id: true,
+  })
+  .partial();
