@@ -29,7 +29,7 @@ const ClassManagement: React.FC = () => {
 
     const { data: classes = [], isLoading: loading } = useClasses();
     const { data: teachers = [] } = useTeachersByClass(selectedClass ? selectedClass.id : '');
-    const { data: classDashboardData } = useClassDashboardData();
+    const { data: classDashboardData = { totalClasses: 0, totalSubjects: 0 } } = useClassDashboardData();
 
     const addClassMutation = useAddClass();
     const updateClassMutation = useUpdateClass();
@@ -104,7 +104,7 @@ const ClassManagement: React.FC = () => {
                             onAdd={() => setIsModalOpen(true)}
                         />
                         <ClassStats
-                            classDashboardData={classDashboardData ?? { totalClasses: 0, totalSubjects: 0 }}
+                            classDashboardData={classDashboardData}
                         />
                         <ClassTable
                             grades={filteredClasses}

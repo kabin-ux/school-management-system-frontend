@@ -11,7 +11,7 @@ import { EditSupportTicketModal } from '../../../components/Admin/support/EditSu
 
 const AdminSupportConsole: React.FC = () => {
     const { data: tickets = [], isLoading: loading } = useSupportTicketsBySchool('');
-    const { data: ticketStats } = useSupportTicketAdminDashboardData();
+    const { data: ticketStats = { totalSupportTickets: 0, totalOpenTickets: 0, totalResolvedTickets: 0, totalClosedTickets: 0, totalInProgressTickets: 0 } } = useSupportTicketAdminDashboardData();
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedSupportTicket, setSelectedSupportTicket] = useState<SupportTicket | null>(null);
@@ -54,7 +54,7 @@ const AdminSupportConsole: React.FC = () => {
                     <div className="max-w-7xl mx-auto">
                         <SupportConsoleHeader />
                         <SupportConsoleStats
-                            ticketStats={ticketStats ?? { totalSupportTickets: 0, totalOpenTickets: 0, totalResolvedTickets: 0, totalClosedTickets: 0, totalInProgressTickets: 0 }}
+                            ticketStats={ticketStats}
                         />
                         <NewSupportTicket
                             onAdd={handleAddSupportTicket}

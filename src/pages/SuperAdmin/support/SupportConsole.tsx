@@ -1,22 +1,29 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../../components/SuperAdmin/layout/Sidebar';
 import { DashboardHeader } from '../../../components/SuperAdmin/layout/DashboardHeader';
-import SupportFilters from '../../../components/SuperAdmin/support/SupportFilters';
+import { SupportFilters } from '../../../components/SuperAdmin/support/SupportFilters';
 import { SupportStats } from '../../../components/SuperAdmin/support/SupportStats';
 import SupportTicketsTable from '../../../components/SuperAdmin/support/SupportTicketsTable';
 import { useDeleteSupportTicket, useSupportTickets, useSupportTicketSuperAdminDashboardData } from '../../../hooks/useSupportTickets';
+import type { SupportTicket } from '../../../types/support.types';
+
+export interface FilterValues {
+    type: string;
+    status: string;
+    search: string;
+}
 
 export default function SupportConsole() {
-    const [userType, setUserType] = useState('All');
-    const [issueType, setIssueType] = useState('All');
-    const [priority, setPriority] = useState('All');
-    const [status, setStatus] = useState('All');
-    const [ticketId, setTicketId] = useState('');
+    const [filters, setFilters] = useState<FilterValues>({
+        type: '',
+        status: '',
+        search: ''
+    });
     const navigate = useNavigate();
 
     const { data: tickets = [] } = useSupportTickets();
-    const { data: ticketStats } = useSupportTicketSuperAdminDashboardData();
+    const { data: ticketStats = { totalClosedTickets: 0, totalInProgressTickets: 0, totalOpenTickets: 0, totalSupportTickets: 0, totalResolvedTickets: 0 } } = useSupportTicketSuperAdminDashboardData();
 
     const deleteSupportTicketMutation = useDeleteSupportTicket();
 
@@ -27,6 +34,18 @@ export default function SupportConsole() {
     const handleDeleteSupportTicket = async (supportTicketId: string) => {
         deleteSupportTicketMutation.mutate(supportTicketId);
     }
+
+    // Filtered students based on current filters
+    const filteredSupportTickets = useMemo(() => {
+        return tickets.filter((ticket: SupportTicket) => {
+            const fullName = `${ticket?.id || ""}`.toLowerCase();
+            const matchesSearch = fullName.includes(filters.search.toLowerCase());
+            const matchesType = !filters.type || ticket.type === filters.type;
+            const matchesStatus = !filters.status || ticket.status === filters.status;
+
+            return matchesSearch && matchesType && matchesStatus;
+        });
+    }, [tickets, filters]);
 
     return (
         <div className="flex h-screen bg-gray-50">
@@ -50,21 +69,13 @@ export default function SupportConsole() {
 
                     {/* Filters */}
                     <SupportFilters
-                        userType={userType}
-                        issueType={issueType}
-                        priority={priority}
-                        status={status}
-                        ticketId={ticketId}
-                        onUserTypeChange={setUserType}
-                        onIssueTypeChange={setIssueType}
-                        onPriorityChange={setPriority}
-                        onStatusChange={setStatus}
-                        onTicketIdChange={setTicketId}
+                        filters={filters}
+                        onFiltersChange={setFilters}
                     />
 
                     {/* Support Tickets Table */}
                     <SupportTicketsTable
-                        tickets={tickets}
+                        tickets={filteredSupportTickets}
                         onViewTicket={handleViewTicket}
                         onDeleteTicket={handleDeleteSupportTicket}
                     />

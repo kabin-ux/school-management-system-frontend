@@ -7,7 +7,7 @@ import ClassSections from "../../../../components/Admin/class/ClassDetailsOvervi
 import { useParams } from "react-router-dom";
 import EditSectionModal from "../../../../components/Admin/section/EditSectionModal";
 import { useClassDetails } from "../../../../hooks/useClasses";
-import { useCreateSection, useDeleteSection, useSectionsByClass, useUpdateSection } from "../../../../hooks/useSection";
+import { useCreateSection, useDeleteSection, useSectionDashboardData, useSectionsByClass, useUpdateSection } from "../../../../hooks/useSection";
 import type { Section } from "../../../../types/class.types";
 import AddSectionModal from "../../../../components/Admin/section/AddSectionModal";
 
@@ -23,6 +23,7 @@ const ClassDetails: React.FC = () => {
 
     const { data: classDetails = {} } = useClassDetails(classId);
     const { data: sections = [] } = useSectionsByClass(classId);
+    const { data: sectionDashboardData = { totalSections: 0, totalStudents: 0 } } = useSectionDashboardData(classId);
 
     const createSection = useCreateSection();
     const updateSection = useUpdateSection();
@@ -70,7 +71,9 @@ const ClassDetails: React.FC = () => {
                             setSearchTerm={setSearchTerm}
                             onAdd={openModal}
                         />
-                        <ClassDetailsStats />
+                        <ClassDetailsStats
+                            sectionDashboardData={sectionDashboardData}
+                        />
                         <ClassSections
                             sections={sections}
                             onEdit={handleEditSection}

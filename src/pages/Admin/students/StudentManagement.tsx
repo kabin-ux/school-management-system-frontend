@@ -30,7 +30,7 @@ export default function StudentManagement() {
 
     const { data: students = [], isLoading: loading } = useStudentsBySchool();
     const { data: classes = [] } = useClasses();
-    const { data: studentDashboardData } = useStudentDashboardData();
+    const { data: studentDashboardData = { totalStudents: 0, totalStudentRegisterOnThisMonth: 0 } } = useStudentDashboardData();
 
     const addStudentMutation = useAddStudent();
     const updateStudentMutation = useUpdateStudent();
@@ -97,7 +97,7 @@ export default function StudentManagement() {
 
                         {/* Stats Cards */}
                         <StudentStats
-                            studentDashboardData={studentDashboardData ?? { totalStudents: 0, totalStudentRegisterOnThisMonth: 0 }}
+                            studentDashboardData={studentDashboardData}
                         />
 
                         {/* Filters */}

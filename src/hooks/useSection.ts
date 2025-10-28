@@ -3,9 +3,10 @@ import api from '../lib/axios';
 import toast from 'react-hot-toast';
 import type { Section } from '../types/class.types';
 
-// export interface SectionDashboardData {
-
-// }
+export interface SectionDashboardData {
+    totalSections: number,
+    totalStudents: number
+}
 
 // Create Section
 export const useCreateSection = () => {
@@ -85,6 +86,16 @@ export const useDeleteSection = () => {
         onError: (err: any) => {
             const message = err.response?.data?.error || 'Error deleting section';
             toast.error(message);
+        },
+    });
+};
+
+export const useSectionDashboardData = (classId: string) => {
+    return useQuery<SectionDashboardData>({
+        queryKey: ["sectionDashboard"],
+        queryFn: async () => {
+            const res = await api.get(`/dashboard/section/${classId}`);
+            return res.data.data;
         },
     });
 };

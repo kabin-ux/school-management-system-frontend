@@ -25,7 +25,7 @@ export default function TeacherManagement() {
     });
     const { data: teachers = [], isLoading: loading } = useTeachers();
     const { data: classes = [] } = useClasses();
-    const { data: teacherDashboardData } = useTeacherDashboardData();
+    const { data: teacherDashboardData = { totalActiveTeachers: 0, totalTeacherRegisterOnThisMonth: 0, totalTeachers: 0 } } = useTeacherDashboardData();
 
     const addTeacherMutation = useAddTeacher();
     const updateTeacherMutation = useUpdateTeacher();
@@ -96,7 +96,7 @@ export default function TeacherManagement() {
 
                         {/* Stats Cards */}
                         <TeacherStats
-                            teacherDashboardData={teacherDashboardData ?? { totalActiveTeachers: 0, totalTeacherRegisterOnThisMonth: 0, totalTeachers: 0 }}
+                            teacherDashboardData={teacherDashboardData}
                         />
 
                         {/* Filters */}

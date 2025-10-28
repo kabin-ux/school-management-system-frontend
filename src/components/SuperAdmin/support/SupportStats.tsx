@@ -1,5 +1,5 @@
 import React from 'react';
-import { Ticket, Clock, CheckCircle, AlertTriangle, BookOpenTextIcon } from 'lucide-react';
+import { Ticket, Clock, CheckCircle, BookOpenTextIcon } from 'lucide-react';
 import type { SupportTicketDashboardData } from '../../../hooks/useSupportTickets';
 
 interface StatCardProps {

@@ -1,4 +1,4 @@
-import type { SchoolData } from "../components/SuperAdmin/partnerschools/AddSchoolModal";
+import type { SchoolData } from "./partner-school.types";
 
 export const SupportTicketType = {
   FEATURE_REQUEST: "feature_request",
@@ -17,7 +17,7 @@ export interface SupportTicket {
   description: string;
   type: SupportTicketType;
   status: string;
-  school?: SchoolData
+  school?: SchoolData;
   created_by: number;
   createdAt: string;
   updatedAt: string;

@@ -16,7 +16,7 @@ export default function TransportationManagement() {
     const [selectedStatus, setSelectedStatus] = useState("All");
 
     const { data: transportations = [], isLoading: loading } = useAllTransportation();
-    const { data: transportationDashboardData } = useTransportationDashboardData();
+    const { data: transportationDashboardData = { totalVehicles: 0, totalDrivers: 0, totalRoutes: 0 } } = useTransportationDashboardData();
 
     const addTransportationMutation = useCreateTransportation();
     const updateTransportationMutation = useUpdateTransportation();
@@ -87,7 +87,7 @@ export default function TransportationManagement() {
 
                         {/* Stats Cards */}
                         <TransportationStats
-                            transportationDashboardData={transportationDashboardData ?? { totalVehicles: 0, totalDrivers: 0, totalRoutes: 0 }}
+                            transportationDashboardData={transportationDashboardData}
                         />
 
                         {/* Filters */}

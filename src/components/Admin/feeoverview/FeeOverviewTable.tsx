@@ -72,7 +72,7 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
                   return (
                     <tr
                       key={record.id}
-                      className="hover:bg-blue-50 transition-colors duration-150 cursor-pointer group"
+                      className="hover:bg-gray-50 transition-colors duration-150 cursor-pointer group"
                     >
                       <td className="p-4 text-gray-600 font-medium">{index + 1}</td>
                       <td className="p-4 text-gray-900 font-medium">

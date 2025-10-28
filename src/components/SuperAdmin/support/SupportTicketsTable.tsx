@@ -2,6 +2,8 @@ import { EyeIcon, Tags, Trash2 } from "lucide-react";
 import { getStatusAction } from "../../../lib/utils";
 import type { SupportTicket } from "../../../types/support.types";
 import EmptyState from "../../../common/EmptyState";
+import { useState } from "react";
+import { Pagination } from "../../../common/Pagination";
 
 interface SupportTicketsTableProps {
   tickets: SupportTicket[];
@@ -10,36 +12,15 @@ interface SupportTicketsTableProps {
 }
 
 export default function SupportTicketsTable({ tickets, onViewTicket, onDeleteTicket }: SupportTicketsTableProps) {
-  // const getStatusBadge = (status: string) => {
-  //   const statusClasses = {
-  //     'Open': 'bg-blue-100 text-blue-800',
-  //     'In Progress': 'bg-yellow-100 text-yellow-800',
-  //     'Resolved': 'bg-green-100 text-green-800'
-  //   };
 
-  //   return (
-  //     <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusClasses[status as keyof typeof statusClasses]}`}>
-  //       {status}
-  //     </span>
-  //   );
-  // };
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
-  const getIssueTypeBadge = (issueType: string) => {
-    const issueTypeClasses = {
-      'Payment': 'bg-blue-100 text-blue-800',
-      'App': 'bg-yellow-100 text-yellow-800',
-      'Website': 'bg-red-100 text-red-800',
-      'Other': 'bg-gray-100 text-gray-800'
-    };
+  const totalPages = Math.ceil(tickets.length / itemsPerPage);
 
-    return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${issueTypeClasses[issueType as keyof typeof issueTypeClasses]}`}>
-        {issueType}
-      </span>
-    );
-  };
-
-
+  const paginatedData = tickets.slice(
+    (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+  )
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
       <div className="p-6 border-b border-gray-200">
@@ -78,8 +59,8 @@ export default function SupportTicketsTable({ tickets, onViewTicket, onDeleteTic
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {tickets.map((ticket, index) => (
-                <tr key={ticket.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+              {paginatedData.map((ticket, index) => (
+                <tr key={ticket.id} className={index % 2 === 0 ? 'bg-white cursor-pointer' : 'bg-gray-50 cursor-pointer'}>
                   <td className="px-6 py-4 text-sm font-medium text-blue-600">
                     {ticket.id}
                   </td>
@@ -87,7 +68,7 @@ export default function SupportTicketsTable({ tickets, onViewTicket, onDeleteTic
                     {ticket.school?.name}
                   </td>
                   <td className="px-6 py-4 text-gray-500">
-                    {getIssueTypeBadge(ticket.title)}
+                    {ticket.title}
                   </td>
                   <td className="px-6 py-4">
                     {(() => {
@@ -128,28 +109,14 @@ export default function SupportTicketsTable({ tickets, onViewTicket, onDeleteTic
       )
       }
 
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          totalPages={totalPages}
+        />
+      )}
 
-
-      {/* Pagination */}
-      <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <button className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 transition-colors">
-            Previous
-          </button>
-          <button className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
-            1
-          </button>
-          <button className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 transition-colors">
-            2
-          </button>
-          <button className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 transition-colors">
-            Next
-          </button>
-        </div>
-        <div className="text-sm text-gray-700">
-          Page 1 of 5
-        </div>
-      </div>
     </div>
   );
 }

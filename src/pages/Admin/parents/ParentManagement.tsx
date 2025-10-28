@@ -31,7 +31,7 @@ export default function ParentsManagement() {
     const { data: parents = [], isLoading: loading } = useParents();
     const { data: students = [] } = useStudentsBySchool();
     const { data: classes = [] } = useClasses();
-    const { data: parentDashboardData } = useParentDashboardData();
+    const { data: parentDashboardData = { totalParents: 0, totalParentRegisterOnThisMonth: 0, linkedStudents: 0 } } = useParentDashboardData();
 
     const addParentMutation = useAddParent();
     const updateParentMutation = useUpdateParent();
@@ -99,7 +99,7 @@ export default function ParentsManagement() {
 
                         {/* Stats Cards */}
                         <ParentStats
-                            parentDashboardData={parentDashboardData ?? { totalParents: 0, totalParentRegisterOnThisMonth: 0, linkedStudents: 0 }}
+                            parentDashboardData={parentDashboardData}
                         />
 
                         {/* Filters */}

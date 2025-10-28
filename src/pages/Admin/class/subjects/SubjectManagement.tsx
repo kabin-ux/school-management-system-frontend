@@ -27,7 +27,7 @@ const SubjectManagement: React.FC = () => {
     const { data: teachers = [] } = useTeachers();
     const { data: classDetails } = useClassDetails(classId);
     const { data: subjectsByClass = [], isLoading: loading } = useSubjectsByClass(classId);
-    const { data: subjectDashboardData } = useSubjectDashboardData(id ? id : '');
+    const { data: subjectDashboardData = { totalSubjects: 0, totalTeacher: 0 } } = useSubjectDashboardData(classId);
 
     const addSubjectMutation = useAddSubject();
     const updateSubjectMutation = useUpdateSubject();
@@ -93,7 +93,7 @@ const SubjectManagement: React.FC = () => {
                             onAdd={openModal}
                         />
                         <SubjectStats
-                            subjectDashboardData={subjectDashboardData ?? { totalSubjects: 0, totalTeacher: 0 }}
+                            subjectDashboardData={subjectDashboardData}
                         />
                         <SubjectTable
                             subjects={subjectsByClass} // subjectsByClass is undefined, the component receives an empty array.
