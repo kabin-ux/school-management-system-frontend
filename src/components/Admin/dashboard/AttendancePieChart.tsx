@@ -23,7 +23,7 @@ export default function AttendancePieChart({ data = [] }: AttendancePieChartProp
       <div className='bg-white border border-gray-200 flex justify-center'>
         <EmptyState
           title='No Grade wise Attendance Data Found'
-          description='There are currently no class records. Click the button above to add a new class.'
+          description='There are currently no gradewise attendance records.'
           icon={<PieChart className='w-14 h-14' />}
         />
       </div>

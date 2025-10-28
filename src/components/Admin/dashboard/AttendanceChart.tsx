@@ -27,7 +27,7 @@ export default function AttendanceChart({ data = [] }: AttendanceChartProps) {
       <div className='bg-white border border-gray-200 flex justify-center'>
         <EmptyState
           title='No Attendance Data Found'
-          description='There are currently no class records. Click the button above to add a new class.'
+          description='There are currently no attendance records.'
           icon={<LineChart className='w-14 h-14' />}
         />
       </div>
