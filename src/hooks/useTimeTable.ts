@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import api from "../lib/axios";
-import type { TimeTableForm } from "../components/Admin/timetable/CreateTimeTableModal";
 import toast from "react-hot-toast";
+import type { TimetableCreateSchema } from "../zod-schema/timetable";
 
 export const useCreateTimetable = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (timetableData: TimeTableForm) => {
+        mutationFn: async (timetableData: TimetableCreateSchema) => {
             const res = await api.post("/timetable", timetableData);
             return res.data.data;
         },

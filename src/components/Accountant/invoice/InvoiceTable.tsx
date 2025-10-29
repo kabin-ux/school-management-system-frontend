@@ -114,11 +114,13 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
                 </table>
             </div>
 
-            <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={onPageChange}
-            />
+            {totalPages > 1 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={onPageChange}
+                />
+            )}
         </div>
     );
 };

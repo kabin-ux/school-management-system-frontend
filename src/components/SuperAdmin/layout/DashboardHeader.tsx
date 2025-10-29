@@ -1,17 +1,10 @@
 import React from 'react';
-import { Search, Bell, User } from 'lucide-react';
+import { Bell, User } from 'lucide-react';
 
 export const DashboardHeader: React.FC = () => {
   return (
     <div className="bg-white border-b border-gray-200 px-6 py-4">
       <div className="flex items-end justify-end">
-        {/* Left side - Logo and Title */}
-        {/* <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">SA</span>
-          </div>
-          <span className="font-semibold text-gray-900 text-lg">Super Admin</span>
-        </div> */}
 
         {/* Right side - Search, Notifications, Profile */}
         <div className="flex items-center space-x-4">

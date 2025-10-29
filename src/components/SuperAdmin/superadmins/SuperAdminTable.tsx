@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Eye, Search, Trash2, Edit } from 'lucide-react';
+import { Search, Trash2, Edit } from 'lucide-react';
 import { Pagination } from '../../../common/Pagination';
 import type { SuperAdmin } from '../../../types/super-admin-dashboard.types';
 

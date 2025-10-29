@@ -75,7 +75,8 @@ export const useAcceptSupportTicket = () => {
     },
     onSuccess: () => {
       toast.success("Support Ticket accepted successfully");
-      queryClient.invalidateQueries({ queryKey: ["supportTickets"] });
+      queryClient.invalidateQueries({ queryKey: ["supportTicket"] });
+      queryClient.invalidateQueries({ queryKey: ["supportTicketsBySchool"] });
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.error || "Failed to accept support ticket");
@@ -93,7 +94,8 @@ export const useResolveSupportTicket = () => {
     },
     onSuccess: () => {
       toast.success("Support Ticket resolved successfully");
-      queryClient.invalidateQueries({ queryKey: ["supportTickets"] });
+      queryClient.invalidateQueries({ queryKey: ["supportTicket"] });
+      queryClient.invalidateQueries({ queryKey: ["supportTicketsBySchool"] });
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.error || "Failed to resolve support ticket");
@@ -111,7 +113,8 @@ export const useCloseSupportTicket = () => {
     },
     onSuccess: () => {
       toast.success("Support Ticket closed successfully");
-      queryClient.invalidateQueries({ queryKey: ["supportTickets"] });
+      queryClient.invalidateQueries({ queryKey: ["supportTicket"] });
+      queryClient.invalidateQueries({ queryKey: ["supportTicketsBySchool"] });
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.error || "Failed to close support ticket");

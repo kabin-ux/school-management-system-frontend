@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../../components/SuperAdmin/layout/Sidebar';
 import { DashboardHeader } from '../../../components/SuperAdmin/layout/DashboardHeader';
@@ -6,8 +6,19 @@ import { PartnerSchoolsTable } from '../../../components/SuperAdmin/partnerschoo
 import { AddSchoolModal } from '../../../components/SuperAdmin/partnerschools/AddSchoolModal';
 import { PlusIcon } from 'lucide-react';
 import { useAddSchool, useSchools } from '../../../hooks/useSchools';
+import { PartnerSchoolFilter } from '../../../components/SuperAdmin/partnerschools/PartnerSchoolFilter';
+import type { SchoolData } from '../../../types/partner-school.types';
+
+export interface FilterValues {
+  status: string;
+  search: string;
+}
 
 export const PartnerSchools: React.FC = () => {
+  const [filters, setFilters] = useState<FilterValues>({
+    status: '',
+    search: ''
+  });
   const { data: schools = [], isLoading: loading } = useSchools();
   const addSchoolMutation = useAddSchool();
 
@@ -23,6 +34,17 @@ export const PartnerSchools: React.FC = () => {
       onSuccess: () => setIsModalOpen(false)
     })
   }
+
+  // Filtered students based on current filters
+  const filteredSchools = useMemo(() => {
+    return schools.filter((school: SchoolData) => {
+      const fullName = `${school?.name || ""} ${school.address} ${school.school_code}`.toLowerCase();
+      const matchesSearch = fullName.includes(filters.search.toLowerCase());
+      const matchesStatus = !filters.status || school.status === filters.status;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [schools, filters]);
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -49,8 +71,12 @@ export const PartnerSchools: React.FC = () => {
                 </button>
               </div>
             </div>
+            <PartnerSchoolFilter
+              filters={filters}
+              onFiltersChange={setFilters}
+            />
             <PartnerSchoolsTable
-              schoolData={schools}
+              schoolData={filteredSchools}
               onViewPartnerSchoolDetails={handleViewPartnerSchoolDetails}
             />
 

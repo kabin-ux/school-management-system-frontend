@@ -86,7 +86,7 @@ export const RecentTickets: React.FC<RecentTicketsProps> = ({ tickets, onEdit, o
                   {/* Title */}
                   <td className="p-4 text-sm whitespace-nowrap">
                     <div className="max-w-xs">
-                      <p className="font-semibold text-gray-900 group-hover:text-blue-700 transition-colors truncate">
+                      <p className="font-semibold text-gray-900 group-hover:text-gray-700 transition-colors truncate">
                         {ticket.title}
                       </p>
                     </div>

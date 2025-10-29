@@ -4,7 +4,6 @@ import { Sidebar } from '../../../components/Admin/layout/Sidebar';
 import { SalaryOverviewTable } from '../../../components/Admin/salary/SalaryOverviewTable';
 import { SalaryOverviewHeader } from '../../../components/Admin/salary/SalaryOverviewHeader';
 import { SalaryOverviewFilter } from '../../../components/Admin/salary/SalaryOverviewFilters';
-import { SalaryOverviewStats } from '../../../components/Admin/salary/SalaryOverviewStats';
 import { useMySchoolSalaryStructures } from '../../../hooks/useSalary';
 import type { Salary } from '../../../types/fee-salary.types';
 

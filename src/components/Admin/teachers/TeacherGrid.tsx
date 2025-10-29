@@ -71,25 +71,26 @@ export default function TeacherGrid({ teachers, onEdit, onDelete }: TeacherGridP
                   <div className="flex items-start gap-2 text-gray-600">
                     <BookOpen className="w-4 h-4 mt-0.5" />
                     <div className="flex flex-wrap gap-1">
-                      {teacher.subjects?.map((subject, index) => (
-                        <span key={index} className="text-blue-600 text-xs">
-                          {subject.name}
-                          {index < teacher.subjects.length - 1 ? ',' : ''}
+                      <span className="">
+                        Subject: &nbsp;
+                        <span className="text-blue-600">
+                          {teacher.subjects[0]?.name ? teacher.subjects[0].name : 'N/A'}
                         </span>
-                      ))}
+                      </span>
                     </div>
                   </div>
-                  <div className="flex items-start gap-2 text-gray-600">
-                    <GraduationCap className="w-4 h-4 mt-0.5" />
-                    <div className="flex flex-wrap gap-1">
-                      {/* {teacher.teacherClasses?.map((cls, index) => (
-                <span key={index} className="text-purple-600 text-xs">
-                  {cls}
-                  {index < teacher.teacherClasses.length - 1 ? ',' : ''}
-                </span>
-              ))} */}
-                    </div>
+                  <div className="flex items-center gap-2 text-gray-700">
+                    <GraduationCap className="w-4 h-4" />
+                    <span className="">
+                      Class Teacher:&nbsp;
+                      <span className=" text-blue-600">
+                        {teacher?.subjects[0]?.class?.name
+                          ? `Grade ${teacher.subjects[0].class.name}`
+                          : 'N/A'}
+                      </span>
+                    </span>
                   </div>
+
                 </div>
               </div>
 

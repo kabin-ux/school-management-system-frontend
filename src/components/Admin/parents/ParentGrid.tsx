@@ -42,12 +42,6 @@ export const ParentGrid: FC<ParentGridModalProps> = ({ parents, onEdit, onDelete
                 <h3 className="font-semibold text-gray-900">{parent?.name}</h3>
                 <p className="text-sm text-gray-500 mb-2">{parent?.id}</p>
                 <div className="flex items-center gap-2">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${parent?.status === 'Active'
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-gray-100 text-gray-800'
-                    }`}>
-                    {parent?.status}
-                  </span>
                   <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full font-medium">
                     {parent?.students?.length} Children
                   </span>
@@ -75,7 +69,7 @@ export const ParentGrid: FC<ParentGridModalProps> = ({ parents, onEdit, onDelete
                       </div>
                       <div>
                         <p className="text-xs font-medium text-gray-900">{student?.firstName} {student.lastName}</p>
-                        <p className="text-xs text-gray-500">{student?.class?.name}</p>
+                        <p className="text-xs text-gray-500">Grade: {student?.class?.name}</p>
                       </div>
                     </div>
                   ))}

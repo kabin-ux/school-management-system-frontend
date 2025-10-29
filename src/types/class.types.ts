@@ -11,6 +11,7 @@ export interface Subject {
   createdAt?: Date;
   updatedAt?: Date;
 
+  teacher: Teacher;
   class: Grade;
 }
 

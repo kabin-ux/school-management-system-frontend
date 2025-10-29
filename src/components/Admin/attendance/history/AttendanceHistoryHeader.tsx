@@ -6,7 +6,6 @@ export const AttendanceHistoryHeader: React.FC = () => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-
     navigate(`/admin/attendance-monitoring`)
   };
   return (

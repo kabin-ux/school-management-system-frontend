@@ -57,11 +57,6 @@ export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSect
                         // onClick={() => toggleGrade(grade.id)}
                         className="flex items-center gap-2 text-gray-900 hover:text-blue-600"
                       >
-                        {/* {expandedGrades.includes(grade.id) ? (
-                    <ChevronDown className="w-4 h-4" />
-                  ) : (
-                    <ChevronRight className="w-4 h-4" />
-                  )} */}
                         {grade.name}
                       </button>
                     </td>
@@ -75,16 +70,19 @@ export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSect
                       <div className="flex items-center gap-2">
                         <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
                           onClick={() => onNavigateToSection(grade.id)}
+                          title='Add New Section'
                         >
                           <Eye className="w-4 h-4" />
                         </button>
                         <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
                           onClick={() => onNavigateToSubject(grade.id)}
+                          title='Add New Subject'
                         >
                           <BookCheck className="w-4 h-4" />
                         </button>
                         <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
                           onClick={() => onAssignClassTeacher(grade)}
+                          title='Assign Class Teacher'
                         >
                           <BookOpenCheck className="w-4 h-4" />
                         </button>

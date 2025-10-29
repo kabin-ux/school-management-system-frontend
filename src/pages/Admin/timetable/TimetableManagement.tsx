@@ -1,15 +1,16 @@
 import { useMemo, useState } from 'react';
-import {  Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import TimetableFilters from '../../../components/Admin/timetable/TimetableFilters';
 import { WeeklyTimetable } from '../../../components/Admin/timetable/WeeklyTimetable';
 import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDashboardHeader';
 import { Sidebar } from '../../../components/Admin/layout/Sidebar';
-import { CreateTimeTableModal, type TimeTableForm } from '../../../components/Admin/timetable/CreateTimeTableModal';
+import { CreateTimeTableModal } from '../../../components/Admin/timetable/CreateTimeTableModal';
 import { EditTimeSlotModal, type EditTimeSlotForm } from '../../../components/Admin/timetable/EditTimeSlotModal';
 import type { TimeSlot, TimetableAttributes } from '../../../types/timetable.types';
 import { useClasses } from '../../../hooks/useClasses';
 import { useAllTimetables, useCreateTimetable, useDeleteTimetable } from '../../../hooks/useTimeTable';
 import { useDeleteTimeSlot, useUpdateTimeSlot } from '../../../hooks/useTimeSlot';
+import type { TimetableCreateSchema } from '../../../zod-schema/timetable';
 
 export interface FilterValues {
     search: string;
@@ -36,7 +37,7 @@ export default function TimetableManagement() {
     const updateTimeslotMutation = useUpdateTimeSlot();
     const deleteTimeslotMutation = useDeleteTimeSlot();
 
-    const handleCreateTimetable = async (timetableData: TimeTableForm) => {
+    const handleCreateTimetable = async (timetableData: TimetableCreateSchema) => {
         createTimeTableMutation.mutate(timetableData, {
             onSuccess: () => setIsModalOpen(false)
         })

@@ -2,9 +2,7 @@ import AttendanceChart from "../../../components/Admin/dashboard/AttendanceChart
 import AttendancePieChart from "../../../components/Admin/dashboard/AttendancePieChart";
 import { DashboardHeader } from "../../../components/Admin/dashboard/DashboardHeader";
 import DashboardStats from "../../../components/Admin/dashboard/DashboardStats";
-import QuickActions from "../../../components/Admin/dashboard/QuickAction";
 import { RecentActivitySection } from "../../../components/Admin/dashboard/RecentActivity";
-import SystemStatus from "../../../components/Admin/dashboard/SystemStatus";
 import { AdminDashboardHeader } from "../../../components/Admin/layout/AdminDashboardHeader";
 import { Sidebar } from "../../../components/Admin/layout/Sidebar";
 import { useAuthUser } from "../../../hooks/useAuth";

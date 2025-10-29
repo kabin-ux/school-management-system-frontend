@@ -1,9 +1,10 @@
 import React from 'react';
 import { Users, GraduationCap, UserCheck, TrendingUp, Calendar, BarChart3 } from 'lucide-react';
+import type { SchoolData } from '../../../types/partner-school.types';
 
 interface StatCardProps {
   title: string;
-  value: string;
+  value: number | undefined;
   change: string;
   changeType: 'positive' | 'negative';
   icon: React.ReactNode;
@@ -62,7 +63,11 @@ function ProgressCard({ title, value, percentage, change, changeType, icon, icon
   );
 }
 
-export default function SchoolStats({ schoolData }) {
+interface SchoolStatsProps {
+  schoolData: SchoolData
+}
+
+export const SchoolStats: React.FC<SchoolStatsProps> = ({ schoolData }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
       {/* Top Row */}

@@ -27,7 +27,6 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
     email: '',
     class_id: '',
     section_id: '',
-    rollNumber: '',
     gender: 'Male', // default gender
     address: '',
     dateOfBirth: '',
@@ -44,7 +43,6 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
         email: student.email,
         class_id: student.class_id,
         section_id: student.section_id ?? '',
-        rollNumber: student.rollNumber ?? '',
         gender: student.gender,
         dateOfBirth: student.dateOfBirth.toString(),
         address: student.address ?? '',
@@ -58,7 +56,6 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
         email: '',
         class_id: '',
         section_id: '',
-        rollNumber: '',
         gender: 'पुरुष',
         address: '',
         dateOfBirth: '',
@@ -231,21 +228,6 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
                   </option>
                 ))}
               </select>
-            </div>
-
-            {/* Roll Number */}
-            <div>
-              <label className="block text-sm font-medium">Roll Number *</label>
-              <input
-                type="text"
-                name="rollNumber"
-                value={formData.rollNumber}
-                onChange={handleInputChange}
-                onBlur={handleBlur}
-                className={`w-full px-3 py-2 border rounded-lg ${errors.rollNumber ? 'border-red-500' : 'border-gray-300'
-                  }`}
-              />
-              {errors.rollNumber && <p className="text-xs text-red-500">{errors.rollNumber}</p>}
             </div>
 
             {/* Gender */}

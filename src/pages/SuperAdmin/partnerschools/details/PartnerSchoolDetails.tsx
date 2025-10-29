@@ -5,13 +5,13 @@ import { Sidebar } from "../../../../components/SuperAdmin/layout/Sidebar";
 import FinancialOverview from "../../../../components/SuperAdmin/partnerschools/FinancialOverview";
 import SchoolHeader from "../../../../components/SuperAdmin/partnerschools/SchoolHeader";
 import SchoolPlan from "../../../../components/SuperAdmin/partnerschools/SchoolPlan";
-import SchoolStats from "../../../../components/SuperAdmin/partnerschools/SchoolStats";
+import { SchoolStats } from "../../../../components/SuperAdmin/partnerschools/SchoolStats";
 import { SupportTickets } from "../../../../components/SuperAdmin/partnerschools/SupportTickets";
 import SystemInformation from "../../../../components/SuperAdmin/partnerschools/SystemInformation";
 import Loading from "../../../../common/Loading";
 import { EditSchoolModal } from "../../../../components/SuperAdmin/partnerschools/EditSchoolModal";
 import { useDeleteSchool, useSchoolDetails, useUpdateSchool } from "../../../../hooks/useSchools";
-import type { SchoolData } from "../../../../types/partner-school.types";
+import type { SchoolDataForm } from "../../../../types/partner-school.types";
 import { useSupportTicketsBySchool } from "../../../../hooks/useSupportTickets";
 
 export default function PartnerSchoolDetails() {
@@ -33,7 +33,7 @@ export default function PartnerSchoolDetails() {
         setIsEditModalOpen(true);
     };
 
-    const handleUpdateSschool = (updates: SchoolData, id: any) => {
+    const handleUpdateSschool = (updates: SchoolDataForm, id: any) => {
         updateSchoolMutation.mutate({ id, updates }, {
             onSuccess: () => setIsEditModalOpen(false)
         })

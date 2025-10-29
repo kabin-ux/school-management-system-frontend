@@ -26,8 +26,6 @@ const EditTeacherModal: React.FC<EditTeacherModalProps> = ({
         gender: 'Male',
         address: '',
         qualification: '',
-        classIds: [],
-        subjectIds: [],
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -44,8 +42,6 @@ const EditTeacherModal: React.FC<EditTeacherModalProps> = ({
                 gender: teacher.gender,
                 address: teacher.address,
                 qualification: teacher.qualification,
-                classIds: teacher.classIds,
-                subjectIds: teacher.subjectIds,
             });
             setErrors({});
             setTouched({});
@@ -59,8 +55,6 @@ const EditTeacherModal: React.FC<EditTeacherModalProps> = ({
                 gender: 'Male',
                 address: '',
                 qualification: '',
-                classIds: [],
-                subjectIds: [],
             });
             setErrors({});
             setTouched({});
