@@ -24,11 +24,6 @@ export const supportTicketSchema = z.object({
   description: z.string().min(1, "Description is required"),
   type: z
     .enum(SupportTicketType, "Type is required")
-    .default(SupportTicketType.GENERAL_INQUIRY),
-  status: z
-    .enum(SupportTicketStatus, "Status is required")
-    .default(SupportTicketStatus.OPEN),
-  response: z.string().nullable().default(null),
 });
 
 export type SupportTicket = z.infer<typeof supportTicketSchema>;

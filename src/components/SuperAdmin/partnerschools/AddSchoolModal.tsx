@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { X, School, MapPin, Phone, User, Users } from "lucide-react";
-import type { SchoolDataForm } from "../../../types/partner-school.types";
+import { createSchoolSchema, type SchoolSchema } from "../../../zod-schema/school";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 interface AddSchoolModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: SchoolDataForm) => void;
+    onSubmit: (data: SchoolSchema) => void;
     isLoading: boolean;
 }
 
@@ -15,141 +17,74 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
     onSubmit,
     isLoading
 }) => {
-    const [formData, setFormData] = useState<SchoolDataForm>({
-        name: "",
-        address: "",
-        district: "",
-        city: "",
-        state: "",
-        postal_code: "",
-        latitude: "",
-        longitude: "",
-        phone: "",
-        email: "",
-        password: "",
-        image: "",
-        verified: false,
-        principal_name: "",
-        principal_contact: "",
-        contact: "",
-        school_type: "public",
-        has_transport: false,
-        established_year: "",
-        student_capacity: "",
-        school_code: "",
-        details: "",
-        grade_range: "",
-        has_hostel: false,
-        school_logo: "",
-    });
-
-    const [errors, setErrors] = useState<Record<string, string>>({});
-    const [currentTab, setCurrentTab] = useState("basic");
-
-    const handleInputChange = (
-        e: React.ChangeEvent<
-            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-        >
-    ) => {
-        const { name, value, type } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]:
-                type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
-        }));
-    };
-
-    const validateForm = () => {
-        const newErrors: Record<string, string> = {};
-
-        if (!formData.state) newErrors.state = "State is required";
-
-        if (formData.postal_code && isNaN(Number(formData.postal_code))) {
-            newErrors.postal_code = "Postal code must be a number";
-        }
-
-        if (formData.latitude && isNaN(Number(formData.latitude))) {
-            newErrors.latitude = "Latitude must be a number";
-        }
-
-        if (formData.longitude && isNaN(Number(formData.longitude))) {
-            newErrors.longitude = "Longitude must be a number";
-        }
-
-        if (formData.established_year && isNaN(Number(formData.established_year))) {
-            newErrors.established_year = "Established year must be a number";
-        }
-
-        if (formData.student_capacity && isNaN(Number(formData.student_capacity))) {
-            newErrors.student_capacity = "Student capacity must be a number";
-        }
-
-        if (formData.school_code && isNaN(Number(formData.school_code))) {
-            newErrors.school_code = "School code must be a number";
-        }
-
-        if (formData.image && !/^https?:\/\/.+\..+/.test(formData.image)) {
-            newErrors.image = "Invalid URL";
-        }
-
-        if (formData.school_logo && !/^https?:\/\/.+\..+/.test(formData.school_logo)) {
-            newErrors.school_logo = "Invalid URL";
-        }
-
-        if (formData.details) {
-            const wordCount = formData.details.trim().split(/\s+/).length;
-            if (wordCount < 10) {
-                newErrors.details = "School details should be at least 50 words";
-            }
-        }
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
-    const handleSubmit = () => {
-        if (isLoading) return;
-
-        if (!validateForm()) return;
-
-        const payload: SchoolDataForm = {
-            ...formData,
-            postal_code: Number(formData.postal_code) || "",
-            latitude: Number(formData.latitude) || "",
-            longitude: Number(formData.longitude) || "",
-            established_year: Number(formData.established_year) || "",
-            student_capacity: Number(formData.student_capacity) || "",
-            school_code: Number(formData.school_code) || "",
-        };
-
-        onSubmit(payload);
-        setFormData({
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors, isSubmitting },
+        clearErrors,
+        setError,
+        
+    } = useForm<SchoolSchema>({
+        resolver: zodResolver(createSchoolSchema),
+        mode: 'onChange',
+        defaultValues: {
+            // Basic Info
             name: "",
+            school_code: 0,
+            school_type: "public",
+            grade_range: "",
+            established_year: new Date().getFullYear(),
+            student_capacity: 1,
+            
+            // Location
             address: "",
             district: "",
             city: "",
             state: "",
-            postal_code: "",
-            latitude: "",
-            longitude: "",
+            postal_code: 0,
+            latitude: 0,
+            longitude: 0,
+            
+            // Contact
             phone: "",
             email: "",
             password: "",
             image: "",
+            school_logo: "",
+            
+            // Administration
             verified: false,
             principal_name: "",
             principal_contact: "",
-            contact: "",
-            school_type: "public",
+            
+            // Additional
             has_transport: false,
-            established_year: "",
-            student_capacity: "",
-            school_code: "",
+            has_hostel: false, // Ensure this is always a boolean
             details: "",
-            grade_range: "",
-            has_hostel: false,
-            school_logo: "",
-        });
+        },
+    });
+
+    const [currentTab, setCurrentTab] = useState("basic");
+
+    useEffect(() => {
+        if (!isOpen) {
+            reset();
+            clearErrors();
+        }
+    }, [isOpen, reset, clearErrors]);
+
+    const onFormSubmit = async (data: SchoolSchema) => {
+        try {
+            await onSubmit(data);
+            reset();
+            onClose();
+        } catch (error) {
+            console.error("Form submission error:", error);
+            setError("root", {
+                message: "Failed to add school. Please try again.",
+            });
+        }
     };
 
     if (!isOpen) return null;
@@ -171,81 +106,66 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <label className="block text-sm font-medium text-gray-700 mb-1">School Name *</label>
                             <input
                                 type="text"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleInputChange}
+                                {...register("name")}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
                             />
-                            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">School Code *</label>
                             <input
                                 type="number"
-                                name="school_code"
-                                value={formData.school_code}
-                                onChange={handleInputChange}
+                                {...register("school_code", { valueAsNumber: true })}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
                             />
-                            {errors.school_code && <p className="text-red-500 text-sm mt-1">{errors.school_code}</p>}
+                            {errors.school_code && <p className="text-red-500 text-sm mt-1">{errors.school_code.message}</p>}
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">School Type *</label>
                             <select
-                                name="school_type"
-                                value={formData.school_type}
-                                onChange={handleInputChange}
+                                {...register("school_type")}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                                 <option value="public">Public</option>
                                 <option value="private">Private</option>
-                                <option value="charter">Charter</option>
                             </select>
-                            {errors.school_type && <p className="text-red-500 text-sm mt-1">{errors.school_type}</p>}
+                            {errors.school_type && <p className="text-red-500 text-sm mt-1">{errors.school_type.message}</p>}
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Grade Range</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Grade Range *</label>
                             <input
                                 type="text"
-                                name="grade_range"
-                                value={formData.grade_range}
-                                onChange={handleInputChange}
+                                {...register("grade_range")}
                                 placeholder="e.g., K-12, 1-8"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
-                            {errors.grade_range && <p className="text-red-500 text-sm mt-1">{errors.grade_range}</p>}
+                            {errors.grade_range && <p className="text-red-500 text-sm mt-1">{errors.grade_range.message}</p>}
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Established Year</label>
                             <input
                                 type="number"
-                                name="established_year"
-                                value={formData.established_year}
-                                onChange={handleInputChange}
+                                {...register("established_year", { valueAsNumber: true })}
                                 min="1800"
-                                max="2024"
+                                max="2025"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
-                            {errors.established_year && <p className="text-red-500 text-sm mt-1">{errors.established_year}</p>}
+                            {errors.established_year && <p className="text-red-500 text-sm mt-1">{errors.established_year.message}</p>}
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Student Capacity</label>
                             <input
                                 type="number"
-                                name="student_capacity"
-                                value={formData.student_capacity}
-                                onChange={handleInputChange}
+                                {...register("student_capacity", { valueAsNumber: true })}
                                 min="1"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
-                            {errors.student_capacity && <p className="text-red-500 text-sm mt-1">{errors.student_capacity}</p>}
+                            {errors.student_capacity && <p className="text-red-500 text-sm mt-1">{errors.student_capacity.message}</p>}
                         </div>
                     </div>
                 );
@@ -257,13 +177,10 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <label className="block text-sm font-medium text-gray-700 mb-1">Address *</label>
                             <input
                                 type="text"
-                                name="address"
-                                value={formData.address}
-                                onChange={handleInputChange}
+                                {...register("address")}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
                             />
-                            {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
+                            {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
@@ -271,50 +188,40 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 <label className="block text-sm font-medium text-gray-700 mb-1">City *</label>
                                 <input
                                     type="text"
-                                    name="city"
-                                    value={formData.city}
-                                    onChange={handleInputChange}
+                                    {...register("city")}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
                                 />
-                                {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
+                                {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>}
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">State *</label>
                                 <input
                                     type="text"
-                                    name="state"
-                                    value={formData.state}
-                                    onChange={handleInputChange}
+                                    {...register("state")}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
                                 />
-                                {errors.state && <p className="text-red-500 text-sm mt-1">{errors.state}</p>}
+                                {errors.state && <p className="text-red-500 text-sm mt-1">{errors.state.message}</p>}
                             </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">District</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">District *</label>
                                 <input
                                     type="text"
-                                    name="district"
-                                    value={formData.district}
-                                    onChange={handleInputChange}
+                                    {...register("district")}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
-                                {errors.district && <p className="text-red-500 text-sm mt-1">{errors.district}</p>}
+                                {errors.district && <p className="text-red-500 text-sm mt-1">{errors.district.message}</p>}
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
                                 <input
-                                    type="text"
-                                    name="postal_code"
-                                    value={formData.postal_code}
-                                    onChange={handleInputChange}
+                                    type="number"
+                                    {...register("postal_code", { valueAsNumber: true })}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
-                                {errors.postal_code && <p className="text-red-500 text-sm mt-1">{errors.postal_code}</p>}
+                                {errors.postal_code && <p className="text-red-500 text-sm mt-1">{errors.postal_code.message}</p>}
                             </div>
                         </div>
 
@@ -324,24 +231,20 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                                 <input
                                     type="number"
                                     step="any"
-                                    name="latitude"
-                                    value={formData.latitude}
-                                    onChange={handleInputChange}
+                                    {...register("latitude", { valueAsNumber: true })}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
-                                {errors.latitude && <p className="text-red-500 text-sm mt-1">{errors.latitude}</p>}
+                                {errors.latitude && <p className="text-red-500 text-sm mt-1">{errors.latitude.message}</p>}
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Longitude</label>
                                 <input
                                     type="number"
                                     step="any"
-                                    name="longitude"
-                                    value={formData.longitude}
-                                    onChange={handleInputChange}
+                                    {...register("longitude", { valueAsNumber: true })}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
-                                {errors.longitude && <p className="text-red-500 text-sm mt-1">{errors.longitude}</p>}
+                                {errors.longitude && <p className="text-red-500 text-sm mt-1">{errors.longitude.message}</p>}
                             </div>
                         </div>
                     </div>
@@ -354,75 +257,50 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                             <label className="block text-sm font-medium text-gray-700 mb-1">Primary Phone *</label>
                             <input
                                 type="tel"
-                                name="phone"
-                                value={formData.phone}
-                                onChange={handleInputChange}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
-                            />
-                            {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Alternative Contact</label>
-                            <input
-                                type="tel"
-                                name="contact"
-                                value={formData.contact}
-                                onChange={handleInputChange}
+                                {...register("phone")}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
-                            {errors.contact && <p className="text-red-500 text-sm mt-1">{errors.contact}</p>}
+                            {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
                             <input
                                 type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
+                                {...register("email")}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
                             />
-                            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Password *</label>
                             <input
                                 type="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleInputChange}
+                                {...register("password")}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
                             />
-                            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+                            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">School Image URL</label>
                             <input
                                 type="url"
-                                name="image"
-                                value={formData.image}
-                                onChange={handleInputChange}
+                                {...register("image")}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
-                            {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image}</p>}
+                            {errors.image && <p className="text-red-500 text-sm mt-1">{errors.image.message}</p>}
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">School Logo URL</label>
                             <input
                                 type="url"
-                                name="school_logo"
-                                value={formData.school_logo}
-                                onChange={handleInputChange}
+                                {...register("school_logo")}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
-                            {errors.school_logo && <p className="text-red-500 text-sm mt-1">{errors.school_logo}</p>}
+                            {errors.school_logo && <p className="text-red-500 text-sm mt-1">{errors.school_logo.message}</p>}
                         </div>
                     </div>
                 );
@@ -431,40 +309,34 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                 return (
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Principal Name</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Principal Name *</label>
                             <input
                                 type="text"
-                                name="principal_name"
-                                value={formData.principal_name}
-                                onChange={handleInputChange}
+                                {...register("principal_name")}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
-                            {errors.principal_name && <p className="text-red-500 text-sm mt-1">{errors.principal_name}</p>}
+                            {errors.principal_name && <p className="text-red-500 text-sm mt-1">{errors.principal_name.message}</p>}
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Principal Contact</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Principal Contact *</label>
                             <input
                                 type="tel"
-                                name="principal_contact"
-                                value={formData.principal_contact}
-                                onChange={handleInputChange}
+                                {...register("principal_contact")}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
-                            {errors.principal_contact && <p className="text-red-500 text-sm mt-1">{errors.principal_contact}</p>}
+                            {errors.principal_contact && <p className="text-red-500 text-sm mt-1">{errors.principal_contact.message}</p>}
                         </div>
 
                         <div className="flex items-center space-x-2">
                             <input
                                 type="checkbox"
-                                name="verified"
-                                checked={formData.verified}
-                                onChange={handleInputChange}
+                                {...register("verified")}
                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label className="text-sm font-medium text-gray-700">Verified School</label>
-                            {errors.verified && <p className="text-red-500 text-sm mt-1">{errors.verified}</p>}
                         </div>
+                        {errors.verified && <p className="text-red-500 text-sm mt-1">{errors.verified.message}</p>}
                     </div>
                 );
 
@@ -472,42 +344,35 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                 return (
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">School Details</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">School Details *</label>
                             <textarea
-                                name="details"
-                                value={formData.details}
-                                onChange={handleInputChange}
+                                {...register("details")}
                                 rows={4}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Describe the school's facilities, programs, and highlights..."
+                                placeholder="Describe the school's facilities, programs, and highlights (minimum 50 characters)..."
                             />
-                            {errors.details && <p className="text-red-500 text-sm mt-1">{errors.details}</p>}
+                            {errors.details && <p className="text-red-500 text-sm mt-1">{errors.details.message}</p>}
                         </div>
 
                         <div className="flex items-center space-x-2">
                             <input
                                 type="checkbox"
-                                name="has_transport"
-                                checked={formData.has_transport}
-                                onChange={handleInputChange}
+                                {...register("has_transport")}
                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label className="text-sm font-medium text-gray-700">Has Transportation</label>
-                            {errors.has_transport && <p className="text-red-500 text-sm mt-1">{errors.has_transport}</p>}
                         </div>
+                        {errors.has_transport && <p className="text-red-500 text-sm mt-1">{errors.has_transport.message}</p>}
 
                         <div className="flex items-center space-x-2">
                             <input
                                 type="checkbox"
-                                name="has_hostel"
-                                checked={formData.has_hostel}
-                                onChange={handleInputChange}
+                                {...register("has_hostel")}
                                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label className="text-sm font-medium text-gray-700">Has Hostel Facilities</label>
-                            {errors.has_hostel && <p className="text-red-500 text-sm mt-1">{errors.has_hostel}</p>}
-
                         </div>
+                        {errors.has_hostel && <p className="text-red-500 text-sm mt-1">{errors.has_hostel.message}</p>}
                     </div>
                 );
 
@@ -551,38 +416,42 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
                 </div>
 
                 {/* Form Content */}
-                <div className="flex flex-col h-full">
+                <form onSubmit={handleSubmit(onFormSubmit)} className="flex flex-col h-full">
                     <div className="p-6 overflow-y-auto flex-1">
                         {renderTabContent()}
+                        {errors.root && (
+                            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <p className="text-red-600 text-sm">{errors.root.message}</p>
+                            </div>
+                        )}
                     </div>
 
                     {/* Footer */}
                     <div className="flex justify-end space-x-4 p-6 border-t border-gray-200 bg-gray-50">
                         <button
                             type="button"
-                            disabled={isLoading}
+                            disabled={isLoading || isSubmitting}
                             onClick={onClose}
-                            className="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                            className="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
                         >
                             Cancel
                         </button>
                         <button
-                            type="button"
-                            disabled={isLoading}
-                            onClick={handleSubmit}
-                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            type="submit"
+                            disabled={isLoading || isSubmitting}
+                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 disabled:opacity-50"
                         >
-                            {isLoading ? (
+                            {isLoading || isSubmitting ? (
                                 <>
                                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                                    Adding School...
+                                    <span>Adding School...</span>
                                 </>
                             ) : (
                                 'Add School'
                             )}
                         </button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     );

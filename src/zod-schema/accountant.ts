@@ -5,7 +5,7 @@ export const createAccountantSchema = z.object({
   lastName: z.string().min(1, "Last name is required"),
   email: z.email("Invalid email address"),
   phone: z.string().min(10, "Phone number is required"),
-  status: z.enum(["Active", "Inactive"]).default("Active"),
+  status: z.enum(["Active", "Inactive"]),
   password: z
     .string()
     .min(8, "Password must be at least 8 characters")
@@ -23,7 +23,7 @@ export const createAccountantSchema = z.object({
   district: z.string().min(1, "District is required"),
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
-  postal_code: z.string().nullable().default(null),
+  postal_code: z.string().nullable()
 });
 
 export const updateAccountantSchema = createAccountantSchema

@@ -1,13 +1,13 @@
 import { Banknote } from 'lucide-react';
 import { useFeeSalary } from '../../../hooks/useFeeSalary';
-import type { FeeStructureAttributes, Salary, SalaryStructureForm } from '../../../types/fee-salary.types';
+import type { FeeStructureAttributes,  Salary, SalaryStructureForm } from '../../../types/fee-salary.types';
 import { FilterSection } from '../../../components/Accountant/feesandsalary/FilterSection';
 import { StudentDetailView } from '../../../components/Accountant/feesandsalary/StudentDetailView';
 import { DataTable } from '../../../components/Accountant/feesandsalary/DataTable';
 import { AccountantDashboardHeader } from '../../../components/Accountant/layout/DashboardHeader';
 import { Sidebar } from '../../../components/Accountant/layout/Sidebar';
 import { useMemo, useState } from 'react';
-import { AddFeeStructureModal, type FeeStructureForm } from '../../../components/Accountant/feesandsalary/AddFeeStructureModal';
+import { AddFeeStructureModal } from '../../../components/Accountant/feesandsalary/AddFeeStructureModal';
 import EditFeeStructureModal from '../../../components/Accountant/feesandsalary/EditFeeStructureModal';
 import { AddSalaryStructureModal } from '../../../components/Accountant/feesandsalary/salary/AddSalaryStructureModal';
 import EditSalaryStructureModal from '../../../components/Accountant/feesandsalary/salary/EditSalaryStructureModal';
@@ -17,6 +17,7 @@ import { useAddFeeStructure, useDeleteFeeStructure, useMySchoolFeesStructures, u
 import { useCreateSalaryStructure, useDeleteSalaryStructure, useMySchoolSalaryStructures, useUpdateSalaryStructure } from '../../../hooks/useSalary';
 import { useAllTransportation } from '../../../hooks/useTransportation';
 import { useAllAccountantsBySchool } from '../../../hooks/useAccountant';
+import type { FeeStructure } from '../../../zod-schema/fees';
 
 export default function FeeAndSalaryPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -67,7 +68,7 @@ export default function FeeAndSalaryPage() {
         resetPaymentForm();
     };
 
-    const handleCreateFeeStructure = async (feeData: FeeStructureForm) => {
+    const handleCreateFeeStructure = async (feeData: FeeStructure) => {
         addFeeStructureMutation.mutate(feeData, {
             onSuccess: () => setIsModalOpen(false)
         })

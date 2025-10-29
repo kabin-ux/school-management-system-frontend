@@ -5,11 +5,8 @@ export const subjectSchema = z.object({
   code: z.string().min(1, "Code is required"),
   description: z
     .string()
-    .min(10, "Description must be at least 10 characters long")
-    .nullable()
-    .default(null),
+    .min(10, "Description must be at least 10 characters long"),
   class_id: z.uuid("Invalid class ID"),
-  teacher_id: z.uuid("Invalid teacher ID").optional().nullable().default(null),
 });
 
 export type SubjectSchema = z.infer<typeof subjectSchema>;

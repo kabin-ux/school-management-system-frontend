@@ -13,10 +13,9 @@ export const transportationSchema = z.object({
   driverPhone: z.string().min(1, "Driver phone is required"),
   last_location: z.string().min(1, "Last location is required"),
   capacity: z.number().int().min(1, "Capacity must be at least 1"),
-  price: z.number().min(0, "Price must be at least 0").default(0),
+  price: z.number().min(0, "Price must be at least 0"),
   status: z
     .enum([TransportationStatus.ACTIVE, TransportationStatus.INACTIVE])
-    .default(TransportationStatus.ACTIVE),
 });
 
 export const updateTransportationSchema = transportationSchema.partial();

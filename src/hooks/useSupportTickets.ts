@@ -145,11 +145,10 @@ export const useDeleteSupportTicket = () => {
       await api.delete(`/support/${id}`);
       return id;
     },
-    onSuccess: (id) => {
+    onSuccess: () => {
       toast.success("Support Ticket deleted successfully");
-      queryClient.setQueryData<SupportTicket[]>(["supportTickets"], (old) =>
-        old ? old.filter((ticket) => ticket.id !== id) : []
-      );
+      queryClient.invalidateQueries({ queryKey: ["supportTicketsBySchool"] });
+      queryClient.invalidateQueries({ queryKey: ["supportTickets"] });
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.error || "Failed to delete support ticket");

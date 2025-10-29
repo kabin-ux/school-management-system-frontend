@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { X, User } from 'lucide-react';
 import type { SuperAdminForm } from '../../../types/super-admin-dashboard.types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { createSuperAdminSchema, type SuperAdmin } from '../../../zod-schema/super-admin';
 
 interface AddSuperAdminModalProps {
   isOpen: boolean;
@@ -15,93 +18,38 @@ const AddSuperAdminModal: React.FC<AddSuperAdminModalProps> = ({
   onSubmit,
   isLoading
 }) => {
-  const [formData, setFormData] = useState<SuperAdminForm>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    phone_number: '',
-    address: '',
-    status: 'active',
-    created_by: null,
-    profile_image: null,
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting }, clearErrors, setError } = useForm<SuperAdmin>({
+    resolver: zodResolver(createSuperAdminSchema),
+    mode: 'onChange',
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      phone_number: '',
+      address: '',
+      status: 'active',
+      created_by: null,
+      profile_image: null,
+    },
   });
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
-
+  // Reset form when modal opens/closes
   useEffect(() => {
     if (!isOpen) {
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        phone_number: '',
-        address: '',
-        status: 'active',
-        created_by: null,
-        profile_image: null,
-      });
-      setErrors({});
-      setTouched({});
+      reset();
+      clearErrors();
     }
-  }, [isOpen]);
+  }, [isOpen, reset, clearErrors]);
 
-  const validateField = (name: string, value: any) => {
-    switch (name) {
-      case 'firstName':
-      case 'lastName':
-        return !value.trim() ? `${name === 'firstName' ? 'First' : 'Last'} name is required` : '';
-      case 'email':
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!value.trim()) return 'Email is required';
-        if (!emailRegex.test(value)) return 'Invalid email address';
-        return '';
-      case 'password':
-        return !value.trim() ? 'Password is required' : '';
-      case 'phone_number':
-        if (!value.trim()) return 'Phone number is required';
-        if (!/^\d{10,15}$/.test(value)) return 'Enter a valid phone number';
-        return '';
-      default:
-        return '';
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-
-    if (touched[name]) {
-      const error = validateField(name, value);
-      setErrors(prev => ({ ...prev, [name]: error }));
-    }
-  };
-
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setTouched(prev => ({ ...prev, [name]: true }));
-    const error = validateField(name, value);
-    setErrors(prev => ({ ...prev, [name]: error }));
-  };
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-    Object.keys(formData).forEach(key => {
-      const error = validateField(key, formData[key as keyof typeof formData]);
-      if (error) newErrors[key] = error;
-    });
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setTouched(Object.keys(formData).reduce((acc, field) => ({ ...acc, [field]: true }), {}));
-    if (validateForm()) {
-      onSubmit(formData);
+  const onFormSubmit = async (data: SuperAdmin) => {
+    try {
+      await onSubmit(data);
+      reset();
       onClose();
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setError('root', { message: 'Failed to add super admin. Please try again.' });
     }
   };
 
@@ -122,20 +70,18 @@ const AddSuperAdminModal: React.FC<AddSuperAdminModalProps> = ({
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit(onFormSubmit)} className="p-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* First Name */}
             <div>
               <label className="block text-sm font-medium">First Name *</label>
               <input
                 type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleInputChange}
-                onBlur={handleBlur}
+                {...register('firstName')}
                 className={`w-full px-3 py-2 border rounded-lg ${errors.firstName ? 'border-red-500' : 'border-gray-300'}`}
+                placeholder='Enter First Name'
               />
-              {errors.firstName && <p className="text-xs text-red-500">{errors.firstName}</p>}
+              {errors.firstName && <p className="text-xs text-red-500">{errors.firstName.message}</p>}
             </div>
 
             {/* Last Name */}
@@ -143,13 +89,11 @@ const AddSuperAdminModal: React.FC<AddSuperAdminModalProps> = ({
               <label className="block text-sm font-medium">Last Name *</label>
               <input
                 type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleInputChange}
-                onBlur={handleBlur}
+                {...register('lastName')}
                 className={`w-full px-3 py-2 border rounded-lg ${errors.lastName ? 'border-red-500' : 'border-gray-300'}`}
+                placeholder='Enter Last Name'
               />
-              {errors.lastName && <p className="text-xs text-red-500">{errors.lastName}</p>}
+              {errors.lastName && <p className="text-xs text-red-500">{errors.lastName.message}</p>}
             </div>
 
             {/* Email */}
@@ -157,13 +101,10 @@ const AddSuperAdminModal: React.FC<AddSuperAdminModalProps> = ({
               <label className="block text-sm font-medium">Email *</label>
               <input
                 type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                onBlur={handleBlur}
+                {...register('email')}
                 className={`w-full px-3 py-2 border rounded-lg ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
               />
-              {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
+              {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
             </div>
 
             {/* Password */}
@@ -171,13 +112,10 @@ const AddSuperAdminModal: React.FC<AddSuperAdminModalProps> = ({
               <label className="block text-sm font-medium">Password *</label>
               <input
                 type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                onBlur={handleBlur}
+                {...register('password')}
                 className={`w-full px-3 py-2 border rounded-lg ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
               />
-              {errors.password && <p className="text-xs text-red-500">{errors.password}</p>}
+              {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
             </div>
 
             {/* Phone */}
@@ -185,22 +123,17 @@ const AddSuperAdminModal: React.FC<AddSuperAdminModalProps> = ({
               <label className="block text-sm font-medium">Phone *</label>
               <input
                 type="tel"
-                name="phone_number"
-                value={formData.phone_number}
-                onChange={handleInputChange}
-                onBlur={handleBlur}
+                {...register('phone_number')}
                 className={`w-full px-3 py-2 border rounded-lg ${errors.phone_number ? 'border-red-500' : 'border-gray-300'}`}
               />
-              {errors.phone_number && <p className="text-xs text-red-500">{errors.phone_number}</p>}
+              {errors.phone_number && <p className="text-xs text-red-500">{errors.phone_number.message}</p>}
             </div>
 
             {/* Status */}
             <div>
               <label className="block text-sm font-medium">Status</label>
               <select
-                name="status"
-                value={formData.status}
-                onChange={handleInputChange}
+                {...register('status')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
               >
                 <option value="active">Active</option>
@@ -213,12 +146,11 @@ const AddSuperAdminModal: React.FC<AddSuperAdminModalProps> = ({
           <div>
             <label className="block text-sm font-medium">Address</label>
             <textarea
-              name="address"
-              value={formData.address}
-              onChange={handleInputChange}
+              {...register('address')}
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg"
             />
+            {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address.message}</p>}
           </div>
 
           {/* Profile Image */}
@@ -226,9 +158,7 @@ const AddSuperAdminModal: React.FC<AddSuperAdminModalProps> = ({
             <label className="block text-sm font-medium">Profile Image (URL)</label>
             <input
               type="url"
-              name="profile_image"
-              value={formData.profile_image ?? ''}
-              onChange={handleInputChange}
+              {...register('profile_image')}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg"
               placeholder="https://example.com/image.jpg"
             />
@@ -239,17 +169,17 @@ const AddSuperAdminModal: React.FC<AddSuperAdminModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              disabled={isLoading}
+              disabled={isLoading || isSubmitting}
               className="px-4 py-2 border rounded-lg"
             >
               Cancel
             </button>
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || isSubmitting}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg"
             >
-              {isLoading ? 'Adding...' : 'Add Super Admin'}
+              {isLoading || isSubmitting ? 'Adding...' : 'Add Super Admin'}
             </button>
           </div>
         </form>

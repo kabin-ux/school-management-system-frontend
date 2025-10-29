@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const FeeStructureSchema = z.object({
+export const feeStructureSchema = z.object({
   class_id: z.uuid({ message: "class_id must be a valid UUID" }),
   monthly_fee: z
     .number("monthly_fee must be a number")
@@ -18,15 +18,13 @@ export const FeeStructureSchema = z.object({
     .number("laboratory_fee must be a number")
     .nonnegative({ message: "laboratory_fee cannot be negative" }),
   transport_fee: z
-    .uuid("transport_fee must be a valid UUID")
-    .nullable()
-    .default(null),
+    .uuid("transport_fee must be a valid UUID"),
   other_fee: z
     .number("other_fee must be a number")
     .nonnegative({ message: "other_fee cannot be negative" }),
 });
 
-export const UpdateFeeStructureSchema = FeeStructureSchema.partial();
+export const UpdateFeeStructureSchema = feeStructureSchema.partial();
 
-export type FeeStructure = z.infer<typeof FeeStructureSchema>;
+export type FeeStructure = z.infer<typeof feeStructureSchema>;
 export type UpdateFeeStructure = z.infer<typeof UpdateFeeStructureSchema>;

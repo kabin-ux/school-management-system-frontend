@@ -1,52 +1,45 @@
-import React, { useState } from "react";
-import type { EventForm } from "../../../types/events.types";
+import React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { eventCreateSchema, type EventCreateSchema } from "../../../zod-schema/event";
 
 interface CreateEventFormProps {
-  onAdd: (event: EventForm) => void;
+  onAdd: (event: EventCreateSchema) => void;
   isLoading: boolean;
 }
 
 export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onAdd, isLoading }) => {
-  const [formData, setFormData] = useState<EventForm>({
-    title: "",
-    description: "",
-    eventType: "",
-    target: "",
-    date: "",
-    startTime: "",
-    endTime: "",
-  });
-
-  // generic handler
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isLoading) return;
-
-    onAdd(formData);
-
-    setFormData({
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting }, setError } = useForm<EventCreateSchema>({
+    resolver: zodResolver(eventCreateSchema),
+    mode: 'onChange',
+    defaultValues: {
       title: "",
       description: "",
-      eventType: "",
-      target: "",
+      eventType: "academic",
+      target: "all",
       date: "",
       startTime: "",
       endTime: "",
-    })
+    },
+  });
+
+  const onFormSubmit = async (data: EventCreateSchema) => {
+    try {
+      await onAdd(data);
+      reset();
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setError("root", {
+        message: "Failed to add event. Please try again.",
+      });
+    }
   };
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
       <h3 className="text-lg font-semibold text-gray-900 mb-6">Create Event</h3>
 
-      <div className="space-y-4">
+      <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
         {/* Event Title */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -54,12 +47,11 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onAdd, isLoadi
           </label>
           <input
             type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="Enter event title.."
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            {...register("title")}
+            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.title ? "border-red-500" : "border-gray-300"}`}
+            placeholder="Enter event title"
           />
+          {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title.message}</p>}
         </div>
 
         {/* Event Type */}
@@ -68,9 +60,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onAdd, isLoadi
             Event Type *
           </label>
           <select
-            name="eventType"
-            value={formData.eventType}
-            onChange={handleChange}
+            {...register("eventType")}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="">Select</option>
@@ -79,6 +69,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onAdd, isLoadi
             <option value="holiday">Holiday</option>
             <option value="ptm">PTM</option>
             <option value="exam">Exam</option>
+            {errors.eventType && <p className="mt-1 text-sm text-red-600">{errors.eventType.message}</p>}
           </select>
         </div>
 
@@ -88,9 +79,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onAdd, isLoadi
             Targeted Audience *
           </label>
           <select
-            name="target"
-            value={formData.target}
-            onChange={handleChange}
+            {...register("target")}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="">Select</option>
@@ -99,6 +88,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onAdd, isLoadi
             <option value="parents">Parents</option>
             <option value="staff">Staffs</option>
             <option value="all">All</option>
+            {errors.target && <p className="mt-1 text-sm text-red-600">{errors.target.message}</p>}
           </select>
         </div>
 
@@ -109,11 +99,10 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onAdd, isLoadi
           </label>
           <input
             type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
+            {...register("date")}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
+          {errors.date && <p className="mt-1 text-sm text-red-600">{errors.date.message}</p>}
         </div>
 
         {/* Times */}
@@ -124,11 +113,10 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onAdd, isLoadi
             </label>
             <input
               type="time"
-              name="startTime"
-              value={formData.startTime}
-              onChange={handleChange}
+              {...register("startTime")}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
+            {errors.startTime && <p className="mt-1 text-sm text-red-600">{errors.startTime.message}</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -136,11 +124,10 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onAdd, isLoadi
             </label>
             <input
               type="time"
-              name="endTime"
-              value={formData.endTime}
-              onChange={handleChange}
+              {...register("endTime")}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
+            {errors.endTime && <p className="mt-1 text-sm text-red-600">{errors.endTime.message}</p>}
           </div>
         </div>
 
@@ -150,32 +137,23 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onAdd, isLoadi
             Description *
           </label>
           <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
+            {...register('description')}
             rows={3}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
           />
+          {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>}
         </div>
 
         {/* Submit */}
         <button
-          type="button"
-          disabled={isLoading || !formData.title || !formData.description || !formData.eventType || !formData.target || !formData.date || !formData.startTime || !formData.endTime}
+          type="submit"
+          disabled={isLoading || isSubmitting}
           className={`w-full py-2 px-4 rounded-lg flex items-center justify-center gap-2 
   transition-colors 
-  ${isLoading ||
-              !formData.title ||
-              !formData.description ||
-              !formData.eventType ||
-              !formData.target ||
-              !formData.date ||
-              !formData.startTime ||
-              !formData.endTime
+  ${isLoading || isSubmitting
               ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
               : 'bg-blue-600 hover:bg-blue-700 text-white'
             }`}
-          onClick={handleSubmit}
         >
           {isLoading ? (
             <>
@@ -186,7 +164,7 @@ export const CreateEventForm: React.FC<CreateEventFormProps> = ({ onAdd, isLoadi
             "Post event"
           )}
         </button>
-      </div>
+      </form>
     </div>
   );
 };

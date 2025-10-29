@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import type { FeeStructureAttributes } from '../../../types/fee-salary.types';
+import type { FeeStructureAttributes, FeeStructureForm } from '../../../types/fee-salary.types';
 import type { Grade } from '../../../types/class.types';
 import type { Transportation } from '../../../types/admin-transportation.types';
-import type { FeeStructureForm } from './AddFeeStructureModal';
 
 interface EditFeeStructureModalProps {
   isOpen: boolean;

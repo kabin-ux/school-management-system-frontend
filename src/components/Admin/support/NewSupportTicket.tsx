@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import type { SupportTicketForm } from '../../../types/support.types';
+import React from 'react';
+import { supportTicketSchema, type SupportTicket } from '../../../zod-schema/support-ticket';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 
 interface NewSupportTicketProps {
   isLoading: boolean;
-  onAdd: (ticket: SupportTicketForm) => void;
+  onAdd: (ticket: SupportTicket) => void;
 }
 
 const issueTypes = [
@@ -17,59 +19,51 @@ const issueTypes = [
 
 export const NewSupportTicket: React.FC<NewSupportTicketProps> = ({ isLoading, onAdd }) => {
 
-  const [formData, setFormData] = useState<SupportTicketForm>({
-    title: "",
-    description: "",
-    type: "general_inquiry"
-    // status: ""
-  });
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isLoading) return;
-
-    onAdd(formData);
-
-    setFormData({
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting }, setError } = useForm<SupportTicket>({
+    resolver: zodResolver(supportTicketSchema),
+    mode: 'onChange',
+    defaultValues: {
       title: "",
       description: "",
       type: "general_inquiry"
-    })
+    },
+  });
+
+  const onFormSubmit = async (data: SupportTicket) => {
+    try {
+      await onAdd(data);
+      reset();
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setError("root", {
+        message: "Failed to add support ticket. Please try again.",
+      });
+    }
   };
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
       <h3 className="text-lg font-semibold text-gray-900 mb-4">New Support Ticket</h3>
-      <div className="space-y-4">
+      <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Issue Title *</label>
           <input
             type="text"
-            name='title'
-            placeholder="Write title of the issue"
-            value={formData.title}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            {...register("title")}
+            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.title ? "border-red-500" : "border-gray-300"}`}
+            placeholder="Enter support ticket title"
           />
+          {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title.message}</p>}
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Description *</label>
           <textarea
-            placeholder="Provide the description of the issues"
-            name='description'
-            value={formData.description}
-            onChange={handleChange}
-            rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            {...register("description")}
+            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.description ? "border-red-500" : "border-gray-300"}`}
+            placeholder="Enter description"
           />
+          {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>}
         </div>
 
         <div>
@@ -77,26 +71,25 @@ export const NewSupportTicket: React.FC<NewSupportTicketProps> = ({ isLoading, o
             Select issue type <span className="text-red-500">*</span>
           </label>
           <select
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
+            {...register("type")}
             className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
           >
-            <option value="">-- Select Issue Type --</option>
+            <option value="" disabled>-- Select Issue Type --</option>
             {issueTypes.map(type => (
               <option key={type.key} value={type.value}>
                 {type.key}
               </option>
             ))}
           </select>
+          {errors.type && <p className="mt-1 text-sm text-red-600">{errors.type.message}</p>}
         </div>
 
         <button
+          type='submit'
           className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg shadow-sm transition-all disabled:opacity-70 disabled:cursor-not-allowed"
-          onClick={handleSubmit}
-          disabled={isLoading || !formData.title || !formData.description}
+          disabled={isLoading || isSubmitting}  // Check both conditions
         >
-          {isLoading ? (
+          {isLoading || isSubmitting ? (
             <>
               <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
               <span>Sending...</span>
@@ -105,7 +98,7 @@ export const NewSupportTicket: React.FC<NewSupportTicketProps> = ({ isLoading, o
             "Send Ticket"
           )}
         </button>
-      </div>
+      </form>
     </div>
   );
 };

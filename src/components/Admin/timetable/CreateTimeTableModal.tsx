@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { X } from "lucide-react";
 import type { Grade } from "../../../types/class.types";
 import { useSectionsByClass } from "../../../hooks/useSection";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { createTimetableSchema, type TimetableCreateSchema } from "../../../zod-schema/timetable";
 
 export interface TimeTableForm {
     classId: string,
@@ -13,7 +16,7 @@ interface TimeTableModalProps {
     isOpen: boolean;
     classes: Grade[];
     onClose: () => void;
-    onSubmit: (feeData: TimeTableForm) => void;
+    onSubmit: (feeData: TimetableCreateSchema) => void;
     isLoading: boolean;
 }
 
@@ -24,60 +27,45 @@ export const CreateTimeTableModal: React.FC<TimeTableModalProps> = ({
     onSubmit,
     isLoading
 }) => {
-    const [formData, setFormData] = useState<TimeTableForm>({
-        classId: "",
-        sectionId: "",
-        name: ""
+    const { register, handleSubmit, reset, watch, formState: { errors, isSubmitting }, clearErrors, setError, setValue } = useForm<TimetableCreateSchema>({
+        resolver: zodResolver(createTimetableSchema),
+        mode: 'onChange',
+        defaultValues: {
+            classId: "",
+            sectionId: "",
+            name: ""
+        },
     });
 
-    const [errors, setErrors] = useState<Record<string, string>>({});
+    // Watch class_id to trigger section loading
+    const watchedClassId = watch("classId");
 
-    const { data: sections = [] } = useSectionsByClass(formData.classId);
+    // Use React Query hook with the watched value
+    const { data: sections = [] } = useSectionsByClass(watchedClassId ? watchedClassId : '');
 
-    const handleInputChange = (
-        e: React.ChangeEvent<
-            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-        >
-    ) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: ["basic", "allowances"].includes(name) ? Number(value) : value,
-
-        }));
-
-        // Clear error when user starts typing
-        if (errors[name]) {
-            setErrors((prev) => ({
-                ...prev,
-                [name]: "",
-            }));
+    // Reset section when class changes
+    useEffect(() => {
+        if (watchedClassId) {
+            setValue("sectionId", ""); // Clear section selection when class changes
         }
-    };
+    }, [watchedClassId, setValue]);
 
-    const validateForm = () => {
-        const newErrors: Record<string, string> = {};
-        if (!formData.classId) newErrors.employee_id = "Class is required";
-        if (!formData.sectionId) newErrors.basic = "Section is required";
-        if (!formData.name) newErrors.basic = "Timetable Name is required";
+    // Reset form when modal opens/closes
+    useEffect(() => {
+        if (!isOpen) {
+            reset();
+            clearErrors();
+        }
+    }, [isOpen, reset, clearErrors]);
 
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
-    const handleSubmit = () => {
-        if (isLoading) return;
-
-        if (validateForm()) {
-            onSubmit(formData);
-
-            setFormData({
-                classId: "",
-                sectionId: "",
-                name: ""
-            });
-            setErrors({});
+    const onFormSubmit = async (data: TimetableCreateSchema) => {
+        try {
+            await onSubmit(data);
+            reset();
             onClose();
+        } catch (error) {
+            console.error('Form submission error:', error);
+            setError('root', { message: 'Failed to add student. Please try again.' });
         }
     };
 
@@ -97,7 +85,7 @@ export const CreateTimeTableModal: React.FC<TimeTableModalProps> = ({
                     </button>
                 </div>
 
-                <div className="p-6 space-y-6">
+                <form onSubmit={handleSubmit(onFormSubmit)} className="p-6 space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {/* TimeTable Name */}
                         <div>
@@ -106,14 +94,13 @@ export const CreateTimeTableModal: React.FC<TimeTableModalProps> = ({
                             </label>
                             <input
                                 type="text"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleInputChange}
+                                {...register("name")}
                                 className={`w-full border rounded px-3 py-2 ${errors.name ? "border-red-500" : "border-gray-300"
                                     }`}
+                                placeholder="Enter Name"
                             />
                             {errors.name && (
-                                <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+                                <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
                             )}
                         </div>
                         {/* Class */}
@@ -122,11 +109,9 @@ export const CreateTimeTableModal: React.FC<TimeTableModalProps> = ({
                                 Class *
                             </label>
                             <select
-                                name="classId"
-                                value={formData.classId}
-                                onChange={handleInputChange}
+                                {...register("classId")}
                                 disabled={isLoading}
-                                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.class ? 'border-red-500' : 'border-gray-300'
+                                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.classId ? 'border-red-500' : 'border-gray-300'
                                     } ${isLoading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                             >
                                 <option value="">Select class</option>
@@ -136,7 +121,7 @@ export const CreateTimeTableModal: React.FC<TimeTableModalProps> = ({
                                     </option>
                                 ))}
                             </select>
-                            {errors.class && <p className="mt-1 text-sm text-red-600">{errors.class}</p>}
+                            {errors.classId && <p className="mt-1 text-sm text-red-600">{errors.classId.message}</p>}
                         </div>
 
                         {/* Timetable */}
@@ -145,12 +130,10 @@ export const CreateTimeTableModal: React.FC<TimeTableModalProps> = ({
                                 Section *
                             </label>
                             <select
-                                name="sectionId"
-                                value={formData.sectionId}
-                                onChange={handleInputChange}
-                                disabled={isLoading || !formData.classId}
-                                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.section ? 'border-red-500' : 'border-gray-300'
-                                    } ${(isLoading || !formData.classId) ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
+                                {...register("sectionId")}
+                                disabled={isLoading || !watchedClassId}
+                                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.sectionId ? 'border-red-500' : 'border-gray-300'
+                                    } ${(isLoading || !watchedClassId) ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
                             >
                                 <option value="">Select section</option>
                                 {sections.map((section: any) => (
@@ -159,37 +142,36 @@ export const CreateTimeTableModal: React.FC<TimeTableModalProps> = ({
                                     </option>
                                 ))}
                             </select>
-                            {errors.section && <p className="mt-1 text-sm text-red-600">{errors.section}</p>}
+                            {errors.sectionId && <p className="mt-1 text-sm text-red-600">{errors.sectionId.message}</p>}
                         </div>
                     </div>
-                </div>
 
-                {/* Action Buttons */}
-                <div className="flex justify-end space-x-4 p-6 border-t border-gray-200">
-                    <button
-                        type="button"
-                        onClick={onClose}
-                        disabled={isLoading}
-                        className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        type="button"
-                        disabled={isLoading}
-                        onClick={handleSubmit}
-                        className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-                    >
-                        {isLoading ? (
-                            <div className="flex items-center gap-2">
-                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                                Saving Timetable Structure...
-                            </div>
-                        ) : (
-                            'Save Timetable Structure'
-                        )}
-                    </button>
-                </div>
+                    {/* Action Buttons */}
+                    <div className="flex justify-end space-x-4 p-6 border-t border-gray-200">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            disabled={isLoading}
+                            className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            disabled={isLoading || isSubmitting}
+                            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                        >
+                            {isLoading || isSubmitting ? (
+                                <div className="flex items-center gap-2">
+                                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                                    Saving Timetable Structure...
+                                </div>
+                            ) : (
+                                'Save Timetable Structure'
+                            )}
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     );

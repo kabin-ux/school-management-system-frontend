@@ -26,9 +26,8 @@ export const eventCreateSchema = z.object({
   description: z
     .string()
     .min(10, "Description should be at least 10 characters")
-    .nullable()
-    .default(null),
-  eventType: z.enum(EventType, "Invalid eventType"),
+    .nullable(),
+      eventType: z.enum(EventType, "Invalid eventType"),
   target: z.enum(EventTarget, "Invalid target"),
   date: z
     .string()

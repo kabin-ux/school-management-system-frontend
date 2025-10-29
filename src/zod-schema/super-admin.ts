@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // Enum for SuperAdmin status
-const SuperAdminStatusEnum = z.enum(["active", "inactive"]).default("active");
+const SuperAdminStatusEnum = z.enum(["active", "inactive"]);
 
 // Schema for creating a SuperAdmin
 export const createSuperAdminSchema = z.object({
@@ -19,9 +19,9 @@ export const createSuperAdminSchema = z.object({
       "Password must contain at least one special character"
     ),
   address: z.string().min(1, "Address is required"),
-  created_by: z.uuid().nullable().default(null),
+  created_by: z.uuid().nullable(),
   status: SuperAdminStatusEnum,
-  profile_image: z.url().nullable().default(null),
+  profile_image: z.url().nullable(),
   phone_number: z
     .string()
     .min(7, "Phone number must be at least 7 digits")

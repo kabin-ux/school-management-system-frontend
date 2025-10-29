@@ -17,6 +17,18 @@ export interface FeeStructureAttributes {
   transportation: Transportation;
 }
 
+export interface FeeStructureForm {
+    class_id: string;
+    monthly_fee: number;
+    exam_fee: number;
+    tution_fee: number;
+    computer_fee: number;
+    laboratory_fee: number;
+    transport_fee: string; // transport ID
+    other_fee: number;
+}
+
+
 export interface Salary {
   id: string;
   employee_id: string;
