@@ -72,10 +72,10 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({ recentPaymen
                     {transaction.id}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {transaction.student.firstName} {transaction.student.lastName}
+                    {transaction.student?.firstName} {transaction.student?.lastName}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    {transaction.student.class.name}
+                    {transaction.student?.class?.name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                     {transaction.payment_date

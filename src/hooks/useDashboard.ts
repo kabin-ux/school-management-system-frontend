@@ -52,12 +52,18 @@ export interface PaymentData {
   totalAmount: number;
 }
 
+export interface PaymentGraph {
+  date: string;
+  totalAmount: number;
+}
+
 export interface AccountantDashboard {
   totalStudents: number;
   totalTeachers: number;
   totalclass: number;
   totalPayment: PaymentData[];
   todayTransaction: number;
+  paymentGraphData: PaymentGraph[];
 }
 
 export interface RecentActivity {

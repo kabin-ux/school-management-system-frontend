@@ -1,7 +1,8 @@
-import { UserPlus, Calendar, FileText, HelpCircle, Users } from 'lucide-react';
+import { UserPlus, Calendar, FileText, HelpCircle, Users, MonitorCheck } from 'lucide-react';
 import type { RecentActivity } from '../../../hooks/useDashboard';
 import { useState } from 'react';
 import { Pagination } from '../../../common/Pagination';
+import EmptyState from '../../../common/EmptyState';
 
 interface RecentActivityProps {
   recentActivity: RecentActivity[];
@@ -57,31 +58,42 @@ export const RecentActivitySection: React.FC<RecentActivityProps> = ({ recentAct
     <div className="bg-white rounded-lg border border-gray-200 p-6">
       <h3 className="text-lg font-semibold text-gray-900 mb-6">Recent Activity</h3>
 
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-200">
-              <th className="text-left py-3 text-sm font-medium text-gray-600">Activity</th>
-              <th className="text-left py-3 text-sm font-medium text-gray-600">Date</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {paginatedData.map((activity) => (
-              <tr key={activity.id} className="hover:bg-gray-50">
-                <td className="py-4">
-                  <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg ${getActivityBgColor(activity.action)}`}>
-                      {getActivityIcon(activity.action)}
-                    </div>
-                    <span className="text-sm text-gray-900">{activity.description}</span>
-                  </div>
-                </td>
-                <td className="py-4 text-sm text-gray-500">{new Date(activity.createdAt).toLocaleString()}</td>
+      {!recentActivity || recentActivity.length === 0 ? (
+        <div className='flex justify-center'>
+          <EmptyState
+            title='No Recent Activity Found'
+            description='There are currently no recent activity.'
+            icon={<MonitorCheck className='w-14 h-14' />}
+          />
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="text-left py-3 text-sm font-medium text-gray-600">Activity</th>
+                <th className="text-left py-3 text-sm font-medium text-gray-600">Date</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {paginatedData.map((activity) => (
+                <tr key={activity.id} className="hover:bg-gray-50">
+                  <td className="py-4">
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded-lg ${getActivityBgColor(activity.action)}`}>
+                        {getActivityIcon(activity.action)}
+                      </div>
+                      <span className="text-sm text-gray-900">{activity.description}</span>
+                    </div>
+                  </td>
+                  <td className="py-4 text-sm text-gray-500">{new Date(activity.createdAt).toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
 
       {totalPages > 1 && (
         <Pagination
@@ -90,7 +102,6 @@ export const RecentActivitySection: React.FC<RecentActivityProps> = ({ recentAct
           onPageChange={setCurrentPage}
         />
       )}
-
     </div>
   );
 }

@@ -1,13 +1,14 @@
 import { FileText, GraduationCap, UsersIcon, Book } from 'lucide-react';
 import StatCard from '../../../components/Accountant/dashboard/StatsCard';
-import FeeChart from '../../../components/Accountant/dashboard/FeeChart';
+import { FeeChart } from '../../../components/Accountant/dashboard/FeeChart';
 import { TransactionTable } from '../../../components/Accountant/dashboard/TransactionTable';
 import { Sidebar } from '../../../components/Accountant/layout/Sidebar';
 import { AccountantDashboardHeader } from '../../../components/Accountant/layout/DashboardHeader';
 import { useAccountantDashboard, useRecentPayments } from '../../../hooks/useDashboard';
+import { PaymentSummary } from '../../../components/Accountant/dashboard/PaymentSummary';
 
 export default function AccountantDashboard() {
-    const { data: accountantDashboard = { todayTransaction: 0, totalclass: 0, totalPayment: [], totalStudents: 0, totalTeachers: 0 } } = useAccountantDashboard();
+    const { data: accountantDashboard = { todayTransaction: 0, totalclass: 0, totalPayment: [], totalStudents: 0, totalTeachers: 0, paymentGraphData: [] } } = useAccountantDashboard();
     const { data: recentPayments = [] } = useRecentPayments();
 
     return (
@@ -64,40 +65,18 @@ export default function AccountantDashboard() {
                             </div>
 
                             {/* Payment Summary Table */}
-                            <div className="bg-white p-4 md:p-6 rounded-lg shadow-md overflow-x-auto">
-                                <h2 className="text-lg font-semibold text-gray-900 mb-2">Payment Summary</h2>
-                                <table className="min-w-full cursor-pointer">
-                                    <thead className="bg-gray-50">
-                                        <tr>
-                                            <th className="px-4 md:px-6 py-2 text-left text-xs md:text-sm font-medium text-gray-500 uppercase tracking-wider">
-                                                Status
-                                            </th>
-                                            <th className="px-4 md:px-6 py-2 text-left text-xs md:text-sm font-medium text-gray-500 uppercase tracking-wider">
-                                                Total Amount
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
-                                        {accountantDashboard.totalPayment?.map((p: any, index: number) => (
-                                            <tr key={index} className="hover:bg-gray-50 transition-colors">
-                                                <td className="px-4 md:px-6 py-2 whitespace-nowrap text-sm md:text-sm text-gray-900">
-                                                    {p.status}
-                                                </td>
-                                                <td className="px-4 md:px-6 py-2 whitespace-nowrap text-sm md:text-sm text-gray-900">
-                                                    Rs. {p.totalAmount}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                            <PaymentSummary
+                                accountantDashboard={accountantDashboard}
+                            />
                         </div>
                     )}
 
                     {/* Chart and Quick Actions */}
                     <div className="grid grid-cols-1 lg:grid-cols-1 gap-4 md:gap-6 mb-6">
                         <div className="lg:col-span-1">
-                            <FeeChart />
+                            <FeeChart
+                                accountantDashboard={accountantDashboard}
+                            />
                         </div>
                     </div>
 

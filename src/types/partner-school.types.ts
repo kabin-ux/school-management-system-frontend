@@ -31,6 +31,8 @@ export interface SchoolData {
     grade_range: string;
     has_hostel: boolean;
     school_logo: string;
+
+    updatedAt?:string;
 }
 
 

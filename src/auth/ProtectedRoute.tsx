@@ -30,6 +30,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles 
         const decoded = jwtDecode<DecodedToken>(token || "");
         const currentTime = Date.now() / 1000;
 
+        console.log(decoded.exp < currentTime)
+
         if (decoded.exp < currentTime) {
             localStorage.clear();
 

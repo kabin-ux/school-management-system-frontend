@@ -25,7 +25,7 @@ export default function TeacherGrid({ teachers, onEdit, onDelete }: TeacherGridP
         <div className="flex justify-center items-center">
           <EmptyState
             title='No Teachers Found'
-            description='There are currently no students added to this class. Click the button above to add a new student.'
+            description='There are currently no teachers added to this class. Click the button above to add a new teacher.'
             icon={<UserRoundPen className='w-14 h-14' />}
           />
         </div>

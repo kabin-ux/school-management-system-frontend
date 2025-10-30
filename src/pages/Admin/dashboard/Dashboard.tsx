@@ -23,7 +23,8 @@ export default function AdminDashboard() {
       {/* Main Content Area */}
       <div className="flex flex-col flex-1">
         {/* Header */}
-        <AdminDashboardHeader />
+        <AdminDashboardHeader
+        />
 
         {/* Scrollable Content */}
         <main className="flex-1 p-6 overflow-y-auto">
