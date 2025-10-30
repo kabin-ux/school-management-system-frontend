@@ -80,7 +80,7 @@ export const useDeleteSuperAdmin = () => {
 
     return useMutation({
         mutationFn: async (id: string) => {
-            await api.delete(`/super-admin?id=${id}`);
+            await api.delete(`/super-admin/${id}`);
             return id;
         },
         onSuccess: (deletedId) => {

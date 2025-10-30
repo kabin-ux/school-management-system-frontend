@@ -77,7 +77,7 @@ export default function TransportationManagement() {
                                 <h1 className="text-3xl font-bold text-gray-900">Transportation Management</h1>
                                 <p className="text-gray-600 mt-1">Organize and manage Transportation efficiently</p>
                             </div>
-                            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex transportations-center gap-2"
+                            <button className="bg-blue-600 text-white px-4 py-2 h-full rounded-lg hover:bg-blue-700 transition-colors font-medium flex transportations-center gap-2"
                                 onClick={() => setIsModalOpen(true)}
                             >
                                 <Bus className="w-4 h-4" />

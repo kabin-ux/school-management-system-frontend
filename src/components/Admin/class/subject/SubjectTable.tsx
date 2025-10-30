@@ -52,6 +52,8 @@ export const SubjectTable: React.FC<SubjectTableProps> = ({ subjects, onAssignTe
                                     <td className="p-4">
                                         <div className="flex items-center gap-2">
                                             <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
+                                                title='Assign Subject Teacher'
+                                                disabled={subject?.teacher ? true : false}
                                                 onClick={() => onAssignTeacher(subject)}
                                             >
                                                 <Equal className="w-4 h-4" />

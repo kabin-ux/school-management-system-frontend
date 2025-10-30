@@ -1,5 +1,4 @@
 import React from 'react';
-import { Download } from 'lucide-react';
 import type { PaymentHistoryItem, TabType, StudentProfile as StudentProfileType } from '../../../types/fee-salary.types';
 import { FeeStructure } from './FeeStructure';
 import { PaymentHistory } from './PaymentHistory';
@@ -98,10 +97,6 @@ export const StudentDetailView: React.FC<StudentDetailViewProps> = ({
                             <h3 className="text-xl font-semibold text-gray-900">Ramesh Pandey</h3>
                             <p className="text-gray-600">Grade 12A • Roll 20240012A • Phone: 9841712546</p>
                         </div>
-                        <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                            <Download className="h-4 w-4 mr-2 inline" />
-                            Download report
-                        </button>
                     </div>
 
                     <div className="grid grid-cols-3 gap-6 text-center">

@@ -46,6 +46,8 @@ import SubjectManagement from './pages/Admin/class/subjects/SubjectManagement';
 import SalaryOverview from './pages/Admin/salaryoverview/SalaryOverview';
 import { useEffect } from 'react';
 import { io } from "socket.io-client";
+import { ResetPassword } from './common/ResetPassword';
+import { ResetPasswordAdmin } from './pages/Admin/login/ResetPasswordAdmin';
 
 function App() {
     useEffect(() => {
@@ -79,6 +81,8 @@ function App() {
                     <Route path='/admin-login' element={<AdminLoginPage />} />
                     <Route path='/accountant-login' element={<AccountantLoginPage />} />
                     <Route path='/unauthorized' element={<UnauthorizedPage />} />
+                    <Route path='/reset-password' element={<ResetPassword />} />
+                    <Route path='/reset-password' element={<ResetPasswordAdmin />} />
 
                     {/* Super Admin */}
                     <Route path='/super-admin/dashboard' element={

@@ -175,6 +175,22 @@ export const useSendPasswordResetMail = () => {
     });
 };
 
+// Send Password Reset Mail
+export const useSendPasswordResetMailAdmin = () => {
+    return useMutation({
+        mutationFn: async (emailData: { email: string }) => {
+            const res = await api.post("/school/password-reset-mail", emailData);
+            return res.data;
+        },
+        onSuccess: () => {
+            toast.success("Password reset email sent!");
+        },
+        onError: (err: any) => {
+            toast.error(err.response?.data?.message || "Failed to send email");
+        },
+    });
+};
+
 // Reset Super Admin Password
 export const useResetSuperAdminPassword = () => {
     return useMutation({
@@ -184,10 +200,29 @@ export const useResetSuperAdminPassword = () => {
             password: string;
             confirmPassword: string;
         }) => {
-            const { token, id, ...passwordData } = payload;
+            const { token, id, ...password } = payload;
             const res = await api.post(
                 `/super-admin/password-reset?token=${token}&id=${id}`,
-                passwordData
+                password
+            );
+            return res.data;
+        },
+    });
+};
+
+// Reset Super Admin Password
+export const useResetAdminPassword = () => {
+    return useMutation({
+        mutationFn: async (payload: {
+            token: string;
+            id: string;
+            password: string;
+            confirmPassword: string;
+        }) => {
+            const { token, id, ...password } = payload;
+            const res = await api.post(
+                `/school/password-reset?token=${token}&id=${id}`,
+                password
             );
             return res.data;
         },

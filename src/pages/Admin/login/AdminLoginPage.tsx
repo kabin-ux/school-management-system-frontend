@@ -3,15 +3,21 @@ import { Mail, Lock } from 'lucide-react';
 import { FaApple, FaGooglePlay } from 'react-icons/fa';
 import MobileAppMockups from '../../../components/LandingPage/MobileAppMockups';
 import { useNavigate } from 'react-router-dom';
-import { useAuthUser, useLoginAdmin } from '../../../hooks/useAuth';
+import { useAuthUser, useLoginAdmin,  useSendPasswordResetMailAdmin } from '../../../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const AdminLoginPage: React.FC = () => {
     const loginMutation = useLoginAdmin();
+    const resetMutation = useSendPasswordResetMailAdmin();
+
     const { data: user, isLoading } = useAuthUser();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
+
+    const [showResetDialog, setShowResetDialog] = useState(false);
+    const [resetEmail, setResetEmail] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,6 +30,23 @@ const AdminLoginPage: React.FC = () => {
         e.preventDefault();
         loginMutation.mutate({ email, password, rememberMe });
     }
+
+    const handlePasswordReset = () => {
+        if (!resetEmail) {
+            toast.error("Please enter your email");
+            return;
+        }
+
+        resetMutation.mutate(
+            { email: resetEmail }, {
+            onSuccess: () => {
+                setShowResetDialog(false);
+                setResetEmail("");
+            },
+        }
+        );
+    };
+
     return (
         <section className="min-h-screen bg-gray-50 flex">
             {/* Left Side - Login Form */}
@@ -84,6 +107,15 @@ const AdminLoginPage: React.FC = () => {
                                 />
                                 Remember Me
                             </label>
+                        </div>
+                        <div className="text-right">
+                            <button
+                                type="button"
+                                onClick={() => setShowResetDialog(true)}
+                                className="text-sm text-lime-600 hover:underline"
+                            >
+                                Forgot Password?
+                            </button>
                         </div>
                         <a href="#" className='text-sm text-[#CBD72B] hover:underline'>Forgot Password</a>
                         <button
@@ -150,6 +182,36 @@ const AdminLoginPage: React.FC = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Reset Password Dialog */}
+            {showResetDialog && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                        <h2 className="text-lg font-semibold mb-4">Reset Password</h2>
+                        <input
+                            type="email"
+                            value={resetEmail}
+                            onChange={(e) => setResetEmail(e.target.value)}
+                            placeholder="Enter your email"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none mb-4"
+                        />
+                        <div className="flex justify-end space-x-3">
+                            <button
+                                onClick={() => setShowResetDialog(false)}
+                                className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handlePasswordReset}
+                                className="px-4 py-2 rounded-lg bg-[#E6F242] text-white font-semibold hover:bg-[#dbe465]"
+                            >
+                                Send Reset Link
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </section>
     );
 };

@@ -71,7 +71,7 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {invoices.slice(0, 10).map((invoice, index) => (
+                        {invoices?.slice(0, 10).map((invoice, index) => (
                             <tr key={`${invoice.id}-${index}`} className="hover:bg-gray-50 transition-colors">
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">
                                     {index + 1}
@@ -80,7 +80,7 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
                                     {invoice.student.firstName} {invoice.student.lastName}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                    {invoice.student.class.name}
+                                    {invoice.student.class?.name}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                     {invoice.payment_date

@@ -155,7 +155,7 @@ export const useRecentActivity = () => {
   return useQuery<RecentActivity[]>({
     queryKey: ["recentActivity"],
     queryFn: async () => {
-      const res = await api.get(`/logs/school`);
+      const res = await api.get(`/logs/my-school`);
       return res.data.data;
     },
   });

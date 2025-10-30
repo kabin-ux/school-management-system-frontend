@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "../lib/axios";
-import type { SchoolData } from "../components/SuperAdmin/partnerschools/AddSchoolModal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import type { SchoolData } from "../types/partner-school.types";
 
 export const useSchools = () => {
     return useQuery<SchoolData[], Error>({
@@ -65,6 +65,7 @@ export const useUpdateSchool = () => {
             toast.success("School updated successfully");
             queryClient.invalidateQueries({ queryKey: ["schools"] });
             queryClient.invalidateQueries({ queryKey: ["school", updatedSchool.id] });
+                        queryClient.invalidateQueries({ queryKey: ["authUser"] });
         },
         onError: (error: any) => {
             toast.error(error.response?.data?.error || "Failed to update school");
