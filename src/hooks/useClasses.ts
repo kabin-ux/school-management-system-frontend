@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../lib/axios';
 import toast from 'react-hot-toast';
+import type { Grade } from '../types/class.types';
 
 export interface ClassDashboardData {
     totalClasses: number,
@@ -9,7 +10,7 @@ export interface ClassDashboardData {
 
 // Fetch all classes for logged-in school
 export const useClasses = () => {
-    return useQuery({
+    return useQuery<Grade[]>({
         queryKey: ['classes'],
         queryFn: async () => {
             const res = await api.get('/class/myclasses');
@@ -20,7 +21,7 @@ export const useClasses = () => {
 
 // Fetch single class details
 export const useClassDetails = (id: string) => {
-    return useQuery({
+    return useQuery<Grade>({
         queryKey: ['class', id],
         queryFn: async () => {
             const res = await api.get(`/class/${id}`);

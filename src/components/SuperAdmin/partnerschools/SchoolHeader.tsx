@@ -10,7 +10,7 @@ interface SchoolHeaderProps {
   phone: string;
   status: string;
   createdDate: string;
-  memberSince: string;
+  memberSince: number;
 }
 
 export default function SchoolHeader({

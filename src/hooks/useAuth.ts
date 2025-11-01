@@ -30,7 +30,7 @@ export const useLoginSuperAdmin = () => {
             queryClient.invalidateQueries({ queryKey: ["authUser"] });
         },
         onError: (error: any) => {
-            toast.error(error.response?.data?.error || "Failed to login super admin");
+            toast.error(error.response?.data?.error.password || "Failed to login super admin");
         },
     });
 };
@@ -65,7 +65,7 @@ export const useLoginAdmin = () => {
             queryClient.invalidateQueries({ queryKey: ["authUser"] });
         },
         onError: (error: any) => {
-            toast.error(error.response?.data?.error || "Failed to login admin");
+            toast.error(error.response?.data?.error.password || "Failed to login admin");
         },
     });
 };
@@ -85,7 +85,7 @@ export const useLoginAccountant = () => {
             queryClient.invalidateQueries({ queryKey: ["authUser"] });
         },
         onError: (error: any) => {
-            toast.error(error.response?.data?.error || "Failed to login accountant");
+            toast.error(error.response?.data?.error.password || "Failed to login accountant");
         },
     });
 };
@@ -220,7 +220,7 @@ export const useResetAdminPassword = () => {
             confirmPassword: string;
         }) => {
             const { token, id, ...password } = payload;
-            const res = await api.post(
+            const res = await api.put(
                 `/school/password-reset?token=${token}&id=${id}`,
                 password
             );

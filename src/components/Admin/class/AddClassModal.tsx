@@ -28,7 +28,6 @@ export const AddClassModal: React.FC<ClassModalProps> = ({
 
     const onFormSubmit = async (data: Class) => {
         try {
-            console.log(data)
             await onSubmit(data);
             reset();
             onClose();

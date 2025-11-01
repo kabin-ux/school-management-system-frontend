@@ -81,8 +81,8 @@ function App() {
                     <Route path='/admin-login' element={<AdminLoginPage />} />
                     <Route path='/accountant-login' element={<AccountantLoginPage />} />
                     <Route path='/unauthorized' element={<UnauthorizedPage />} />
-                    <Route path='/reset-password' element={<ResetPassword />} />
-                    <Route path='/reset-password' element={<ResetPasswordAdmin />} />
+                    <Route path='/super-admin/reset-password' element={<ResetPassword />} />
+                    <Route path='/school-admin/reset-password' element={<ResetPasswordAdmin />} />
 
                     {/* Super Admin */}
                     <Route path='/super-admin/dashboard' element={

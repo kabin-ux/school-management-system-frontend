@@ -5,7 +5,7 @@ import type { Event } from "../types/events.types";
 
 // Fetch All Events by School
 export const useEventsBySchool = (target?: string) => {
-    return useQuery({
+    return useQuery<Event[]>({
         queryKey: ["events", target],
         queryFn: async () => {
             const res = await api.get("/event", {

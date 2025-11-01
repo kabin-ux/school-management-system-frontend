@@ -1,5 +1,4 @@
-import type { Admin } from "../../../types/partner-school.types";
-import type { SchoolData } from "../../../types/permission.types";
+import type { Admin, SchoolData } from "../../../types/partner-school.types";
 
 interface SystemInformationProps {
   school: SchoolData;

@@ -38,7 +38,6 @@ export default function PartnerSchoolDetails() {
             onSuccess: () => setIsEditModalOpen(false)
         })
     }
-    console.log(id)
 
     const handleRemoveSchool = (id: string) => {
         console.log("id school", id)
@@ -60,7 +59,7 @@ export default function PartnerSchoolDetails() {
                         email={currentSchool.email}
                         phone={currentSchool.phone}
                         status={currentSchool.status}
-                        createdDate={new Date(currentSchool.createdAt).toLocaleDateString()}
+                        createdDate={new Date(currentSchool.createdAt ? currentSchool.createdAt : '').toLocaleDateString()}
                         memberSince={currentSchool.established_year}
                     />
 
@@ -81,7 +80,7 @@ export default function PartnerSchoolDetails() {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         {/* Financial Overview - spans 2 columns */}
                         <div className="lg:col-span-2">
-                            <FinancialOverview />
+                            {/* <FinancialOverview /> */}
                             <SupportTickets
                                 supportTickets={supportTickets}
                             />
@@ -89,11 +88,11 @@ export default function PartnerSchoolDetails() {
 
                         {/* System Information - spans 1 column */}
                         <div>
-                            <SystemInformation
+                            {/* <SystemInformation
                                 school={currentSchool}
                                 onEditSchool={handleEditSchool}
                                 onDeleteSchool={handleRemoveSchool}
-                            />
+                            /> */}
                         </div>
 
                         <EditSchoolModal

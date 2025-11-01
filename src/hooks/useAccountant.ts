@@ -16,7 +16,7 @@ export const useAllAccountants = () =>
 
 // Fetch all accountants by school
 export const useAllAccountantsBySchool = () =>
-    useQuery({
+    useQuery<Accountant[]>({
         queryKey: ["accountantsBySchool"],
         queryFn: async () => {
             const res = await api.get("/accountant/my-accountant");
@@ -26,7 +26,7 @@ export const useAllAccountantsBySchool = () =>
 
 // Fetch accountant details
 export const useAccountantDetails = (id?: string) =>
-    useQuery({
+    useQuery<Accountant>({
         queryKey: ["accountant", id],
         queryFn: async () => {
             const res = await api.get(`/accountant/${id}`);
