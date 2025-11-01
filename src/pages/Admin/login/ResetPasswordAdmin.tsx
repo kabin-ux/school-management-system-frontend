@@ -14,7 +14,9 @@ export const ResetPasswordAdmin: React.FC = () => {
     const resetPasswordMutation = useResetAdminPassword();
 
     const handleNewPassword = (token: string, id: string, password: string) => {
-        resetPasswordMutation.mutate({ token, id, password, confirmPassword })
+        resetPasswordMutation.mutate({ token, id, password, confirmPassword }, {
+            onSuccess: () => navigate('/admin-login')
+        })
     }
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
