@@ -2,12 +2,18 @@ import { Ticket } from "lucide-react";
 import EmptyState from "../../../common/EmptyState";
 import { getStatusAction, getTicketType } from "../../../lib/utils";
 import type { SupportTicket } from "../../../types/support.types";
+import { useNavigate } from "react-router-dom";
 
 interface SupportTicketsProps {
   supportTickets: SupportTicket[];
 }
 
 export const SupportTickets: React.FC<SupportTicketsProps> = ({ supportTickets }) => {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate('/super-admin/support')
+  }
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-4">
@@ -26,7 +32,9 @@ export const SupportTickets: React.FC<SupportTicketsProps> = ({ supportTickets }
           />
         ) : (
           supportTickets?.map((ticket) => (
-            <div key={ticket.id} className="border-l-4 border-l-blue-500 pl-4 py-2">
+            <div key={ticket.id} className="border-l-4 border-l-blue-500 pl-4 py-2 cursor-pointer"
+              onClick={handleNavigate}
+            >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
