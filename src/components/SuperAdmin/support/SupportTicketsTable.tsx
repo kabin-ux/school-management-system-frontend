@@ -39,7 +39,7 @@ export default function SupportTicketsTable({ tickets, onViewTicket, onDeleteTic
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Ticket ID
+                  S.N.
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   School
@@ -68,7 +68,7 @@ export default function SupportTicketsTable({ tickets, onViewTicket, onDeleteTic
               {paginatedData.map((ticket, index) => (
                 <tr key={ticket.id} className={index % 2 === 0 ? 'bg-white cursor-pointer' : 'bg-gray-50 cursor-pointer'}>
                   <td className="px-4 py-4 text-sm font-medium text-blue-600">
-                    {ticket.id}
+                    {index + 1}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {ticket.school?.name}

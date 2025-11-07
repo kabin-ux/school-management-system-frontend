@@ -34,25 +34,28 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
         <table className="w-full">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500  tracking-wider">
+                S.N.
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500  tracking-wider">
                 Student Name
               </th>
-              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500  tracking-wider">
                 Parent Name
               </th>
-              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500  tracking-wider">
                 Class/Section
               </th>
-              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500  tracking-wider">
                 DOB
               </th>
-              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500  tracking-wider">
                 Gender
               </th>
-              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500  tracking-wider">
                 Address
               </th>
-              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500  tracking-wider">
                 Actions
               </th>
             </tr>
@@ -76,6 +79,9 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
                   key={student.id}
                   className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
                 >
+                  <td className="px-6 py-4 text-sm text-gray-900">
+                    {index + 1 || '-'}
+                  </td>
                   {/* Name & Email */}
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">

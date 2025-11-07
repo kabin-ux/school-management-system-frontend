@@ -7,13 +7,13 @@ export interface Transportation {
     capacity: number;
     price: number;
     status: string;
-    created_by ?: string | null;
-    createdAt ?: Date;
-    updatedAt ?: Date;
-    deletedAt ?: Date | null;
+    created_by?: string | null;
+    createdAt?: Date;
+    updatedAt?: Date;
+    deletedAt?: Date | null;
 }
 
-export interface TransportationForm{
+export interface TransportationForm {
     vehicleNumber: string;
     driverName: string;
     driverPhone: string;
@@ -21,8 +21,8 @@ export interface TransportationForm{
     capacity: number;
     price: number;
     status: string;
-    created_by ?: string | null;
-    createdAt ?: Date;
-    updatedAt ?: Date;
-    deletedAt ?: Date | null;
+    created_by?: string | null;
+    createdAt?: Date;
+    updatedAt?: Date;
+    deletedAt?: Date | null;
 }

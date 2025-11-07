@@ -36,7 +36,7 @@ export const SalaryOverviewTable: React.FC<SalaryOverviewTableProps> = ({ salary
                                     S.N
                                 </th>
                                 <th className="text-left p-4 font-extralight uppercase text-sm text-gray-500 border-gray-200 tracking-wider">
-                                    Teacher Name
+                                    Employee Name
                                 </th>
                                 <th className="text-left p-4 font-extralight uppercase text-sm text-gray-500 border-gray-200 tracking-wider">
                                     Basic Salary
@@ -66,17 +66,17 @@ export const SalaryOverviewTable: React.FC<SalaryOverviewTableProps> = ({ salary
                                         key={record.id}
                                         className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer"
                                     >
-                                        <td className="p-4 text-gray-900">{index + 1}</td>
-                                        <td className="p-4 text-gray-900">
+                                        <td className="p-4 text-gray-600">{index + 1}</td>
+                                        <td className="p-4 text-gray-900 font-medium">
                                             {record.role === "teacher" && record.teacherEmployee
                                                 ? `${record.teacherEmployee.firstName} ${record.teacherEmployee.lastName}`
                                                 : record.role === "accountant" && record.accountantEmployee
                                                     ? `${record.accountantEmployee.firstName} ${record.accountantEmployee.lastName}`
                                                     : "N/A"}
                                         </td>
-                                        <td className="p-4 text-gray-900">Rs. {Number(record.basic).toLocaleString()}</td>
-                                        <td className="p-4 text-gray-900">Rs. {Number(record.allowances).toLocaleString()}</td>
-                                        <td className="p-4 text-gray-900">{(() => {
+                                        <td className="p-4 text-gray-600">Rs. {Number(record.basic).toLocaleString()}</td>
+                                        <td className="p-4 text-gray-600">Rs. {Number(record.allowances).toLocaleString()}</td>
+                                        <td className="p-4 text-gray-600">{(() => {
                                             const statusInfo = getRoleAction(record.role);
                                             return (
                                                 <span
@@ -86,8 +86,8 @@ export const SalaryOverviewTable: React.FC<SalaryOverviewTableProps> = ({ salary
                                                 </span>
                                             );
                                         })()}</td>
-                                        <td className="p-4 text-gray-900">{record.creator.firstName} {record.creator.lastName}</td>
-                                        <td className="p-4 text-gray-900 font-semibold">
+                                        <td className="p-4 text-gray-600">{record.creator.firstName} {record.creator.lastName}</td>
+                                        <td className="p-4 text-gray-600 font-semibold">
                                             Rs. {total.toLocaleString()}
                                         </td>
                                     </tr>

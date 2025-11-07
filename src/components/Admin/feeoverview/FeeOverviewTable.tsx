@@ -78,7 +78,7 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
                       <td className="p-4 text-gray-900 font-medium">
                         {record.class?.school?.name}
                       </td>
-                      <td className="p-4 text-gray-900">
+                      <td className="p-4 text-gray-600">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-semibold bg-green-100 text-green-700">
                           {record.class?.name}
                         </span>

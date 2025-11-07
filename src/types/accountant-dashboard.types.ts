@@ -1,15 +1,5 @@
 import type { SchoolData } from "./partner-school.types";
 
-export interface Transaction {
-  id: string;
-  studentName: string;
-  class: string;
-  date: string;
-  amount: string;
-  method: string;
-  status: 'Paid' | 'Pending' | 'E-Stmt';
-}
-
 export interface Accountant {
   id: string;
   firstName: string;

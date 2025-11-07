@@ -5,7 +5,6 @@ import NotificationCenter from './components/SuperAdmin/notifications/Notificati
 import PermissionManagement from './pages/SuperAdmin/permissions/PermissionManagement';
 import SupportConsole from './pages/SuperAdmin/support/SupportConsole';
 import SupportTicketDetailPage from './pages/SuperAdmin/support/details/SupportTicketDetail';
-import Settings from './pages/SuperAdmin/settings/Settings';
 import PaymentsOverview from './pages/SuperAdmin/payments/PaymentsOverview';
 import SchoolWisePayment from './pages/SuperAdmin/payments/details/SchoolWisePayment';
 import PaymentDetails from './pages/SuperAdmin/payments/details/PaymentDetails';
@@ -16,7 +15,6 @@ import ParentsManagement from './pages/Admin/parents/ParentManagement';
 import TimetableManagement from './pages/Admin/timetable/TimetableManagement';
 import ClassManagement from './pages/Admin/class/ClassManagement';
 import AttendanceMonitoring from './pages/Admin/attendance/AttendanceMonitoring';
-import Communication from './pages/Admin/communication/Communication';
 import Events from './pages/Admin/events/Events';
 import AttendanceHistory from './pages/Admin/attendance/history/AttendanceHistory';
 import FeeOverview from './pages/Admin/feeoverview/FeeOverview';
@@ -27,7 +25,6 @@ import AccountantManagement from './pages/Admin/accounts/AccountsManagement';
 import AdminSupportTicketDetailPage from './pages/Admin/support/details/SupportConsoleDetails';
 import AccountantDashboard from './pages/Accountant/dashboard/Dashboard';
 import InvoicesPage from './pages/Accountant/invoices/InvoicePage';
-import SettingsPage from './pages/Accountant/settings/SettingsPage';
 import SuperAdminLoginPage from './pages/SuperAdmin/login/SuperAdminLoginPage';
 import AdminLoginPage from './pages/Admin/login/AdminLoginPage';
 import AccountantLoginPage from './pages/Accountant/login/AccountantLoginPage';
@@ -145,11 +142,6 @@ function App() {
                             <SuperAdminsPage />
                         </ProtectedRoute>
                     } />
-                    <Route path='/super-admin/settings' element={
-                        <ProtectedRoute allowedRoles={['superadmin']}>
-                            <Settings />
-                        </ProtectedRoute>
-                    } />
 
                     {/* Admin */}
                     <Route path='/admin/dashboard' element={
@@ -204,7 +196,6 @@ function App() {
                         </ProtectedRoute>
                     } />
                     <Route path='/admin/attendance-monitoring/history/:id' element={<AttendanceHistory />} />
-                    <Route path='/admin/communication' element={<Communication />} />
                     <Route path='/admin/event' element={
                         <ProtectedRoute allowedRoles={['admin']}>
                             <Events />
@@ -251,7 +242,6 @@ function App() {
                             <InvoicesPage />
                         </ProtectedRoute>
                     } />
-                    <Route path='/accountant/settings' element={<SettingsPage />} />
                 </Routes>
             </Router >
         </>
