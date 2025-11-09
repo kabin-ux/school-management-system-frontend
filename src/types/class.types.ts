@@ -18,7 +18,7 @@ export interface Subject {
 export interface SubjectForm {
   name: string,
   code: string,
-  description: string,
+  description?: string | null;
 }
 
 export interface SectionForm {

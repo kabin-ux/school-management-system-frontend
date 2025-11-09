@@ -2,7 +2,7 @@ import React from 'react';
 import { Plus } from 'lucide-react';
 
 interface ClassDetailsHeaderProps {
-    className: string;
+    className?: string;
     onAdd: () => void;
     searchTerm: string;
     setSearchTerm: (term: string) => void;

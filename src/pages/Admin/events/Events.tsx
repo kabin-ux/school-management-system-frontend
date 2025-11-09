@@ -8,6 +8,7 @@ import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDash
 import type { Event, EventForm } from '../../../types/events.types';
 import { useAddEvent, useDeleteEvent, useEventsBySchool, useUpdateEvent } from '../../../hooks/useEvents';
 import { EditEventModal } from '../../../components/Admin/events/EditEventModal';
+import type { EventCreateSchema } from '../../../zod-schema/event';
 
 const Events: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
@@ -19,7 +20,7 @@ const Events: React.FC = () => {
   const updateEventMutation = useUpdateEvent();
   const deleteEventMutation = useDeleteEvent();
 
-  const handleCreateEvent = async (eventData: EventForm) => {
+  const handleCreateEvent = async (eventData: EventCreateSchema) => {
     addEventMutation.mutate(eventData)
   }
 

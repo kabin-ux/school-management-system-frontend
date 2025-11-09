@@ -26,14 +26,8 @@ export default function InvoicesPage() {
     const itemsPerPage = 10
     const totalPages = Math.ceil(payments.length / itemsPerPage);
 
-
-    const teacherInvoices: Invoice[] = [
-        { id: 'TCH-001', studentName: 'John Smith', class: 'Science', date: 'Jan 3,2025', dueAmount: '$3,000', outstanding: 'Jan 12', lastReminder: 'Jan 15', status: 'Paid' },
-        // ... other teacher data
-    ];
-
     // Get the correct data source based on viewType
-    const currentInvoices = filters.viewType === 'Student' ? payments : teacherInvoices;
+    const currentInvoices = payments;
 
     // Filtered invoices based on current filters
     const filteredInvoices = useMemo(() => {

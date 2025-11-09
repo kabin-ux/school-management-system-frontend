@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import {
   LayoutDashboard,
   School,
-  CreditCard,
-  Bell,
-  Shield,
   HeadphonesIcon,
-  Settings,
   LogOut,
   ShieldUser,
   Menu,
@@ -19,12 +15,8 @@ import { useLogoutSuperAdmin } from "../../../hooks/useAuth";
 const sidebarItems: SidebarItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/super-admin/dashboard" },
   { icon: School, label: "Partner Schools", path: "/super-admin/partner-schools" },
-  // { icon: CreditCard, label: "Payments", path: "/super-admin/payments" },
-  // { icon: Bell, label: "Notifications Log", path: "/super-admin/notifications" },
-  // { icon: Shield, label: "Permissions", path: "/super-admin/permissions" },
   { icon: HeadphonesIcon, label: "Support Console", path: "/super-admin/support" },
   { icon: ShieldUser, label: "Super Admins", path: "/super-admin/super-admins" },
-  // { icon: Settings, label: "Settings", path: "/super-admin/settings" },
 ];
 
 export const Sidebar: React.FC = () => {

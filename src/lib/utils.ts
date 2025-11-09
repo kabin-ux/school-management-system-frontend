@@ -80,7 +80,7 @@ export const getRoleAction = (role?: string) => {
   }
 };
 
-export const getTicketType = (type: string) => {
+export const getTicketType = (type?: string) => {
   switch (type) {
     case "feature_request":
       return "Feature Request";

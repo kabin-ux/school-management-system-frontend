@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import {
   LayoutDashboard,
   HeadphonesIcon,
-  Settings,
   GraduationCap,
   Users,
   User,
   CalendarClock,
   BookOpen,
   ClipboardList,
-  MessageSquare,
   Calendar,
   Wallet,
   UserCog,
@@ -31,13 +29,11 @@ const sidebarItems: SidebarItem[] = [
   { icon: BookOpen, label: "Class Management", path: "/admin/class-management" },
   { icon: Truck, label: "Transportation Management", path: "/admin/transportation-management" },
   { icon: ClipboardList, label: "Attendance Monitoring", path: "/admin/attendance-monitoring" },
-  // { icon: MessageSquare, label: "Communication", path: "/admin/communication" },
   { icon: Calendar, label: "Event", path: "/admin/event" },
   { icon: Wallet, label: "Fee Overview", path: "/admin/fee-overview" },
   { icon: Wallet, label: "Salary Overview", path: "/admin/salary-overview" },
   { icon: UserCog, label: "Account Management", path: "/admin/account-management" },
   { icon: HeadphonesIcon, label: "Support Console", path: "/admin/support" },
-  // { icon: Settings, label: "Settings", path: "/admin/settings" },
 ];
 
 export const Sidebar: React.FC = () => {

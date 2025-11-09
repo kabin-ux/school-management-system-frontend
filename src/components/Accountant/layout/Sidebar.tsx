@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   GraduationCap,
   Users,
-  User,
   LogOut,
   Menu,
   X

@@ -27,7 +27,7 @@ export const useAttendanceReport = (
     return useQuery({
         queryKey: ["attendance-report", type, fromDate, toDate],
         queryFn: async () => {
-            const params = new URLSearchParams({ type, fromDate, toDate }).toString();
+            const params = new URLSearchParams({ type, fromDate: fromDate || "", toDate: toDate || "" }).toString();
             const res = await api.get(`/attendance/report?${params}`);
             return res.data.data;
         },

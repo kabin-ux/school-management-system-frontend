@@ -2,12 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AdminLandingPage from './pages/LandingPage/AdminLandingPage';
 import UserLandingPage from './pages/LandingPage/UserLandingPage';
 import NotificationCenter from './components/SuperAdmin/notifications/Notifications';
-import PermissionManagement from './pages/SuperAdmin/permissions/PermissionManagement';
 import SupportConsole from './pages/SuperAdmin/support/SupportConsole';
 import SupportTicketDetailPage from './pages/SuperAdmin/support/details/SupportTicketDetail';
-import PaymentsOverview from './pages/SuperAdmin/payments/PaymentsOverview';
-import SchoolWisePayment from './pages/SuperAdmin/payments/details/SchoolWisePayment';
-import PaymentDetails from './pages/SuperAdmin/payments/details/PaymentDetails';
 import AdminDashboard from './pages/Admin/dashboard/Dashboard';
 import TeacherManagement from './pages/Admin/teachers/TeacherManagement';
 import StudentManagement from './pages/Admin/students/StudentManagement';
@@ -32,7 +28,6 @@ import FeeAndSalaryPage from './pages/Accountant/feeandsalary/FeeAndSalaryPage';
 import SuperAdminDashboard from './pages/SuperAdmin/dashboard/Dashboard';
 import { PartnerSchools } from './pages/SuperAdmin/partnerschools/PartnerSchools';
 import PartnerSchoolDetails from './pages/SuperAdmin/partnerschools/details/PartnerSchoolDetails';
-import SchoolPermissionDetailPage from './pages/SuperAdmin/permissions/details/SchoolPermissionDetail';
 import ProtectedRoute from './auth/ProtectedRoute';
 import UnauthorizedPage from './pages/Unauthorized';
 import { Toaster } from 'react-hot-toast';
@@ -97,34 +92,9 @@ function App() {
                             <PartnerSchoolDetails />
                         </ProtectedRoute>
                     } />
-                    <Route path='/super-admin/payments' element={
-                        <ProtectedRoute allowedRoles={['superadmin']}>
-                            <PaymentsOverview />
-                        </ProtectedRoute>
-                    } />
-                    <Route path='/super-admin/payments/schools' element={
-                        <ProtectedRoute allowedRoles={['superadmin']}>
-                            <SchoolWisePayment />
-                        </ProtectedRoute>
-                    } />
-                    <Route path='/super-admin/payments/schools/details' element={
-                        <ProtectedRoute allowedRoles={['superadmin']}>
-                            <PaymentDetails />
-                        </ProtectedRoute>
-                    } />
                     <Route path='/super-admin/notifications' element={
                         <ProtectedRoute allowedRoles={['superadmin']}>
                             <NotificationCenter />
-                        </ProtectedRoute>
-                    } />
-                    <Route path='/super-admin/permissions' element={
-                        <ProtectedRoute allowedRoles={['superadmin']}>
-                            <PermissionManagement />
-                        </ProtectedRoute>
-                    } />
-                    <Route path='/super-admin/permissions/details/:id' element={
-                        <ProtectedRoute allowedRoles={['superadmin']}>
-                            <SchoolPermissionDetailPage />
                         </ProtectedRoute>
                     } />
                     <Route path='/super-admin/support' element={

@@ -3,7 +3,7 @@ import { getStatusAction, getTicketType } from '../../../lib/utils';
 import type { SupportTicket } from '../../../types/support.types';
 
 interface TicketDetailProps {
-  selectedTicket: SupportTicket;
+  selectedTicket: SupportTicket | null;
   onAccept: (id: string) => void;
   onResolve: (id: string) => void;
   onClose: (id: string) => void;

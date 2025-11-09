@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { DashboardHeader } from "../../../../components/SuperAdmin/layout/DashboardHeader";
 import { Sidebar } from "../../../../components/SuperAdmin/layout/Sidebar";
-import FinancialOverview from "../../../../components/SuperAdmin/partnerschools/FinancialOverview";
 import SchoolHeader from "../../../../components/SuperAdmin/partnerschools/SchoolHeader";
 import SchoolPlan from "../../../../components/SuperAdmin/partnerschools/SchoolPlan";
 import { SchoolStats } from "../../../../components/SuperAdmin/partnerschools/SchoolStats";
@@ -15,7 +14,7 @@ import type { SchoolDataForm } from "../../../../types/partner-school.types";
 import { useSupportTicketsBySchool } from "../../../../hooks/useSupportTickets";
 
 export default function PartnerSchoolDetails() {
-    const { id } = useParams<{ id: string }>(); // expects URL like /super-admin/partner-schools/:id
+    const { id } = useParams<{ id: string }>();
 
     const { data: currentSchool, isLoading: loading, isError: error } = useSchoolDetails(id ? id : '');
     const { data: supportTickets = [] } = useSupportTicketsBySchool(id ? id : '')
@@ -65,10 +64,10 @@ export default function PartnerSchoolDetails() {
 
                     {/* School Plan */}
                     <SchoolPlan
-                        currentPlan={currentSchool.currentPlan}
-                        subscriptionStart={currentSchool.subscriptionStart}
-                        subscriptionEnd={currentSchool.subscriptionEnd}
-                        accountStatus={currentSchool.accountStatus}
+                        currentPlan={""}
+                        subscriptionStart={""}
+                        subscriptionEnd={""}
+                        accountStatus={""}
                     />
 
                     {/* School Statistics */}
@@ -88,11 +87,11 @@ export default function PartnerSchoolDetails() {
 
                         {/* System Information - spans 1 column */}
                         <div>
-                            {/* <SystemInformation
+                            <SystemInformation
                                 school={currentSchool}
                                 onEditSchool={handleEditSchool}
                                 onDeleteSchool={handleRemoveSchool}
-                            /> */}
+                            />
                         </div>
 
                         <EditSchoolModal

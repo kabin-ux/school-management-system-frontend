@@ -21,7 +21,7 @@ const ClassDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>()
     const classId: string = id ?? "";
 
-    const { data: classDetails = {} } = useClassDetails(classId);
+    const { data: classDetails = null } = useClassDetails(classId);
     const { data: sections = [] } = useSectionsByClass(classId);
     const { data: sectionDashboardData = { totalSections: 0, totalStudents: 0 } } = useSectionDashboardData(classId);
 
@@ -66,7 +66,7 @@ const ClassDetails: React.FC = () => {
                     <div className="max-w-7xl mx-auto">
 
                         <ClassDetailsHeader
-                            className={classDetails.name}
+                            className={classDetails?.name}
                             searchTerm={searchTerm}
                             setSearchTerm={setSearchTerm}
                             onAdd={openModal}
