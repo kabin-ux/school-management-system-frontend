@@ -19,6 +19,7 @@ export const useCreateSection = () => {
         onSuccess: () => {
             toast.success("Section added successfully");
             queryClient.invalidateQueries({ queryKey: ['sections'] }); // refetch section list
+            queryClient.invalidateQueries({ queryKey: ['sectionDashboard'] }); // refetch section list
         },
         onError: (err: any) => {
             const message = err.response?.data?.error || 'Error adding section';

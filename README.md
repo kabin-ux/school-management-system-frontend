@@ -24,7 +24,7 @@ The School Management System is a web application designed to streamline the man
 ## Technologies Used
 - **Frontend**: React, TypeScript, Tailwind CSS
 - **Backend**: Node.js, Express, MongoDB
-- **State Management**: Redux Toolkit
+- **State Management/ Data Fetching**: React Query (TanStack Query)
 - **Form Validation**: React Hook Form, Zod
 - **Routing**: React Router
 - **Icons**: Lucide React

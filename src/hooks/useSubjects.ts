@@ -67,6 +67,7 @@ export const useAddSubject = () => {
         onSuccess: () => {
             toast.success("Subject added successfully");
             queryClient.invalidateQueries({ queryKey: ["subjectsByClass"] });
+            queryClient.invalidateQueries({ queryKey: ["subjectDashboard"] });
         },
         onError: (error: any) => {
             toast.error(error.response?.data?.error || "Failed to add subject");
