@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Edit, Trash2, Plus, ClipboardClock } from "lucide-react";
-import type { TimeSlot } from "../../../types/timetable.types";
+import { Edit, Trash2, ClipboardClock } from "lucide-react";
+import type { TimeSlot, TimetableAttributes } from "../../../types/timetable.types";
 import EmptyState from "../../../common/EmptyState";
 import { Pagination } from "../../../common/Pagination";
 
@@ -8,11 +8,12 @@ interface Timetable {
   id: string;
   name: string;
   timeslots: TimeSlot[];
+  classId: string;
 }
 
 interface WeeklyTimetableProps {
   timetables: Timetable[];
-  onEditTimeSlot: (timeSlot: TimeSlot) => void;
+  onEditTimeSlot: (timeSlot: TimeSlot, timetable: TimetableAttributes) => void;
   onDeleteTimeSlot: (timeSlotId: string) => void;
   onDeleteTimeTable: (timetableId: string) => void;
 }
@@ -110,7 +111,7 @@ export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({
                                 )}
                                 <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
                                   <button className="p-1 bg-white rounded text-blue-600 hover:bg-blue-50"
-                                    onClick={() => onEditTimeSlot(slot)}
+                                    onClick={() => onEditTimeSlot(slot, timetable)}
                                   >
                                     <Edit className="w-3 h-3" />
                                   </button>
@@ -125,8 +126,7 @@ export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({
                               <button
                                 className="w-full h-16 border-2 border-dashed border-gray-300 rounded-lg text-gray-400 hover:border-blue-400 hover:text-blue-600 transition-colors text-sm flex items-center justify-center gap-2"
                               >
-                                <Plus className="w-4 h-4" />
-                                Add Subject
+                                Break
                               </button>
                             )}
                           </td>

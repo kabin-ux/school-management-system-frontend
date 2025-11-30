@@ -17,8 +17,6 @@ export const feeStructureSchema = z.object({
   laboratory_fee: z
     .number("laboratory_fee must be a number")
     .nonnegative({ message: "laboratory_fee cannot be negative" }),
-  transport_fee: z
-    .uuid("transport_fee must be a valid UUID"),
   other_fee: z
     .number("other_fee must be a number")
     .nonnegative({ message: "other_fee cannot be negative" }),

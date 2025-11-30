@@ -36,4 +36,5 @@ export interface StudentForm {
   gender: string;
   dateOfBirth: string;
   address: string;
+  transport_id?: string | null;
 }

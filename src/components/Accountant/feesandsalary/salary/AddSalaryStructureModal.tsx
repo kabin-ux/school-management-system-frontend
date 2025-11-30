@@ -52,6 +52,7 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
 
     const onFormSubmit = async (data: SalaryStructure) => {
         try {
+            console.log(data)
             await onSubmit(data);
             reset();
             onClose();
@@ -113,7 +114,7 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
                             </label>
                             <input
                                 type="number"
-                                {...register("basic")}
+                                {...register("basic", { valueAsNumber: true })}
                                 disabled={isLoading || isSubmitting}
                                 className={`w-full border rounded px-3 py-2 ${errors.basic ? "border-red-500" : "border-gray-300"
                                     }`}
@@ -133,7 +134,7 @@ export const AddSalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
                         </label>
                         <input
                             type="number"
-                            {...register("allowances")}
+                            {...register("allowances", { valueAsNumber: true })}
                             disabled={isLoading || isSubmitting}
                             className={`w-full border rounded px-3 py-2 ${errors.allowances ? "border-red-500" : "border-gray-300"
                                 }`}

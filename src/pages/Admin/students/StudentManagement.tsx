@@ -10,6 +10,7 @@ import EditStudentModal from '../../../components/Admin/students/EditStudentModa
 import type { Student, StudentForm } from '../../../types/student.types';
 import { useAddStudent, useDeleteStudent, useStudentDashboardData, useStudentsBySchool, useUpdateStudent } from '../../../hooks/useStudents';
 import { useClasses } from '../../../hooks/useClasses';
+import { useAllTransportation } from '../../../hooks/useTransportation';
 
 export interface FilterValues {
     search: string;
@@ -30,6 +31,7 @@ export default function StudentManagement() {
 
     const { data: students = [], isLoading: loading } = useStudentsBySchool();
     const { data: classes = [] } = useClasses();
+    const { data: transportations = [] } = useAllTransportation();
     const { data: studentDashboardData = { totalStudents: 0, totalStudentRegisterOnThisMonth: 0 } } = useStudentDashboardData();
 
     const addStudentMutation = useAddStudent();
@@ -131,6 +133,7 @@ export default function StudentManagement() {
                             student={selectedStudent}
                             classes={classes}
                             isLoading={loading}
+                            transportations={transportations}
                         />
                     </div>
                 </main>

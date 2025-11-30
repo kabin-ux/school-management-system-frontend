@@ -14,7 +14,7 @@ export interface TimeSlot {
   label: string;     // e.g., "First Period"
   startTime: string; // "08:00:00"
   endTime: string;   // "09:00:00"
-  subject?: string;
+  subject: string;
   teacher?: string;
 }
 

@@ -100,9 +100,7 @@ export const DataTable: React.FC<DataTableProps> = ({
                     Number(student.tution_fee) +
                     Number(student.other_fee) +
                     Number(student.computer_fee) +
-                    Number(student.laboratory_fee) +
-                    Number(student.transportation?.price);
-
+                    Number(student.laboratory_fee) 
                   return (
                     <tr
                       key={index}

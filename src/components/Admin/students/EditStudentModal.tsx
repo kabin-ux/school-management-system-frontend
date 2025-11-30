@@ -3,6 +3,7 @@ import { X, User } from 'lucide-react';
 import type { Grade } from '../../../types/class.types';
 import type { Student, StudentForm } from '../../../types/student.types';
 import { useSectionsByClass } from '../../../hooks/useSection';
+import type { Transportation } from '../../../types/admin-transportation.types';
 
 interface EditStudentModalProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface EditStudentModalProps {
   student?: Student | null;
   classes: Grade[];
   isLoading?: boolean;
+  transportations: Transportation[];
 }
 
 const EditStudentModal: React.FC<EditStudentModalProps> = ({
@@ -20,6 +22,7 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
   student,
   classes,
   isLoading,
+  transportations
 }) => {
   const [formData, setFormData] = useState<StudentForm>({
     firstName: '',
@@ -30,6 +33,7 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
     gender: 'Male', // default gender
     address: '',
     dateOfBirth: '',
+    transport_id: ''
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -46,6 +50,7 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
         gender: student.gender,
         dateOfBirth: student.dateOfBirth.toString(),
         address: student.address ?? '',
+        transport_id: student.transport_id ?? '',
       });
       setErrors({});
       setTouched({});
@@ -59,6 +64,7 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
         gender: 'पुरुष',
         address: '',
         dateOfBirth: '',
+        transport_id: '',
       });
       setErrors({});
       setTouched({});
@@ -77,8 +83,6 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
         if (!value.trim()) return 'Email is required';
         if (!emailRegex.test(value)) return 'Invalid email address';
         return '';
-      case 'rollNumber':
-        return !value.trim() ? 'Roll number is required' : '';
       default:
         return '';
     }
@@ -107,7 +111,7 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    const fieldsToValidate = ['firstName', 'lastName', 'email', 'rollNumber'];
+    const fieldsToValidate = ['firstName', 'lastName', 'email'];
     fieldsToValidate.forEach(key => {
       const error = validateField(key, formData[key as keyof typeof formData]);
       if (error) newErrors[key] = error;
@@ -254,6 +258,28 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
               />
+            </div>
+            {/* Transportation */}
+            <div>
+              <label className="block text-sm font-medium">
+                Transportation *
+              </label>
+              <select
+                name="transport_id"
+                value={formData.transport_id ?? ""}      
+                onChange={handleInputChange}
+                disabled={isLoading}
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.section ? 'border-red-500' : 'border-gray-300'
+                  } ${isLoading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
+              >
+                <option value="">Select transportation</option>
+                {transportations.map((transportation) => (
+                  <option key={transportation.id} value={transportation.id}>
+                    {transportation.driverName}
+                  </option>
+                ))}
+              </select>
+
             </div>
           </div>
 

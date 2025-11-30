@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { X } from "lucide-react";
 import type { Grade } from "../../../types/class.types";
-import type { Transportation } from "../../../types/admin-transportation.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { feeStructureSchema, type FeeStructure } from "../../../zod-schema/fees";
 import { useForm } from "react-hook-form";
@@ -11,7 +10,6 @@ interface FeeStructureModalProps {
     onClose: () => void;
     onSubmit: (feeData: FeeStructure) => void;
     classes: Grade[];
-    items: Transportation[];
     isLoading: boolean;
 }
 
@@ -20,7 +18,6 @@ export const AddFeeStructureModal: React.FC<FeeStructureModalProps> = ({
     onClose,
     onSubmit,
     classes,
-    items,
     isLoading,
 }) => {
     const {
@@ -40,7 +37,6 @@ export const AddFeeStructureModal: React.FC<FeeStructureModalProps> = ({
             tution_fee: 0,
             computer_fee: 0,
             laboratory_fee: 0,
-            transport_fee: "",
             other_fee: 0,
         },
     });
@@ -106,31 +102,6 @@ export const AddFeeStructureModal: React.FC<FeeStructureModalProps> = ({
                             {errors.class_id && (
                                 <p className="mt-1 text-sm text-red-600" role="alert">
                                     {errors.class_id.message}
-                                </p>
-                            )}
-                        </div>
-
-                        {/* Transport */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Transportation *
-                            </label>
-                            <select
-                                {...register("transport_fee")}
-                                disabled={isLoading || isSubmitting}
-                                className={`w-full border rounded px-3 py-2 ${errors.transport_fee ? "border-red-500" : "border-gray-300"
-                                    }`}
-                            >
-                                <option value="">Select transportation</option>
-                                {items.map((item) => (
-                                    <option key={item.id} value={item.id}>
-                                        {item.driverName}
-                                    </option>
-                                ))}
-                            </select>
-                            {errors.transport_fee && (
-                                <p className="mt-1 text-sm text-red-600" role="alert">
-                                    {errors.transport_fee.message}
                                 </p>
                             )}
                         </div>

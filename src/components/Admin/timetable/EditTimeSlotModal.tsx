@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import type { TimeSlot } from "../../../types/timetable.types";
+import { useSubjectsByClass } from "../../../hooks/useSubjects";
 
 export interface EditTimeSlotForm {
     label: string,
     startTime: string,
     endTime: string
+    subject: string,
 }
 
 interface EditTimeSlotModalProps {
@@ -13,6 +15,7 @@ interface EditTimeSlotModalProps {
     timeSlot: TimeSlot | null;
     onClose: () => void;
     onSubmit: (id: string, timeSlotData: EditTimeSlotForm) => void;
+    classId?: string;
     isLoading: boolean;
 }
 
@@ -21,12 +24,14 @@ export const EditTimeSlotModal: React.FC<EditTimeSlotModalProps> = ({
     timeSlot,
     onClose,
     onSubmit,
+    classId,
     isLoading
 }) => {
     const [formData, setFormData] = useState<EditTimeSlotForm>({
         label: "",
         startTime: "",
-        endTime: ""
+        endTime: "",
+        subject: ""
     });
     const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -36,18 +41,23 @@ export const EditTimeSlotModal: React.FC<EditTimeSlotModalProps> = ({
             setFormData({
                 label: timeSlot.label,
                 startTime: timeSlot.startTime,
-                endTime: timeSlot.endTime
+                endTime: timeSlot.endTime,
+                subject: timeSlot.subject
             });
             setErrors({});
         } else if (!isOpen) {
             setFormData({
                 label: "",
                 startTime: "",
-                endTime: ""
+                endTime: "",
+                subject: ""
             });
             setErrors({});
         }
     }, [isOpen, timeSlot]);
+
+    // Fetch subjects for the class
+    const { data: subjects = [] } = useSubjectsByClass(classId ?? "");
 
     const handleInputChange = (
         e: React.ChangeEvent<
@@ -89,12 +99,12 @@ export const EditTimeSlotModal: React.FC<EditTimeSlotModalProps> = ({
             setFormData({
                 label: "",
                 startTime: "",
-                endTime: ""
+                endTime: "",
+                subject: ""
             });
             setErrors({});
             onClose();
         }
-
     };
 
     if (!isOpen) return null;
@@ -130,6 +140,31 @@ export const EditTimeSlotModal: React.FC<EditTimeSlotModalProps> = ({
                             />
                             {errors.label && (
                                 <p className="mt-1 text-sm text-red-600">{errors.label}</p>
+                            )}
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Subject *
+                            </label>
+                            <select
+                                name="subject"
+                                value={formData.subject}
+                                onChange={handleInputChange}
+                                disabled={isLoading}
+                                className={`w-full border rounded px-3 py-2 ${errors.subject ? "border-red-500" : "border-gray-300"
+                                    }`}
+                            >
+                                <option value="">Select subject</option>
+                                {subjects.map((subject) => (
+                                    <option key={subject.id} value={subject.id}>
+                                        {subject.name}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.subject && (
+                                <p className="mt-1 text-sm text-red-600" role="alert">
+                                    {errors.subject}
+                                </p>
                             )}
                         </div>
                     </div>

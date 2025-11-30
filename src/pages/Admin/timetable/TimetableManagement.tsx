@@ -28,6 +28,7 @@ export default function TimetableManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(null);
+const [selectedTimetable, setSelectedTimetable] = useState<TimetableAttributes | null>(null);
 
     const { data: classes = [] } = useClasses();
     const { data: timetables = [], isLoading: loading } = useAllTimetables();
@@ -47,9 +48,10 @@ export default function TimetableManagement() {
         deleteTimeTableMutation.mutate(timetableId)
     }
 
-    const handleEditTimeSlot = (timeSlot: TimeSlot) => {
+    const handleEditTimeSlot = (timeSlot: TimeSlot, timetable: TimetableAttributes) => {
         setIsEditModalOpen(true);
         setSelectedTimeSlot(timeSlot);
+        setSelectedTimetable(timetable)
     }
 
     const handleUpdateTimeSlot = async (id: string, timeslotData: EditTimeSlotForm) => {
@@ -140,9 +142,11 @@ export default function TimetableManagement() {
                         onClose={() => {
                             setIsEditModalOpen(false);
                             setSelectedTimeSlot(null);
+                            setSelectedTimetable(null)
                         }}
                         onSubmit={handleUpdateTimeSlot}
                         timeSlot={selectedTimeSlot}
+                        classId={selectedTimetable?.classId} // Get classId from timetable
                         isLoading={loading}
                     />
                 </main>

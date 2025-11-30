@@ -244,7 +244,6 @@ export default function FeeAndSalaryPage() {
                         onClose={() => setIsModalOpen(false)}
                         onSubmit={handleCreateFeeStructure}
                         classes={classes}
-                        items={transportations}
                         isLoading={loading}
                     />
 
