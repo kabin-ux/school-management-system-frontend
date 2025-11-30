@@ -1,3 +1,5 @@
+import type { Subject } from "./class.types";
+
 export interface TimetableAttributes {
     id: string;
     classId: string;
@@ -16,6 +18,7 @@ export interface TimeSlot {
   endTime: string;   // "09:00:00"
   subject: string;
   teacher?: string;
+  subjectDetails?: Subject;
 }
 
 export interface TimetableDay {

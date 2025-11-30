@@ -1,3 +1,4 @@
+import type { Transportation } from "./admin-transportation.types";
 import type { Grade, Section } from "./class.types";
 import type { Parent } from "./parent.types";
 
@@ -16,6 +17,7 @@ export interface Student {
   password: string;
   dateOfBirth: Date;
   transport_id?: string | null;
+  transportation?: Transportation;
   class_id: string;
   section_id?: string | null;
   createdAt?: Date;

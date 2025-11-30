@@ -104,7 +104,7 @@ export const WeeklyTimetable: React.FC<WeeklyTimetableProps> = ({
                           <td key={index} className="px-2 py-4 text-center">
                             {slot ? (
                               <div className="group relative p-3 rounded-lg bg-blue-100 text-blue-800 min-h-16 flex flex-col justify-center hover:bg-blue-200 transition-colors">
-                                <div className="font-medium text-sm">{slot.subject || slot.label}</div>
+                                <div className="font-medium text-sm">{slot.subjectDetails?.name || slot.label}</div>
                                 <div className="text-xs mt-1">{slot.startTime} - {slot.endTime}</div>
                                 {slot.teacher && (
                                   <div className="text-xs text-blue-600 mt-1">{slot.teacher}</div>

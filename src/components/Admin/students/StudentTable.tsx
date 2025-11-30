@@ -52,8 +52,12 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
               <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500  tracking-wider">
                 Gender
               </th>
+
               <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500  tracking-wider">
                 Address
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500  tracking-wider">
+                Transportation
               </th>
               <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500  tracking-wider">
                 Actions
@@ -107,7 +111,6 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
                     {student.class?.name} '{student.section?.section_name}'
                   </td>
 
-
                   {/* Date of Birth */}
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {new Date(student.dateOfBirth).toLocaleDateString()}
@@ -120,6 +123,11 @@ export default function StudentTable({ students, onEdit, onDelete }: StudentTabl
 
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {student.address || '-'}
+                  </td>
+
+                  <td className="px-6 py-4 text-sm text-gray-500 text-center space-y-1">
+                    <div>{student.transportation?.driverName ?? '-'}</div>
+                    <div>{student.transportation?.vehicleNumber ?? '-'}</div>
                   </td>
 
                   {/* Actions */}
