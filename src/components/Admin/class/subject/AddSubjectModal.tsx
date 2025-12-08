@@ -3,8 +3,10 @@ import { X } from "lucide-react";
 import { subjectSchema, type SubjectSchema } from "../../../../zod-schema/subject";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import type { Section } from "../../../../types/class.types";
 
 interface SubjectModalProps {
+    sections: Section[];
     classId: string;
     isOpen: boolean;
     onClose: () => void;
@@ -13,6 +15,7 @@ interface SubjectModalProps {
 }
 
 export const AddSubjectModal: React.FC<SubjectModalProps> = ({
+    sections,
     classId,
     isOpen,
     onClose,
@@ -23,6 +26,7 @@ export const AddSubjectModal: React.FC<SubjectModalProps> = ({
         resolver: zodResolver(subjectSchema),
         mode: 'onChange',
         defaultValues: {
+            section_id: "",
             name: "",
             code: "",
             description: "",
@@ -66,6 +70,25 @@ export const AddSubjectModal: React.FC<SubjectModalProps> = ({
                 </div>
 
                 <form onSubmit={handleSubmit(onFormSubmit)} className="p-6 space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Subject Name <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                            id="section_id"
+                            {...register("section_id")}
+                            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.name ? "border-red-500" : "border-gray-300"}`}
+                            aria-invalid={errors.section_id ? 'true' : 'false'}
+                        >
+                            <option value="">Select Section</option>
+                            {sections.map((section) => (
+                                <option key={section.id} value={section.id}>
+                                    {section.section_name}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
+                    </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                             Subject Name <span className="text-red-500">*</span>

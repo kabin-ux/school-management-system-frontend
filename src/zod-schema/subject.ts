@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const subjectSchema = z.object({
+  section_id: z.string().uuid("Invalid section ID"),
   name: z.string().min(1, "Name is required"),
   code: z.string().min(1, "Code is required"),
   description: z

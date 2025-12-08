@@ -12,6 +12,7 @@ import type { Subject, SubjectForm } from "../../../../types/class.types";
 import { useClassDetails } from "../../../../hooks/useClasses";
 import { useAddSubject, useAssignSubjectToTeacher, useDeleteSubject, useSubjectDashboardData, useSubjectsByClass, useUpdateSubject } from "../../../../hooks/useSubjects";
 import { useTeachers } from "../../../../hooks/useTeachers";
+import { useSectionsByClass } from "../../../../hooks/useSection";
 
 
 const SubjectManagement: React.FC = () => {
@@ -28,6 +29,8 @@ const SubjectManagement: React.FC = () => {
     const { data: classDetails } = useClassDetails(classId);
     const { data: subjectsByClass = [], isLoading: loading } = useSubjectsByClass(classId);
     const { data: subjectDashboardData = { totalSubjects: 0, totalTeacher: 0 } } = useSubjectDashboardData(classId);
+    const { data: sections = [] } = useSectionsByClass(classId);
+
 
     const addSubjectMutation = useAddSubject();
     const updateSubjectMutation = useUpdateSubject();
@@ -37,8 +40,6 @@ const SubjectManagement: React.FC = () => {
     const filteredTeachers = (teachers ?? []).filter(
         (teacher) => teacher?.subjects?.length === 0
     );
-
-    console.log("filterd teacher", filteredTeachers)
 
     const openModal = () => {
         setIsModalOpen(true)
@@ -104,6 +105,7 @@ const SubjectManagement: React.FC = () => {
 
                         <AddSubjectModal
                             classId={classId}
+                            sections={sections}
                             isOpen={isModalOpen}
                             onClose={() => setIsModalOpen(false)}
                             onSubmit={handleAddSubject}
