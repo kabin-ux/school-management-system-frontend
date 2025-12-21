@@ -8,10 +8,11 @@ import AddParentModal from '../../../components/Admin/parents/AddParentModal';
 import type { Parent } from '../../../types/parent.types';
 import EditParentModal from '../../../components/Admin/parents/EditParentModal';
 import { useStudentsBySchool } from '../../../hooks/useStudents';
-import { useAddParent, useDeleteParent, useParentDashboardData, useParents, useUpdateParent } from '../../../hooks/useParents';
+import { useAddParent, useDeleteParent, useLinkParentToStudent, useParentDashboardData, useParents, useUpdateParent } from '../../../hooks/useParents';
 import ParentFilters from '../../../components/Admin/parents/ParentFilters';
 import { useClasses } from '../../../hooks/useClasses';
 import type { Student } from '../../../types/student.types';
+import LinkParentToStudentModal from '../../../components/Admin/parents/LinkParentToStudentModal';
 
 export interface FilterValues {
     search: string;
@@ -26,6 +27,7 @@ export default function ParentsManagement() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isLinkParentToStudentModalOpen, setIsLinkParentToStudentModalOpen] = useState(false);
     const [selectedParent, setSelectedParent] = useState<Parent | null>(null);
 
     const { data: parents = [], isLoading: loading } = useParents();
@@ -36,6 +38,7 @@ export default function ParentsManagement() {
     const addParentMutation = useAddParent();
     const updateParentMutation = useUpdateParent();
     const deleteParentMutation = useDeleteParent();
+    const linkParentToStudent = useLinkParentToStudent();
 
     const handleAddParent = async (parentData: any) => {
         addParentMutation.mutate(parentData, {
@@ -48,9 +51,20 @@ export default function ParentsManagement() {
         setSelectedParent(parent);
     }
 
+    const handleLinkParent = (parent: Parent) => {
+        setIsLinkParentToStudentModalOpen(true);
+        setSelectedParent(parent);
+    }
+
     const handleUpdateParent = async (id: string, updateData: any) => {
         updateParentMutation.mutate({ id, updateData }, {
             onSuccess: () => setIsEditModalOpen(false)
+        })
+    }
+
+    const handleLinkParentToStudent = async (updateData: any) => {
+        linkParentToStudent.mutate({ updateData }, {
+            onSuccess: () => setIsLinkParentToStudentModalOpen(false)
         })
     }
 
@@ -69,6 +83,14 @@ export default function ParentsManagement() {
             return matchesSearch && matchesClass;
         });
     }, [parents, filters]);
+
+    // Filtered students based on current filters
+    const filteredStudents = useMemo(() => {
+        return students.filter(
+            (student: Student) => student.parent === null
+        );
+    }, [students]);
+
 
     return (
         <div className="flex h-full bg-gray-50">
@@ -113,6 +135,7 @@ export default function ParentsManagement() {
                             parents={filteredParents}
                             onEdit={handleEditParent}
                             onDelete={handleDeleteParent}
+                            onLinkToStudent={handleLinkParent}
                         />
 
                         <AddParentModal
@@ -131,6 +154,17 @@ export default function ParentsManagement() {
                             }}
                             onSubmit={handleUpdateParent}
                             parent={selectedParent}
+                        />
+
+                        <LinkParentToStudentModal
+                            parent={selectedParent}
+                            isOpen={isLinkParentToStudentModalOpen}
+                            onClose={() => {
+                                setIsLinkParentToStudentModalOpen(false);
+                                setSelectedParent(null);
+                            }}
+                            onSubmit={handleLinkParentToStudent}
+                            students={filteredStudents}
                         />
                     </div>
                 </main>

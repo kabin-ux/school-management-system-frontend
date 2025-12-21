@@ -1,4 +1,4 @@
-import { Mail, Phone, Users, Edit, Trash2 } from 'lucide-react';
+import { Mail, Phone, Users, Edit, Trash2, Link } from 'lucide-react';
 import type { Parent } from '../../../types/parent.types';
 import { useState, type FC } from 'react';
 import EmptyState from '../../../common/EmptyState';
@@ -8,9 +8,10 @@ interface ParentGridModalProps {
   parents: Parent[]
   onEdit: (parent: Parent) => void;
   onDelete: (parentId: string) => void;
+  onLinkToStudent: (parent: Parent) => void;
 }
 
-export const ParentGrid: FC<ParentGridModalProps> = ({ parents, onEdit, onDelete }) => {
+export const ParentGrid: FC<ParentGridModalProps> = ({ parents, onEdit, onDelete, onLinkToStudent }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
@@ -87,7 +88,11 @@ export const ParentGrid: FC<ParentGridModalProps> = ({ parents, onEdit, onDelete
                 >
                   <Trash2 className='w-4 h-4' />
                 </button>
-
+                <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-2"
+                  onClick={() => onLinkToStudent(parent)}
+                >
+                  <Link className='w-4 h-4' />
+                </button>
               </div>
             </div>
           ))}

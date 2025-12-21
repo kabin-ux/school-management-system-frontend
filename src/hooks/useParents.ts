@@ -73,9 +73,28 @@ export const useUpdateParent = () => {
         onSuccess: () => {
             toast.success("Parent updated successfully");
             queryClient.invalidateQueries({ queryKey: ["parents"] });
+            queryClient.invalidateQueries({ queryKey: ["students"] });
         },
         onError: (error: any) => {
             toast.error(error.response?.data?.error || "Failed to update parent");
+        },
+    });
+};
+
+// Update Parent
+export const useLinkParentToStudent = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async ({ updateData }: { updateData: any }) => {
+            const res = await api.put(`/parent/link-student`, updateData);
+            return res.data?.data;
+        },
+        onSuccess: () => {
+            toast.success("Parent linked to student successfully");
+            queryClient.invalidateQueries({ queryKey: ["parents"] });
+        },
+        onError: (error: any) => {
+            toast.error(error.response?.data?.error || "Failed to link parent");
         },
     });
 };
