@@ -40,6 +40,7 @@ import { useEffect } from 'react';
 import { io } from "socket.io-client";
 import { ResetPassword } from './common/ResetPassword';
 import { ResetPasswordAdmin } from './pages/Admin/login/ResetPasswordAdmin';
+import NotificationsCenter from './pages/Admin/notifications/NotificationCenter';
 
 function App() {
     useEffect(() => {
@@ -195,6 +196,11 @@ function App() {
                     } />
                     <Route path='/admin/support/details/:id' element={<AdminSupportTicketDetailPage />} />
                     <Route path='/admin/settings' element={<AdminSettings />} />
+                    <Route path='/admin/notifications' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <NotificationsCenter />
+                        </ProtectedRoute>
+                    } />
 
                     {/* Accountant */}
                     <Route path='/accountant/dashboard' element={
