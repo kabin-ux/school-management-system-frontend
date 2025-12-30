@@ -41,6 +41,7 @@ import { io } from "socket.io-client";
 import { ResetPassword } from './common/ResetPassword';
 import { ResetPasswordAdmin } from './pages/Admin/login/ResetPasswordAdmin';
 import NotificationsCenter from './pages/Admin/notifications/NotificationCenter';
+import RoleManagement from './pages/Admin/roles/RoleManagement';
 
 function App() {
     useEffect(() => {
@@ -201,7 +202,11 @@ function App() {
                             <NotificationsCenter />
                         </ProtectedRoute>
                     } />
-
+                    <Route path='/admin/role-management' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <RoleManagement />
+                        </ProtectedRoute>
+                    } />
                     {/* Accountant */}
                     <Route path='/accountant/dashboard' element={
                         <ProtectedRoute allowedRoles={['accountant']}>

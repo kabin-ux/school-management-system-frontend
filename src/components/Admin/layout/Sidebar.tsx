@@ -36,7 +36,7 @@ const sidebarItems: SidebarItem[] = [
   { icon: UserCog, label: "Account Management", path: "/admin/account-management" },
   { icon: HeadphonesIcon, label: "Support Console", path: "/admin/support" },
   { icon: Bell, label: "Notifications Log", path: "/admin/notifications" },
-  { icon: UserCog, label: "Roles Management", path: "/admin/role-management" },
+  { icon: UserCog, label: "Role Management", path: "/admin/role-management" },
 ];
 
 export const Sidebar: React.FC = () => {
