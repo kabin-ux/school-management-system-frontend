@@ -1,5 +1,6 @@
-import { Trash2 } from "lucide-react";
+import { Bell, Trash2 } from "lucide-react";
 import type { Notice } from "../../../hooks/useNotification";
+import EmptyState from "../../../common/EmptyState";
 
 interface NotificationLogTableProps {
     logs: Notice[];
@@ -7,8 +8,20 @@ interface NotificationLogTableProps {
 }
 
 export function NotificationLogTable({ logs, onDelete }: NotificationLogTableProps) {
+    if (logs.length === 0) {
+        return (
+            <div className="bg-white rounded-lg shadow-sm flex justify-center py-10">
+                <EmptyState
+                    title="No Notices Found"
+                    description="There are currently no notice records. Click the button above to create a new notice."
+                    icon={<Bell className="w-14 h-14" />}
+                />
+            </div>
+        );
+    }
+
     return (
-        <div className="overflow-x-auto">
+        <div className="bg-white rounded-lg shadow-sm overflow-x-auto">
             <table className="w-full">
                 <thead>
                     <tr className="border-b border-gray-200">
@@ -27,14 +40,12 @@ export function NotificationLogTable({ logs, onDelete }: NotificationLogTablePro
                         <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
                             Sent on
                         </th>
-                        {/* <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
-                            Sent by
-                        </th> */}
                         <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
                             Actions
                         </th>
                     </tr>
                 </thead>
+
                 <tbody>
                     {logs.map((log) => (
                         <tr
@@ -53,10 +64,12 @@ export function NotificationLogTable({ logs, onDelete }: NotificationLogTablePro
 
                             {/* Type */}
                             <td className="px-4 py-4 text-sm text-gray-700">
-                                {log.type?.toString().replace(/_/g, " ").toUpperCase() || "—"}
+                                {log.type
+                                    ? log.type.replace(/_/g, " ").toUpperCase()
+                                    : "—"}
                             </td>
 
-                            {/* Sent to (comma-separated) */}
+                            {/* Sent to */}
                             <td className="px-4 py-4 text-sm text-gray-600">
                                 {Array.isArray(log.recipients) && log.recipients.length > 0 ? (
                                     <ul className="space-y-1">
@@ -78,33 +91,17 @@ export function NotificationLogTable({ logs, onDelete }: NotificationLogTablePro
                                     : "N/A"}
                             </td>
 
-                            {/* Sent by */}
-                            {/* <td className="px-4 py-4">
-                                <span className="inline-flex px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">
-                                    {log.publish_by || "System"}
-                                </span>
-                            </td> */}
+                            {/* Actions */}
                             <td className="px-4 py-4 text-sm text-gray-700">
                                 <button
                                     onClick={() => onDelete(log.id)}
-                                    className="px-4 py-1 rounded  transition"
+                                    className="p-1"
                                 >
-                                    <Trash2 className='text-red-500 hover:text-red-700' />
+                                    <Trash2 className="text-red-500 hover:text-red-700" />
                                 </button>
                             </td>
                         </tr>
                     ))}
-
-                    {logs.length === 0 && (
-                        <tr>
-                            <td
-                                colSpan={6}
-                                className="px-4 py-6 text-center text-sm text-gray-500"
-                            >
-                                No notifications found.
-                            </td>
-                        </tr>
-                    )}
                 </tbody>
             </table>
         </div>
