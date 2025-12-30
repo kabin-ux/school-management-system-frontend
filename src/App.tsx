@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AdminLandingPage from './pages/LandingPage/AdminLandingPage';
 import UserLandingPage from './pages/LandingPage/UserLandingPage';
-import NotificationCenter from './components/SuperAdmin/notifications/Notifications';
 import SupportConsole from './pages/SuperAdmin/support/SupportConsole';
 import SupportTicketDetailPage from './pages/SuperAdmin/support/details/SupportTicketDetail';
 import AdminDashboard from './pages/Admin/dashboard/Dashboard';
@@ -92,11 +91,6 @@ function App() {
                     <Route path='/super-admin/partner-schools/details/:id' element={
                         <ProtectedRoute allowedRoles={['superadmin']}>
                             <PartnerSchoolDetails />
-                        </ProtectedRoute>
-                    } />
-                    <Route path='/super-admin/notifications' element={
-                        <ProtectedRoute allowedRoles={['superadmin']}>
-                            <NotificationCenter />
                         </ProtectedRoute>
                     } />
                     <Route path='/super-admin/support' element={

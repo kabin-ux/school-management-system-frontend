@@ -25,8 +25,8 @@ export const RolesTable: React.FC<RolesTableProps> = ({ roles, onDelete }) => {
             {!roles || roles.length === 0 ? (
                 <div className='flex justify-center'>
                     <EmptyState
-                        title='No Classes Found'
-                        description='There are currently no class records. Click the button above to add a new class.'
+                        title='No Roles Found'
+                        description='There are currently no role records. Click the button above to add a new role.'
                         icon={<BookUser className='w-14 h-14' />}
                     />
                 </div>
