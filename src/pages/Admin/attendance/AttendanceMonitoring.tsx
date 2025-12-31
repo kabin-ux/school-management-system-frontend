@@ -25,19 +25,6 @@ const AttendanceMonitoring: React.FC = () => {
         endDate: ''
     });
 
-    // compute current month start/end in YYYY-MM-DD
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth(); // 0-based
-
-    const startDate = new Date(year, month, 1)
-        .toISOString()
-        .slice(0, 10); // "YYYY-MM-DD"
-
-    const endDate = new Date(year, month + 1, 0)
-        .toISOString()
-        .slice(0, 10); // last day of current month
-
     const { data: classes = [] } = useClasses();
     const selectedClass = classes.find((c) => c.name === filters.class);
     const classId = selectedClass?.id || "";
@@ -50,8 +37,8 @@ const AttendanceMonitoring: React.FC = () => {
         useStudentAttendanceByClassSection(
             classId && sectionId ? classId : "",
             classId && sectionId ? sectionId : "",
-            startDate,
-            endDate
+            filters.startDate,
+            filters.endDate
         );
 
     return (

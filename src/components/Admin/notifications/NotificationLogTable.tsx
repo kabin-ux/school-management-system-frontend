@@ -1,6 +1,8 @@
 import { Bell, Trash2 } from "lucide-react";
 import type { Notice } from "../../../hooks/useNotification";
 import EmptyState from "../../../common/EmptyState";
+import { Pagination } from "../../../common/Pagination";
+import { useState } from "react";
 
 interface NotificationLogTableProps {
     logs: Notice[];
@@ -8,6 +10,15 @@ interface NotificationLogTableProps {
 }
 
 export function NotificationLogTable({ logs, onDelete }: NotificationLogTableProps) {
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
+
+    const totalPages = Math.ceil(logs.length / itemsPerPage);
+
+    const paginatedData = logs.slice(
+        (currentPage - 1) * itemsPerPage, currentPage * itemsPerPage
+    )
+
     if (logs.length === 0) {
         return (
             <div className="bg-white rounded-lg shadow-sm flex justify-center py-10">
@@ -47,7 +58,7 @@ export function NotificationLogTable({ logs, onDelete }: NotificationLogTablePro
                 </thead>
 
                 <tbody>
-                    {logs.map((log) => (
+                    {paginatedData.map((log) => (
                         <tr
                             key={log.id}
                             className="border-b border-gray-200 hover:bg-gray-50 transition"
@@ -104,6 +115,14 @@ export function NotificationLogTable({ logs, onDelete }: NotificationLogTablePro
                     ))}
                 </tbody>
             </table>
+
+            {totalPages > 1 && (
+                <Pagination
+                    currentPage={currentPage}
+                    onPageChange={setCurrentPage}
+                    totalPages={totalPages}
+                />
+            )}
         </div>
     );
 }
