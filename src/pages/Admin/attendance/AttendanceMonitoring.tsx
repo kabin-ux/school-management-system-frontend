@@ -12,13 +12,17 @@ export interface FilterValues {
     search: string;
     class: string;
     section: string;
+    startDate: string;
+    endDate: string;
 }
 
 const AttendanceMonitoring: React.FC = () => {
     const [filters, setFilters] = useState<FilterValues>({
         search: '',
         class: '',
-        section: ''
+        section: '',
+        startDate: '',
+        endDate: ''
     });
 
     // compute current month start/end in YYYY-MM-DD

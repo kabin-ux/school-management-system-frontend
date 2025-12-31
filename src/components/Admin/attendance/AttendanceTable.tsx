@@ -35,7 +35,7 @@ export const AttendanceTable: React.FC<AttendanceTableProps> = ({ attendanceData
                                 <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Subject</th>
                                 <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Date</th>
                                 <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Status</th>
-                                <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Actions</th>
+                                {/* <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Actions</th> */}
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200">
