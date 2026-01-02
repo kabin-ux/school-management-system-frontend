@@ -59,17 +59,15 @@ export const NotificationForm: React.FC<NotificationFormProps> = ({
         }
 
         onCreateNotice(formData, () => {
-            setFormData(initialState); // ✅ reset after success
+            setFormData(initialState); // reset after success
         });
     };
-
-
 
     return (
         <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
             <div className="p-6 border-b border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-900">
-                    Send New Notification
+                    Create New Notice
                 </h2>
             </div>
 
@@ -78,11 +76,11 @@ export const NotificationForm: React.FC<NotificationFormProps> = ({
                     {/* Notification Title */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Notification Title
+                            Notice Title
                         </label>
                         <input
                             type="text"
-                            placeholder="Enter notification title"
+                            placeholder="Enter notice title"
                             value={formData.subject}
                             onChange={(e) => handleInputChange("subject", e.target.value)}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -137,7 +135,7 @@ export const NotificationForm: React.FC<NotificationFormProps> = ({
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
                             <option value="" disabled>
-                                Select notification type
+                                Select notice type
                             </option>
                             {Object.values(NoticeType).map((type) => (
                                 <option key={type} value={type}>
@@ -224,7 +222,7 @@ export const NotificationForm: React.FC<NotificationFormProps> = ({
                         className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium flex items-center gap-2"
                     >
                         <Send className="w-4 h-4" />
-                        Send Notification
+                        Create Notice
                     </button>
                 </div>
             </div>

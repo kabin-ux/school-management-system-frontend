@@ -56,7 +56,7 @@ export default function NotificationsCenter() {
                         <div className="flex items-start justify-between mb-8">
                             <div>
                                 <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                                    Notifications Center
+                                    Notice Management
                                 </h1>
                                 <p className="text-gray-600">
                                     Manage all communications sent to teachers and student

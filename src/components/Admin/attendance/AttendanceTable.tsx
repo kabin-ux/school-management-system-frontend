@@ -26,7 +26,8 @@ export const AttendanceTable: React.FC<AttendanceTableProps> = ({ attendanceData
                         title="No attendance data found"
                         description="There are currently no any attendance data in the system."
                         icon={<Users className="w-14 h-14" />}
-                    />) : (
+                    />
+                ) : (
                     <table className="w-full border border-gray-200">
                         <thead className="bg-gray-50 border-b border-gray-200">
                             <tr>

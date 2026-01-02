@@ -19,10 +19,18 @@ export default function InvoicesPage() {
     const clearFeeMutation = useClearFeePayment();
     const { data: classes = [] } = useClasses();
 
-    const handleClearPayment = (id: string) => {
-        clearFeeMutation.mutate(id)
-
+    const handleClearPayment = (id: string, type: 'PARTIAL' | 'COMPLETED') => {
+        if (type === 'COMPLETED') {
+            clearFeeMutation.mutate({ id, type: 'COMPLETED' });
+        }
     };
+
+    const handlePartialClearPayment = (id: string, type: 'PARTIAL' | 'COMPLETED', amount: string) => {
+        if (type === 'PARTIAL') {
+            clearFeeMutation.mutate({ id, type: 'PARTIAL', amount: Number(amount) });
+        }
+    };
+
     const itemsPerPage = 10
     const totalPages = Math.ceil(payments.length / itemsPerPage);
 
@@ -75,6 +83,7 @@ export default function InvoicesPage() {
                         onPageChange={setCurrentPage}
                         viewType={filters.viewType}
                         onClearPayment={handleClearPayment}
+                        onPartialClearPayment={handlePartialClearPayment}
                     />
                 </main>
             </div>

@@ -1,6 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../lib/axios";
 
+type ClearFeePayload = {
+  id: string;
+  type?: 'PARTIAL' | 'COMPLETED'; // use your PaymentStatus enum if shared
+  amount?: number;
+};
+
 // FETCH ALL PAYMENTS
 export const useAllPayments = () => {
   return useQuery({
@@ -67,13 +73,22 @@ export const useCreatePaymentSchoolWise = () => {
 // CLEAR PAYMENT (mark as completed)
 export const useClearFeePayment = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: async (id: string) => {
-      const res = await api.put(`/payment/clear-fee/${id}`);
+    mutationFn: async ({ id, type, amount }: ClearFeePayload) => {
+      const res = await api.put(`/payment/clear-fee/${id}`, undefined, {
+        params: {
+          type,
+          amount,
+        },
+      });
+
+      // if you want the updated payment back, return res.data.data
       return res.data.data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["payments"] });
+    onSuccess: async () => {
+      // keep UI in sync with backend
+      await queryClient.invalidateQueries({ queryKey: ['payments'] });
     },
   });
 };

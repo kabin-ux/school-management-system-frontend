@@ -10,7 +10,7 @@ export const NotificationLog: React.FC<NotificationLogProps> = ({ notices, onDel
 
     return (
         <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Notification Log</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Notice Log</h2>
 
             <div className="flex items-center justify-between mb-6">
                 <div className="relative flex-1 max-w-md">
