@@ -10,8 +10,8 @@ interface InvoiceTableProps {
     currentPage: number;
     totalPages: number;
     onPageChange: (page: number) => void;
-    onClearPayment: (id: string, type: 'PARTIAL' | 'COMPLETED') => void;
-    onPartialClearPayment: (id: string, type: 'PARTIAL' | 'COMPLETED', amount: string) => void;
+    onClearPayment: (id: string, type: 'Partial' | 'Completed') => void;
+    onPartialClearPayment: (id: string, type: 'Partial' | 'Completed', amount: string) => void;
     viewType: 'Student' | 'Teacher'; // Add this prop
 }
 
@@ -32,7 +32,7 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
             alert('Please enter a valid amount');
             return;
         }
-        onPartialClearPayment(id, 'PARTIAL', value);
+        onPartialClearPayment(id, 'Partial', value);
     };
     return (
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 mb-8">
@@ -123,7 +123,7 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
                                         {invoice.status === 'Completed' ? '' :
                                             <>
                                                 <button
-                                                    onClick={() => onClearPayment(invoice.id, 'COMPLETED')}
+                                                    onClick={() => onClearPayment(invoice.id, 'Completed')}
                                                     className="
                             inline-flex items-center justify-center
                             px-3 py-1.5 text-xs font-medium

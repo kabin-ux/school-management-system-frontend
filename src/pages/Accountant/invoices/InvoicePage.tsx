@@ -19,15 +19,15 @@ export default function InvoicesPage() {
     const clearFeeMutation = useClearFeePayment();
     const { data: classes = [] } = useClasses();
 
-    const handleClearPayment = (id: string, type: 'PARTIAL' | 'COMPLETED') => {
-        if (type === 'COMPLETED') {
-            clearFeeMutation.mutate({ id, type: 'COMPLETED' });
+    const handleClearPayment = (id: string, type: 'Partial' | 'Completed') => {
+        if (type === 'Completed') {
+            clearFeeMutation.mutate({ id, type: 'Completed' });
         }
     };
 
-    const handlePartialClearPayment = (id: string, type: 'PARTIAL' | 'COMPLETED', amount: string) => {
-        if (type === 'PARTIAL') {
-            clearFeeMutation.mutate({ id, type: 'PARTIAL', amount: Number(amount) });
+    const handlePartialClearPayment = (id: string, type: 'Partial' | 'Completed', amount: string) => {
+        if (type === 'Partial') {
+            clearFeeMutation.mutate({ id, type: 'Partial', amount: Number(amount) });
         }
     };
 

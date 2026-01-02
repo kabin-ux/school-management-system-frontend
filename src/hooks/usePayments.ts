@@ -3,7 +3,7 @@ import api from "../lib/axios";
 
 type ClearFeePayload = {
   id: string;
-  type?: 'PARTIAL' | 'COMPLETED'; // use your PaymentStatus enum if shared
+  type?: 'Partial' | 'Completed'; // use your PaymentStatus enum if shared
   amount?: number;
 };
 
