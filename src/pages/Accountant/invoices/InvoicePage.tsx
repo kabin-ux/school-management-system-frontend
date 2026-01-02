@@ -12,10 +12,15 @@ export default function InvoicesPage() {
         viewType: 'Student',
         search: '',
         paymentStatus: '',
-        class: ''
+        class: '',
+        date: ''
     });
     const [currentPage, setCurrentPage] = useState(1);
-    const { data: payments = [] } = useAllPayments();
+    const { data: payments = [] } = useAllPayments({
+        classId: filters.class || undefined,
+        status: filters.paymentStatus || undefined,
+        date: filters.date || undefined, // if you have date in filters
+    });
     const clearFeeMutation = useClearFeePayment();
     const { data: classes = [] } = useClasses();
 
@@ -48,7 +53,6 @@ export default function InvoicesPage() {
             return matchesSearch && matchesStatus && matchesClass;
         });
     }, [currentInvoices, filters]);
-
 
     return (
         <div className="flex h-screen bg-gray-50 overflow-hidden">

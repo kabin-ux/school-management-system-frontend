@@ -8,9 +8,11 @@ export interface Invoice {
   discount: number;
   accountant_id: string | null;
   method: "Cash" | "Online" | "None";
-  status: "Pending" | "Completed" | "Failed" | "Refunded";
+  status: "Pending" | "Completed" | "Failed" | "Refunded" | "Partial";
   payment_date?: Date;
   description?: string | null;
+  partial_amount?: number;
+  partial_remaining_payment: number;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
@@ -30,4 +32,5 @@ export interface FilterValues {
   search: string;
   paymentStatus: string;
   class: string;
+  date?: string;
 }

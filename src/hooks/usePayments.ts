@@ -7,12 +7,26 @@ type ClearFeePayload = {
   amount?: number;
 };
 
+type PaymentsFilters = {
+  classId?: string;
+  status?: string;
+  date?: string; // ISO string or yyyy-mm-dd
+};
+
 // FETCH ALL PAYMENTS
-export const useAllPayments = () => {
+export const useAllPayments = (filters: PaymentsFilters = {}) => {
+  const { classId, status, date } = filters;
+
   return useQuery({
-    queryKey: ["payments"],
+    queryKey: ['payments', { classId, status, date }],
     queryFn: async () => {
-      const res = await api.get("/payment");
+      const res = await api.get('/payment', {
+        params: {
+          classId,
+          status,
+          date,
+        },
+      });
       return res.data.data;
     },
   });

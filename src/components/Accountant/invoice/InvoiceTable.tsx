@@ -4,6 +4,7 @@ import type { Invoice } from '../../../types/invoice.types';
 import { Pagination } from '../../../common/Pagination';
 import { Receipt } from 'lucide-react';
 import EmptyState from '../../../common/EmptyState';
+import toast from 'react-hot-toast';
 
 interface InvoiceTableProps {
     invoices: Invoice[];
@@ -30,6 +31,7 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
         const num = Number(value);
         if (Number.isNaN(num) || num <= 0) {
             alert('Please enter a valid amount');
+            toast.error('Please enter a valid amount');
             return;
         }
         onPartialClearPayment(id, 'Partial', value);
@@ -86,6 +88,9 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
                                     Status
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Partial Remaining
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Action
                                 </th>
                             </tr>
@@ -118,6 +123,11 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <StatusBadge status={invoice.status} />
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {invoice.status === 'Partial'
+                                            ? `Rs. ${invoice.partial_remaining_payment ?? 0}`
+                                            : '-'}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         {invoice.status === 'Completed' ? '' :

@@ -90,6 +90,16 @@ export const InvoiceFilters: React.FC<InvoiceFiltersProps> = ({
                         )}
                     </select>
                 </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Month</label>
+                    <input
+                        type="date"
+                        value={filters.date}
+                        onChange={(e) => handleFilterChange('date', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                </div>
             </div>
         </div>
     );
