@@ -8,9 +8,7 @@ import { AddClassModal } from '../../../components/Admin/class/AddClassModal';
 import { useNavigate } from 'react-router-dom';
 import type { Grade } from '../../../types/class.types';
 import EditClassModal from '../../../components/Admin/class/EditClassModal';
-import { AssignClassTeacherModal, type AssignClassTeacherForm } from '../../../components/Admin/class/AssignClassTeacherModal';
 import { useAddClass, useClassDashboardData, useClasses, useDeleteClass, useUpdateClass } from '../../../hooks/useClasses';
-import { useAssignClassTeacher, useTeachersByClass } from '../../../hooks/useTeachers';
 
 export interface FilterValues {
     search: string;
@@ -23,19 +21,16 @@ const ClassManagement: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedClass, setSelectedClass] = useState<Grade | null>(null);
-    const [isAssignClassTeacherModalOpen, setIsAssignClassTeacherModalOpen] = useState(false);
 
     const navigate = useNavigate();
 
     const { data: classes = [], isLoading: loading } = useClasses();
-    const { data: teachers = [] } = useTeachersByClass(selectedClass ? selectedClass.id : '');
     const { data: classDashboardData = { totalClasses: 0, totalSubjects: 0 } } = useClassDashboardData();
 
     const addClassMutation = useAddClass();
     const updateClassMutation = useUpdateClass();
     const deleteClassMutation = useDeleteClass();
 
-    const assignClassTeacherMutate = useAssignClassTeacher();
 
     const handleAddClass = async (classData: any) => {
         addClassMutation.mutate(classData, {
@@ -65,17 +60,6 @@ const ClassManagement: React.FC = () => {
     const navigateToSubject = (classId: string) => {
         navigate(`/admin/class-management/subject/${classId}`)
     };
-
-    const addClassTeacher = (cls: Grade) => {
-        setSelectedClass(cls)
-        setIsAssignClassTeacherModalOpen(true);
-    };
-
-    const handleAssignClassTeacher = async (data: AssignClassTeacherForm) => {
-        assignClassTeacherMutate.mutate(data, {
-            onSuccess: () => setIsAssignClassTeacherModalOpen(false)
-        })
-    }
 
     const filteredClasses = useMemo(() => {
         return classes.filter((cls: Grade) => {
@@ -110,7 +94,6 @@ const ClassManagement: React.FC = () => {
                             grades={filteredClasses}
                             onNavigateToSection={navigateToDetail}
                             onNavigateToSubject={navigateToSubject}
-                            onAssignClassTeacher={addClassTeacher}
                             onEdit={handleEditClass}
                             onDelete={handleDeleteClass}
                         />
@@ -130,15 +113,6 @@ const ClassManagement: React.FC = () => {
                             }}
                             onSubmit={handleUpdateClass}
                             cls={selectedClass}
-                        />
-
-                        <AssignClassTeacherModal
-                            isOpen={isAssignClassTeacherModalOpen}
-                            onClose={() => setIsAssignClassTeacherModalOpen(false)}
-                            classId={selectedClass?.id}
-                            onSubmit={handleAssignClassTeacher}
-                            isLoading={loading}
-                            teachers={teachers}
                         />
                     </div>
                 </main>

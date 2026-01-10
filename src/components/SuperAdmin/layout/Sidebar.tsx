@@ -17,6 +17,7 @@ const sidebarItems: SidebarItem[] = [
   { icon: School, label: "Partner Schools", path: "/super-admin/partner-schools" },
   { icon: HeadphonesIcon, label: "Support Console", path: "/super-admin/support" },
   { icon: ShieldUser, label: "Super Admins", path: "/super-admin/super-admins" },
+  { icon: ShieldUser, label: "Subscription", path: "/super-admin/subscription" },
 ];
 
 export const Sidebar: React.FC = () => {

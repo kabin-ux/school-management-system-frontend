@@ -1,4 +1,4 @@
-import { Trash2, Edit, Layers, Clock, Calendar } from 'lucide-react';
+import { Trash2, Edit, Layers, Clock, Calendar, BookOpenCheck, User } from 'lucide-react';
 import EmptyState from '../../../common/EmptyState';
 import type { Section } from '../../../types/class.types';
 import { useState } from 'react';
@@ -6,11 +6,12 @@ import { Pagination } from '../../../common/Pagination';
 
 interface ClassSectionsProps {
     sections: Section[];
+    onAssignClassTeacher: (section: Section) => void;
     onEdit: (section: Section) => void;
     onDelete: (transportationId: string) => void;
 }
 
-export default function ClassSections({ sections, onEdit, onDelete }: ClassSectionsProps) {
+export default function ClassSections({ sections, onAssignClassTeacher, onEdit, onDelete }: ClassSectionsProps) {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 8;
 
@@ -48,6 +49,13 @@ export default function ClassSections({ sections, onEdit, onDelete }: ClassSecti
                                 {/* Details */}
                                 <div className="space-y-3 text-sm text-gray-600">
                                     <div className="flex items-center gap-2">
+                                        <User className="w-4 h-4" />
+                                        <span>Class Teacher: {section.classTeachers
+                                            ? `${section.classTeachers.firstName} ${section.classTeachers.lastName}`
+                                            : "N/A"}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
                                         <Calendar className="w-4 h-4" />
                                         <span>Created: {section.createdAt
                                             ? new Date(section.createdAt).toLocaleDateString()
@@ -66,6 +74,13 @@ export default function ClassSections({ sections, onEdit, onDelete }: ClassSecti
 
                             {/* Action Buttons */}
                             <div className="mt-4 flex justify-center gap-3">
+                                <button
+                                    onClick={() => onAssignClassTeacher(section)}
+                                    className="p-2 rounded hover:bg-gray-100 transition"
+                                    title='Assign Class Teacher'
+                                >
+                                    <BookOpenCheck className="text-blue-500 hover:text-blue-700" />
+                                </button>
                                 <button
                                     onClick={() => onEdit(section)}
                                     className="p-2 rounded hover:bg-gray-100 transition"

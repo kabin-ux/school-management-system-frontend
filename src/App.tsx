@@ -41,6 +41,8 @@ import { ResetPassword } from './common/ResetPassword';
 import { ResetPasswordAdmin } from './pages/Admin/login/ResetPasswordAdmin';
 import NotificationsCenter from './pages/Admin/notifications/NotificationCenter';
 import RoleManagement from './pages/Admin/roles/RoleManagement';
+import { Subscriptions } from './pages/SuperAdmin/subscription/Subscription';
+import { SubscriptionDetails } from './components/SuperAdmin/subscription/SubscriptionDetails';
 
 function App() {
     useEffect(() => {
@@ -106,6 +108,16 @@ function App() {
                     <Route path='/super-admin/super-admins' element={
                         <ProtectedRoute allowedRoles={['superadmin']}>
                             <SuperAdminsPage />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/super-admin/subscription' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <Subscriptions />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/super-admin/subscription/details/:id' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <SubscriptionDetails />
                         </ProtectedRoute>
                     } />
 

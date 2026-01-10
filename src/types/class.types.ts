@@ -30,6 +30,7 @@ export interface Section {
   id: string;
   section_name: string;
   class_id: string;
+  classTeachers: Teacher | null;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;

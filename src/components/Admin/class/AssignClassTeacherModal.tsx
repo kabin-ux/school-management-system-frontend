@@ -3,14 +3,14 @@ import { X } from "lucide-react";
 import type { Teacher } from "../../../types/teacher.types";
 
 export interface AssignClassTeacherForm {
-    classId: string;
+    sectionId: string;
     teacherId: string;
 }
 
 interface AssignClassTeacherModalProps {
     isOpen: boolean;
     onClose: () => void;
-    classId?: string;
+    sectionId?: string;
     onSubmit: (data: AssignClassTeacherForm) => void;
     teachers: Teacher[]
     isLoading: boolean;
@@ -19,13 +19,13 @@ interface AssignClassTeacherModalProps {
 export const AssignClassTeacherModal: React.FC<AssignClassTeacherModalProps> = ({
     isOpen,
     onClose,
-    classId,
+    sectionId,
     onSubmit,
     teachers,
     isLoading
 }) => {
     const [formData, setFormData] = useState<AssignClassTeacherForm>({
-        classId: classId ?? "",
+        sectionId: sectionId ?? "",
         teacherId: ""
     });
 
@@ -34,12 +34,12 @@ export const AssignClassTeacherModal: React.FC<AssignClassTeacherModalProps> = (
     useEffect(() => {
         if (isOpen) {
             setFormData({
-                classId: classId ?? "",
+                sectionId: sectionId ?? "",
                 teacherId: ""
             });
             setErrors({});
         }
-    }, [isOpen, classId]);
+    }, [isOpen, sectionId]);
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -71,7 +71,7 @@ export const AssignClassTeacherModal: React.FC<AssignClassTeacherModalProps> = (
             onSubmit(formData);
             onClose();
             setFormData({
-                classId: classId ?? "",
+                sectionId: sectionId ?? "",
                 teacherId: ""
             });
             setErrors({});

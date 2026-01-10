@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookCheck, BookOpenCheck, BookUser, Edit, Eye, Trash2 } from 'lucide-react';
+import { BookCheck, BookUser, Edit, Eye, Trash2 } from 'lucide-react';
 import type { Grade } from '../../../types/class.types';
 import EmptyState from '../../../common/EmptyState';
 import { Pagination } from '../../../common/Pagination';
@@ -8,12 +8,11 @@ interface ClassTableProps {
   grades: Grade[];
   onNavigateToSection: (classId: string) => void;
   onNavigateToSubject: (classId: string) => void;
-  onAssignClassTeacher: (cls: Grade) => void;
   onEdit: (cls: Grade) => void;
   onDelete: (classId: string) => void;
 }
 
-export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSection, onNavigateToSubject, onAssignClassTeacher, onEdit, onDelete }) => {
+export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSection, onNavigateToSubject, onEdit, onDelete }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -43,7 +42,6 @@ export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSect
                 <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Total Sections</th>
                 <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Total Subjects</th>
                 <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Total Students</th>
-                <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Class Teacher</th>
                 <th className="text-left p-4 font-medium text-gray-900">Actions</th>
               </tr>
             </thead>
@@ -65,7 +63,6 @@ export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSect
                     </td>
                     <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.totalSubject}</td>
                     <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.totalStudent}</td>
-                    <td className="p-4 border-r border-gray-200 text-gray-900">{grade?.classTeacher?.firstName} {grade?.classTeacher?.lastName}</td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
                         <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
@@ -79,12 +76,6 @@ export const ClassTable: React.FC<ClassTableProps> = ({ grades, onNavigateToSect
                           title='Add New Subject'
                         >
                           <BookCheck className="w-4 h-4" />
-                        </button>
-                        <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
-                          onClick={() => onAssignClassTeacher(grade)}
-                          title='Assign Class Teacher'
-                        >
-                          <BookOpenCheck className="w-4 h-4" />
                         </button>
                         <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
                           onClick={() => onEdit(grade)}

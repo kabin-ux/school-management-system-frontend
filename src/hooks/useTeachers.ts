@@ -22,14 +22,14 @@ export const useTeachers = () => {
 };
 
 // Fetch Teachers by Class
-export const useTeachersByClass = (classId: string) => {
+export const useTeachersByClass = (sectionId: string) => {
     return useQuery({
-        queryKey: ["teachersByClass", classId],
+        queryKey: ["teachersByClass", sectionId],
         queryFn: async () => {
-            const res = await api.get(`/teacher/by-class/${classId}`);
+            const res = await api.get(`/teacher/by-class/${sectionId}`);
             return res.data.data as Teacher[];
         },
-        enabled: !!classId
+        enabled: !!sectionId
     });
 };
 
@@ -99,14 +99,14 @@ export const useAssignClassTeacher = () => {
     return useMutation({
         mutationFn: async ({
             teacherId,
-            classId,
+            sectionId,
         }: {
             teacherId: string;
-            classId: string;
+            sectionId: string;
         }) => {
             const res = await api.post(`/teacher/assign-class-teacher`, {
                 teacherId,
-                classId,
+                sectionId,
             });
             return res.data?.data;
         },
@@ -114,6 +114,7 @@ export const useAssignClassTeacher = () => {
             toast.success("Class Teacher assigned successfully");
             queryClient.invalidateQueries({ queryKey: ["teachers"] });
             queryClient.invalidateQueries({ queryKey: ["classes"] });
+            queryClient.invalidateQueries({ queryKey: ["teachersByClass"] });
         },
         onError: (error: any) => {
             toast.error(error.response?.data?.error || "Failed to assign class teacher");

@@ -10,6 +10,8 @@ import { useClassDetails } from "../../../../hooks/useClasses";
 import { useCreateSection, useDeleteSection, useSectionDashboardData, useSectionsByClass, useUpdateSection } from "../../../../hooks/useSection";
 import type { Section } from "../../../../types/class.types";
 import AddSectionModal from "../../../../components/Admin/section/AddSectionModal";
+import { AssignClassTeacherModal, type AssignClassTeacherForm } from "../../../../components/Admin/class/AssignClassTeacherModal";
+import { useAssignClassTeacher, useTeachersByClass } from "../../../../hooks/useTeachers";
 
 
 const ClassDetails: React.FC = () => {
@@ -18,12 +20,16 @@ const ClassDetails: React.FC = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedSection, setSelectedSection] = useState<Section | null>(null);
 
+    const [isAssignClassTeacherModalOpen, setIsAssignClassTeacherModalOpen] = useState(false);
+    const assignClassTeacherMutate = useAssignClassTeacher();
+
     const { id } = useParams<{ id: string }>()
     const classId: string = id ?? "";
 
     const { data: classDetails = null } = useClassDetails(classId);
     const { data: sections = [] } = useSectionsByClass(classId);
     const { data: sectionDashboardData = { totalSections: 0, totalStudents: 0 } } = useSectionDashboardData(classId);
+    const { data: teachers = [], isLoading: loading } = useTeachersByClass(selectedSection?.id ? selectedSection.id : '');
 
     const createSection = useCreateSection();
     const updateSection = useUpdateSection();
@@ -53,6 +59,18 @@ const ClassDetails: React.FC = () => {
     const handleDeleteSection = async (classId: any) => {
         deleteSection.mutate(classId)
     }
+
+    const addClassTeacher = (section: Section) => {
+        setSelectedSection(section)
+        setIsAssignClassTeacherModalOpen(true);
+    };
+
+    const handleAssignClassTeacher = async (data: AssignClassTeacherForm) => {
+        assignClassTeacherMutate.mutate(data, {
+            onSuccess: () => setIsAssignClassTeacherModalOpen(false)
+        })
+    }
+
     return (
         <div className="flex h-full bg-gray-50">
             {/* Sidebar */}
@@ -76,6 +94,7 @@ const ClassDetails: React.FC = () => {
                         />
                         <ClassSections
                             sections={sections}
+                            onAssignClassTeacher={addClassTeacher}
                             onEdit={handleEditSection}
                             onDelete={handleDeleteSection}
                         />
@@ -95,6 +114,15 @@ const ClassDetails: React.FC = () => {
                             }}
                             onSubmit={handleUpdateSection}
                             section={selectedSection}
+                        />
+
+                        <AssignClassTeacherModal
+                            isOpen={isAssignClassTeacherModalOpen}
+                            onClose={() => setIsAssignClassTeacherModalOpen(false)}
+                            sectionId={selectedSection?.id}
+                            onSubmit={handleAssignClassTeacher}
+                            isLoading={loading}
+                            teachers={teachers}
                         />
                     </div>
                 </main>
