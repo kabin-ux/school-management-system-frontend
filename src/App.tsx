@@ -43,6 +43,7 @@ import NotificationsCenter from './pages/Admin/notifications/NotificationCenter'
 import RoleManagement from './pages/Admin/roles/RoleManagement';
 import { Subscriptions } from './pages/SuperAdmin/subscription/Subscription';
 import { SubscriptionDetails } from './components/SuperAdmin/subscription/SubscriptionDetails';
+import InvoiceOverview from './pages/SuperAdmin/invoice/InvoiceOvervew';
 
 function App() {
     useEffect(() => {
@@ -120,7 +121,11 @@ function App() {
                             <SubscriptionDetails />
                         </ProtectedRoute>
                     } />
-
+                    <Route path='/super-admin/invoice' element={
+                        <ProtectedRoute allowedRoles={['superadmin']}>
+                            <InvoiceOverview />
+                        </ProtectedRoute>
+                    } />
                     {/* Admin */}
                     <Route path='/admin/dashboard' element={
                         <ProtectedRoute allowedRoles={['admin']}>
