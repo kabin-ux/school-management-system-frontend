@@ -64,7 +64,7 @@ export const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({
                 className="bg-white rounded-lg shadow-xl w-full max-w-md"
             >
                 {/* Header */}
-                <div className="flex justify-between items-center p-6 border-b">
+                <div className="flex justify-between items-center p-6 border-b border-gray-200">
                     <h2 className="text-xl font-bold">Edit Subscription</h2>
                     <button type="button" onClick={onClose}>
                         <X className="w-6 h-6 text-gray-500" />
@@ -78,10 +78,28 @@ export const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({
                         <label className="label">Name *</label>
                         <input
                             {...register("name", { required: "Name is required" })}
-                            className="input"
+                            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 transition-colors
+                                ${errors.name
+                                    ? "border-red-500 focus:ring-red-500"
+                                    : "border-gray-300 focus:ring-blue-500"
+                                }
+                                ${isLoading || isSubmitting
+                                    ? "bg-gray-100 cursor-not-allowed text-gray-500"
+                                    : ""
+                                }
+                            `}
                         />
-                        {errors.name && <p className="error">{errors.name.message}</p>}
-                    </div>
+                        {errors.name && (
+                            <p
+                                className="mt-1 text-sm text-red-600 flex items-center gap-1"
+                                role="alert"
+                            >
+                                <span className="w-3 h-3 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                                    !
+                                </span>
+                                {errors.name.message}
+                            </p>
+                        )}                    </div>
 
                     {/* Total Fee */}
                     <div>
@@ -92,8 +110,28 @@ export const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({
                                 required: "Total fee is required",
                                 valueAsNumber: true,
                             })}
-                            className="input"
+                            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 transition-colors
+                                ${errors.total_fee
+                                    ? "border-red-500 focus:ring-red-500"
+                                    : "border-gray-300 focus:ring-blue-500"
+                                }
+                                ${isLoading || isSubmitting
+                                    ? "bg-gray-100 cursor-not-allowed text-gray-500"
+                                    : ""
+                                }
+                            `}
                         />
+                        {errors.total_fee && (
+                            <p
+                                className="mt-1 text-sm text-red-600 flex items-center gap-1"
+                                role="alert"
+                            >
+                                <span className="w-3 h-3 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                                    !
+                                </span>
+                                {errors.total_fee.message}
+                            </p>
+                        )}
                     </div>
 
                     {/* Discount */}
@@ -104,8 +142,28 @@ export const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({
                             {...register("discount", {
                                 valueAsNumber: true,
                             })}
-                            className="input"
+                            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 transition-colors
+                                ${errors.discount
+                                    ? "border-red-500 focus:ring-red-500"
+                                    : "border-gray-300 focus:ring-blue-500"
+                                }
+                                ${isLoading || isSubmitting
+                                    ? "bg-gray-100 cursor-not-allowed text-gray-500"
+                                    : ""
+                                }
+                            `}
                         />
+                        {errors.discount && (
+                            <p
+                                className="mt-1 text-sm text-red-600 flex items-center gap-1"
+                                role="alert"
+                            >
+                                <span className="w-3 h-3 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                                    !
+                                </span>
+                                {errors.discount.message}
+                            </p>
+                        )}
                     </div>
 
                     {/* Subscription Type */}
@@ -115,12 +173,32 @@ export const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({
                             {...register("subscription_type", {
                                 required: "Subscription type is required",
                             })}
-                            className="input"
+                            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 transition-colors
+                                ${errors.subscription_type
+                                    ? "border-red-500 focus:ring-red-500"
+                                    : "border-gray-300 focus:ring-blue-500"
+                                }
+                                ${isLoading || isSubmitting
+                                    ? "bg-gray-100 cursor-not-allowed text-gray-500"
+                                    : ""
+                                }
+                            `}
                         >
                             <option value="SILVER">SILVER</option>
                             <option value="GOLD">GOLD</option>
                             <option value="PLATINUM">PLATINUM</option>
                         </select>
+                        {errors.subscription_type && (
+                            <p
+                                className="mt-1 text-sm text-red-600 flex items-center gap-1"
+                                role="alert"
+                            >
+                                <span className="w-3 h-3 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                                    !
+                                </span>
+                                {errors.subscription_type.message}
+                            </p>
+                        )}
                     </div>
 
                     {/* Maintenance Fee */}
@@ -131,9 +209,29 @@ export const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({
                             {...register("maintenance_fee", {
                                 valueAsNumber: true,
                             })}
-                            className="input"
+                            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 transition-colors
+                                ${errors.maintenance_fee
+                                    ? "border-red-500 focus:ring-red-500"
+                                    : "border-gray-300 focus:ring-blue-500"
+                                }
+                                ${isLoading || isSubmitting
+                                    ? "bg-gray-100 cursor-not-allowed text-gray-500"
+                                    : ""
+                                }
+                            `}
                             placeholder="Optional"
                         />
+                        {errors.maintenance_fee && (
+                            <p
+                                className="mt-1 text-sm text-red-600 flex items-center gap-1"
+                                role="alert"
+                            >
+                                <span className="w-3 h-3 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                                    !
+                                </span>
+                                {errors.maintenance_fee.message}
+                            </p>
+                        )}
                     </div>
 
                     {/* Remarks */}
@@ -141,9 +239,29 @@ export const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({
                         <label className="label">Remarks</label>
                         <textarea
                             {...register("remarks")}
-                            className="input"
+                            className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 transition-colors
+                                ${errors.remarks
+                                    ? "border-red-500 focus:ring-red-500"
+                                    : "border-gray-300 focus:ring-blue-500"
+                                }
+                                ${isLoading || isSubmitting
+                                    ? "bg-gray-100 cursor-not-allowed text-gray-500"
+                                    : ""
+                                }
+                            `}
                             rows={3}
                         />
+                        {errors.remarks && (
+                            <p
+                                className="mt-1 text-sm text-red-600 flex items-center gap-1"
+                                role="alert"
+                            >
+                                <span className="w-3 h-3 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                                    !
+                                </span>
+                                {errors.remarks.message}
+                            </p>
+                        )}
                     </div>
 
                     {errors.root && (
@@ -153,13 +271,20 @@ export const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({
 
                 {/* Footer */}
                 <div className="flex justify-end gap-3 p-6 border-t">
-                    <button type="button" onClick={onClose} className="btn-secondary">
+                    <button type="button" onClick={onClose}
+                        className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+                    >
                         Cancel
                     </button>
                     <button
                         type="submit"
                         disabled={isLoading || isSubmitting}
-                        className="flex items-center gap-2 w-max bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                        className={`px-6 py-2 rounded-md transition-colors flex items-center gap-2
+                            ${isLoading || isSubmitting
+                                ? "bg-blue-400 cursor-not-allowed text-white"
+                                : "bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            }
+                        `}
                     >
                         {isSubmitting ? "Saving..." : "Save Changes"}
                     </button>

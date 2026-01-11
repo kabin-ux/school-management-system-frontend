@@ -20,6 +20,7 @@ export type CreateSubscriptionDto = {
     total_fee: number;
     discount?: number;
     remarks?: string;
+    maintenance_fee?: number;
 };
 
 export type UpdateSubscriptionDto = Partial<CreateSubscriptionDto>;
@@ -81,20 +82,24 @@ export const useCreateSubscriptionMutation = () => {
     });
 };
 
-// PATCH /subscriptions/:id
 export const useUpdateSubscriptionMutation = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (params: {
-            id: string;
-            body: UpdateSubscriptionDto;
-        }) => {
-            const { id, body } = params;
-            const { data } = await api.patch<{ data: Subscription }>(
-                `/subscription/${id}`,
-                body,
-            );
+        // just accept Subscription directly
+        mutationFn: async (subscription: Subscription) => {
+            const { id, ...rest } = subscription;
+
+            const body: UpdateSubscriptionDto = {
+                name: rest.name,
+                subscription_type: rest.subscription_type,
+                total_fee: rest.total_fee,
+                discount: rest.discount,
+                remarks: rest.remarks ?? undefined,
+                maintenance_fee: rest.maintenance_fee,
+            };
+
+            const { data } = await api.put<{ data: Subscription }>(`subscription/${id}`, body);
             return data.data;
         },
         onSuccess: (sub) => {
@@ -103,6 +108,7 @@ export const useUpdateSubscriptionMutation = () => {
         },
     });
 };
+
 
 // DELETE /subscriptions/:id
 export const useDeleteSubscriptionMutation = () => {
@@ -143,8 +149,8 @@ export const useRemoveSchoolFromSubscriptionMutation = () => {
 
     return useMutation({
         mutationFn: async (body: RemoveSchoolFromSubscriptionDto) => {
-            const { data } = await api.post<{ data: any }>(
-                '/subscription/remove-school',
+            const { data } = await api.put<{ data: any }>(
+                '/subscription/remove',
                 body,
             );
             return data.data;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import EmptyState from '../../../common/EmptyState';
-import { Edit, School, Trash2 } from 'lucide-react';
+import { Eye, Pencil, School, Trash2 } from 'lucide-react';
 import { Pagination } from '../../../common/Pagination';
 import type { Subscription } from '../../../hooks/useSubscription';
 
@@ -126,27 +126,50 @@ export const SubscriptionTable: React.FC<SubscriptionTableProps> = ({
                   {new Date(sub.createdAt).toLocaleDateString()}
                 </td>
                 <td className="py-4 px-6 text-sm text-gray-600">
-                  <button
-                    onClick={() => onAddSchoolSubscription(sub.id)}
-                  >
-                    Add School
-                  </button>
-                  <button
-                    onClick={() => onViewSubscriptionDetails(sub.id)}
-                  >
-                    View Details
-                  </button>
-                  <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-blue-600"
-                    onClick={() => onEdit(sub)}
-                  >
-                    <Edit className='w-4 h-4' />
-                  </button>
-                  <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-red-600"
-                    onClick={() => onDelete(sub.id)}
-                  >
-                    <Trash2 className='w-4 h-4' />
-                  </button>
+                  <div className="flex items-center gap-2">
+
+                    {/* Add school */}
+                    <button
+                      type="button"
+                      onClick={() => onAddSchoolSubscription(sub.id)}
+                      className="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+                    >
+                      <School className="w-3.5 h-3.5" />
+                      <span>Add school</span>
+                    </button>
+
+                    {/* View details */}
+                    <button
+                      type="button"
+                      onClick={() => onViewSubscriptionDetails(sub.id)}
+                      className="inline-flex items-center justify-center rounded-md border border-gray-200 bg-white p-1.5 text-gray-600 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+                      title="View details"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </button>
+
+                    {/* Edit */}
+                    <button
+                      type="button"
+                      onClick={() => onEdit(sub)}
+                      className="inline-flex items-center justify-center rounded-md border border-gray-200 bg-white p-1.5 text-gray-600 hover:text-amber-600 hover:border-amber-200 hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1"
+                      title="Edit subscription"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
+
+                    {/* Delete */}
+                    <button
+                      type="button"
+                      onClick={() => onDelete(sub.id)}
+                      className="inline-flex items-center justify-center rounded-md border border-gray-200 bg-white p-1.5 text-red-600 hover:text-red-700 hover:border-red-200 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
+                      title="Delete subscription"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </td>
+
               </tr>
             ))}
           </tbody>

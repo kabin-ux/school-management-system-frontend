@@ -6,6 +6,7 @@ interface SubscriptionHeaderProps {
 }
 
 export const SubscriptionHeader: React.FC<SubscriptionHeaderProps> = ({ onAddSubscription }) => {
+
     return (
         <div className='flex justify-between items-center'>
             <div className="mb-4">

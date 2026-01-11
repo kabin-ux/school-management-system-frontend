@@ -56,10 +56,12 @@ export const AddSchoolSubscriptionModal: React.FC<SchoolSubscriptionModalProps> 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+      <div className="w-full max-w-md rounded-lg bg-white border-b border-gray-200 p-6 shadow-lg">
         {/* Header */}
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Add School to Subscription</h2>
+          <h2 className="text-2xl font-bold text-gray-900">
+            Add School to Subscription
+          </h2>
           <button
             type="button"
             className="rounded p-1 hover:bg-gray-100"
@@ -84,7 +86,16 @@ export const AddSchoolSubscriptionModal: React.FC<SchoolSubscriptionModalProps> 
               School <span className="text-red-500">*</span>
             </label>
             <select
-              className="w-full rounded border px-3 py-2 text-sm"
+              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 transition-colors
+                                ${errors.school_id
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-blue-500"
+                }
+                                ${isLoading || isSubmitting
+                  ? "bg-gray-100 cursor-not-allowed text-gray-500"
+                  : ""
+                }
+                            `}
               {...register('school_id', { required: 'School is required' })}
             >
               <option value="">-- Select a School --</option>
@@ -110,7 +121,7 @@ export const AddSchoolSubscriptionModal: React.FC<SchoolSubscriptionModalProps> 
           <div className="mt-4 flex justify-end gap-2">
             <button
               type="button"
-              className="rounded border px-3 py-1 text-sm"
+              className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
               onClick={onClose}
             >
               Cancel
@@ -118,8 +129,12 @@ export const AddSchoolSubscriptionModal: React.FC<SchoolSubscriptionModalProps> 
             <button
               type="submit"
               disabled={isSubmitting || isLoading}
-              className="rounded bg-blue-600 px-3 py-1 text-sm text-white disabled:opacity-60"
-            >
+              className={`px-6 py-2 rounded-md transition-colors flex items-center gap-2
+                            ${isLoading || isSubmitting
+                  ? "bg-blue-400 cursor-not-allowed text-white"
+                  : "bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                }
+                        `}            >
               {isSubmitting || isLoading ? 'Saving...' : 'Add School'}
             </button>
           </div>

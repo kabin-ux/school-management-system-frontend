@@ -3,22 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../../components/SuperAdmin/layout/Sidebar';
 import { DashboardHeader } from '../../../components/SuperAdmin/layout/DashboardHeader';
 import { useSchools } from '../../../hooks/useSchools';
-import { PartnerSchoolFilter } from '../../../components/SuperAdmin/partnerschools/PartnerSchoolFilter';
 import { SubscriptionTable } from '../../../components/SuperAdmin/subscription/SubscriptionTable';
 import { SubscriptionHeader } from '../../../components/SuperAdmin/subscription/SubscriptionHeader';
 import { useAddSchoolOnSubscriptionMutation, useCreateSubscriptionMutation, useDeleteSubscriptionMutation, useSubscriptionsQuery, useUpdateSubscriptionMutation, type Subscription } from '../../../hooks/useSubscription';
 import { AddSubscriptionModal } from '../../../components/SuperAdmin/subscription/CreateSubscriptionModal';
 import { AddSchoolSubscriptionModal } from '../../../components/SuperAdmin/subscription/AddSchoolSubscriptionModal';
 import { EditSubscriptionModal } from '../../../components/SuperAdmin/subscription/EditSubscriptionModal';
+import { SubscriptionsFilter } from '../../../components/SuperAdmin/subscription/SubscriptionsFilter';
+import toast from 'react-hot-toast';
 
 export interface FilterValues {
-    status: string;
     search: string;
 }
 
 export const Subscriptions: React.FC = () => {
     const [filters, setFilters] = useState<FilterValues>({
-        status: '',
         search: ''
     });
     const [isAddSchoolSubscriptionModalOpen, setIsAddSchoolSubscriptionModalOpen] = useState(false);
@@ -27,6 +26,7 @@ export const Subscriptions: React.FC = () => {
 
     const { data: schools = [] } = useSchools();
     const { data: subscriptions = [], isLoading: loading } = useSubscriptionsQuery();
+
     const createSubscription = useCreateSubscriptionMutation();
     const addSchoolOnSubscription = useAddSchoolOnSubscriptionMutation();
     const updateSubscriptionMutation = useUpdateSubscriptionMutation();
@@ -42,19 +42,28 @@ export const Subscriptions: React.FC = () => {
 
     const handleCreateSubscription = async (subscriptionData: any) => {
         createSubscription.mutate(subscriptionData, {
-            onSuccess: () => setIsModalOpen(false)
+            onSuccess: () => {
+                setIsModalOpen(false)
+                toast.success('Subscription added successfully')
+            }
         })
     }
 
     const handleUpdateSubscription = async (subscriptionData: any) => {
         updateSubscriptionMutation.mutate(subscriptionData, {
-            onSuccess: () => setIsEditModalOpen(false)
+            onSuccess: () => {
+                setIsEditModalOpen(false)
+                toast.success('Subscription details updated successfully')
+            }
         })
     }
 
     const handleDeleteSubscription = async (subscriptionId: any) => {
         deleteSubscriptionMutation.mutate(subscriptionId, {
-            onSuccess: () => setIsEditModalOpen(false)
+            onSuccess: () => {
+                setIsEditModalOpen(false)
+                toast.success('Subscription deleted successfully')
+            }
         })
     }
 
@@ -63,18 +72,18 @@ export const Subscriptions: React.FC = () => {
             onSuccess: () => {
                 setIsAddSchoolSubscriptionModalOpen(false);
                 setSelectedSubscriptionId(null);
+                toast.success('School added on subscription successfully')
             },
         });
     };
 
     // Filtered students based on current filters
-    const filteredSchools = useMemo(() => {
+    const filteredSubscriptions = useMemo(() => {
         return subscriptions.filter((subscription: Subscription) => {
             const fullName = `${subscription?.name || ""}`.toLowerCase();
             const matchesSearch = fullName.includes(filters.search.toLowerCase());
-            const matchesStatus = !filters.status;
 
-            return matchesSearch && matchesStatus;
+            return matchesSearch;
         });
     }, [subscriptions, filters]);
 
@@ -90,12 +99,12 @@ export const Subscriptions: React.FC = () => {
                         <SubscriptionHeader
                             onAddSubscription={() => setIsModalOpen(true)}
                         />
-                        <PartnerSchoolFilter
+                        <SubscriptionsFilter
                             filters={filters}
                             onFiltersChange={setFilters}
                         />
                         <SubscriptionTable
-                            subscriptions={filteredSchools}
+                            subscriptions={filteredSubscriptions}
                             onViewSubscriptionDetails={handleViewSubscriptionDetails}
                             onAddSchoolSubscription={(subscription_id: string) => {
                                 setIsAddSchoolSubscriptionModalOpen(true)
