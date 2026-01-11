@@ -16,6 +16,7 @@ export default function InvoicesPage() {
         date: ''
     });
     const [currentPage, setCurrentPage] = useState(1);
+
     const { data: payments = [] } = useAllPayments({
         classId: filters.class || undefined,
         status: filters.paymentStatus || undefined,

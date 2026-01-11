@@ -15,7 +15,6 @@ export type PartnerPaymentStatus =
 
 export const PartnerPaymentMethod = {
   CASH: "CASH",
-  BANK: "BANK",
   ONLINE: "ONLINE",
   NONE: "NONE",
 } as const;
@@ -38,10 +37,8 @@ export interface PartnerSchoolPayment {
   subscription?: Subscription
 }
 
-// generic shape from backend: { message, success, statusCode, data }
 type ApiEnvelope<T> = { data: T };
 
-// ---- 1) Create subscription payments for all partner schools ----
 // POST /subscription-payment/generate
 export const useCreateSubscriptionPaymentsMutation = () => {
   const queryClient = useQueryClient();
@@ -59,8 +56,6 @@ export const useCreateSubscriptionPaymentsMutation = () => {
   });
 };
 
-// ---- 2) Update payment status ----
-// PATCH /subscription-payment/:id/status
 export interface UpdatePaymentStatusDto {
   id: string;
   status: PartnerPaymentStatus;
@@ -88,21 +83,19 @@ export const useUpdateSubscriptionPaymentStatusMutation = () => {
   });
 };
 
-// ---- 3) Get all subscription payments ----
-// GET /subscription-payment
-export const useSubscriptionPaymentsQuery = () =>
+export const useSubscriptionPaymentsQuery = (date?: string) =>
   useQuery({
     queryKey: ["subscription-payments"],
     queryFn: async () => {
       const { data } = await api.get<ApiEnvelope<PartnerSchoolPayment[]>>(
-        "/subscription-payment",
+        "/subscription-payment", {
+        params: date
+      }
       );
       return data.data;
     },
   });
 
-// ---- 4) Get subscription payment by id ----
-// GET /subscription-payment/:id
 export const useSubscriptionPaymentByIdQuery = (
   id: string | undefined,
   enabled = true,
@@ -118,8 +111,6 @@ export const useSubscriptionPaymentByIdQuery = (
     },
   });
 
-// ---- 5) Delete subscription payment ----
-// DELETE /subscription-payment/:id
 export const useDeleteSubscriptionPaymentMutation = () => {
   const queryClient = useQueryClient();
 
@@ -134,8 +125,6 @@ export const useDeleteSubscriptionPaymentMutation = () => {
   });
 };
 
-// ---- 6) Get school-wise total payments (for any school by id) ----
-// GET /subscription-payment/school/:id?status=...
 export interface SchoolWiseTotalPayment {
   status?: PartnerPaymentStatus;
   total_amount: number;
@@ -160,8 +149,6 @@ export const useSchoolWiseTotalPaymentsQuery = (
     },
   });
 
-// ---- 7) Clear subscription payments for a school (SuperAdmin) ----
-// PATCH /subscription-payment/school/:id/clear
 export const useClearSubscriptionPaymentMutation = () => {
   const queryClient = useQueryClient();
 
@@ -181,8 +168,6 @@ export const useClearSubscriptionPaymentMutation = () => {
   });
 };
 
-// ---- 8) My school total payments (school portal side) ----
-// GET /subscription-payment/my-school?status=...
 export const useMySchoolTotalPaymentsQuery = (
   status?: PartnerPaymentStatus,
 ) =>

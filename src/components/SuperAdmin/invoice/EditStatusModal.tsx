@@ -38,8 +38,8 @@ export const EditStatusModal: React.FC<EditStatusModalProps> = ({
     } = useForm<EditStatusFormValues>({
         mode: "onChange",
         defaultValues: {
-            status: (payment?.status as PartnerPaymentStatus) ?? "PENDING",
-            method: (payment?.method as PartnerPaymentMethod) ?? "NONE",
+            status: (payment?.status as PartnerPaymentStatus) ?? "Pending",
+            method: (payment?.method as PartnerPaymentMethod) ?? "None",
             remarks: payment?.remarks ?? "",
         },
         values: payment
@@ -96,9 +96,11 @@ export const EditStatusModal: React.FC<EditStatusModalProps> = ({
                                     : ""
                                 }
                             `}                        >
-                            <option value="PENDING">Pending</option>
-                            <option value="COMPLETED">Completed</option>
-                            <option value="CANCELLED">Cancelled</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Faile">Failed</option>
+                            <option value="Partial Paid">Partial Paid</option>
+                            <option value="Cancelled">Cancelled</option>
                         </select>
                         {errors.status && (
                             <p className="text-sm text-red-600">{errors.status.message}</p>
@@ -120,10 +122,9 @@ export const EditStatusModal: React.FC<EditStatusModalProps> = ({
                                     : ""
                                 }
                             `}                        >
-                            <option value="NONE">None</option>
-                            <option value="CASH">Cash</option>
-                            <option value="BANK">Bank</option>
-                            <option value="ONLINE">Online</option>
+                            <option value="None">None</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Online">Online</option>
                         </select>
                         {errors.method && (
                             <p className="text-sm text-red-600">{errors.method.message}</p>
