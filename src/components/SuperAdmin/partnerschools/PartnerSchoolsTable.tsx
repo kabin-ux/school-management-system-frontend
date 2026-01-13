@@ -10,7 +10,7 @@ interface PartnerSchoolTableProps {
 }
 
 export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({ schoolData, onViewPartnerSchoolDetails }) => {
- 
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
@@ -82,8 +82,8 @@ export const PartnerSchoolsTable: React.FC<PartnerSchoolTableProps> = ({ schoolD
                       </span>
                     </td>
                     <td className="py-4 px-6">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getSubscriptionBadge(school.subscription)}`}>
-                        {school.subscription || '-'}
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getSubscriptionBadge(school.subscription?.name)}`}>
+                        {school.subscription?.name || '-'}
                       </span>
                     </td>
                     <td className="py-4 px-6 text-sm text-gray-900">{school?.payment || '-'}</td>
