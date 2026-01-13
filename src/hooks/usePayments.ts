@@ -1,5 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../lib/axios";
+import toast from "react-hot-toast";
+import type { AxiosError } from "axios";
 
 type ClearFeePayload = {
   id: string;
@@ -103,6 +105,15 @@ export const useClearFeePayment = () => {
     onSuccess: async () => {
       // keep UI in sync with backend
       await queryClient.invalidateQueries({ queryKey: ['payments'] });
+      toast.success('Payment cleared successfully')
+    },
+    onError: (error: AxiosError<any>) => {
+      const message =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        'Something went wrong while clearing payment';
+
+      toast.error(message);
     },
   });
 };

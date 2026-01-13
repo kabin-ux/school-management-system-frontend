@@ -41,6 +41,21 @@ export const PartnerSchoolFilter: React.FC<PartnerSchoolFilterProps> = ({ filter
                         <option value="Inactive">Inactive</option>
                     </select>
                 </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Subscription Type</label>
+                    <select
+                        value={filters.subscription_type}
+                        onChange={(e) => handleFilterChange('subscription_type', e.target.value)}
+                        className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option value="">All Types</option>
+                        <option value="GOLD">GOLD</option>
+                        <option value="SILVER">SILVER</option>
+                        <option value="PLATINUM">PLATINUM</option>
+                        <option value="TRIAL">TRIAL</option>
+                    </select>
+                </div>
             </div>
         </div>
     )

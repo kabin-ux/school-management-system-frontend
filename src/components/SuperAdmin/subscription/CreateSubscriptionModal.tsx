@@ -180,6 +180,7 @@ export const AddSubscriptionModal: React.FC<SubscriptionModalProps> = ({
                             <option value="SILVER">SILVER</option>
                             <option value="GOLD">GOLD</option>
                             <option value="PLATINUM">PLATINUM</option>
+                            <option value="TRIAL">TRIAL</option>
                         </select>
                         {errors.subscription_type && (
                             <p

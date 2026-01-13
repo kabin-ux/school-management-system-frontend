@@ -12,12 +12,14 @@ import type { SchoolData } from '../../../types/partner-school.types';
 export interface FilterValues {
   status: string;
   search: string;
+  subscription_type: string;
 }
 
 export const PartnerSchools: React.FC = () => {
   const [filters, setFilters] = useState<FilterValues>({
     status: '',
-    search: ''
+    search: '',
+    subscription_type: ''
   });
   const { data: schools = [], isLoading: loading } = useSchools();
   const addSchoolMutation = useAddSchool();
@@ -41,8 +43,9 @@ export const PartnerSchools: React.FC = () => {
       const fullName = `${school?.name || ""} ${school.address} ${school.school_code}`.toLowerCase();
       const matchesSearch = fullName.includes(filters.search.toLowerCase());
       const matchesStatus = !filters.status || school.status === filters.status;
+      const matchesSubscriptionType = !filters.subscription_type || school.subscription?.name === filters.subscription_type;
 
-      return matchesSearch && matchesStatus;
+      return matchesSearch && matchesStatus && matchesSubscriptionType;
     });
   }, [schools, filters]);
 

@@ -1,18 +1,16 @@
 import AttendanceChart from "../../../components/Admin/dashboard/AttendanceChart";
-import AttendancePieChart from "../../../components/Admin/dashboard/AttendancePieChart";
 import { DashboardHeader } from "../../../components/Admin/dashboard/DashboardHeader";
 import DashboardStats from "../../../components/Admin/dashboard/DashboardStats";
 import { RecentActivitySection } from "../../../components/Admin/dashboard/RecentActivity";
 import { AdminDashboardHeader } from "../../../components/Admin/layout/AdminDashboardHeader";
 import { Sidebar } from "../../../components/Admin/layout/Sidebar";
 import { useAuthUser } from "../../../hooks/useAuth";
-import { useRecentActivity, useSchoolAdminDashboard, useSchoolAdminDashboardLineChart, useSchoolAdminDashboardPieChart } from "../../../hooks/useDashboard";
+import { useRecentActivity, useSchoolAdminDashboard, useSchoolAdminDashboardLineChart } from "../../../hooks/useDashboard";
 
 export default function AdminDashboard() {
   const { data: user } = useAuthUser();
   const { data: schoolAdmin = { last7DaysAttendanceGraphData: [], totalStudents: 0, totalAccountant: 0, totalTeachers: 0, totalParents: 0, totalClasses: 0, totalSupportTicket: 0, last7DaysClassWiseAttendanceGraphData: [] } } = useSchoolAdminDashboard();
   const { data: lineChartData = [] } = useSchoolAdminDashboardLineChart();
-  const { data: pieChartData = [] } = useSchoolAdminDashboardPieChart();
   const { data: recentActivity = [] } = useRecentActivity();
 
   return (
@@ -39,12 +37,9 @@ export default function AdminDashboard() {
             />
 
             {/* Charts Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 mb-8">
               <AttendanceChart
                 data={lineChartData}
-              />
-              <AttendancePieChart
-                data={pieChartData}
               />
             </div>
 

@@ -1,3 +1,5 @@
+import type { Subscription } from "../hooks/useSubscription";
+
 export interface SchoolData {
   id: string;
   name: string;
@@ -21,7 +23,7 @@ export interface SchoolData {
   totalStudents?: number;
   totalTeachers?: number;
   totalParents?: number;
-  subscription?: string;
+  subscription?: Subscription;
   payment?: string;
   has_transport: boolean;
   established_year: number;
