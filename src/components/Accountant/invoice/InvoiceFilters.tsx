@@ -25,11 +25,11 @@ export const InvoiceFilters: React.FC<InvoiceFiltersProps> = ({
                     <label className="block text-sm font-medium text-gray-700 mb-2">View Type</label>
                     <select
                         value={filters.viewType}
-                        onChange={(e) => handleFilterChange('viewType', e.target.value as 'Student' | 'Teacher')}
+                        onChange={(e) => handleFilterChange('viewType', e.target.value as 'Student' | 'Employee')}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     >
                         <option value="Student">Student</option>
-                        <option value="Teacher">Teacher</option>
+                        <option value="Employee">Employee</option>
                     </select>
                 </div>
 
@@ -41,7 +41,7 @@ export const InvoiceFilters: React.FC<InvoiceFiltersProps> = ({
                             type="text"
                             value={filters.search}
                             onChange={(e) => handleFilterChange('search', e.target.value)}
-                            placeholder={filters.viewType === 'Student' ? 'Search Students' : 'Search Teachers'}
+                            placeholder={filters.viewType === 'Student' ? 'Search Students' : 'Search Employees'}
                             className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         />
                     </div>
@@ -62,34 +62,28 @@ export const InvoiceFilters: React.FC<InvoiceFiltersProps> = ({
                     </select>
                 </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                        {filters.viewType === 'Student' ? 'Class' : 'Department'}
-                    </label>
-                    <select
-                        value={filters.class}
-                        onChange={(e) => handleFilterChange('class', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    >
-                        {filters.viewType === 'Student' ? (
-                            <>
-                                <option value="">Select Class</option>
-                                {classes.map((cls, index) => (
-                                    <option key={index} value={cls.name}>{cls.name}</option>
-                                ))
-                                }
-                            </>
-                        ) : (
-                            <>
-                                <option value="">Select Department</option>
-                                <option value="Science">Science</option>
-                                <option value="Mathematics">Mathematics</option>
-                                <option value="English">English</option>
-                                <option value="Management">Management</option>
-                            </>
-                        )}
-                    </select>
-                </div>
+                {filters.viewType === 'Student' && (
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Class
+                        </label>
+
+                        <select
+                            value={filters.class}
+                            onChange={(e) => handleFilterChange('class', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg
+                 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        >
+                            <option value="">Select Class</option>
+                            {classes.map((cls, index) => (
+                                <option key={index} value={cls.name}>
+                                    {cls.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
+
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Month</label>

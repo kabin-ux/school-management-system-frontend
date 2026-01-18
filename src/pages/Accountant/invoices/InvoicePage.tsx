@@ -4,7 +4,7 @@ import { Sidebar } from "../../../components/Accountant/layout/Sidebar";
 import { AccountantDashboardHeader } from "../../../components/Accountant/layout/DashboardHeader";
 import { InvoiceFilters } from "../../../components/Accountant/invoice/InvoiceFilters";
 import { InvoiceTable } from "../../../components/Accountant/invoice/InvoiceTable";
-import { useAllPayments, useClearFeePayment } from "../../../hooks/usePayments";
+import { useAllPayments, useAllSalaryPayments, useClearFeePayment, useClearSalaryPayment } from "../../../hooks/usePayments";
 import { useClasses } from "../../../hooks/useClasses";
 
 export default function InvoicesPage() {
@@ -22,7 +22,12 @@ export default function InvoicesPage() {
         status: filters.paymentStatus || undefined,
         date: filters.date || undefined, // if you have date in filters
     });
+
+    const { data: salaryPayments = [] } = useAllSalaryPayments({ date: filters.date || undefined, status: filters.paymentStatus || undefined });
+
     const clearFeeMutation = useClearFeePayment();
+    const clearSalaryMutation = useClearSalaryPayment();
+
     const { data: classes = [] } = useClasses();
 
     const handleClearPayment = (id: string, type: 'Partial' | 'Completed') => {
@@ -37,6 +42,11 @@ export default function InvoicesPage() {
         }
     };
 
+    const handleClearSalaryPayment = (id: string) => {
+        clearSalaryMutation.mutate(id);
+    };
+
+
     const itemsPerPage = 10
     const totalPages = Math.ceil(payments.length / itemsPerPage);
 
@@ -44,7 +54,7 @@ export default function InvoicesPage() {
     const currentInvoices = payments;
 
     // Filtered invoices based on current filters
-    const filteredInvoices = useMemo(() => {
+    const filteredStudentInvoices = useMemo(() => {
         return currentInvoices.filter((invoice: Invoice) => {
             const fullName = `${invoice.student?.firstName || ""} ${invoice.student?.lastName || ""}`.toLowerCase();
             const matchesSearch = fullName.includes(filters.search.toLowerCase());
@@ -54,6 +64,32 @@ export default function InvoicesPage() {
             return matchesSearch && matchesStatus && matchesClass;
         });
     }, [currentInvoices, filters]);
+
+    // Employee salary payments
+    // Employee salary payments - Updated with correct paths
+    const filteredSalaryPayments = useMemo(() => {
+        if (filters.viewType !== "Employee") return [];
+        return salaryPayments.filter((salary: any) => {
+            const employee = salary.salaryStructure?.accountantEmployee || salary.salaryStructure?.teacherEmployee;
+            const fullName = `${employee?.firstName || ""} ${employee?.lastName || ""}`.toLowerCase();
+
+            const matchesSearch = fullName.includes(filters.search.toLowerCase());
+            const matchesStatus = !filters.paymentStatus || salary.status === filters.paymentStatus;
+
+            // Filter by department/role - using 'role' from salaryStructure since no explicit department field
+            // Adjust this if you have a department field elsewhere
+            const matchesDepartment = !filters.class ||
+                salary.salaryStructure?.role === filters.class;
+
+            return matchesSearch && matchesStatus && matchesDepartment;
+        });
+    }, [salaryPayments, filters]);
+
+
+    const dataToShow =
+        filters.viewType === "Student"
+            ? filteredStudentInvoices
+            : filteredSalaryPayments;
 
     return (
         <div className="flex h-screen bg-gray-50 overflow-hidden">
@@ -82,13 +118,14 @@ export default function InvoicesPage() {
                     />
 
                     <InvoiceTable
-                        invoices={filteredInvoices}
+                        invoices={dataToShow}
                         currentPage={currentPage}
                         totalPages={totalPages}
                         onPageChange={setCurrentPage}
                         viewType={filters.viewType}
                         onClearPayment={handleClearPayment}
                         onPartialClearPayment={handlePartialClearPayment}
+                        onClearSalaryPayment={handleClearSalaryPayment}
                     />
                 </main>
             </div>

@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../lib/axios";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
+import type { Salary } from "../types/fee-salary.types";
 
 type ClearFeePayload = {
   id: string;
@@ -14,6 +15,24 @@ type PaymentsFilters = {
   status?: string;
   date?: string; // ISO string or yyyy-mm-dd
 };
+
+type SalaryFilters = {
+  status?: string;
+  date?: string; // ISO string or yyyy-mm-dd
+};
+
+export interface SalaryPaymentAttributes {
+  id: string;
+  salary_structure_id: string;
+  amount_paid: number;
+  status: "pending" | "completed" | "failed";
+  remarks?: string | null;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
+
+  salaryStructure: Salary;
+}
 
 // FETCH ALL PAYMENTS
 export const useAllPayments = (filters: PaymentsFilters = {}) => {
@@ -30,6 +49,54 @@ export const useAllPayments = (filters: PaymentsFilters = {}) => {
         },
       });
       return res.data.data;
+    },
+  });
+};
+
+// FETCH ALL STAFF PAYMENTS
+export const useAllSalaryPayments = (filters: SalaryFilters) => {
+  const { status, date } = filters;
+
+  return useQuery({
+    queryKey: ['salaryPayments', { status, date }],
+    queryFn: async () => {
+      const res = await api.get('/salary-payment/my-school', {
+        params: {
+          date,
+          status
+        }
+      });
+      return res.data.data as SalaryPaymentAttributes[];
+    },
+  });
+};
+
+export const useClearSalaryPayment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const res = await api.put(`/salary-payment/clear-payment/`,
+        {
+          id
+        },
+      );
+
+      // if you want the updated payment back, return res.data.data
+      return res.data.data;
+    },
+    onSuccess: async () => {
+      // keep UI in sync with backend
+      await queryClient.invalidateQueries({ queryKey: ['salaryPayments'] });
+      toast.success('Salary Payment cleared successfully')
+    },
+    onError: (error: AxiosError<any>) => {
+      const message =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        'Something went wrong while clearing salary payment';
+
+      toast.error(message);
     },
   });
 };

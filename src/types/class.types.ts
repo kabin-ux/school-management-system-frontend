@@ -13,6 +13,7 @@ export interface Subject {
 
   teacher: Teacher;
   class: Grade;
+  section: Section;
 }
 
 export interface SubjectForm {

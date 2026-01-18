@@ -38,6 +38,7 @@ export const SubjectTable: React.FC<SubjectTableProps> = ({ subjects, onAssignTe
                             <tr>
                                 <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Subject</th>
                                 <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Code</th>
+                                <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Section</th>
                                 <th className="text-left p-4 font-medium text-gray-900 border-r border-gray-200">Teacher</th>
                                 <th className="text-left p-4 font-medium text-gray-900">Actions</th>
                             </tr>
@@ -48,6 +49,7 @@ export const SubjectTable: React.FC<SubjectTableProps> = ({ subjects, onAssignTe
                                 >
                                     <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.name}</td>
                                     <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.code}</td>
+                                    <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.section.section_name}</td>
                                     <td className="p-4 border-r border-gray-200 text-gray-900">{subject?.teacher?.firstName} {subject?.teacher?.lastName}</td>
                                     <td className="p-4">
                                         <div className="flex items-center gap-2">
