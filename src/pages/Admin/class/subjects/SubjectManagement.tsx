@@ -37,10 +37,6 @@ const SubjectManagement: React.FC = () => {
     const deleteSubjectMutation = useDeleteSubject();
     const assignTeacherMutation = useAssignSubjectToTeacher();
 
-    const filteredTeachers = (teachers ?? []).filter(
-        (teacher) => teacher?.subjects?.length === 0
-    );
-
     const openModal = () => {
         setIsModalOpen(true)
     }
@@ -128,7 +124,7 @@ const SubjectManagement: React.FC = () => {
                             subjectId={selectedSubject?.id}
                             onSubmit={handleAssignTeacher}
                             isLoading={loading}
-                            teachers={filteredTeachers}
+                            teachers={teachers}
                         />
                     </div>
                 </main>
