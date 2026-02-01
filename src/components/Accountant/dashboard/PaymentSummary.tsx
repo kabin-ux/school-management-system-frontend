@@ -14,8 +14,8 @@ export const PaymentSummary: React.FC<PaymentSummaryProps> = ({ accountantDashbo
             {!accountantDashboard.totalPayment || accountantDashboard.totalPayment.length === 0 ? (
                 <div className='flex justify-center'>
                     <EmptyState
-                        title='No Classes Found'
-                        description='There are currently no class records. Click the button above to add a new class.'
+                        title='No Payment Statistics'
+                        description='There are currently no payment records..'
                         icon={<HandCoins className='w-14 h-14' />}
                     />
                 </div>

@@ -135,6 +135,21 @@ export const useCreatePayment = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["payments"] });
+      toast.success('Fees payments created successfully');
+    },
+  });
+};
+
+export const useCreateSalaryPayment = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      const res = await api.post("/salary-payment");
+      return res.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["salaryPayments"] });
+      toast.success('Salary payments created successfully');
     },
   });
 };

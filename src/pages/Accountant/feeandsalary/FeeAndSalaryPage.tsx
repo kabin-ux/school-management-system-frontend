@@ -1,6 +1,6 @@
 import { Banknote } from 'lucide-react';
 import { useFeeSalary } from '../../../hooks/useFeeSalary';
-import type { FeeStructureAttributes,  Salary, SalaryStructureForm } from '../../../types/fee-salary.types';
+import type { FeeStructureAttributes, Salary, SalaryStructureForm } from '../../../types/fee-salary.types';
 import { FilterSection } from '../../../components/Accountant/feesandsalary/FilterSection';
 import { StudentDetailView } from '../../../components/Accountant/feesandsalary/StudentDetailView';
 import { DataTable } from '../../../components/Accountant/feesandsalary/DataTable';
@@ -18,6 +18,7 @@ import { useCreateSalaryStructure, useDeleteSalaryStructure, useMySchoolSalarySt
 import { useAllTransportation } from '../../../hooks/useTransportation';
 import { useAllAccountantsBySchool } from '../../../hooks/useAccountant';
 import type { FeeStructure } from '../../../zod-schema/fees';
+import { useCreatePayment, useCreateSalaryPayment } from '../../../hooks/usePayments';
 
 export default function FeeAndSalaryPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,6 +38,9 @@ export default function FeeAndSalaryPage() {
     const addSalaryStructureMutation = useCreateSalaryStructure();
     const updateSalaryStructureMutation = useUpdateSalaryStructure();
     const deleteSalaryStructureMutation = useDeleteSalaryStructure();
+
+    const createFeePaymentMutation = useCreatePayment();
+    const createSalaryPaymentMutation = useCreateSalaryPayment();
 
     const { data: classes = [] } = useClasses();
     const { data: transportations = [] } = useAllTransportation();
@@ -80,6 +84,14 @@ export default function FeeAndSalaryPage() {
         })
     }
 
+    const handleCreateFeesPayment = async () => {
+        createFeePaymentMutation.mutate();
+    }
+
+    const handleCreateSalaryPayment = async () => {
+        createSalaryPaymentMutation.mutate();
+
+    }
     const handleEditFeeStructureData = (feeStructure: FeeStructureAttributes) => {
         setIsEditModalOpen(true);
         setSelectedFeeStructure(feeStructure);
@@ -211,6 +223,22 @@ export default function FeeAndSalaryPage() {
                             {activeView === "Student"
                                 ? "Create Fee Structure"
                                 : "Create Salary Structure"}
+                        </button>
+
+                        <button
+                            className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
+                            onClick={() => {
+                                if (activeView === "Student") {
+                                    handleCreateFeesPayment();
+                                } else {
+                                    handleCreateSalaryPayment();
+                                }
+                            }}
+                        >
+                            <Banknote className="h-4 w-4 mr-2" />
+                            {activeView === "Student"
+                                ? "Generate Fee Payment"
+                                : "Generate Salary Payment"}
                         </button>
                     </div>
 
