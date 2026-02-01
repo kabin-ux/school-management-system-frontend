@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Mail, Lock } from 'lucide-react';
+import { Mail, EyeOff, Eye } from 'lucide-react';
 import { FaApple, FaGooglePlay } from 'react-icons/fa';
 import MobileAppMockups from '../../../components/LandingPage/MobileAppMockups';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,8 @@ const AccountantLoginPage: React.FC = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -56,14 +58,16 @@ const AccountantLoginPage: React.FC = () => {
 
                         <div>
                             <label className="block text-gray-700 text-sm font-medium mb-2">
-                                Email Address
+                                Accountant Email ID
                             </label>
                             <div className="relative">
                                 <input
                                     type="email"
-                                    placeholder="accountant@email.com"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none"
+                                    value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="Enter email address"
+                                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none"
+                                    required
                                 />
                                 <Mail className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
                             </div>
@@ -73,14 +77,28 @@ const AccountantLoginPage: React.FC = () => {
                             <label className="block text-gray-700 text-sm font-medium mb-2">
                                 Password
                             </label>
+
                             <div className="relative">
                                 <input
-                                    type="password"
-                                    placeholder="Enter your password"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none"
+                                    type={showPassword ? "text" : "password"}
+                                    value={password}
                                     onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="Enter your password"
+                                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none"
+                                    required
                                 />
-                                <Lock className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
+                                {/* Show / Hide Button */}
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                                >
+                                    {showPassword ? (
+                                        <EyeOff className="w-5 h-5" />
+                                    ) : (
+                                        <Eye className="w-5 h-5" />
+                                    )}
+                                </button>
                             </div>
                         </div>
                         {loginMutation.isPending && <p className="text-red-500 text-sm">{loginMutation.isPending}</p>}

@@ -199,48 +199,55 @@ export default function FeeAndSalaryPage() {
                 {/* Scrollable Content */}
                 <main className="flex-1 p-4 sm:p-6 overflow-y-auto">
                     {/* Page Title and Action */}
-                    <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+                        {/* Header */}
                         <div>
-                            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                                Fee and Salary
+                            <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900">
+                                Fee & Salary
                             </h1>
-                            <p className="text-gray-600 mt-1 text-sm sm:text-base">
-                                Manage student fees, staff salary, payments, and receipts
+                            <p className="mt-1 text-sm sm:text-base text-gray-600">
+                                Manage student fees, staff salaries, payments, and receipts
                             </p>
                         </div>
 
-                        <button
-                            className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
-                            onClick={() => {
-                                if (activeView === "Student") {
-                                    setIsModalOpen(true);
-                                } else {
-                                    setIsSalaryModalOpen(true);
-                                }
-                            }}
-                        >
-                            <Banknote className="h-4 w-4 mr-2" />
-                            {activeView === "Student"
-                                ? "Create Fee Structure"
-                                : "Create Salary Structure"}
-                        </button>
+                        {/* Actions */}
+                        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                            <button
+                                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg
+                 border border-blue-600 text-blue-600 hover:bg-blue-50 transition"
+                                onClick={() => {
+                                    if (activeView === "Student") {
+                                        setIsModalOpen(true);
+                                    } else {
+                                        setIsSalaryModalOpen(true);
+                                    }
+                                }}
+                            >
+                                <Banknote className="h-4 w-4" />
+                                {activeView === "Student"
+                                    ? "Create Fee Structure"
+                                    : "Create Salary Structure"}
+                            </button>
 
-                        <button
-                            className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
-                            onClick={() => {
-                                if (activeView === "Student") {
-                                    handleCreateFeesPayment();
-                                } else {
-                                    handleCreateSalaryPayment();
-                                }
-                            }}
-                        >
-                            <Banknote className="h-4 w-4 mr-2" />
-                            {activeView === "Student"
-                                ? "Generate Fee Payment"
-                                : "Generate Salary Payment"}
-                        </button>
+                            <button
+                                className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg
+                 bg-blue-600 text-white hover:bg-blue-700 transition shadow-sm"
+                                onClick={() => {
+                                    if (activeView === "Student") {
+                                        handleCreateFeesPayment();
+                                    } else {
+                                        handleCreateSalaryPayment();
+                                    }
+                                }}
+                            >
+                                <Banknote className="h-4 w-4" />
+                                {activeView === "Student"
+                                    ? "Generate Fee Payment"
+                                    : "Generate Salary Payment"}
+                            </button>
+                        </div>
                     </div>
+
 
                     {/* Filters */}
                     <div className="mb-6 overflow-x-auto">

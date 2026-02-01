@@ -2,8 +2,10 @@ import React from 'react';
 import { CirclePlay } from 'lucide-react';
 import HeroMockup from './HeroMockup';
 import PartnerLogos from './PartnerLogos';
+import { useNavigate } from 'react-router-dom';
 
 const UserHeroSection: React.FC = () => {
+    const navigate = useNavigate();
     return (
         <>
             <section className="bg-gradient-to-b from-white from-30% via-white/20 via-20% to-[#CBD72B] pt-8 pb-8 rounded-b-xl">
@@ -20,7 +22,9 @@ const UserHeroSection: React.FC = () => {
                             </p>
 
                             <div className="flex items-center space-x-4 mb-8">
-                                <button className="bg-[#CBD72B] text-white font-semibold text-xl px-8 py-3 rounded-xl hover:bg-[#A8B122] transition-colors">
+                                <button className="bg-[#CBD72B] text-white font-semibold text-xl px-8 py-3 rounded-xl hover:bg-[#A8B122] transition-colors"
+                                onClick={() => navigate('/admin')}
+                                >
                                     Get Started
                                 </button>
                                 <button className="bg-white text-lime-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors flex items-center space-x-2">

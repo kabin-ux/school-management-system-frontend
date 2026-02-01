@@ -35,8 +35,6 @@ import TransportationManagement from './pages/Admin/transportation/Transportatio
 import ClassDetails from './pages/Admin/class/details/ClassDetails';
 import SubjectManagement from './pages/Admin/class/subjects/SubjectManagement';
 import SalaryOverview from './pages/Admin/salaryoverview/SalaryOverview';
-import { useEffect } from 'react';
-import { io } from "socket.io-client";
 import { ResetPassword } from './common/ResetPassword';
 import { ResetPasswordAdmin } from './pages/Admin/login/ResetPasswordAdmin';
 import NotificationsCenter from './pages/Admin/notifications/NotificationCenter';
@@ -46,26 +44,6 @@ import { SubscriptionDetails } from './components/SuperAdmin/subscription/Subscr
 import InvoiceOverview from './pages/SuperAdmin/invoice/InvoiceOvervew';
 
 function App() {
-    useEffect(() => {
-        // WARNING: the client will NOT be able to connect!
-        const socket = io("http://localhost:4000", {
-            withCredentials: true,
-        });
-
-        socket.on("connect", () => (
-            console.log("Socket connected:")
-        ))
-
-        socket.emit("message", {
-            message: 'hello',
-            receiver: "receiver_id",
-            sender: "sender_id",
-            senderName: "",
-            receiverName: "",
-            attachment: ""
-        })
-    }, [])
-
     return (
         <>
             <Router>

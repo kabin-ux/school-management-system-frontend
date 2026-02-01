@@ -1,4 +1,4 @@
-import { Mail, Lock } from 'lucide-react';
+import { Mail, EyeOff, Eye } from 'lucide-react';
 import { FaApple, FaGooglePlay } from 'react-icons/fa';
 import MobileAppMockups from '../../../components/LandingPage/MobileAppMockups';
 import React, { useEffect, useState } from 'react';
@@ -13,6 +13,8 @@ export default function SuperAdminLoginPage() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+
     const [showResetDialog, setShowResetDialog] = useState(false);
     const [resetEmail, setResetEmail] = useState('');
     const navigate = useNavigate();
@@ -64,15 +66,15 @@ export default function SuperAdminLoginPage() {
                     <form className="space-y-6" onSubmit={handleSubmit}>
                         <div>
                             <label className="block text-gray-700 text-sm font-medium mb-2">
-                                Super Address
+                                Super Admin Email ID
                             </label>
                             <div className="relative">
                                 <input
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Superaddress@email.com"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none"
+                                    placeholder="Enter email address"
+                                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none"
                                     required
                                 />
                                 <Mail className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
@@ -83,24 +85,27 @@ export default function SuperAdminLoginPage() {
                             <label className="block text-gray-700 text-sm font-medium mb-2">
                                 Password
                             </label>
+
                             <div className="relative">
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Enter your password"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none"
+                                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lime-400 focus:outline-none"
                                     required
                                 />
-                                <Lock className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
-                            </div>
-                            <div className="text-right mt-2">
+                                {/* Show / Hide Button */}
                                 <button
                                     type="button"
-                                    onClick={() => setShowResetDialog(true)}
-                                    className="text-sm text-lime-600 hover:underline"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
                                 >
-                                    Forgot Password?
+                                    {showPassword ? (
+                                        <EyeOff className="w-5 h-5" />
+                                    ) : (
+                                        <Eye className="w-5 h-5" />
+                                    )}
                                 </button>
                             </div>
                         </div>
