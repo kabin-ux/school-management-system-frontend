@@ -36,9 +36,6 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
                     S.N
                   </th>
                   <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
-                    School
-                  </th>
-                  <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
                     Class
                   </th>
                   <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
@@ -49,6 +46,12 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
                   </th>
                   <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
                     Tuition Fee
+                  </th>
+                  <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
+                    Computer Fee
+                  </th>
+                  <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
+                    Laboratory Fee
                   </th>
                   <th className="text-left p-4 font-extralight text-gray-700 text-sm uppercase tracking-wider">
                     Transport Fee
@@ -75,9 +78,6 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
                       className="hover:bg-gray-50 transition-colors duration-150 cursor-pointer group"
                     >
                       <td className="p-4 text-gray-600 font-medium">{index + 1}</td>
-                      <td className="p-4 text-gray-900 font-medium">
-                        {record.class?.school?.name}
-                      </td>
                       <td className="p-4 text-gray-600">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-semibold bg-green-100 text-green-700">
                           {record.class?.name}
@@ -91,6 +91,12 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
                       </td>
                       <td className="p-4 text-gray-700">
                         Rs. {Number(record.tution_fee).toLocaleString()}
+                      </td>
+                      <td className="p-4 text-gray-700">
+                        Rs. {Number(record.computer_fee).toLocaleString()}
+                      </td>
+                      <td className="p-4 text-gray-700">
+                        Rs. {Number(record.laboratory_fee).toLocaleString()}
                       </td>
                       <td className="p-4 text-gray-700">
                         {record.transportation ? (

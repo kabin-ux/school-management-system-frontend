@@ -28,37 +28,37 @@ function SuperAdminDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             <StatsCard
               title="Total Schools"
-              value={superAdminDashboard?.totalSchools ? superAdminDashboard.totalSchools.toString() : ''}
+              value={superAdminDashboard?.totalSchools ? superAdminDashboard.totalSchools : 0}
               icon={<School className="w-6 h-6 text-blue-600" />}
               color="blue"
             />
             <StatsCard
               title="Total Students"
-              value={superAdminDashboard?.totalStudents ? superAdminDashboard?.totalStudents.toString() : ''}
+              value={superAdminDashboard?.totalStudents ? superAdminDashboard?.totalStudents : 0}
               icon={<GraduationCap className="w-6 h-6 text-green-600" />}
               color="green"
             />
             <StatsCard
               title="Total Teachers"
-              value={superAdminDashboard?.totalTeachers ? superAdminDashboard?.totalTeachers.toString() : ''}
+              value={superAdminDashboard?.totalTeachers ? superAdminDashboard?.totalTeachers : 0}
               icon={<Users className="w-6 h-6 text-purple-600" />}
               color="purple"
             />
             <StatsCard
               title="Total Parents"
-              value={superAdminDashboard?.totalParents ? superAdminDashboard.totalParents.toString() : ''}
+              value={superAdminDashboard?.totalParents ? superAdminDashboard.totalParents : 0}
               icon={<UsersIcon className="w-6 h-6 text-orange-600" />}
               color="orange"
             />
             <StatsCard
               title="Total Accountants"
-              value={superAdminDashboard?.totalAccountants ? superAdminDashboard.totalAccountants.toString() : ''}
+              value={superAdminDashboard?.totalAccountants ? superAdminDashboard.totalAccountants : 0}
               icon={<UsersIcon className="w-6 h-6 text-pink-600" />}
               color="pink"
             />
             <StatsCard
               title="Open Support Tickets"
-              value={superAdminDashboard?.totalSupportTickets ? superAdminDashboard.totalSupportTickets.toString() : ''}
+              value={superAdminDashboard?.totalSupportTickets ? superAdminDashboard.totalSupportTickets : 0}
               icon={<Headphones className="w-6 h-6 text-indigo-600" />}
               color="indigo"
             />

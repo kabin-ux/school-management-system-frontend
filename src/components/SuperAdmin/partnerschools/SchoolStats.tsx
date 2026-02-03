@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, GraduationCap, UserCheck, TrendingUp, Calendar, BarChart3 } from 'lucide-react';
+import { Users, GraduationCap, UserCheck } from 'lucide-react';
 import type { SchoolData } from '../../../types/partner-school.types';
 
 interface StatCardProps {
@@ -29,39 +29,39 @@ function StatCard({ title, value, change, changeType, icon, iconBg }: StatCardPr
   );
 }
 
-interface ProgressCardProps {
-  title: string;
-  value: string;
-  percentage: number;
-  change: string;
-  changeType: 'positive' | 'negative';
-  icon: React.ReactNode;
-  iconBg: string;
-}
+// interface ProgressCardProps {
+//   title: string;
+//   value: string;
+//   percentage: number;
+//   change: string;
+//   changeType: 'positive' | 'negative';
+//   icon: React.ReactNode;
+//   iconBg: string;
+// }
 
-function ProgressCard({ title, value, percentage, change, changeType, icon, iconBg }: ProgressCardProps) {
-  return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <div className="flex items-center justify-between mb-4">
-        <div className={`p-2 rounded-lg ${iconBg}`}>
-          {icon}
-        </div>
-        <span className={`text-sm font-medium ${changeType === 'positive' ? 'text-green-600' : 'text-red-600'
-          }`}>
-          {change}
-        </span>
-      </div>
-      <h3 className="text-sm font-medium text-gray-600 mb-1">{title}</h3>
-      <p className="text-2xl font-bold text-gray-900 mb-3">{value}</p>
-      <div className="w-full bg-gray-200 rounded-full h-2">
-        <div
-          className="bg-blue-600 h-2 rounded-full"
-          style={{ width: `${percentage}%` }}
-        ></div>
-      </div>
-    </div>
-  );
-}
+// function ProgressCard({ title, value, percentage, change, changeType, icon, iconBg }: ProgressCardProps) {
+//   return (
+//     <div className="bg-white rounded-lg border border-gray-200 p-6">
+//       <div className="flex items-center justify-between mb-4">
+//         <div className={`p-2 rounded-lg ${iconBg}`}>
+//           {icon}
+//         </div>
+//         <span className={`text-sm font-medium ${changeType === 'positive' ? 'text-green-600' : 'text-red-600'
+//           }`}>
+//           {change}
+//         </span>
+//       </div>
+//       <h3 className="text-sm font-medium text-gray-600 mb-1">{title}</h3>
+//       <p className="text-2xl font-bold text-gray-900 mb-3">{value}</p>
+//       <div className="w-full bg-gray-200 rounded-full h-2">
+//         <div
+//           className="bg-blue-600 h-2 rounded-full"
+//           style={{ width: `${percentage}%` }}
+//         ></div>
+//       </div>
+//     </div>
+//   );
+// }
 
 interface SchoolStatsProps {
   schoolData: SchoolData
@@ -97,7 +97,7 @@ export const SchoolStats: React.FC<SchoolStatsProps> = ({ schoolData }) => {
       />
 
       {/* Bottom Row */}
-      <ProgressCard
+      {/* <ProgressCard
         title="Daily Usage"
         value="87%"
         percentage={87}
@@ -123,7 +123,7 @@ export const SchoolStats: React.FC<SchoolStatsProps> = ({ schoolData }) => {
         changeType="negative"
         icon={<BarChart3 className="w-5 h-5 text-orange-600" />}
         iconBg="bg-orange-50"
-      />
+      /> */}
     </div>
   );
 }
