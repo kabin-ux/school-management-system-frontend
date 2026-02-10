@@ -44,6 +44,7 @@ import { SubscriptionDetails } from './components/SuperAdmin/subscription/Subscr
 import InvoiceOverview from './pages/SuperAdmin/invoice/InvoiceOvervew';
 import PrivacyPolicy from './components/LandingPage/PrivacyPolicy';
 import TermsAndConditions from './components/LandingPage/Terms&Conditions';
+import DeletePolicyPage from './components/LandingPage/DeleteAccount';
 
 function App() {
     return (
@@ -55,6 +56,7 @@ function App() {
                     <Route path='/admin' element={<AdminLandingPage />} />
                     <Route path='/terms&conditions' element={<TermsAndConditions />} />
                     <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+                    <Route path='/delete-account' element={<DeletePolicyPage />} />
                     <Route path='/super-admin-login' element={<SuperAdminLoginPage />} />
                     <Route path='/admin-login' element={<AdminLoginPage />} />
                     <Route path='/accountant-login' element={<AccountantLoginPage />} />

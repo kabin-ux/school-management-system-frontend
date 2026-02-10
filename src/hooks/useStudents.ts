@@ -85,3 +85,64 @@ export const useStudentDashboardData = () => {
     },
   });
 };
+
+// Promote Single Student to Next Class
+export const usePromoteStudentToNextClass = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ classId, sectionId, studentId }: {
+      classId: string | number;
+      sectionId: string | number;
+      studentId: string | number
+    }) => {
+      const res = await api.put("/student/promote-class", {
+        class_id: classId,
+        section_id: sectionId,
+        student_id: studentId
+      });
+      return res.data.data;
+    },
+    onSuccess: () => {
+      toast.success("Student promoted successfully");
+      // Invalidate student lists and individual student queries
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+      queryClient.invalidateQueries({ queryKey: ["student"] });
+      // Also invalidate class/section related queries if you have them
+      queryClient.invalidateQueries({ queryKey: ["classes"] });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || "Failed to promote student");
+    },
+  });
+};
+
+// Promote Multiple Students to Next Class (Bulk)
+export const usePromoteStudentsBulk = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ students, classId, sectionId }: {
+      students: (string | number)[];
+      classId: string | number;
+      sectionId: string | number
+    }) => {
+      const res = await api.put("/student/bulk-promote-class", {
+        students,
+        class_id: classId,
+        section_id: sectionId
+      });
+      return res.data.data;
+    },
+    onSuccess: () => {
+      toast.success("Students promoted successfully");
+      // Invalidate student lists and related queries
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+      queryClient.invalidateQueries({ queryKey: ["student"] });
+      queryClient.invalidateQueries({ queryKey: ["classes"] });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || "Failed to promote students");
+    },
+  });
+};

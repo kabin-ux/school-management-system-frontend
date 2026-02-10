@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { UserPlus } from 'lucide-react';
+import { ArrowUp, UserPlus } from 'lucide-react';
 import { StudentStats } from '../../../components/Admin/students/StudentStats';
 import StudentFilters from '../../../components/Admin/students/StudentFilters';
 import StudentTable from '../../../components/Admin/students/StudentTable';
@@ -11,6 +11,7 @@ import type { Student, StudentForm } from '../../../types/student.types';
 import { useAddStudent, useDeleteStudent, useStudentDashboardData, useStudentsBySchool, useUpdateStudent } from '../../../hooks/useStudents';
 import { useClasses } from '../../../hooks/useClasses';
 import { useAllTransportation } from '../../../hooks/useTransportation';
+import BulkPromoteStudentModal from '../../../components/Admin/students/BulkPromoteStudentModal';
 
 export interface FilterValues {
     search: string;
@@ -28,6 +29,7 @@ export default function StudentManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+    const [isBulkPromoteModalOpen, setIsBulkPromoteModalOpen] = useState(false);
 
     const { data: students = [], isLoading: loading } = useStudentsBySchool();
     const { data: classes = [] } = useClasses();
@@ -89,12 +91,21 @@ export default function StudentManagement() {
                                 <h1 className="text-3xl font-bold text-gray-900">Student Management</h1>
                                 <p className="text-gray-600 mt-1">Organize and manage Students efficiently</p>
                             </div>
-                            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center gap-2"
-                                onClick={() => setIsModalOpen(true)}
-                            >
-                                <UserPlus className="w-4 h-4" />
-                                Add Student
-                            </button>
+                            <div className="flex items-center gap-3">
+                                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center gap-2"
+                                    onClick={() => setIsModalOpen(true)}
+                                >
+                                    <UserPlus className="w-4 h-4" />
+                                    Add Student
+                                </button>
+                                <button
+                                    className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors font-medium flex items-center gap-2"
+                                    onClick={() => setIsBulkPromoteModalOpen(true)}
+                                >
+                                    <ArrowUp className="w-4 h-4" />
+                                    Bulk Promote
+                                </button>
+                            </div>
                         </div>
 
                         {/* Stats Cards */}
@@ -114,6 +125,7 @@ export default function StudentManagement() {
                             students={filteredStudents}
                             onEdit={handleEditStudent}
                             onDelete={handleDeleteStudent}
+                            classes={classes}
                         />
 
                         <AddStudentModal
@@ -128,12 +140,20 @@ export default function StudentManagement() {
                             isOpen={isEditModalOpen}
                             onClose={() => {
                                 setIsEditModalOpen(false);
+                                setSelectedStudent(null);
                             }}
                             onSubmit={handleUpdateStudent}
                             student={selectedStudent}
                             classes={classes}
                             isLoading={loading}
                             transportations={transportations}
+                        />
+
+                        <BulkPromoteStudentModal
+                            isOpen={isBulkPromoteModalOpen}
+                            onClose={() => setIsBulkPromoteModalOpen(false)}
+                            classes={classes}
+                            students={students} // All students data
                         />
                     </div>
                 </main>

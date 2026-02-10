@@ -4,6 +4,7 @@ import type { Grade } from '../../../types/class.types';
 import type { Student, StudentForm } from '../../../types/student.types';
 import { useSectionsByClass } from '../../../hooks/useSection';
 import type { Transportation } from '../../../types/admin-transportation.types';
+import { useUnassignTransportationFromStudent } from '../../../hooks/useTransportation';
 
 interface EditStudentModalProps {
   isOpen: boolean;
@@ -38,6 +39,8 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const unAssignMutation = useUnassignTransportationFromStudent();
 
   useEffect(() => {
     if (isOpen && student) {
@@ -260,27 +263,64 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
               />
             </div>
             {/* Transportation */}
-            <div>
-              <label className="block text-sm font-medium">
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium mb-2">
                 Transportation *
               </label>
-              <select
-                name="transport_id"
-                value={formData.transport_id ?? ""}      
-                onChange={handleInputChange}
-                disabled={isLoading}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.section ? 'border-red-500' : 'border-gray-300'
-                  } ${isLoading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
-              >
-                <option value="">Select transportation</option>
-                {transportations.map((transportation) => (
-                  <option key={transportation.id} value={transportation.id}>
-                    {transportation.driverName}
-                  </option>
-                ))}
-              </select>
 
+              {student?.transport_id ? (
+                <div className="flex items-center gap-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  {/* Current Assigned Transportation */}
+                  <div className="flex-1">
+                    <div className="font-medium text-blue-900">
+                      Currently assigned: {transportations.find(t => t.id === student.transport_id)?.driverName || 'Transportation'}
+                    </div>
+                    <div className="text-xs text-blue-700">
+                      Transport ID: {student.transport_id}
+                    </div>
+                  </div>
+
+                  {/* Unassign Button */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (student?.id) {
+                        unAssignMutation.mutate(student.id);
+                      }
+                    }}
+                    disabled={unAssignMutation.isPending || isLoading}
+                    className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                  >
+                    {unAssignMutation.isPending ? (
+                      <>
+                        <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        Unassigning...
+                      </>
+                    ) : (
+                      'Unassign'
+                    )}
+                  </button>
+                </div>
+              ) : (
+                /* Original Select Dropdown */
+                <select
+                  name="transport_id"
+                  value={formData.transport_id ?? ""}
+                  onChange={handleInputChange}
+                  disabled={isLoading}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.transport_id ? 'border-red-500' : 'border-gray-300'
+                    } ${isLoading ? 'bg-gray-100 cursor-not-allowed text-gray-500' : ''}`}
+                >
+                  <option value="">Select transportation</option>
+                  {transportations.map((transportation) => (
+                    <option key={transportation.id} value={transportation.id}>
+                      {transportation.driverName}
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
+
           </div>
 
           {/* Address */}

@@ -98,3 +98,23 @@ export const useTransportationDashboardData = () => {
         },
     });
 };
+
+// Unassign Transportation from Student
+export const useUnassignTransportationFromStudent = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (studentId: string) => {
+            const res = await api.put("/transportation/unassign-student", { studentId });
+            return res.data.data;
+        },
+        onSuccess: () => {
+            toast.success("Transportation unassigned from student successfully");
+            // Invalidate relevant queries like students list or student details
+            queryClient.invalidateQueries({ queryKey: ["students"] });
+        },
+        onError: (error: any) => {
+            toast.error(error.response?.data?.message || "Failed to unassign transportation");
+        },
+    });
+};
