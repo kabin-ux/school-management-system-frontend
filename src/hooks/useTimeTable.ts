@@ -30,6 +30,7 @@ export const useAllTimetables = () => {
             const res = await api.get("/timetable");
             return res.data.data;
         },
+        retry: 2
     });
 };
 
@@ -41,6 +42,7 @@ export const useTimetableByClassId = (classId: string | undefined) => {
             return res.data.data;
         },
         enabled: !!classId, // only fetch if classId exists
+        retry: 2
     });
 };
 
@@ -52,6 +54,7 @@ export const useTimetableBySection = (sectionId: string | undefined) => {
             return res.data.data;
         },
         enabled: !!sectionId,
+        retry: 2
     });
 };
 
@@ -63,6 +66,7 @@ export const useTimetableById = (id: string | undefined) => {
             return res.data.data;
         },
         enabled: !!id,
+        retry: 2
     });
 };
 

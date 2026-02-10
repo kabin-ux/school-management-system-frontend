@@ -21,38 +21,45 @@ const BulkPromoteStudentModal: React.FC<BulkPromoteStudentModalProps> = ({
     students,
 }) => {
     const [formData, setFormData] = useState({
-        source_class_id: '',    // ✅ Source class (where students currently are)
-        target_class_id: '',    // ✅ Target class (where to promote to)
-        target_section_id: '',  // ✅ Target section
+        source_class_id: '',     // ✅ Source class 
+        source_section_id: '',   // ✅ NEW: Source section
+        target_class_id: '',     // ✅ Target class
+        target_section_id: '',   // ✅ Target section
     });
     const [selectedStudentIds, setSelectedStudentIds] = useState<string[]>([]);
 
     const promoteMutation = usePromoteStudentsBulk();
 
-    // ✅ Target sections load based on TARGET class selection
+    // ✅ Source sections (for filtering students)
+    const { data: sourceSections = [] } = useSectionsByClass(formData.source_class_id);
+
+    // ✅ Target sections (for promotion destination)
     const { data: targetSections = [] } = useSectionsByClass(formData.target_class_id);
 
-    // ✅ Filter students based on SOURCE class selection
+    // ✅ Filter students based on SOURCE class + section
     const filteredStudents = useMemo(() => {
         return students.filter((student) => {
-            return String(student.class_id) === formData.source_class_id;
+            const matchesClass = String(student.class_id) === formData.source_class_id;
+            const matchesSection = !formData.source_section_id || String(student.section_id) === formData.source_section_id;
+            return matchesClass && matchesSection;
         });
-    }, [students, formData.source_class_id]);
+    }, [students, formData.source_class_id, formData.source_section_id]);
 
-    // Auto-select all filtered students when source class changes
+    // Auto-select all filtered students when filters change
     useEffect(() => {
         if (formData.source_class_id) {
             setSelectedStudentIds(filteredStudents.map(s => s.id));
         } else {
             setSelectedStudentIds([]);
         }
-    }, [filteredStudents, formData.source_class_id]);
+    }, [filteredStudents, formData.source_class_id, formData.source_section_id]);
 
     // Reset form when modal opens/closes
     useEffect(() => {
         if (isOpen) {
             setFormData({
                 source_class_id: '',
+                source_section_id: '',
                 target_class_id: '',
                 target_section_id: ''
             });
@@ -61,14 +68,22 @@ const BulkPromoteStudentModal: React.FC<BulkPromoteStudentModalProps> = ({
     }, [isOpen]);
 
     const handleSourceClassChange = (classId: string) => {
-        setFormData({ ...formData, source_class_id: classId });
+        setFormData({
+            ...formData,
+            source_class_id: classId,
+            source_section_id: '' // Reset source section
+        });
+    };
+
+    const handleSourceSectionChange = (sectionId: string) => {
+        setFormData({ ...formData, source_section_id: sectionId });
     };
 
     const handleTargetClassChange = (classId: string) => {
         setFormData({
             ...formData,
             target_class_id: classId,
-            target_section_id: '' // Reset section when class changes
+            target_section_id: '' // Reset target section
         });
     };
 
@@ -94,15 +109,15 @@ const BulkPromoteStudentModal: React.FC<BulkPromoteStudentModalProps> = ({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!formData.source_class_id || !formData.target_class_id || !formData.target_section_id || selectedStudentIds.length === 0) {
-            toast.error('Please select source class, target class/section, and at least one student');
+        if (!formData.source_class_id || !formData.source_section_id || !formData.target_class_id || !formData.target_section_id || selectedStudentIds.length === 0) {
+            toast.error('Please select source class/section, target class/section, and at least one student');
             return;
         }
 
         promoteMutation.mutate({
             students: selectedStudentIds,
-            classId: formData.target_class_id,      // ✅ Target class from user input
-            sectionId: formData.target_section_id,  // ✅ Target section from user input
+            classId: formData.target_class_id,        // ✅ Target class from user input
+            sectionId: formData.target_section_id,    // ✅ Target section from user input
         }, {
             onSuccess: () => {
                 onClose();
@@ -114,7 +129,7 @@ const BulkPromoteStudentModal: React.FC<BulkPromoteStudentModalProps> = ({
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+            <div className="bg-white rounded-xl shadow-2xl w-full max-w-6xl max-h-[90vh] flex flex-col">
                 {/* Header */}
                 <div className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white p-6 rounded-t-xl flex justify-between items-center">
                     <div className="flex items-center gap-3">
@@ -129,12 +144,12 @@ const BulkPromoteStudentModal: React.FC<BulkPromoteStudentModalProps> = ({
                 {/* Content */}
                 <div className="flex-1 overflow-hidden">
                     <form onSubmit={handleSubmit} className="p-6 space-y-6">
-                        {/* ✅ 3 INPUT FIELDS - Source + Target Class/Section */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-gray-50 p-6 rounded-xl">
+                        {/* ✅ 4 INPUT FIELDS - Source Class/Section + Target Class/Section */}
+                        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 bg-gray-50 p-6 rounded-xl">
                             {/* Source Class */}
                             <div>
                                 <label className="block text-sm font-semibold text-gray-900 mb-2">
-                                    Source Class * <span className="text-xs text-gray-500">(Current students)</span>
+                                    Source Class * <span className="text-xs text-gray-500">(Current)</span>
                                 </label>
                                 <select
                                     value={formData.source_class_id}
@@ -151,10 +166,31 @@ const BulkPromoteStudentModal: React.FC<BulkPromoteStudentModalProps> = ({
                                 </select>
                             </div>
 
+                            {/* Source Section */}
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                                    Source Section * <span className="text-xs text-gray-500">(Current)</span>
+                                </label>
+                                <select
+                                    value={formData.source_section_id}
+                                    onChange={(e) => handleSourceSectionChange(e.target.value)}
+                                    disabled={!formData.source_class_id || sourceSections.length === 0}
+                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                    required
+                                >
+                                    <option value="">Select source section</option>
+                                    {sourceSections.map((section: any) => (
+                                        <option key={section.id} value={section.id}>
+                                            {section.section_name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
                             {/* Target Class */}
                             <div>
                                 <label className="block text-sm font-semibold text-gray-900 mb-2">
-                                    Target Class * <span className="text-xs text-gray-500">(Promote to)</span>
+                                    Target Class * <span className="text-xs text-gray-500">(Destination)</span>
                                 </label>
                                 <select
                                     value={formData.target_class_id}
@@ -201,7 +237,8 @@ const BulkPromoteStudentModal: React.FC<BulkPromoteStudentModalProps> = ({
                                         <div className="flex items-center gap-2">
                                             <Filter className="w-5 h-5 text-indigo-600" />
                                             <span className="font-semibold text-gray-900">
-                                                Students from {classes.find(c => c.id === formData.source_class_id)?.name || 'No class selected'} (
+                                                Students from {classes.find(c => c.id === formData.source_class_id)?.name} -
+                                                {sourceSections.find(s => s.id === formData.source_section_id)?.section_name || ''} (
                                                 {selectedStudentIds.length} / {filteredStudents.length})
                                             </span>
                                         </div>
@@ -222,9 +259,9 @@ const BulkPromoteStudentModal: React.FC<BulkPromoteStudentModalProps> = ({
                                 <div className="max-h-96 overflow-y-auto">
                                     {filteredStudents.length === 0 ? (
                                         <div className="p-8 text-center text-gray-500">
-                                            {formData.source_class_id
-                                                ? 'No students found in source class'
-                                                : 'Select source class to see students'
+                                            {formData.source_class_id && formData.source_section_id
+                                                ? 'No students found in source class/section'
+                                                : 'Select source class/section to see students'
                                             }
                                         </div>
                                     ) : (
@@ -266,7 +303,7 @@ const BulkPromoteStudentModal: React.FC<BulkPromoteStudentModalProps> = ({
                             </button>
                             <button
                                 type="submit"
-                                disabled={promoteMutation.isPending || selectedStudentIds.length === 0 || !formData.source_class_id || !formData.target_class_id || !formData.target_section_id}
+                                disabled={promoteMutation.isPending || selectedStudentIds.length === 0 || !formData.source_class_id || !formData.source_section_id || !formData.target_class_id || !formData.target_section_id}
                                 className="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-blue-700 disabled:opacity-50 flex items-center gap-2 transition-all"
                             >
                                 {promoteMutation.isPending ? (

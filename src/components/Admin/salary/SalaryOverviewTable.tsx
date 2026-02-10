@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import type { Salary } from "../../../types/fee-salary.types";
 import EmptyState from "../../../common/EmptyState";
-import { DollarSign } from "lucide-react";
+import { HandCoins } from "lucide-react";
 import { getRoleAction } from "../../../lib/utils";
 import { Pagination } from "../../../common/Pagination";
 
@@ -25,7 +25,7 @@ export const SalaryOverviewTable: React.FC<SalaryOverviewTableProps> = ({ salary
                 <EmptyState
                     title="No salary structure found"
                     description="There are currently no any salary structure in the system."
-                    icon={<DollarSign className="w-14 h-14" />}
+                    icon={<HandCoins className="w-14 h-14" />}
                 />
             ) : (
                 <div className="overflow-x-auto">

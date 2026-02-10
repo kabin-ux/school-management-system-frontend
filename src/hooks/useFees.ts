@@ -11,6 +11,7 @@ export const useMySchoolFeesStructures = () => {
             const res = await api.get('/fees/my-school');
             return res.data.data as FeeStructureAttributes[];
         },
+        retry: 2
     });
 };
 
@@ -22,6 +23,7 @@ export const useAllSchoolsFeesStructures = () => {
             const res = await api.get('/fees');
             return res.data.data as FeeStructureAttributes[];
         },
+        retry: 2
     });
 };
 
@@ -34,6 +36,7 @@ export const useFeeStructureById = (id?: number) => {
             return res.data.data.feesStructure as FeeStructureAttributes;
         },
         enabled: !!id, // only fetch if id exists
+        retry: 2
     });
 };
 

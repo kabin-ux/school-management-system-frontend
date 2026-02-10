@@ -16,6 +16,7 @@ export const useAllSubjects = () => {
             const res = await api.get("/subject");
             return res.data.data as Subject[];
         },
+        retry: 2
     });
 };
 
@@ -28,6 +29,7 @@ export const useSubjectsByClass = (classId: string) => {
             return res.data.data as Subject[];
         },
         enabled: !!classId,
+        retry: 2
     });
 };
 
@@ -40,6 +42,7 @@ export const useSubjectById = (id: string) => {
             return res.data.data as Subject;
         },
         enabled: !!id,
+        retry: 2
     });
 };
 
@@ -52,6 +55,7 @@ export const useSearchSubjects = (query: string) => {
             return res.data.data as Subject[];
         },
         enabled: !!query,
+        retry: 2
     });
 };
 
@@ -173,5 +177,6 @@ export const useSubjectDashboardData = (classId: string) => {
             const res = await api.get(`/dashboard/subject/${classId}`);
             return res.data.data;
         },
+        retry: 2
     });
 };

@@ -14,6 +14,7 @@ export const useSchools = () => {
             });
             return res.data.data.schools;
         },
+        retry: 2
     });
 };
 
@@ -28,6 +29,7 @@ export const useSchoolDetails = (id: string) => {
             return res.data.data;
         },
         enabled: !!id, // only run if id exists
+        retry: 2
     });
 };
 
@@ -65,7 +67,7 @@ export const useUpdateSchool = () => {
             toast.success("School updated successfully");
             queryClient.invalidateQueries({ queryKey: ["schools"] });
             queryClient.invalidateQueries({ queryKey: ["school", updatedSchool.id] });
-                        queryClient.invalidateQueries({ queryKey: ["authUser"] });
+            queryClient.invalidateQueries({ queryKey: ["authUser"] });
         },
         onError: (error: any) => {
             toast.error(error.response?.data?.error || "Failed to update school");

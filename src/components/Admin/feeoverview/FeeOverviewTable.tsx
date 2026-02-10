@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import type { FeeStructureAttributes } from "../../../types/fee-salary.types";
 import EmptyState from "../../../common/EmptyState";
-import { DollarSign } from "lucide-react";
+import { HandCoins } from "lucide-react";
 import { Pagination } from "../../../common/Pagination";
 
 interface FeeOverviewTableProps {
@@ -24,7 +24,7 @@ export const FeeOverviewTable: React.FC<FeeOverviewTableProps> = ({ feeData }) =
         <EmptyState
           title="No fee structure found"
           description="There are currently no any fee structure in the system."
-          icon={<DollarSign className="w-14 h-14" />}
+          icon={<HandCoins className="w-14 h-14" />}
         />
       ) : (
         <div className="overflow-x-auto">

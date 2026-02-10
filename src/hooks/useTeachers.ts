@@ -18,6 +18,7 @@ export const useTeachers = () => {
             const res = await api.get("/teacher");
             return res.data.data as Teacher[];
         },
+        retry: 2
     });
 };
 
@@ -29,7 +30,8 @@ export const useTeachersByClass = (sectionId: string) => {
             const res = await api.get(`/teacher/by-class/${sectionId}`);
             return res.data.data as Teacher[];
         },
-        enabled: !!sectionId
+        enabled: !!sectionId,
+        retry: 2
     });
 };
 
@@ -129,5 +131,6 @@ export const useTeacherDashboardData = () => {
             const res = await api.get("/dashboard/teacher");
             return res.data.data;
         },
+        retry: 2
     });
 };

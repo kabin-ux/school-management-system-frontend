@@ -13,6 +13,7 @@ export const useEventsBySchool = (target?: string) => {
             });
             return res.data?.data as Event[];
         },
+        retry: 2
     });
 };
 
@@ -25,6 +26,7 @@ export const useEventDetails = (id: number | string | undefined) => {
             return res.data?.data as Event;
         },
         enabled: !!id,
+        retry: 2
     });
 };
 

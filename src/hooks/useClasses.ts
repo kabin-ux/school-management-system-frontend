@@ -16,6 +16,7 @@ export const useClasses = () => {
             const res = await api.get('/class/myclasses');
             return res.data.data; // assuming backend responds with { data: [...] }
         },
+        retry: 2
     });
 };
 
@@ -28,6 +29,7 @@ export const useClassDetails = (id: string) => {
             return res.data.data;
         },
         enabled: !!id, // only fetch if ID exists
+        retry: 2
     });
 };
 
@@ -102,5 +104,6 @@ export const useClassDashboardData = () => {
             const res = await api.get("/dashboard/class");
             return res.data.data;
         },
+        retry: 2
     });
 };

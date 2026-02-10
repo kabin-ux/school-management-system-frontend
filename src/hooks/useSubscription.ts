@@ -35,8 +35,6 @@ export type RemoveSchoolFromSubscriptionDto = {
     school_id: string;
 };
 
-// QUERIES
-
 // GET /subscriptions
 export const useSubscriptionsQuery = () =>
     useQuery({
@@ -47,6 +45,7 @@ export const useSubscriptionsQuery = () =>
             );
             return data.data;
         },
+        retry: 2
     });
 
 // GET /subscriptions/:id
@@ -60,6 +59,7 @@ export const useSubscriptionQuery = (id: string | undefined) =>
             );
             return data.data;
         },
+        retry: 2
     });
 
 // MUTATIONS

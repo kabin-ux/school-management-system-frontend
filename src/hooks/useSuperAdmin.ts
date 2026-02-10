@@ -13,6 +13,7 @@ export const useSuperAdmins = () => {
             const res = await api.get("/super-admin");
             return res.data.data as SuperAdmin[];
         },
+        retry: 2
     });
 };
 
@@ -25,6 +26,7 @@ export const useSuperAdminDetails = (id: string) => {
             return res.data.data as SuperAdmin;
         },
         enabled: !!id, // only fetch if id is provided
+        retry: 2
     });
 };
 

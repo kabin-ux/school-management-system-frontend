@@ -12,6 +12,7 @@ export const useAllAccountants = () =>
             const res = await api.get("/accountant", { withCredentials: true });
             return res.data.data;
         },
+        retry: 2
     });
 
 // Fetch all accountants by school
@@ -22,6 +23,7 @@ export const useAllAccountantsBySchool = () =>
             const res = await api.get("/accountant/my-accountant");
             return res.data.data;
         },
+        retry: 2
     });
 
 // Fetch accountant details
@@ -33,6 +35,7 @@ export const useAccountantDetails = (id?: string) =>
             return res.data.data;
         },
         enabled: !!id, // only runs if ID exists
+        retry: 2
     });
 
 // Add new accountant

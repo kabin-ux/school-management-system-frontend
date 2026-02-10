@@ -16,6 +16,7 @@ export const useStudentsBySchool = () => {
       const res = await api.get("/student/by-school");
       return res.data.data as Student[];
     },
+    retry: 2
   });
 };
 
@@ -83,6 +84,7 @@ export const useStudentDashboardData = () => {
       const res = await api.get("/dashboard/school");
       return res.data.data;
     },
+    retry: 2
   });
 };
 

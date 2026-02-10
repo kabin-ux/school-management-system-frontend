@@ -31,6 +31,7 @@ export const useAttendanceReport = (
             const res = await api.get(`/attendance/report?${params}`);
             return res.data.data;
         },
+        retry: 2
     });
 };
 
@@ -42,6 +43,7 @@ export const useTeacherDailySummary = (date: string) => {
             return res.data.data;
         },
         enabled: !!date,
+        retry: 2
     });
 };
 
@@ -53,6 +55,7 @@ export const useAbsenteeAlerts = (date: string) => {
             return res.data.data;
         },
         enabled: !!date,
+        retry: 2
     });
 };
 
@@ -76,5 +79,6 @@ export const useStudentAttendanceByClassSection = (
             return res.data.data;
         },
         enabled: !!classId && !!sectionId,
+        retry: 2
     });
 };

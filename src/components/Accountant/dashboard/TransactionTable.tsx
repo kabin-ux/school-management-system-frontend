@@ -1,4 +1,4 @@
-import { DollarSign } from "lucide-react";
+import { HandCoins } from "lucide-react";
 import EmptyState from "../../../common/EmptyState";
 import type { Invoice } from "../../../types/invoice.types";
 
@@ -34,7 +34,7 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({ recentPaymen
         <EmptyState
           title="No recent transactions found"
           description="There are currently no any recent payment details in the system."
-          icon={<DollarSign className="w-14 h-14" />}
+          icon={<HandCoins className="w-14 h-14" />}
         />
       ) : (
 

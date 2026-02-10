@@ -1,4 +1,4 @@
-import { Download, DollarSign, Calendar, AlertCircle, CreditCard } from 'lucide-react';
+import { Download, HandCoins, Calendar, AlertCircle, CreditCard } from 'lucide-react';
 
 
 export default function FinancialOverview() {
@@ -17,7 +17,7 @@ export default function FinancialOverview() {
         <div className="bg-green-50 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-2">
             <div className="p-1 bg-green-100 rounded">
-              <DollarSign className="w-4 h-4 text-green-600" />
+              <HandCoins className="w-4 h-4 text-green-600" />
             </div>
             <span className="text-sm font-medium text-green-800">Paid</span>
           </div>
@@ -30,7 +30,7 @@ export default function FinancialOverview() {
         <div className="bg-purple-50 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-2">
             <div className="p-1 bg-purple-100 rounded">
-              <DollarSign className="w-4 h-4 text-purple-600" />
+              <HandCoins className="w-4 h-4 text-purple-600" />
             </div>
           </div>
           <h4 className="text-sm text-gray-600 mb-1">Total Amount Paid</h4>

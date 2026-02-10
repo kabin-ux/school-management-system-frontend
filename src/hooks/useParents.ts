@@ -6,7 +6,6 @@ export interface ParentDashboardData {
     totalParents: number,
     linkedStudents: number,
     totalParentRegisterOnThisMonth: number
-
 }
 
 // Fetch All Parents
@@ -17,6 +16,7 @@ export const useParents = () => {
             const res = await api.get("/parent");
             return res.data?.data || [];
         },
+        retry: 2
     });
 };
 
@@ -29,6 +29,7 @@ export const useParentsByClass = (classId: number | string | undefined) => {
             return res.data?.data || [];
         },
         enabled: !!classId, // Only fetch when classId exists
+        retry: 2
     });
 };
 
@@ -41,6 +42,7 @@ export const useParentDetails = (id: number | string | undefined) => {
             return res.data?.data;
         },
         enabled: !!id,
+        retry: 2
     });
 };
 
@@ -124,6 +126,7 @@ export const useParentDashboardData = () => {
             const res = await api.get("/dashboard/parent");
             return res.data.data;
         },
+        retry: 2
     });
 };
 

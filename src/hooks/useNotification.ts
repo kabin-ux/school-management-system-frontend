@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import api from "../lib/axios";
 import type { NoticeType, NotificationFormData } from "../types/Notification";
 
-/*                                   Types                                    */
+/* Types */
 
 export interface Notice {
     id: string;
@@ -20,7 +20,7 @@ export interface Notice {
     publish_by?: string;
 }
 
-/*                                   Queries                                  */
+/* Queries*/
 
 export const useAllNotices = () => {
     return useQuery<Notice[], Error>({
@@ -29,6 +29,7 @@ export const useAllNotices = () => {
             const res = await api.get("/notice");
             return res.data.data;
         },
+        retry: 2
     });
 };
 
@@ -40,6 +41,7 @@ export const useNoticeDetails = (id: string) => {
             return res.data.data;
         },
         enabled: !!id,
+        retry: 2
     });
 };
 
@@ -50,6 +52,7 @@ export const useMyNotices = () => {
             const res = await api.get("/notice/me");
             return res.data.data;
         },
+        retry: 2
     });
 };
 
@@ -60,6 +63,7 @@ export const useSchoolNotices = () => {
             const res = await api.get("/notice/student");
             return res.data.data;
         },
+        retry: 2
     });
 };
 
@@ -70,10 +74,11 @@ export const useMySchoolNotices = () => {
             const res = await api.get("/notice/my-school");
             return res.data.data;
         },
+        retry: 2
     });
 };
 
-/*                                  Mutations                                 */
+/*Mutations                                 */
 
 export const useSendNoticeForStudent = () => {
     const queryClient = useQueryClient();

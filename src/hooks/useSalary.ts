@@ -11,6 +11,7 @@ export const useMySchoolSalaryStructures = () => {
             const res = await api.get("/salary/my-school");
             return res.data.data as Salary[];
         },
+        retry: 2
     });
 };
 
@@ -23,6 +24,7 @@ export const useSalaryStructureById = (id?: number) => {
             return res.data.data as Salary;
         },
         enabled: !!id, // only run when id exists
+        retry: 2
     });
 };
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import EmptyState from "../../../common/EmptyState";
-import { DollarSign, Edit2 } from "lucide-react";
+import { HandCoins, Edit2 } from "lucide-react";
 import { Pagination } from "../../../common/Pagination";
 import type { PartnerSchoolPayment } from "../../../hooks/useSubscriptionPayment";
 
@@ -30,7 +30,7 @@ export const InvoiceOverviewTable: React.FC<InvoiceOverviewTableProps> = ({
         <EmptyState
           title="No payments found"
           description="There are currently no subscription payments in the system."
-          icon={<DollarSign className="w-14 h-14" />}
+          icon={<HandCoins className="w-14 h-14" />}
         />
       ) : (
         <div className="overflow-x-auto">

@@ -37,6 +37,7 @@ export const useSectionsByClass = (classId: string | number | null) => {
             return res.data.data;
         },
         enabled: !!classId, // only fetch if classId exists
+        retry: 2
     });
 };
 
@@ -49,6 +50,7 @@ export const useSectionDetails = (id: number | null) => {
             return res.data.data;
         },
         enabled: !!id, // only fetch if id exists
+        retry: 2
     });
 };
 
@@ -98,5 +100,6 @@ export const useSectionDashboardData = (classId: string) => {
             const res = await api.get(`/dashboard/section/${classId}`);
             return res.data.data;
         },
+        retry: 2
     });
 };

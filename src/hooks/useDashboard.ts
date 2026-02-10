@@ -84,6 +84,7 @@ export const useSchoolAdminDashboard = () => {
       return res.data.data;
     },
     staleTime: 1000 * 60 * 5, // cache for 5 minutes
+    retry: 2
   });
 };
 
@@ -95,6 +96,7 @@ export const useSchoolAdminDashboardLineChart = () => {
       return res.data.data;
     },
     staleTime: 1000 * 60 * 5, // cache for 5 minutes
+    retry: 2
   });
 };
 
@@ -106,6 +108,7 @@ export const useSchoolAdminDashboardPieChart = () => {
       return res.data.data;
     },
     staleTime: 1000 * 60 * 5, // cache for 5 minutes
+    retry: 2
   });
 };
 
@@ -118,6 +121,7 @@ export const useSuperAdminDashboard = () => {
       return res.data.data;
     },
     staleTime: 1000 * 60 * 5, // cache for 5 minutes
+    retry: 2
   });
 };
 
@@ -129,6 +133,7 @@ export const useAccountantDashboard = () => {
       return res.data.data;
     },
     staleTime: 1000 * 60 * 5, // cache for 5 minutes
+    retry: 2
   });
 };
 
@@ -148,6 +153,7 @@ export const useRecentPayments = (limit = 10) => {
       const res = await api.get(`/payment/recent?limit=${limit}`);
       return res.data.data;
     },
+    retry: 2
   });
 };
 
@@ -158,5 +164,6 @@ export const useRecentActivity = () => {
       const res = await api.get(`/logs/my-school`);
       return res.data.data;
     },
+    retry: 2
   });
 };

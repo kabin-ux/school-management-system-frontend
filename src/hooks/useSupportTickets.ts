@@ -19,6 +19,7 @@ export const useSupportTickets = () => {
       const res = await api.get("/support");
       return res.data.data;
     },
+    retry: 2
   });
 };
 
@@ -31,6 +32,7 @@ export const useSupportTicketById = (id: string) => {
       return res.data.data;
     },
     enabled: !!id,
+    retry: 2
   });
 };
 
@@ -43,6 +45,7 @@ export const useSupportTicketsBySchool = (id: string) => {
       const res = await api.get(url);
       return res.data.data;
     },
+    retry: 2
   });
 };
 
@@ -166,6 +169,7 @@ export const useSupportTicketSuperAdminDashboardData = () => {
       const res = await api.get("/dashboard/support-ticket");
       return res.data.data;
     },
+    retry: 2
   });
 };
 
@@ -176,5 +180,6 @@ export const useSupportTicketAdminDashboardData = () => {
       const res = await api.get("/dashboard/support-ticket/my-school");
       return res.data.data;
     },
+    retry: 2
   });
 };

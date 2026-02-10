@@ -1,5 +1,5 @@
 import { type FC } from 'react';
-import { BookOpen } from 'lucide-react';
+import logo from '../../assets/logo onlt with out bg.png';
 
 const Header: FC = () => {
   return (
@@ -7,10 +7,7 @@ const Header: FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-6">
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-[#CBD72B] rounded-full flex items-center justify-center">
-              <BookOpen className="w-5 h-5 text-white" />
-            </div>
-            <span className="ml-2 text-xl font-bold text-[#CBD72B]">NAME</span>
+            <img src={logo} alt="logo" className="w-24 h-auto" />
           </div>
           <nav className="hidden md:flex space-x-8">
             <a href="#" className="text-[#CBD72B] hover:text-[#A8B122]">Home</a>

@@ -7,7 +7,7 @@ import {
   ShieldUser,
   Menu,
   X,
-  DollarSign,
+  HandCoins,
   PackageCheck,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -20,7 +20,7 @@ const sidebarItems: SidebarItem[] = [
   { icon: HeadphonesIcon, label: "Support Console", path: "/super-admin/support" },
   { icon: ShieldUser, label: "Super Admins", path: "/super-admin/super-admins" },
   { icon: PackageCheck, label: "Subscription", path: "/super-admin/subscription" },
-  { icon: DollarSign, label: "Invoice", path: "/super-admin/invoice" },
+  { icon: HandCoins, label: "Invoice", path: "/super-admin/invoice" },
 ];
 
 export const Sidebar: React.FC = () => {

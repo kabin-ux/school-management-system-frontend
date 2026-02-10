@@ -19,6 +19,7 @@ export const useGetRoles = () => {
             const res = await api.get("/role");
             return res.data.data; // matches ApiResponse
         },
+        retry: 2
     });
 };
 

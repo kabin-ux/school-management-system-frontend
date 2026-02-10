@@ -94,6 +94,7 @@ export const useSubscriptionPaymentsQuery = (date?: string) =>
       );
       return data.data;
     },
+    retry: 2
   });
 
 export const useSubscriptionPaymentByIdQuery = (
@@ -109,6 +110,7 @@ export const useSubscriptionPaymentByIdQuery = (
       );
       return data.data;
     },
+    retry: 2
   });
 
 export const useDeleteSubscriptionPaymentMutation = () => {
@@ -147,6 +149,7 @@ export const useSchoolWiseTotalPaymentsQuery = (
       );
       return data.data;
     },
+    retry: 2
   });
 
 export const useClearSubscriptionPaymentMutation = () => {
@@ -182,4 +185,5 @@ export const useMySchoolTotalPaymentsQuery = (
       );
       return data.data;
     },
+    retry: 2
   });

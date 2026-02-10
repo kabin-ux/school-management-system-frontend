@@ -1,5 +1,5 @@
 import React from 'react';
-import { DollarSign, CreditCard, AlertCircle, Clock } from 'lucide-react';
+import { HandCoins, CreditCard, AlertCircle, Clock } from 'lucide-react';
 
 export const FeeOverviewStats: React.FC = () => {
   return (
@@ -12,7 +12,7 @@ export const FeeOverviewStats: React.FC = () => {
             <p className="text-sm text-green-600 mt-1">+12.5% from last month</p>
           </div>
           <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-            <DollarSign className="w-6 h-6 text-blue-600" />
+            <HandCoins className="w-6 h-6 text-blue-600" />
           </div>
         </div>
       </div>

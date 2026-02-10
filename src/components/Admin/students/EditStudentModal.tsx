@@ -314,7 +314,7 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
                   <option value="">Select transportation</option>
                   {transportations.map((transportation) => (
                     <option key={transportation.id} value={transportation.id}>
-                      {transportation.driverName}
+                      {transportation.last_location}
                     </option>
                   ))}
                 </select>

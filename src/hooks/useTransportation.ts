@@ -16,6 +16,7 @@ export const useAllTransportation = () => {
             const res = await api.get("/transportation");
             return res.data.data;
         },
+        retry: 2
     });
 };
 
@@ -28,6 +29,7 @@ export const useTransportationById = (id?: number) => {
             return res.data.data;
         },
         enabled: !!id, // fetch only if id is provided
+        retry: 2
     });
 };
 
@@ -96,6 +98,7 @@ export const useTransportationDashboardData = () => {
             const res = await api.get("/dashboard/transportation");
             return res.data.data;
         },
+        retry: 2
     });
 };
 

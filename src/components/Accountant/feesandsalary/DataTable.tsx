@@ -1,7 +1,7 @@
 import React from 'react';
 import type { FeeStructureAttributes, Salary, ViewType } from '../../../types/fee-salary.types';
 import { StatusBadge } from './StatusBadge';
-import { DollarSign, Edit, Trash2 } from 'lucide-react';
+import { Edit, HandCoins, Trash2 } from 'lucide-react';
 import EmptyState from '../../../common/EmptyState';
 import { getRoleAction } from '../../../lib/utils';
 
@@ -49,13 +49,13 @@ export const DataTable: React.FC<DataTableProps> = ({
             <EmptyState
               title="No fee structure found"
               description="There are currently no any fee structure in the system. Click on button above to create a fee structure"
-              icon={<DollarSign className="w-14 h-14" />}
+              icon={<HandCoins className="w-14 h-14" />}
             />
           ) : (
             <EmptyState
               title="No salary structure found"
               description="There are currently no any salary structure in the system. Click on button above to create a salary structure"
-              icon={<DollarSign className="w-14 h-14" />}
+              icon={<HandCoins className="w-14 h-14" />}
             />
           ))
         ) : (

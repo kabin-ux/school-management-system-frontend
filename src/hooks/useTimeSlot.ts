@@ -15,6 +15,7 @@ export const useTimeSlotsByTimetable = (timetableId: string) => {
             return res.data.data;
         },
         enabled: !!timetableId, // Only run when timetableId exists
+        retry: 2
     });
 };
 
@@ -27,10 +28,9 @@ export const useTimeSlotById = (id: string) => {
             return res.data.data;
         },
         enabled: !!id,
+        retry: 2
     });
 };
-
-// MUTATION HOOKS
 
 // Create new time slot
 export const useCreateTimeSlot = () => {

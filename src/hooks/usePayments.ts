@@ -50,6 +50,7 @@ export const useAllPayments = (filters: PaymentsFilters = {}) => {
       });
       return res.data.data;
     },
+    retry: 2
   });
 };
 
@@ -68,6 +69,7 @@ export const useAllSalaryPayments = (filters: SalaryFilters) => {
       });
       return res.data.data as SalaryPaymentAttributes[];
     },
+    retry: 2
   });
 };
 
@@ -77,11 +79,8 @@ export const useClearSalaryPayment = () => {
   return useMutation({
     mutationFn: async (id: string) => {
       const res = await api.put(`/salary-payment/clear-payment/`,
-        {
-          id
-        },
+        { id },
       );
-
       // if you want the updated payment back, return res.data.data
       return res.data.data;
     },
@@ -110,6 +109,7 @@ export const usePaymentDetails = (id: string) => {
       return res.data.data;
     },
     enabled: !!id, // only fetch if ID exists
+    retry: 2
   });
 };
 
@@ -122,6 +122,7 @@ export const useStudentFeesInfo = (studentId: string) => {
       return res.data.data;
     },
     enabled: !!studentId,
+    retry: 2
   });
 };
 
