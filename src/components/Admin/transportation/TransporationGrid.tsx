@@ -1,4 +1,4 @@
-import { Phone, MapPin, Truck, Users, DollarSign, Trash2, Edit } from 'lucide-react';
+import { Phone, MapPin, Truck, Users, Trash2, Edit, HandCoins } from 'lucide-react';
 import EmptyState from '../../../common/EmptyState';
 import type { Transportation } from '../../../types/admin-transportation.types';
 import { useState } from 'react';
@@ -64,7 +64,7 @@ export default function TransportationGrid({ transportations, onEdit, onDelete }
                     <span>Capacity: {transportation.capacity}</span>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
-                    <DollarSign className="w-4 h-4" />
+                    <HandCoins className="w-4 h-4" />
                     <span>Price: {transportation.price}</span>
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">

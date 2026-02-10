@@ -57,7 +57,7 @@ export const useUpdateSection = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (updateData: { id: number; section_name: string }) => {
-            const res = await api.put('/section', updateData);
+            const res = await api.put(`/section/${updateData.id}`, updateData);
             return res.data.data;
         },
         onSuccess: (data) => {
@@ -77,7 +77,7 @@ export const useDeleteSection = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (id: number) => {
-            await api.delete('/section', { data: { id } });
+            await api.delete(`/section/${id}`);
             return id;
         },
         onSuccess: () => {

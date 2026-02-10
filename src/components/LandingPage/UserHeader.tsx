@@ -13,8 +13,8 @@ const UserHeader: React.FC = () => {
           <nav className="hidden md:flex space-x-8">
             <a href="#" className="text-gray-600 hover:text-lime-500 font-medium">Home</a>
             <a href="#" className="text-gray-600 hover:text-lime-500 font-medium">Features</a>
-            <a href="#" className="text-gray-600 hover:text-lime-500 font-medium">Community</a>
-            <a href="#" className="text-gray-600 hover:text-lime-500 font-medium">FAQ</a>
+             <a href="/terms&conditions" className="text-[#CBD72B] hover:text-[#A8B122]">Terms & Conditions</a>
+            <a href="/privacy-policy" className="text-[#CBD72B] hover:text-[#A8B122]">Privacy Policy</a>
           </nav>
           <button className="bg-lime-500 text-white px-6 py-2 rounded-full hover:bg-lime-600 transition-colors font-medium">
             Get Started

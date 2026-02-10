@@ -42,6 +42,8 @@ import RoleManagement from './pages/Admin/roles/RoleManagement';
 import { Subscriptions } from './pages/SuperAdmin/subscription/Subscription';
 import { SubscriptionDetails } from './components/SuperAdmin/subscription/SubscriptionDetails';
 import InvoiceOverview from './pages/SuperAdmin/invoice/InvoiceOvervew';
+import PrivacyPolicy from './components/LandingPage/PrivacyPolicy';
+import TermsAndConditions from './components/LandingPage/Terms&Conditions';
 
 function App() {
     return (
@@ -51,6 +53,8 @@ function App() {
                 <Routes>
                     <Route path='/' element={<UserLandingPage />} />
                     <Route path='/admin' element={<AdminLandingPage />} />
+                    <Route path='/terms&conditions' element={<TermsAndConditions />} />
+                    <Route path='/privacy-policy' element={<PrivacyPolicy />} />
                     <Route path='/super-admin-login' element={<SuperAdminLoginPage />} />
                     <Route path='/admin-login' element={<AdminLoginPage />} />
                     <Route path='/accountant-login' element={<AccountantLoginPage />} />

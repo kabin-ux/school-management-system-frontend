@@ -15,8 +15,8 @@ const Header: FC = () => {
           <nav className="hidden md:flex space-x-8">
             <a href="#" className="text-[#CBD72B] hover:text-[#A8B122]">Home</a>
             <a href="#" className="text-[#CBD72B] hover:text-[#A8B122]">Overview</a>
-            <a href="#" className="text-[#CBD72B] hover:text-[#A8B122]">Testimonials</a>
-            <a href="#" className="text-[#CBD72B] hover:text-[#A8B122]">FAQ</a>
+            <a href="/terms&conditions" className="text-[#CBD72B] hover:text-[#A8B122]">Terms & Conditions</a>
+            <a href="/privacy-policy" className="text-[#CBD72B] hover:text-[#A8B122]">Privacy Policy</a>
           </nav>
           <button className="bg-[#CBD72B] text-white font-bold px-6 py-2 rounded-full hover:bg-[#A8B122] transition-colors">
             Get Started

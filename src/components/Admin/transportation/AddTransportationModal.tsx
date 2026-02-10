@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { X, Phone, Hash, DollarSign, MapPin, Car, CheckCircle } from 'lucide-react';
+import { X, Phone, Hash, MapPin, Car, CheckCircle, HandCoins } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { transportationSchema, type TransportationSchema } from '../../../zod-schema/transportation';
@@ -131,7 +131,7 @@ const AddTransportationModal: React.FC<AddTransportationModalProps> = ({
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 <Hash className="w-4 h-4 inline mr-1" />
-                Capacity <span className="text-red-500">*</span>
+                Seat Capacity <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
@@ -144,12 +144,12 @@ const AddTransportationModal: React.FC<AddTransportationModalProps> = ({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                <DollarSign className="w-4 h-4 inline mr-1" />
+                <HandCoins className="w-4 h-4 inline mr-1" />
                 Price <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
-                {...register("price" , { valueAsNumber: true })}
+                {...register("price", { valueAsNumber: true })}
                 className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.price ? "border-red-500" : "border-gray-300"}`}
                 placeholder="e.g., 5000"
               />
