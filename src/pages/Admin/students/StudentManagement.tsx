@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ArrowUp, UserPlus } from 'lucide-react';
+import { ArrowUp, ShieldCheck, UserPlus } from 'lucide-react';
 import { StudentStats } from '../../../components/Admin/students/StudentStats';
 import StudentFilters from '../../../components/Admin/students/StudentFilters';
 import StudentTable from '../../../components/Admin/students/StudentTable';
@@ -12,6 +12,7 @@ import { useAddStudent, useDeleteStudent, useStudentDashboardData, useStudentsBy
 import { useClasses } from '../../../hooks/useClasses';
 import { useAllTransportation } from '../../../hooks/useTransportation';
 import BulkPromoteStudentModal from '../../../components/Admin/students/BulkPromoteStudentModal';
+import BulkStudentStatusUpdateModal from '../../../components/Admin/students/BulkStatusUpdateModal';
 
 export interface FilterValues {
     search: string;
@@ -30,6 +31,7 @@ export default function StudentManagement() {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
     const [isBulkPromoteModalOpen, setIsBulkPromoteModalOpen] = useState(false);
+    const [isStatusUpdateModalOpen, setIsStatusUpdateModalOpen] = useState(false);
 
     const { data: students = [], isLoading: loading } = useStudentsBySchool();
     const { data: classes = [] } = useClasses();
@@ -105,6 +107,13 @@ export default function StudentManagement() {
                                     <ArrowUp className="w-4 h-4" />
                                     Bulk Promote
                                 </button>
+                                <button
+                                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors font-medium flex items-center gap-2"
+                                    onClick={() => setIsStatusUpdateModalOpen(true)}
+                                >
+                                    <ShieldCheck className="w-4 h-4" />
+                                    Bulk Status Update
+                                </button>
                             </div>
                         </div>
 
@@ -154,6 +163,13 @@ export default function StudentManagement() {
                             onClose={() => setIsBulkPromoteModalOpen(false)}
                             classes={classes}
                             students={students} // All students data
+                        />
+
+                        <BulkStudentStatusUpdateModal
+                            isOpen={isStatusUpdateModalOpen}
+                            onClose={() => setIsStatusUpdateModalOpen(false)}
+                            students={students}
+                            classes={classes}
                         />
                     </div>
                 </main>

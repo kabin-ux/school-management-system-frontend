@@ -1,15 +1,18 @@
 import React from 'react';
 import type { FilterValues } from '../../../pages/Admin/salaryoverview/SalaryOverview';
 import { Search } from 'lucide-react';
+import type { Role } from '../roles/AddRoleModal';
 
 interface SalaryOverviewFilterProps {
   filters: FilterValues
   onFiltersChange: (filters: FilterValues) => void;
+  roles: Role[];
 }
 
 export const SalaryOverviewFilter: React.FC<SalaryOverviewFilterProps> = ({
   filters,
-  onFiltersChange
+  onFiltersChange,
+  roles
 }) => {
   const handleFilterChange = (key: keyof FilterValues, value: string) => {
     onFiltersChange({ ...filters, [key]: value });
@@ -37,9 +40,9 @@ export const SalaryOverviewFilter: React.FC<SalaryOverviewFilterProps> = ({
             className="w-full px-3 py-2 border border-gray-300 outline-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="">Role</option>
-            <option value="teacher">Teacher</option>
-            <option value="accountant">Accountant</option>
-            <option value="staff">Staff</option>
+            {roles.map((role, index) => (
+              <option key={index} value={role.name}>{role.name}</option>
+            ))}
           </select>
         </div>
       </div>

@@ -1,30 +1,20 @@
-import React from 'react';
-import { FaApple, FaGooglePlay } from 'react-icons/fa';
-
-const DownloadSection: React.FC = () => {
+const DownloadCTA = () => {
   return (
-    <section className="bg-gradient-to-br bg-[#CED327] py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-4xl font-bold text-white mb-4">
-          Download The Education App
-        </h2>
-        <p className="text-white text-lg mb-8 opacity-90">
-          Begin your app start collecting to new things and new experience
-        </p>
-        
-        <div className="flex justify-center space-x-4">
-          <button className="bg-black text-white px-8 py-4 rounded-lg flex items-center space-x-3 hover:bg-gray-800 transition-colors">
-            <FaGooglePlay className="w-8 h-8" />
-            <div className="text-left">
-              <div className="text-xs opacity-75">GET IT ON</div>
-              <div className="font-semibold">Google Play</div>
+    <section className="py-20 px-4">
+      <div className="max-w-5xl mx-auto bg-[#F3F0FF] rounded-[40px] p-12 text-center border-8 border-white shadow-xl">
+        <h2 className="text-3xl font-bold text-gray-800 mb-4">Download The Gurukul-Setu SMS App</h2>
+        <p className="text-gray-500 mb-8">Register as Student, Teacher, Parents and get connected with your school virtually.</p>
+        <div className="flex gap-4 mt-8 justify-center">
+          <button className="bg-black text-white px-6 py-2 rounded-xl flex items-center gap-3 transition-transform hover:scale-105">
+            <div className="text-left leading-tight">
+              <p className="text-[10px] uppercase opacity-70">Get it on</p>
+              <p className="text-lg font-bold">Google Play</p>
             </div>
           </button>
-          <button className="bg-black text-white px-8 py-4 rounded-lg flex items-center space-x-3 hover:bg-gray-800 transition-colors">
-            <FaApple className="w-8 h-8" />
-            <div className="text-left">
-              <div className="text-xs opacity-75">Download on the</div>
-              <div className="font-semibold">App Store</div>
+          <button className="bg-black text-white px-6 py-2 rounded-xl flex items-center gap-3 transition-transform hover:scale-105">
+            <div className="text-left leading-tight">
+              <p className="text-[10px] uppercase opacity-70">Download on the</p>
+              <p className="text-lg font-bold">App Store</p>
             </div>
           </button>
         </div>
@@ -33,4 +23,4 @@ const DownloadSection: React.FC = () => {
   );
 };
 
-export default DownloadSection;
+export default DownloadCTA;

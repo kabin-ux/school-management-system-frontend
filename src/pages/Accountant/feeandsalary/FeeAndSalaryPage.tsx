@@ -19,6 +19,7 @@ import { useAllTransportation } from '../../../hooks/useTransportation';
 import { useAllAccountantsBySchool } from '../../../hooks/useAccountant';
 import type { FeeStructure } from '../../../zod-schema/fees';
 import { useCreatePayment, useCreateSalaryPayment } from '../../../hooks/usePayments';
+import { useGetRoles } from '../../../hooks/useRoles';
 
 export default function FeeAndSalaryPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,6 +47,7 @@ export default function FeeAndSalaryPage() {
     const { data: transportations = [] } = useAllTransportation();
     const { data: teachers = [] } = useTeachers();
     const { data: accountantBySchool = [] } = useAllAccountantsBySchool();
+    const { data: roles = [] } = useGetRoles();
 
     const {
         activeView,
@@ -162,6 +164,7 @@ export default function FeeAndSalaryPage() {
 
                 <FilterSection
                     classes={classes}
+                    roles={roles}
                     activeView={activeView}
                     filters={filters}
                     onViewChange={handleViewChange}
@@ -252,6 +255,7 @@ export default function FeeAndSalaryPage() {
                     {/* Filters */}
                     <div className="mb-6 overflow-x-auto">
                         <FilterSection
+                            roles={roles}
                             classes={classes}
                             activeView={activeView}
                             filters={filters}

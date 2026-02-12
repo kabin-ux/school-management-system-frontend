@@ -3,10 +3,16 @@ import api from "../lib/axios";
 import toast from "react-hot-toast";
 
 // Local storage helpers
-const saveAuthData = (data: any, role: string) => {
+const saveAuthData = (data: any, role: string, rememberMe: boolean) => {
     localStorage.setItem("auth", JSON.stringify(data.data));
     localStorage.setItem("token", data.data.accessToken);
     localStorage.setItem("role", role);
+
+    if (rememberMe) {
+        localStorage.setItem("rememberMe", "true");
+    } else {
+        localStorage.removeItem("rememberMe");
+    }
 };
 
 const clearAuthData = () => {
@@ -20,17 +26,17 @@ export const useLoginSuperAdmin = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (credentials: { email: string; password: string }) => {
-            const res = await api.post("/super-admin/login", credentials);
-            return res.data;
+        mutationFn: async ({ email, password, rememberMe }: { email: string; password: string; rememberMe: boolean }) => {
+            const res = await api.post("/super-admin/login", { email, password });
+            return { data: res.data, rememberMe };
         },
-        onSuccess: (data) => {
+        onSuccess: (result) => {
             toast.success("Super Admin logged in successfully");
-            saveAuthData(data, "superadmin");
+            saveAuthData(result.data, "superadmin", result.rememberMe);
             queryClient.invalidateQueries({ queryKey: ["authUser"] });
         },
         onError: (error: any) => {
-            toast.error(error.response?.data?.error.password || "Failed to login super admin");
+            toast.error(error.response?.data?.error?.password || "Failed to login super admin");
         },
     });
 };
@@ -40,32 +46,17 @@ export const useLoginAdmin = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({
-            email,
-            password,
-            rememberMe,
-        }: {
-            email: string;
-            password: string;
-            rememberMe: boolean;
-        }) => {
+        mutationFn: async ({ email, password, rememberMe }: { email: string; password: string; rememberMe: boolean }) => {
             const res = await api.post("/school/login", { email, password });
-
-            if (rememberMe) {
-                localStorage.setItem("rememberMe", "true");
-            } else {
-                localStorage.removeItem("rememberMe");
-            }
-
-            return res.data;
+            return { data: res.data, rememberMe };
         },
-        onSuccess: (data) => {
+        onSuccess: (result) => {
             toast.success("Admin logged in successfully");
-            saveAuthData(data, "admin");
+            saveAuthData(result.data, "admin", result.rememberMe);
             queryClient.invalidateQueries({ queryKey: ["authUser"] });
         },
         onError: (error: any) => {
-            toast.error(error.response?.data?.error.password || "Failed to login admin");
+            toast.error(error.response?.data?.error?.password || "Failed to login admin");
         },
     });
 };
@@ -75,17 +66,17 @@ export const useLoginAccountant = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (credentials: { email: string; password: string }) => {
-            const res = await api.post("/accountant/login", credentials);
-            return res.data;
+        mutationFn: async ({ email, password, rememberMe }: { email: string; password: string; rememberMe: boolean }) => {
+            const res = await api.post("/accountant/login", { email, password });
+            return { data: res.data, rememberMe };
         },
-        onSuccess: (data) => {
+        onSuccess: (result) => {
             toast.success("Accountant logged in successfully");
-            saveAuthData(data, "accountant");
+            saveAuthData(result.data, "accountant", result.rememberMe);
             queryClient.invalidateQueries({ queryKey: ["authUser"] });
         },
         onError: (error: any) => {
-            toast.error(error.response?.data?.error.password || "Failed to login accountant");
+            toast.error(error.response?.data?.error?.password || "Failed to login accountant");
         },
     });
 };

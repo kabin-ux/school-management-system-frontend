@@ -6,6 +6,7 @@ import { SalaryOverviewHeader } from '../../../components/Admin/salary/SalaryOve
 import { SalaryOverviewFilter } from '../../../components/Admin/salary/SalaryOverviewFilters';
 import { useMySchoolSalaryStructures } from '../../../hooks/useSalary';
 import type { Salary } from '../../../types/fee-salary.types';
+import { useGetRoles } from '../../../hooks/useRoles';
 
 export interface FilterValues {
     search: string;
@@ -18,6 +19,7 @@ const SalaryOverview: React.FC = () => {
         role: '',
     });
     const { data: salaryStructures = [] } = useMySchoolSalaryStructures();
+    const { data: roles = [] } = useGetRoles();
 
     const filteredSalaryStructure = useMemo(() => {
         return salaryStructures.filter((salaryStructure: Salary) => {
@@ -44,6 +46,7 @@ const SalaryOverview: React.FC = () => {
                         <SalaryOverviewFilter
                             filters={filters}
                             onFiltersChange={setFilters}
+                            roles={roles}
                         />
                         {/* <SalaryOverviewStats /> */}
                         <SalaryOverviewTable salaryData={filteredSalaryStructure} />

@@ -3,8 +3,10 @@ import { Search } from 'lucide-react';
 import type { FilterOptions, ViewType } from '../../../types/fee-salary.types';
 import { ViewToggle } from '../../../common/ViewToggle';
 import type { Grade } from '../../../types/class.types';
+import type { Role } from '../../../hooks/useRoles';
 
 interface FilterSectionProps {
+  roles: Role[];
   classes: Grade[];
   activeView: ViewType;
   filters: FilterOptions;
@@ -13,6 +15,7 @@ interface FilterSectionProps {
 }
 
 export const FilterSection: React.FC<FilterSectionProps> = ({
+  roles,
   classes,
   activeView,
   filters,
@@ -63,18 +66,15 @@ export const FilterSection: React.FC<FilterSectionProps> = ({
               ) : (
                 <>
                   <option value="">Select Role</option>
-                  <option value="teacher">Teacher</option>
-                  <option value="accountant">Accountant</option>
-                  <option value="staff">Staff</option>
+                  {roles?.map((role, index) => (
+                    <option key={index} value={role.name}>{role.name}</option>
+                  ))}
                 </>
               )}
             </select>
           </div>
-
-
         </div>
       </div>
     </div>
-
   );
 };

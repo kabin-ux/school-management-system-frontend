@@ -148,3 +148,55 @@ export const usePromoteStudentsBulk = () => {
     },
   });
 };
+
+export const useUpdateStudentStatus = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ student_id, status }: {
+      student_id: string | number;
+      status: "active" | "inactive"
+    }) => {
+      const res = await api.patch("/student/change-status", {
+        student_id,
+        status,
+      });
+      return res.data.data;
+    },
+    onSuccess: () => {
+      toast.success("Student status changed successfully");
+      // Invalidate relevant queries to refresh the UI
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+      queryClient.invalidateQueries({ queryKey: ["student"] });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || "Failed to change student status");
+    },
+  });
+};
+
+export const useUpdateStudentStatusBulk = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ students_id, status }: {
+      students_id: (string | number)[];
+      status: "ACTIVE" | "INACTIVE"
+    }) => {
+      const res = await api.patch("/student/change-status-bulk", {
+        students_id,
+        status,
+      });
+      return res.data.data;
+    },
+    onSuccess: () => {
+      toast.success("Students status changed successfully");
+      // Invalidate relevant queries to refresh the UI
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+      queryClient.invalidateQueries({ queryKey: ["student"] });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || "Failed to change students status");
+    },
+  });
+};

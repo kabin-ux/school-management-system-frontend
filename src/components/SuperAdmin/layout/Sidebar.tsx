@@ -31,7 +31,7 @@ export const Sidebar: React.FC = () => {
   const logoutMutation = useLogoutSuperAdmin();
   const handleLogout = () => {
     logoutMutation.mutate();
-    navigate("/admin"); // Redirect to login page
+    navigate("/"); // Redirect to login page
   };
 
   return (

@@ -20,6 +20,7 @@ export interface Student {
   transportation?: Transportation;
   class_id: string;
   section_id?: string | null;
+  status: string;
   createdAt?: Date;
   updatedAt?: Date;
 
@@ -39,4 +40,5 @@ export interface StudentForm {
   dateOfBirth: string;
   address: string;
   transport_id?: string | null;
+  rollNumber?: string;
 }

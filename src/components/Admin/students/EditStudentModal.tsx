@@ -34,7 +34,8 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
     gender: 'Male', // default gender
     address: '',
     dateOfBirth: '',
-    transport_id: ''
+    transport_id: '',
+    rollNumber: ''
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -54,6 +55,7 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
         dateOfBirth: student.dateOfBirth.toString(),
         address: student.address ?? '',
         transport_id: student.transport_id ?? '',
+        rollNumber: student.rollNumber ?? '',
       });
       setErrors({});
       setTouched({});
@@ -68,6 +70,7 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
         address: '',
         dateOfBirth: '',
         transport_id: '',
+        rollNumber: '',
       });
       setErrors({});
       setTouched({});
@@ -258,6 +261,16 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
                 type="date"
                 name="dateOfBirth"
                 value={formData.dateOfBirth}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Roll Number</label>
+              <input
+                type="text"
+                name="rollNumber"
+                value={formData.rollNumber}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
               />

@@ -1,9 +1,9 @@
-import { Edit, Trash2, Users, ArrowUp, X } from 'lucide-react';
+import { Edit, Trash2, Users, ArrowUp, X, PowerOff, Power } from 'lucide-react';
 import EmptyState from '../../../common/EmptyState';
 import type { Student } from '../../../types/student.types';
 import { useState } from 'react';
 import { Pagination } from '../../../common/Pagination';
-import { usePromoteStudentToNextClass } from '../../../hooks/useStudents';
+import { usePromoteStudentToNextClass, useUpdateStudentStatus } from '../../../hooks/useStudents';
 import { useSectionsByClass } from '../../../hooks/useSection';
 
 interface StudentTableProps {
@@ -32,6 +32,12 @@ export default function StudentTable({
 
   const itemsPerPage = 10;
   const promoteMutation = usePromoteStudentToNextClass();
+  const statusMutation = useUpdateStudentStatus();
+
+  const handleStatusToggle = (student: Student) => {
+    const newStatus = student.status === 'active' ? 'inactive' : 'active';
+    statusMutation.mutate({ student_id: student.id, status: newStatus });
+  };
 
   const totalPages = Math.ceil(students.length / itemsPerPage);
   const paginatedData = students.slice(
@@ -118,9 +124,11 @@ export default function StudentTable({
                 <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 tracking-wider">Parent Name</th>
                 <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 tracking-wider">Class/Section</th>
                 <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 tracking-wider">DOB</th>
+                <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 tracking-wider">Roll Number</th>
                 <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 tracking-wider">Gender</th>
                 <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 tracking-wider">Address</th>
                 <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 tracking-wider">Transportation</th>
+                <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 tracking-wider">Status</th>
                 <th className="px-6 py-3 text-left text-sm font-extralight text-gray-500 tracking-wider">Actions</th>
               </tr>
             </thead>
@@ -161,11 +169,18 @@ export default function StudentTable({
                     <td className="px-6 py-4 text-sm text-gray-500">
                       {new Date(student.dateOfBirth).toLocaleDateString()}
                     </td>
+                    <td className="px-6 py-4 text-sm text-gray-500">{student.rollNumber || '-'}</td>
                     <td className="px-6 py-4 text-sm text-gray-500">{student.gender || '-'}</td>
                     <td className="px-6 py-4 text-sm text-gray-500">{student.address || '-'}</td>
                     <td className="px-6 py-4 text-sm text-gray-500 text-center space-y-1">
                       <div>{student.transportation?.driverName ?? '-'}</div>
                       <div>{student.transportation?.vehicleNumber ?? '-'}</div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${student.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                        }`}>
+                        {student.status}
+                      </span>
                     </td>
 
                     {/* UPDATED Actions with Promote Button */}
@@ -178,6 +193,14 @@ export default function StudentTable({
                           title="Promote student"
                         >
                           <ArrowUp className="w-4 h-4" />
+                        </button>
+                        <button
+                          className={`${student.status === 'active' ? 'text-orange-500 hover:text-orange-700 hover:bg-orange-50' : 'text-emerald-500 hover:text-emerald-700 hover:bg-emerald-50'} p-1.5 rounded-md transition-all`}
+                          onClick={() => handleStatusToggle(student)}
+                          disabled={statusMutation.isPending}
+                          title={student.status === 'active' ? "Deactivate" : "Activate"}
+                        >
+                          {student.status === 'active' ? <PowerOff className="w-4 h-4" /> : <Power className="w-4 h-4" />}
                         </button>
                         <button
                           className="text-blue-400 hover:text-blue-600 p-1.5 rounded-md hover:bg-blue-50 transition-all"

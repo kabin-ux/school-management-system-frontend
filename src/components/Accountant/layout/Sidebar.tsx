@@ -26,7 +26,7 @@ export const Sidebar: React.FC = () => {
   const logOutMutation = useLogoutAccountant();
   const handleLogout = () => {
     logOutMutation.mutate();
-    navigate("/admin"); // Redirect to login page
+    navigate("/"); // Redirect to login page
   };
   return (
     <>
