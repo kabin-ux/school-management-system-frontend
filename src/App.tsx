@@ -20,9 +20,9 @@ import AccountantManagement from './pages/Admin/accounts/AccountsManagement';
 import AdminSupportTicketDetailPage from './pages/Admin/support/details/SupportConsoleDetails';
 import AccountantDashboard from './pages/Accountant/dashboard/Dashboard';
 import InvoicesPage from './pages/Accountant/invoices/InvoicePage';
-import SuperAdminLoginPage from './pages/SuperAdmin/login/SuperAdminLoginPage';
-import AdminLoginPage from './pages/Admin/login/AdminLoginPage';
-import AccountantLoginPage from './pages/Accountant/login/AccountantLoginPage';
+// import SuperAdminLoginPage from './pages/SuperAdmin/login/SuperAdminLoginPage';
+// import AdminLoginPage from './pages/Admin/login/AdminLoginPage';
+// import AccountantLoginPage from './pages/Accountant/login/AccountantLoginPage';
 import FeeAndSalaryPage from './pages/Accountant/feeandsalary/FeeAndSalaryPage';
 import SuperAdminDashboard from './pages/SuperAdmin/dashboard/Dashboard';
 import { PartnerSchools } from './pages/SuperAdmin/partnerschools/PartnerSchools';
@@ -59,9 +59,9 @@ function App() {
                     <Route path='/privacy-policy' element={<PrivacyPolicy />} />
                     <Route path='/delete-account' element={<DeletePolicyPage />} />
                     <Route path='/login' element={<LoginPortal />} />
-                    <Route path='/super-admin-login' element={<SuperAdminLoginPage />} />
+                    {/* <Route path='/super-admin-login' element={<SuperAdminLoginPage />} />
                     <Route path='/admin-login' element={<AdminLoginPage />} />
-                    <Route path='/accountant-login' element={<AccountantLoginPage />} />
+                    <Route path='/accountant-login' element={<AccountantLoginPage />} /> */}
                     <Route path='/unauthorized' element={<UnauthorizedPage />} />
                     <Route path='/super-admin/reset-password' element={<ResetPassword />} />
                     <Route path='/school-admin/reset-password' element={<ResetPasswordAdmin />} />
