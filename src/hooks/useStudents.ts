@@ -157,7 +157,7 @@ export const useUpdateStudentStatus = () => {
       student_id: string | number;
       status: "active" | "inactive"
     }) => {
-      const res = await api.patch("/student/change-status", {
+      const res = await api.put("/student/change-status", {
         student_id,
         status,
       });
@@ -183,7 +183,7 @@ export const useUpdateStudentStatusBulk = () => {
       students_id: (string | number)[];
       status: "ACTIVE" | "INACTIVE"
     }) => {
-      const res = await api.patch("/student/change-status-bulk", {
+      const res = await api.put("/student/change-status-bulk", {
         students_id,
         status,
       });
