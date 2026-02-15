@@ -1,4 +1,4 @@
-import { Bell, Trash2 } from "lucide-react";
+import { Bell, Trash2, X } from "lucide-react";
 import type { Notice } from "../../../hooks/useNotification";
 import EmptyState from "../../../common/EmptyState";
 import { Pagination } from "../../../common/Pagination";
@@ -12,6 +12,8 @@ interface NotificationLogTableProps {
 export function NotificationLogTable({ logs, onDelete }: NotificationLogTableProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [openRecipientsFor, setOpenRecipientsFor] = useState<string | null>(null);
+  const [openMessage, setOpenMessage] = useState<string | null>(null);
+
   const itemsPerPage = 5;
 
   const totalPages = Math.ceil(logs.length / itemsPerPage);
@@ -38,7 +40,29 @@ export function NotificationLogTable({ logs, onDelete }: NotificationLogTablePro
     <div className="bg-white rounded-lg shadow-sm overflow-x-auto">
       <table className="w-full">
         <thead>
-          {/* ... your existing <th> cells ... */}
+          <tr className="border-b border-gray-200">
+            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+              Notification Title
+            </th>
+            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+              Message
+            </th>
+            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+              Type
+            </th>
+            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+              Sent to
+            </th>
+            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+              Sent on
+            </th>
+            {/* <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                            Sent by
+                        </th> */}
+            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+              Actions
+            </th>
+          </tr>
         </thead>
 
         <tbody>
@@ -61,9 +85,16 @@ export function NotificationLogTable({ logs, onDelete }: NotificationLogTablePro
                 </td>
 
                 {/* Message */}
-                <td className="px-4 py-4 text-sm text-gray-600 max-w-xs truncate">
-                  {log.message}
+                <td className="px-4 py-4 text-sm text-gray-600 max-w-xs">
+                  <button
+                    type="button"
+                    className="text-left whitespace-pre-wrap break-words line-clamp-3 hover:underline"
+                    onClick={() => setOpenMessage(log.id)}
+                  >
+                    {log.message}
+                  </button>
                 </td>
+
 
                 {/* Type */}
                 <td className="px-4 py-4 text-sm text-gray-700">
@@ -141,7 +172,7 @@ export function NotificationLogTable({ logs, onDelete }: NotificationLogTablePro
                 className="text-gray-500 hover:text-gray-700 text-sm"
                 onClick={() => setOpenRecipientsFor(null)}
               >
-                Close
+                <X />
               </button>
             </div>
 
@@ -157,6 +188,22 @@ export function NotificationLogTable({ logs, onDelete }: NotificationLogTablePro
           </div>
         </div>
       )}
+
+      {openMessage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-4">
+            <div className="flex justify-between mb-3">
+              <h2 className="text-sm font-semibold">Full message</h2>
+              <button onClick={() => setOpenMessage(null)}><X /></button>
+            </div>
+
+            <div className="max-h-72 overflow-y-auto whitespace-pre-wrap break-words text-sm">
+              {logs.find(l => l.id === openMessage)?.message}
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

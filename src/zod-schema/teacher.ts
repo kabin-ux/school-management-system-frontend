@@ -13,6 +13,8 @@ export const createTeacherSchema = z.object({
   gender: z.enum(["Male", "Female", "Other"]), 
   address: z.string().min(1,"Address is required"),
   qualification: z.string().min(1, "Qualification is required"),
+  experience: z.string().min(1,  "Experience is required"),
+  employee_type: z.string().min(1, "Employment type (part time/ full time) is required")
 });
 
 export const updateTeacherSchema = createTeacherSchema.partial();

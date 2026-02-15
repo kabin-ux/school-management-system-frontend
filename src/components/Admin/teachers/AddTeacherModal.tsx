@@ -29,6 +29,8 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
       gender: 'Male',
       address: '',
       qualification: '',
+      employee_type: '',
+      experience: ''
     },
   });
 
@@ -254,6 +256,52 @@ const AddTeacherModal: React.FC<AddTeacherModalProps> = ({
                   <p className="mt-1 text-sm text-red-600 flex items-center gap-1" role="alert">
                     <span className="w-3 h-3 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">!</span>
                     {errors.qualification.message}
+                  </p>
+                )}
+              </div>
+              {/* Experience */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Experience (years) <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  min={0}
+                  {...register("experience")}
+                  disabled={isLoading || isSubmitting}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${errors.experience ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+                    } ${isLoading || isSubmitting ? "bg-gray-100 cursor-not-allowed text-gray-500" : ""}`}
+                  placeholder="Enter years of experience"
+                  aria-invalid={errors.experience ? "true" : "false"}
+                />
+                {errors.experience && (
+                  <p className="mt-1 text-sm text-red-600 flex items-center gap-1" role="alert">
+                    <span className="w-3 h-3 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">!</span>
+                    {errors.experience.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Employee Type */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Employee Type <span className="text-red-500">*</span>
+                </label>
+                <select
+                  {...register("employee_type")}
+                  disabled={isLoading || isSubmitting}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${errors.employee_type ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+                    } ${isLoading || isSubmitting ? "bg-gray-100 cursor-not-allowed text-gray-500" : ""}`}
+                  aria-invalid={errors.employee_type ? "true" : "false"}
+                >
+                  <option value="">Select employee type</option>
+                  <option value="Full Time">Full Time</option>
+                  <option value="Part Time">Part Time</option>
+                </select>
+                {errors.employee_type && (
+                  <p className="mt-1 text-sm text-red-600 flex items-center gap-1" role="alert">
+                    <span className="w-3 h-3 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">!</span>
+                    {errors.employee_type.message}
                   </p>
                 )}
               </div>

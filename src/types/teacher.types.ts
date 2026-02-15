@@ -10,6 +10,8 @@ export interface Teacher {
   gender: 'Male' | 'Female' | 'Other';
   address?: string;
   qualification: string;
+  experience: string,
+  employee_type: string,
   classIds: number[];
   subjectIds: number[];
   status?: string;
@@ -30,4 +32,6 @@ export interface TeacherForm {
   address?: string;
   qualification: string;
   status?: string;
+  experience: string,
+  employee_type: string,
 }

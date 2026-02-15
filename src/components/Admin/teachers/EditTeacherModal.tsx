@@ -26,6 +26,9 @@ const EditTeacherModal: React.FC<EditTeacherModalProps> = ({
         gender: 'Male',
         address: '',
         qualification: '',
+        experience: '',
+        employee_type: '',
+        status: 'active',
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -42,6 +45,9 @@ const EditTeacherModal: React.FC<EditTeacherModalProps> = ({
                 gender: teacher.gender,
                 address: teacher.address,
                 qualification: teacher.qualification,
+                experience: teacher.experience,
+                employee_type: teacher.employee_type,
+                status: teacher.status ?? 'active',
             });
             setErrors({});
             setTouched({});
@@ -55,6 +61,9 @@ const EditTeacherModal: React.FC<EditTeacherModalProps> = ({
                 gender: 'Male',
                 address: '',
                 qualification: '',
+                experience: '',
+                employee_type: '',
+                status: 'active',
             });
             setErrors({});
             setTouched({});
@@ -222,6 +231,24 @@ const EditTeacherModal: React.FC<EditTeacherModalProps> = ({
                                 <option value="Other">Other</option>
                             </select>
                         </div>
+                        <div>
+                            <label className="block text-sm font-medium">Status *</label>
+                            <select
+                                name="status"
+                                value={formData.status}
+                                onChange={handleInputChange}
+                                onBlur={handleBlur}
+                                className={`w-full px-3 py-2 border rounded-lg ${errors.status ? 'border-red-500' : 'border-gray-300'
+                                    }`}
+                            >
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                            {errors.status && (
+                                <p className="text-xs text-red-500">{errors.status}</p>
+                            )}
+                        </div>
+
 
                         {/* Qualification */}
                         <div>
@@ -251,6 +278,41 @@ const EditTeacherModal: React.FC<EditTeacherModalProps> = ({
                             rows={3}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                         />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium">Experience (years) *</label>
+                        <input
+                            type="number"
+                            name="experience"
+                            value={formData.experience}
+                            onChange={handleInputChange}
+                            onBlur={handleBlur}
+                            className={`w-full px-3 py-2 border rounded-lg ${errors.experience ? 'border-red-500' : 'border-gray-300'
+                                }`}
+                        />
+                        {errors.experience && (
+                            <p className="text-xs text-red-500">{errors.experience}</p>
+                        )}
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium">Employee Type *</label>
+                        <select
+                            name="employee_type"
+                            value={formData.employee_type}
+                            onChange={handleInputChange}
+                            onBlur={handleBlur}
+                            className={`w-full px-3 py-2 border rounded-lg ${errors.employee_type ? 'border-red-500' : 'border-gray-300'
+                                }`}
+                        >
+                            <option value="">Select type</option>
+                            <option value="Full Time">Full Time</option>
+                            <option value="Part Time">Part Time</option>
+                        </select>
+                        {errors.employee_type && (
+                            <p className="text-xs text-red-500">{errors.employee_type}</p>
+                        )}
                     </div>
 
                     {/* Actions */}

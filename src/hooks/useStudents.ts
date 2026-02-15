@@ -20,6 +20,21 @@ export const useStudentsBySchool = () => {
   });
 };
 
+export const useInactiveStudentsBySchool = () => {
+  return useQuery<Student[]>({
+    queryKey: ["students", "inactive", "by-school"],
+    queryFn: async () => {
+      const { data } = await api.get("/student/by-school", {
+        params: { status: "inactive" },
+      });
+
+      return data.data;
+    },
+    retry: 2,
+  });
+};
+
+
 // Add Student
 export const useAddStudent = () => {
   const queryClient = useQueryClient();

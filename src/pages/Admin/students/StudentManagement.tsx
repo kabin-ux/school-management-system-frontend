@@ -8,7 +8,7 @@ import { AdminDashboardHeader } from '../../../components/Admin/layout/AdminDash
 import { AddStudentModal } from '../../../components/Admin/students/AddStudentModal';
 import EditStudentModal from '../../../components/Admin/students/EditStudentModal';
 import type { Student, StudentForm } from '../../../types/student.types';
-import { useAddStudent, useDeleteStudent, useStudentDashboardData, useStudentsBySchool, useUpdateStudent } from '../../../hooks/useStudents';
+import { useAddStudent, useDeleteStudent, useInactiveStudentsBySchool, useStudentDashboardData, useStudentsBySchool, useUpdateStudent } from '../../../hooks/useStudents';
 import { useClasses } from '../../../hooks/useClasses';
 import { useAllTransportation } from '../../../hooks/useTransportation';
 import BulkPromoteStudentModal from '../../../components/Admin/students/BulkPromoteStudentModal';
@@ -18,13 +18,15 @@ export interface FilterValues {
     search: string;
     section: string;
     class: string;
+    status: string;
 }
 
 export default function StudentManagement() {
     const [filters, setFilters] = useState<FilterValues>({
         search: '',
         section: '',
-        class: ''
+        class: '',
+        status: ''
     });
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,7 +35,8 @@ export default function StudentManagement() {
     const [isBulkPromoteModalOpen, setIsBulkPromoteModalOpen] = useState(false);
     const [isStatusUpdateModalOpen, setIsStatusUpdateModalOpen] = useState(false);
 
-    const { data: students = [], isLoading: loading } = useStudentsBySchool();
+    const { data: activeStudents = [], isLoading: loading } = useStudentsBySchool();
+    const { data: inactiveStudents = [] } = useInactiveStudentsBySchool();
     const { data: classes = [] } = useClasses();
     const { data: transportations = [] } = useAllTransportation();
     const { data: studentDashboardData = { totalStudents: 0, totalStudentRegisterOnThisMonth: 0 } } = useStudentDashboardData();
@@ -63,9 +66,13 @@ export default function StudentManagement() {
         deleteStudentMutation.mutate(id);
     };
 
+    const allStudents = useMemo(() => {
+        return [...activeStudents, ...inactiveStudents]; 
+    }, [activeStudents, inactiveStudents]);
+
     // Filtered students based on current filters
     const filteredStudents = useMemo(() => {
-        return students.filter((student: Student) => {
+        return allStudents.filter((student: Student) => {
             const fullName = `${student?.firstName || ""} ${student?.lastName || ""}`.toLowerCase();
             const matchesSearch = fullName.includes(filters.search.toLowerCase());
             const matchesSection = !filters.section || student.section.section_name === filters.section;
@@ -73,7 +80,7 @@ export default function StudentManagement() {
 
             return matchesSearch && matchesSection && matchesClass;
         });
-    }, [students, filters]);
+    }, [allStudents, filters]);
 
     return (
         <div className="flex h-full bg-gray-50 overflow-hidden">
@@ -162,13 +169,13 @@ export default function StudentManagement() {
                             isOpen={isBulkPromoteModalOpen}
                             onClose={() => setIsBulkPromoteModalOpen(false)}
                             classes={classes}
-                            students={students} // All students data
+                            students={allStudents} // All students data
                         />
 
                         <BulkStudentStatusUpdateModal
                             isOpen={isStatusUpdateModalOpen}
                             onClose={() => setIsStatusUpdateModalOpen(false)}
-                            students={students}
+                            students={allStudents}
                             classes={classes}
                         />
                     </div>

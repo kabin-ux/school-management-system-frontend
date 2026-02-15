@@ -7,6 +7,7 @@ interface StudentFiltersProps {
   filters: FilterValues;
   classes: Grade[];
   onFiltersChange: (filters: FilterValues) => void;
+
 }
 
 export default function StudentFilters({
@@ -69,13 +70,18 @@ export default function StudentFilters({
           </select>
         </div>
       </div>
-      {/* 
-      <div className="bg-purple-100 rounded-lg p-3">
-        <p className="text-purple-800 text-sm">
-          <span className="font-medium">Current Selection :</span> Grade 10 - Section A
-          <span className="float-right text-purple-600 cursor-pointer">Click on time slots to add/edit subjects</span>
-        </p>
-      </div> */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Status :</label>
+        <select
+          value={filters.status}
+          onChange={(e) => handleFilterChange('status', e.target.value)}
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
     </div>
   );
 }
