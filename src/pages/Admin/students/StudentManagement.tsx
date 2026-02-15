@@ -67,7 +67,7 @@ export default function StudentManagement() {
     };
 
     const allStudents = useMemo(() => {
-        return [...activeStudents, ...inactiveStudents]; 
+        return [...activeStudents, ...inactiveStudents];
     }, [activeStudents, inactiveStudents]);
 
     // Filtered students based on current filters
@@ -77,8 +77,9 @@ export default function StudentManagement() {
             const matchesSearch = fullName.includes(filters.search.toLowerCase());
             const matchesSection = !filters.section || student.section.section_name === filters.section;
             const matchesClass = !filters.class || student.class.name === filters.class;
+            const matchesStatus = !filters.status || student.status === filters.status; 
 
-            return matchesSearch && matchesSection && matchesClass;
+            return matchesSearch && matchesSection && matchesClass && matchesStatus;
         });
     }, [allStudents, filters]);
 
