@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { ChevronsDown, ChevronsUp } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const FAQ = () => {
-  const [openIndex, setOpenIndex] = useState(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const faqs = [
     {
       question: "Who can access the Super Admin Portal?",
-      answer: "The Student App is a personalized companion for students to stay on top of their academic journey. It displays real-time attendance records, upcoming class schedules, homework assignments, exam results. The Student App is a personalized companion for students to stay on top of their academic journey. It displays real-time attendance records, upcoming class schedules, homework assignments, exam results."
+      answer: "The Admin Portal is designed for institutional owners and high-level administrators to manage global school configurations, staff credentials, and overall data oversight."
     },
     {
       question: "What financial features does the Accountant Portal offer?",
@@ -28,53 +29,95 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-20 px-4 bg-white">
+    <section className="py-24 px-4 bg-white">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-[#2D3142] mb-4">Frequently Asked Questions</h2>
-          <p className="text-gray-500 text-sm">
+        {/* Header Animation */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl font-bold text-[#2D3142] mb-4">Frequently Asked Questions</h2>
+          <p className="text-gray-500 text-base max-w-lg mx-auto">
             Get answers to commonly asked questions about our app and its features.
           </p>
-          <div className="w-10 h-0.5 bg-red-500 mx-auto mt-4"></div>
-        </div>
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: 40 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className="h-1 bg-red-500 mx-auto mt-4 rounded-full"
+          />
+        </motion.div>
 
-        <div className="space-y-4">
+        <motion.div
+          layout
+          className="space-y-4"
+        >
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
-              <div
+              <motion.div
+                layout
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
                 key={index}
-                className={`border rounded-xl transition-all duration-300 ${isOpen ? 'bg-[#5D3FD3] border-[#5D3FD3] shadow-lg' : 'bg-white border-gray-200'
+                className={`overflow-hidden border rounded-2xl transition-colors duration-500 ${isOpen ? 'bg-[#5D3FD3] border-[#5D3FD3] shadow-xl' : 'bg-white border-gray-200'
                   }`}
               >
                 <button
-                  onClick={() => setOpenIndex(isOpen ? -1 : index)}
-                  className="w-full flex items-center justify-between p-5 text-left"
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                  className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
                 >
-                  <div className="flex items-center gap-4">
-                    {isOpen ? (
-                      <ChevronsUp className="w-5 h-5 text-white/70" />
-                    ) : (
-                      <ChevronsDown className="w-5 h-5 text-[#5D3FD3]" />
-                    )}
-                    <span className={`font-semibold text-sm ${isOpen ? 'text-white' : 'text-gray-700'}`}>
+                  <div className="flex items-center gap-5">
+                    {/* Icon Animation */}
+                    <motion.div
+                      animate={{ rotate: isOpen ? 180 : 0 }}
+                      transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                    >
+                      {isOpen ? (
+                        <ChevronsUp className="w-5 h-5 text-white/90" />
+                      ) : (
+                        <ChevronsDown className="w-5 h-5 text-[#5D3FD3]" />
+                      )}
+                    </motion.div>
+                    <span className={`font-bold text-sm md:text-base transition-colors duration-300 ${isOpen ? 'text-white' : 'text-slate-700'
+                      }`}>
                       {faq.question}
                     </span>
                   </div>
                 </button>
 
-                {isOpen && (
-                  <div className="px-14 pb-8 transition-all animate-in fade-in slide-in-from-top-2">
-                    <div className="w-full h-[1px] bg-white/20 mb-6"></div>
-                    <p className="text-white/80 text-xs leading-relaxed">
-                      {faq.answer}
-                    </p>
-                  </div>
-                )}
-              </div>
+                {/* Smooth Expand/Collapse Animation */}
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      key="content"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                    >
+                      <div className="px-16 pb-8">
+                        <div className="w-full h-[1px] bg-white/20 mb-6" />
+                        <motion.p
+                          initial={{ y: 10, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          transition={{ delay: 0.1 }}
+                          className="text-white/80 text-sm leading-relaxed"
+                        >
+                          {faq.answer}
+                        </motion.p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

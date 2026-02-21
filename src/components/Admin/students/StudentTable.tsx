@@ -173,8 +173,8 @@ export default function StudentTable({
                     <td className="px-6 py-4 text-sm text-gray-500">{student.gender || '-'}</td>
                     <td className="px-6 py-4 text-sm text-gray-500">{student.address || '-'}</td>
                     <td className="px-6 py-4 text-sm text-gray-500 text-center space-y-1">
-                      <div>{student.transportation?.driverName ?? '-'}</div>
-                      <div>{student.transportation?.vehicleNumber ?? '-'}</div>
+                      <div>{student.transportation?.last_location ?? '-'}</div>
+                      {/* <div>{student.transportation?.vehicleNumber ?? '-'}</div> */}
                     </td>
                     <td className="px-6 py-4">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${student.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'

@@ -46,6 +46,7 @@ import PrivacyPolicy from './components/LandingPage/PrivacyPolicy';
 import TermsAndConditions from './components/LandingPage/Terms&Conditions';
 import DeletePolicyPage from './components/LandingPage/DeleteAccount';
 import LoginPortal from './pages/LoginPage';
+import PlansSection from './components/LandingPage/Plans&Subscription';
 
 function App() {
     return (
@@ -54,6 +55,7 @@ function App() {
                 <Toaster />
                 <Routes>
                     <Route path='/' element={<UserLandingPage />} />
+                    <Route path='/plans' element={<PlansSection />} />
                     <Route path='/admin' element={<AdminLandingPage />} />
                     <Route path='/terms&conditions' element={<TermsAndConditions />} />
                     <Route path='/privacy-policy' element={<PrivacyPolicy />} />

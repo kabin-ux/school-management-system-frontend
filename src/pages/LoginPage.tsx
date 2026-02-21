@@ -1,11 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Mail, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Assets
 import logo from '../assets/logo onlt with out bg.png';
 import image from '../assets/setuparent.png';
 import Header from '../components/LandingPage/Header';
+import Footer from '../components/LandingPage/FinalCTASection';
+import playStore from '../assets/Play store.png';
+import appStore from '../assets/apple store.png';
 
 // Hooks
 import {
@@ -17,49 +21,71 @@ import {
 
 const LoginPortal = () => {
     const navigate = useNavigate();
-    const { data: user } = useAuthUser(); // Check if user is already logged in
+    const { data: user } = useAuthUser();
 
-    // Authentication Mutations
+    // 1. Authentication Mutations
     const loginSuperAdmin = useLoginSuperAdmin();
     const loginAdmin = useLoginAdmin();
     const loginAccountant = useLoginAccountant();
 
-    // Local State
+    // 2. Local State
     const [activeTab, setActiveTab] = useState('SUPER');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
 
+    // 3. Animation Variants (Memoized for performance)
+    const fadeInUp = {
+        initial: { opacity: 0, y: 20 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.6 }
+    };
+
+    const containerVariants = {
+        hidden: { opacity: 0, scale: 0.98 },
+        visible: {
+            opacity: 1,
+            scale: 1,
+            transition: { duration: 0.5, staggerChildren: 0.1 }
+        }
+    };
+
+    // 4. Persistence Logic
     useEffect(() => {
         const savedRememberMe = localStorage.getItem("rememberMe") === "true";
         if (savedRememberMe) {
             setRememberMe(true);
-            const savedEmail = localStorage.getItem("rememberedEmail");
-            const savedPassword = localStorage.getItem("rememberedPassword");
-            const savedRole = localStorage.getItem("rememberedRole");
-
-            if (savedEmail) setEmail(savedEmail);
-            if (savedPassword) setPassword(savedPassword);
-            if (savedRole) setActiveTab(savedRole);
+            setEmail(localStorage.getItem("rememberedEmail") || '');
+            setPassword(localStorage.getItem("rememberedPassword") || '');
+            setActiveTab(localStorage.getItem("rememberedRole") || 'SUPER');
         }
     }, []);
+
+    // 5. Handle Redirects (Fixed dependency logic)
+    useEffect(() => {
+        if (user) {
+            const routes: Record<string, string> = {
+                SUPER: '/super-admin/dashboard',
+                ADMIN: '/admin/dashboard',
+                ACCOUNTS: '/accountant/dashboard'
+            };
+            // Use the user's actual role from the data if available, 
+            // otherwise fallback to current tab.
+            navigate(routes[user.role] || routes[activeTab]);
+        }
+    }, [user, navigate]); // Removed activeTab to prevent loop on tab switch
 
     const handleLoginSuccess = (role: string) => {
         if (rememberMe) {
             localStorage.setItem("rememberedEmail", email);
-            localStorage.setItem("rememberedPassword", password); // Note: Encoding this is safer, but this follows your flow
-            localStorage.setItem("rememberedRole", activeTab);
+            localStorage.setItem("rememberedPassword", password);
+            localStorage.setItem("rememberedRole", role);
             localStorage.setItem("rememberMe", "true");
         } else {
-            // If they login without rememberMe, clear existing saved credentials
-            localStorage.removeItem("rememberedEmail");
-            localStorage.removeItem("rememberedPassword");
-            localStorage.removeItem("rememberedRole");
-            localStorage.removeItem("rememberMe");
+            ["rememberedEmail", "rememberedPassword", "rememberedRole", "rememberMe"].forEach(k => localStorage.removeItem(k));
         }
 
-        // Navigate based on role
         const routes: Record<string, string> = {
             SUPER: "/super-admin/dashboard",
             ADMIN: "/admin/dashboard",
@@ -68,218 +94,174 @@ const LoginPortal = () => {
         navigate(routes[role]);
     };
 
-    const roles = [
+    const roles = useMemo(() => [
         { id: 'SUPER', label: 'SETU SUPER', placeholderEmail: 'setusuper@gmail.com' },
         { id: 'ADMIN', label: 'SETU ADMIN', placeholderEmail: 'setuadmin@gmail.com' },
         { id: 'ACCOUNTS', label: 'SETU ACCOUNTS', placeholderEmail: 'setuaccount@gmail.com' },
-    ];
+    ], []);
 
     const currentRole = roles.find(r => r.id === activeTab);
 
-    // Handle existing session redirect
-    useEffect(() => {
-        if (user) {
-            if (activeTab === 'SUPER') navigate('/super-admin/dashboard');
-            else if (activeTab === 'ADMIN') navigate('/admin/dashboard');
-            else if (activeTab === 'ACCOUNTS') navigate('/accountant/dashboard');
-        }
-    }, [user, activeTab, navigate]);
-
-    // Handle Form Submission
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        // Create the base data
         const loginData = { email, password };
 
-        if (activeTab === 'SUPER') {
-            loginSuperAdmin.mutate({ ...loginData, rememberMe }, {
-                onSuccess: () => {
-                    handleLoginSuccess('SUPER')
-                    navigate("/super-admin/dashboard")
-                }
-            });
-        } else if (activeTab === 'ADMIN') {
-            loginAdmin.mutate({ ...loginData, rememberMe }, {
-                onSuccess: () => {
-                    handleLoginSuccess('ADMIN')
-                    navigate("/admin/dashboard")
-                }
-            });
-        } else if (activeTab === 'ACCOUNTS') {
-            loginAccountant.mutate({ ...loginData, rememberMe }, {
-                onSuccess: () => {
-                    handleLoginSuccess('ACCOUNTS')
-                    navigate("/accountant/dashboard")
-                }
-            });
-        }
+        const config = { onSuccess: () => handleLoginSuccess(activeTab) };
+
+        if (activeTab === 'SUPER') loginSuperAdmin.mutate({ ...loginData, rememberMe }, config);
+        else if (activeTab === 'ADMIN') loginAdmin.mutate({ ...loginData, rememberMe }, config);
+        else if (activeTab === 'ACCOUNTS') loginAccountant.mutate({ ...loginData, rememberMe }, config);
     };
 
-    // Determine loading state for button
     const isLoggingIn = loginSuperAdmin.isPending || loginAdmin.isPending || loginAccountant.isPending;
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col items-center p-4 font-sans relative overflow-hidden">
-            {/* Header */}
-            <div className="w-full max-w-7xl z-30">
+        <div className="min-h-screen bg-slate-50 flex flex-col font-sans relative overflow-hidden">
+            <div className="w-full max-w-7xl z-30 p-4">
                 <Header />
             </div>
 
-            {/* Decorative Background Blobs */}
-            <div className="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-indigo-600 opacity-20 blur-3xl rounded-full" style={{ borderRadius: '40% 60% 70% 30% / 40% 50% 60% 40%' }}></div>
-            <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] bg-indigo-600 opacity-20 blur-3xl rounded-full" style={{ borderRadius: '60% 40% 30% 70% / 50% 40% 40% 60%' }}></div>
+            {/* Background Decorations */}
+            <motion.div
+                animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
+                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-indigo-200/30 blur-3xl rounded-full"
+            />
 
-            <div className="flex-1 flex flex-col items-center justify-center w-full z-10 py-8">
-                {/* Page Title */}
-                <div className="text-center mb-10">
+            <main className="flex-1 flex flex-col items-center justify-center w-full z-10 py-16 px-4">
+                <motion.div {...fadeInUp} className="text-center mb-10">
                     <h1 className="text-4xl font-bold text-slate-800 tracking-tight">Login Your Account</h1>
-                    <p className="text-slate-500 mt-3 max-w-md mx-auto">
-                        Choose your role and login into your website portal and start managing.
-                    </p>
-                    <div className="w-16 h-1.5 bg-red-500 mx-auto mt-5 rounded-full"></div>
-                </div>
+                    <p className="text-slate-500 mt-3 max-w-md mx-auto">Choose your role to access your dashboard.</p>
+                    <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: 64 }}
+                        className="h-1.5 bg-red-500 mx-auto mt-5 rounded-full"
+                    />
+                </motion.div>
 
-                {/* Main Card */}
-                <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-6xl overflow-hidden border border-white flex flex-col">
-
-                    {/* Role Tab Navigation */}
-                    <div className="bg-gray-100 p-2 m-8 mb-4 rounded-2xl flex gap-2">
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-6xl overflow-hidden border border-slate-100 flex flex-col"
+                >
+                    {/* Tab Navigation */}
+                    <div className="bg-slate-100 p-2 m-6 mb-2 rounded-2xl flex gap-2 relative">
                         {roles.map((role) => (
                             <button
                                 key={role.id}
-                                onClick={() => {
-                                    setActiveTab(role.id);
-                                    if (!rememberMe) { // Only clear if not remembering
-                                        setEmail('');
-                                        setPassword('');
-                                    }
-                                }}
-                                className={`flex-1 py-4 text-sm font-bold rounded-xl transition-all duration-300 transform active:scale-95 ${activeTab === role.id ? 'bg-[#5D3FD3] text-white shadow-lg' : 'text-gray-400 hover:bg-gray-200 hover:text-gray-600'
+                                onClick={() => setActiveTab(role.id)}
+                                className={`relative flex-1 py-4 text-sm font-bold rounded-xl transition-colors duration-300 z-10 ${activeTab === role.id ? 'text-white' : 'text-slate-400 hover:text-slate-600'
                                     }`}
                             >
-                                {role.label}
+                                {activeTab === role.id && (
+                                    <motion.div
+                                        layoutId="activeTab"
+                                        className="absolute inset-0 bg-[#5D3FD3] rounded-xl shadow-md"
+                                        transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+                                    />
+                                )}
+                                <span className="relative z-20">{role.label}</span>
                             </button>
                         ))}
                     </div>
 
-                    <div className="flex flex-col md:flex-row p-8 pt-4 gap-12">
-                        {/* Left Side: Dynamic Login Form */}
-                        <div className="w-full md:w-[38%] bg-gradient-to-br from-[#5D3FD3] via-[#5D3FD3] to-indigo-900 rounded-[2rem] p-10 text-white shadow-xl">
-                            <div className="flex flex-col items-center text-center mb-10">
-                                <div className="bg-white p-4 rounded-2xl mb-5 shadow-lg">
-                                    <img src={logo} alt="Logo" className="w-12 h-12 object-contain" />
-                                </div>
-                                <h2 className="text-2xl font-bold tracking-tight">GURUKUL-SETU SMS</h2>
-                                <p className="text-indigo-200 text-[10px] mt-2 uppercase tracking-[0.2em] font-semibold">
-                                    Login as SETU-{activeTab}
-                                </p>
-                            </div>
-
-                            <form className="space-y-6" onSubmit={handleSubmit}>
-                                <div className="space-y-2">
-                                    <label className="text-xs font-semibold ml-1 opacity-80 uppercase tracking-wider">
-                                        {currentRole?.label} Email
-                                    </label>
-                                    <div className="relative">
-                                        <input
-                                            type="email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            placeholder={currentRole?.placeholderEmail}
-                                            className="w-full bg-white/10 border border-white/20 text-white px-5 py-4 rounded-2xl text-sm focus:outline-none focus:bg-white/20 transition-all"
-                                            required
-                                        />
-                                        <div className="absolute right-0 top-0 h-full w-12 bg-blue-500 rounded-r-2xl flex items-center justify-center">
-                                            <Mail size={18} className="text-white" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-xs font-semibold ml-1 opacity-80 uppercase tracking-wider">Password</label>
-                                    <div className="relative">
-                                        <input
-                                            type={showPassword ? "text" : "password"}
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            placeholder="Enter your password"
-                                            className="w-full bg-white/10 border border-white/20 text-white px-5 py-4 rounded-2xl text-sm focus:outline-none focus:bg-white/20 transition-all placeholder:text-white/40"
-                                            required
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowPassword(!showPassword)}
-                                            className="absolute right-0 top-0 h-full w-12 bg-blue-500 rounded-r-2xl flex items-center justify-center hover:bg-blue-400 transition-colors"
-                                        >
-                                            {showPassword ? <EyeOff size={18} className="text-white" /> : <Eye size={18} className="text-white" />}
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className="flex items-center space-x-2 ml-1">
-                                    <input
-                                        type="checkbox"
-                                        id="remember"
-                                        checked={rememberMe}
-                                        onChange={(e) => setRememberMe(e.target.checked)}
-                                        className="rounded border-white/20 bg-white/10"
-                                    />
-                                    <label htmlFor="remember" className="text-xs opacity-80 cursor-pointer">
-                                        Remember Me
-                                    </label>
-                                </div>
-
-                                <button
-                                    type="submit"
-                                    disabled={isLoggingIn}
-                                    className="w-full bg-blue-500 hover:bg-blue-400 py-4 rounded-2xl font-bold text-lg shadow-xl transition-all transform hover:-translate-y-1 active:scale-[0.98] mt-4 disabled:opacity-70"
+                    <div className="flex flex-col md:flex-row p-8 pt-4 gap-8">
+                        {/* Login Form Side */}
+                        <motion.div layout className="w-full md:w-[40%] bg-gradient-to-br from-[#5D3FD3] to-indigo-900 rounded-[2rem] p-8 text-white relative">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={activeTab}
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: 10 }}
+                                    transition={{ duration: 0.2 }}
                                 >
-                                    {isLoggingIn ? "Logging in..." : "Login Now"}
-                                </button>
-                            </form>
-                        </div>
-
-                        {/* Right Side: App Showcase */}
-                        <div className="w-full md:w-[62%] flex flex-col items-center justify-center relative py-6">
-                            <div className="relative w-full max-w-lg flex justify-center animate-float">
-                                <img src={image} alt="Edu-Setu App Showcase" className="w-full h-auto drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] object-contain" />
-                            </div>
-
-                            <div className="text-center mt-10">
-                                <h3 className="text-2xl font-extrabold text-slate-800">Download The Edu-Setu App</h3>
-                                <p className="text-slate-500 text-sm mt-2">Register and start Managing in less than 2 minutes.</p>
-                                <div className="flex gap-4 mt-8 justify-center">
-                                    <button className="bg-black text-white px-6 py-2 rounded-xl flex items-center gap-3 transition-transform hover:scale-105">
-                                        <div className="text-left leading-tight">
-                                            <p className="text-[10px] uppercase opacity-70">Get it on</p>
-                                            <p className="text-lg font-bold">Google Play</p>
+                                    <div className="flex flex-col items-center text-center mb-8">
+                                        <div className="bg-white p-3 rounded-xl mb-4 shadow-lg">
+                                            <img src={logo} alt="Logo" className="w-10 h-10 object-contain" />
                                         </div>
-                                    </button>
-                                    <button className="bg-black text-white px-6 py-2 rounded-xl flex items-center gap-3 transition-transform hover:scale-105">
-                                        <div className="text-left leading-tight">
-                                            <p className="text-[10px] uppercase opacity-70">Download on the</p>
-                                            <p className="text-lg font-bold">App Store</p>
+                                        <h2 className="text-xl font-bold tracking-tight">SETU SMS - {activeTab}</h2>
+                                    </div>
+
+                                    <form onSubmit={handleSubmit} className="space-y-5">
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-bold uppercase tracking-widest opacity-70 ml-1">Email Address</label>
+                                            <div className="relative">
+                                                <input
+                                                    type="email"
+                                                    value={email}
+                                                    onChange={(e) => setEmail(e.target.value)}
+                                                    placeholder={currentRole?.placeholderEmail}
+                                                    className="w-full bg-white/10 border border-white/20 text-white px-4 py-3.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-white/30 transition-all"
+                                                    required
+                                                />
+                                                <Mail className="absolute right-4 top-3.5 opacity-40" size={18} />
+                                            </div>
                                         </div>
-                                    </button>
+
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-bold uppercase tracking-widest opacity-70 ml-1">Password</label>
+                                            <div className="relative">
+                                                <input
+                                                    type={showPassword ? "text" : "password"}
+                                                    value={password}
+                                                    onChange={(e) => setPassword(e.target.value)}
+                                                    className="w-full bg-white/10 border border-white/20 text-white px-4 py-3.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-white/30 transition-all"
+                                                    required
+                                                />
+                                                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-3.5 opacity-40 hover:opacity-100 transition-opacity">
+                                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <label className="flex items-center gap-2 cursor-pointer group w-fit">
+                                            <input
+                                                type="checkbox"
+                                                checked={rememberMe}
+                                                onChange={(e) => setRememberMe(e.target.checked)}
+                                                className="rounded border-white/20 bg-white/10 accent-indigo-400"
+                                            />
+                                            <span className="text-xs opacity-80 group-hover:opacity-100 select-none">Remember Me</span>
+                                        </label>
+
+                                        <motion.button
+                                            whileHover={{ scale: 1.01 }}
+                                            whileTap={{ scale: 0.99 }}
+                                            disabled={isLoggingIn}
+                                            className="w-full bg-indigo-500 hover:bg-indigo-400 py-4 rounded-xl font-bold shadow-lg transition-colors disabled:opacity-50"
+                                        >
+                                            {isLoggingIn ? "Authenticating..." : "Login Now"}
+                                        </motion.button>
+                                    </form>
+                                </motion.div>
+                            </AnimatePresence>
+                        </motion.div>
+
+                        {/* App Showcase Side */}
+                        <div className="flex-1 flex flex-col items-center justify-center p-4">
+                            <motion.img
+                                animate={{ y: [0, -15, 0] }}
+                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                src={image}
+                                alt="App Preview"
+                                className="max-h-[400px] w-auto drop-shadow-2xl"
+                            />
+                            <div className="text-center mt-6">
+                                <h3 className="font-bold text-slate-800 text-lg">Download the Edu-Setu App</h3>
+                                <div className="flex gap-3 mt-4">
+                                    <motion.img whileHover={{ scale: 1.05 }} src={playStore} className="h-10 cursor-pointer" />
+                                    <motion.img whileHover={{ scale: 1.05 }} src={appStore} className="h-10 cursor-pointer" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
+            </main>
+            <div className="w-full">
+                <Footer />
             </div>
-
-            <style>
-                {`
-                @keyframes float {
-                    0% { transform: translateY(0px); }
-                    50% { transform: translateY(-15px); }
-                    100% { transform: translateY(0px); }
-                }
-                .animate-float {
-                    animation: float 5s ease-in-out infinite;
-                }
-            `}
-            </style>
         </div>
     );
 };
