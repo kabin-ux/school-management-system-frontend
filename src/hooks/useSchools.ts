@@ -4,6 +4,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import type { SchoolData } from "../types/partner-school.types";
 
+export interface DemoRequestData {
+    school_name: string;
+    location: string;
+    date: string;
+    time: string;
+    email: string;
+    phone: string;
+}
+
 export const useSchools = () => {
     return useQuery<SchoolData[], Error>({
         queryKey: ["schools"],
@@ -138,3 +147,12 @@ export const useResetPassword = () => {
         },
     });
 };
+
+export const useRequestDemo = () => {
+    return useMutation({
+        mutationFn: async (data: DemoRequestData) => {
+            const response = await api.post(`/school/demo`, data);
+            return response.data;
+        }
+    });
+}

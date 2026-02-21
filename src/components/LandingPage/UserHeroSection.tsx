@@ -75,7 +75,7 @@ const UserHeroSection: React.FC = () => {
                     animate="visible"
                     className="text-white max-w-2xl mt-16"
                 >
-                    <motion.h1 variants={itemVariants} className="text-4xl md:text-7xl font-bold leading-tight mb-6 tracking-tight">
+                    <motion.h1 variants={itemVariants} className="text-3xl md:text-6xl font-bold leading-tight mb-6 tracking-tight">
                         Empowering Partnered Schools <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-200 to-white/70">
                             With Smarter Management

@@ -10,21 +10,30 @@ const Header: FC = () => {
 
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
-    if (path.startsWith('#')) {
+    // Check if the path is a hash link (starts with /# or #)
+    const isHashLink = path.startsWith('#') || path.startsWith('/#');
+
+    // Get current location
+    const isHomePage = window.location.pathname === '/';
+
+    if (isHashLink && isHomePage) {
+      // We are on Home and it's a hash link: prevent reload and scroll smoothly
       e.preventDefault();
-      const targetId = path.replace('#', '');
-      const elem = document.getElementById(targetId);
-      elem?.scrollIntoView({ behavior: 'smooth' });
-      setIsOpen(false); // Close mobile menu if open
+      const id = path.replace('/#', '').replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
+    // Else: Let the default link behavior handle the redirect to "/" or "/plans"
   };
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Features', path: '#features' },
-    { name: 'Testimonials', path: '#testimonials' },
+    { name: 'Features', path: '/#features' },
+    { name: 'Testimonials', path: '/#testimonials' },
     { name: 'Plans', path: '/plans' },
-    { name: 'Request A Demo', path: '#demo' },
+    { name: 'Request A Demo', path: '/#demo' },
   ];
 
   return (
@@ -78,14 +87,14 @@ const Header: FC = () => {
             >
               Login
             </button>
-            <motion.button
+            {/* <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate('/admin')}
               className="bg-[#5D3FD3] text-white font-bold px-7 py-2.5 rounded-xl hover:shadow-[0_10px_20px_-5px_rgba(93,63,211,0.4)] transition-all"
             >
               Register
-            </motion.button>
+            </motion.button> */}
           </motion.div>
 
           {/* Mobile Menu Button */}
@@ -127,12 +136,12 @@ const Header: FC = () => {
                 >
                   Login
                 </button>
-                <button
+                {/* <button
                   onClick={() => navigate('/admin')}
                   className="w-full bg-[#5D3FD3] text-white font-bold px-6 py-4 rounded-2xl shadow-lg"
                 >
                   Register
-                </button>
+                </button> */}
               </div>
             </div>
           </motion.div>

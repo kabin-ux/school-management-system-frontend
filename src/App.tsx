@@ -47,6 +47,7 @@ import TermsAndConditions from './components/LandingPage/Terms&Conditions';
 import DeletePolicyPage from './components/LandingPage/DeleteAccount';
 import LoginPortal from './pages/LoginPage';
 import PlansSection from './components/LandingPage/Plans&Subscription';
+import AdminInvoiceOverview from './pages/Admin/invoice/AdminInvoiceOverview';
 
 function App() {
     return (
@@ -204,6 +205,11 @@ function App() {
                     <Route path='/admin/role-management' element={
                         <ProtectedRoute allowedRoles={['admin']}>
                             <RoleManagement />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/admin/invoice-management' element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <AdminInvoiceOverview />
                         </ProtectedRoute>
                     } />
                     {/* Accountant */}

@@ -16,6 +16,7 @@ import {
   Menu,
   X,
   Bell,
+  HandCoins,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { SidebarItem } from "../../../types/sidebar-item.types";
@@ -37,6 +38,7 @@ const sidebarItems: SidebarItem[] = [
   { icon: HeadphonesIcon, label: "Support Console", path: "/admin/support" },
   { icon: Bell, label: "Notice Management", path: "/admin/notifications" },
   { icon: UserCog, label: "Role Management", path: "/admin/role-management" },
+  { icon: HandCoins, label: "Invoice Management", path: "/admin/invoice-management" },
 ];
 
 export const Sidebar: React.FC = () => {

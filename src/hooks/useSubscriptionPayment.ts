@@ -83,17 +83,26 @@ export const useUpdateSubscriptionPaymentStatusMutation = () => {
   });
 };
 
-export const useSubscriptionPaymentsQuery = (date?: string) =>
+export const useSubscriptionPaymentsQuery = (date?: string, schoolId?: string) =>
   useQuery({
-    queryKey: ["subscription-payments"],
+    // Adding date and schoolId to the queryKey ensures the cache 
+    // invalidates and refetches when these values change.
+    queryKey: ["subscription-payments", { date, schoolId }],
     queryFn: async () => {
       const { data } = await api.get<ApiEnvelope<PartnerSchoolPayment[]>>(
-        "/subscription-payment", {
-        params: date
-      }
+        "/subscription-payment",
+        {
+          params: {
+            date,
+            id: schoolId // Mapping 'schoolId' to 'id' to match req.query.id
+          }
+        }
       );
       return data.data;
     },
+    // Keep it enabled only if we don't strictly require an ID, 
+    // or customize based on your needs:
+    enabled: true,
     retry: 2
   });
 
