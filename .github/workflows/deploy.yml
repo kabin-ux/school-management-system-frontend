@@ -8,6 +8,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      VITE_API_BASE_URL: https://gurukulsetu.com/api/v1
 
     steps:
       # 1. Checkout code
@@ -18,7 +20,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
-          node-version: "20"
+          node-version: '20'
 
       # 3. Install dependencies
       - name: Install Dependencies
@@ -35,8 +37,8 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          source: "dist/**"
-          target: "/var/www/school-management-system-frontend/dist"
+          source: 'dist/**'
+          target: '/var/www/school-management-system-frontend/dist'
 
       # 6. SSH into server & restart PM2
       - name: Restart nginx on Server
