@@ -8,7 +8,9 @@ const UnauthorizedPage = () => {
   };
 
   const handleGoToLogin = () => {
-    navigate('/login');
+    localStorage.clear();
+
+    navigate('/login', { replace: true });
   };
 
   return (
