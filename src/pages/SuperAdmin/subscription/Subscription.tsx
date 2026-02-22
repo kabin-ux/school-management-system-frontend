@@ -11,6 +11,7 @@ import { AddSchoolSubscriptionModal } from '../../../components/SuperAdmin/subsc
 import { EditSubscriptionModal } from '../../../components/SuperAdmin/subscription/EditSubscriptionModal';
 import { SubscriptionsFilter } from '../../../components/SuperAdmin/subscription/SubscriptionsFilter';
 import toast from 'react-hot-toast';
+import type { SchoolData } from '../../../types/partner-school.types';
 
 export interface FilterValues {
     search: string;
@@ -35,6 +36,14 @@ export const Subscriptions: React.FC = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const existingSubscribedSchoolIds = useMemo(() => {
+        // flatMap goes into each subscription, looks at the 'schools' array,
+        // and creates one big flat list of all school IDs.
+        return subscriptions.flatMap((sub: any) =>
+            (sub.schools || []).map((school: SchoolData) => school.id)
+        ).filter(Boolean) as string[];
+    }, [subscriptions]);
 
     const handleViewSubscriptionDetails = (subscriptionId: string) => {
         navigate(`/super-admin/subscription/details/${subscriptionId}`)
@@ -135,6 +144,7 @@ export const Subscriptions: React.FC = () => {
                                 isLoading={loading}
                                 schools={schools}
                                 subscriptionId={selectedSubscriptionId}
+                                existingSubscribedSchoolIds={existingSubscribedSchoolIds}
                             />
                         )}
 

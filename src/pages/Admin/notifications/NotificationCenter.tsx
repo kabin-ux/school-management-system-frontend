@@ -13,7 +13,6 @@ export default function NotificationsCenter() {
     const { data: teachers = [] } = useTeachers();
 
     const { data: notices = [] } = useSchoolNotices();
-    console.log(notices)
 
     const createNoticeMutation = useSendNoticeForStudent();
     const deleteNoticeMutation = useDeleteMySchoolNotice();
@@ -27,7 +26,7 @@ export default function NotificationsCenter() {
             {
                 onSuccess: () => {
                     toast.success("Notice sent successfully");
-                    onSuccess(); // ✅ clears the form
+                    onSuccess();
                 },
             }
         );

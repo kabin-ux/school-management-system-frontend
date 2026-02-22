@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { X } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import type {
@@ -13,6 +13,7 @@ interface SchoolSubscriptionModalProps {
   onSubmit: (data: AddSchoolOnSubscriptionDto) => Promise<void> | void;
   isLoading: boolean;
   subscriptionId: string; // <-- add this
+  existingSubscribedSchoolIds: string[]; // <--- Add this prop
 }
 
 export const AddSchoolSubscriptionModal: React.FC<SchoolSubscriptionModalProps> = ({
@@ -22,6 +23,7 @@ export const AddSchoolSubscriptionModal: React.FC<SchoolSubscriptionModalProps> 
   onSubmit,
   isLoading,
   subscriptionId,
+  existingSubscribedSchoolIds
 }) => {
   const {
     register,
@@ -36,6 +38,12 @@ export const AddSchoolSubscriptionModal: React.FC<SchoolSubscriptionModalProps> 
       subscription_id: subscriptionId,
     },
   });
+
+  const availableSchools = useMemo(() => {
+    return schools.filter(
+      (school) => !existingSubscribedSchoolIds.includes(school.id)
+    );
+  }, [schools, existingSubscribedSchoolIds]);
 
   const onFormSubmit = async (data: AddSchoolOnSubscriptionDto) => {
     try {
@@ -99,7 +107,7 @@ export const AddSchoolSubscriptionModal: React.FC<SchoolSubscriptionModalProps> 
               {...register('school_id', { required: 'School is required' })}
             >
               <option value="">-- Select a School --</option>
-              {schools.map((school) => (
+              {availableSchools.map((school) => (
                 <option key={school.id} value={school.id}>
                   {school.name}
                 </option>

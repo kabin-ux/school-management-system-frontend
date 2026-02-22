@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Send } from "lucide-react";
-import { NoticeType, type NotificationFormData } from "../../../types/Notification";
+import { useState, useMemo } from "react";
+import { Send, Filter } from "lucide-react";
+import { type NotificationFormData } from "../../../types/Notification";
 import type { Student } from "../../../types/student.types";
 import type { Teacher } from "../../../types/teacher.types";
 import toast from "react-hot-toast";
@@ -25,11 +25,42 @@ export const NotificationForm: React.FC<NotificationFormProps> = ({
     teachers,
 }) => {
     const [formData, setFormData] = useState<NotificationFormData>(initialState);
+    const [classFilter, setClassFilter] = useState<string>("all");
+    const [sectionFilter, setSectionFilter] = useState<string>("all");
 
-    const handleInputChange = (
-        field: keyof NotificationFormData,
-        value: string | boolean | string[]
-    ) => {
+    // Extract unique class/section names for the dropdowns
+    const { classes, sections } = useMemo(() => {
+        const classSet = new Set<string>();
+        const sectionSet = new Set<string>();
+
+        students.forEach((s) => {
+            // Fix: Access name/section_name safely and convert to string
+            const className = s.class?.name;
+            const sectionName = s.section?.section_name;
+
+            if (className) classSet.add(String(className));
+            if (sectionName) sectionSet.add(String(sectionName));
+        });
+
+        return {
+            classes: Array.from(classSet).sort(),
+            sections: Array.from(sectionSet).sort(),
+        };
+    }, [students]);
+
+    // Filtering logic
+    const filteredStudents = useMemo(() => {
+        return students.filter((s) => {
+            const sClassName = String(s.class?.name || s.class);
+            const sSectionName = String(s.section?.section_name || s.section);
+
+            const matchClass = classFilter === "all" || sClassName === classFilter;
+            const matchSection = sectionFilter === "all" || sSectionName === sectionFilter;
+            return matchClass && matchSection;
+        });
+    }, [students, classFilter, sectionFilter]);
+
+    const handleInputChange = (field: keyof NotificationFormData, value: any) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
@@ -37,12 +68,9 @@ export const NotificationForm: React.FC<NotificationFormProps> = ({
         setFormData((prev) => {
             const recipients = prev.recipients ?? [];
             const exists = recipients.includes(id);
-
             return {
                 ...prev,
-                recipients: exists
-                    ? recipients.filter((r) => r !== id)
-                    : [...recipients, id],
+                recipients: exists ? recipients.filter((r) => r !== id) : [...recipients, id],
             };
         });
     };
@@ -52,170 +80,148 @@ export const NotificationForm: React.FC<NotificationFormProps> = ({
             toast.error("Please fill in all required fields.");
             return;
         }
-
         if (formData.notice_for === "someone" && formData.recipients?.length === 0) {
             toast.error("Please select at least one recipient.");
             return;
         }
-
-        onCreateNotice(formData, () => {
-            setFormData(initialState); // reset after success
-        });
+        onCreateNotice(formData, () => setFormData(initialState));
     };
 
     return (
         <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
             <div className="p-6 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-900">
-                    Create New Notice
-                </h2>
+                <h2 className="text-lg font-semibold text-gray-900">Create New Notice</h2>
             </div>
 
             <div className="p-6 space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Notification Title */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Notice Title
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Notice Title</label>
                         <input
                             type="text"
                             placeholder="Enter notice title"
                             value={formData.subject}
                             onChange={(e) => handleInputChange("subject", e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                         />
                     </div>
 
-                    {/* Target Audience */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Target Audience
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Target Audience</label>
                         <select
                             value={formData.notice_for}
                             onChange={(e) => handleInputChange("notice_for", e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                         >
-                            <option value="">Select target</option>
                             <option value="all">All Users</option>
                             <option value="someone">Someone</option>
                         </select>
                     </div>
                 </div>
 
-                {/* Message Content */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Message Content
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Message Content</label>
                     <div className="relative">
                         <textarea
-                            placeholder="Enter your notification message here..."
+                            placeholder="Enter message..."
                             value={formData.message}
                             onChange={(e) => handleInputChange("message", e.target.value)}
                             rows={4}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none"
                         />
-                        <div className="absolute bottom-2 right-2 text-sm text-gray-500">
+                        <div className="absolute bottom-2 right-2 text-xs text-gray-400">
                             {formData.message.length}/280
                         </div>
                     </div>
                 </div>
 
-                {/* Notification Type */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Notification Type
-                    </label>
-                    <div className="flex gap-4">
-                        <select
-                            value={formData.type}
-                            onChange={(e) => handleInputChange("type", e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                            <option value="" disabled>
-                                Select notice type
-                            </option>
-                            {Object.values(NoticeType).map((type) => (
-                                <option key={type} value={type}>
-                                    {type.replace(/_/g, " ").toUpperCase()}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-
-                {/* Recipients (multi-select via checkboxes) */}
                 {formData.notice_for === "someone" && (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        {/* Students */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Students
-                            </label>
-                            <div className="max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3 space-y-2">
-                                {students.length === 0 && (
-                                    <p className="text-sm text-gray-500">No students found.</p>
-                                )}
-                                {students.map((student) => {
-                                    const id = String(student.email);
-                                    const checked = formData.recipients?.includes(id);
-                                    return (
-                                        <label
-                                            key={id}
-                                            className="flex items-center gap-2 text-sm text-gray-700"
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                checked={checked}
-                                                onChange={() => toggleRecipient(id)}
-                                                className="w-4 h-4 text-blue-600 border-gray-300 rounded"
-                                            />
-                                            <span>
-                                                {student.firstName} {student.lastName}
-                                            </span>
-                                        </label>
-                                    );
-                                })}
+                    <div className="space-y-4 pt-6">
+                        <div className="flex items-center gap-2 text-gray-900 mb-2">
+                            <Filter className="w-4 h-4" />
+                            <span className="text-sm font-semibold uppercase tracking-wider">Filter Students</span>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Class</label>
+                                <select
+                                    value={classFilter}
+                                    onChange={(e) => setClassFilter(e.target.value)}
+                                    className="w-full text-sm border-gray-300 rounded-md"
+                                >
+                                    <option value="all">All Classes</option>
+                                    {classes.map(c => <option key={c} value={c}>{c}</option>)}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Section</label>
+                                <select
+                                    value={sectionFilter}
+                                    onChange={(e) => setSectionFilter(e.target.value)}
+                                    className="w-full text-sm border-gray-300 rounded-md"
+                                >
+                                    <option value="all">All Sections</option>
+                                    {sections.map(s => <option key={s} value={s}>{s}</option>)}
+                                </select>
                             </div>
                         </div>
 
-                        {/* Teachers */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Teachers
-                            </label>
-                            <div className="max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3 space-y-2">
-                                {teachers.length === 0 && (
-                                    <p className="text-sm text-gray-500">No teachers found.</p>
-                                )}
-                                {teachers.map((teacher) => {
-                                    const id = String(teacher.email);
-                                    const checked = formData.recipients?.includes(id);
-                                    return (
-                                        <label
-                                            key={id}
-                                            className="flex items-center gap-2 text-sm text-gray-700"
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                checked={checked}
-                                                onChange={() => toggleRecipient(id)}
-                                                className="w-4 h-4 text-blue-600 border-gray-300 rounded"
-                                            />
-                                            <span>
-                                                {teacher.firstName} {teacher.lastName}
-                                            </span>
-                                        </label>
-                                    );
-                                })}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Students ({filteredStudents.length})
+                                </label>
+                                <div className="max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3 space-y-2">
+                                    {filteredStudents.length === 0 ? (
+                                        <p className="text-sm text-gray-500 italic">No matching students.</p>
+                                    ) : (
+                                        filteredStudents.map((student) => {
+                                            const id = String(student.email);
+                                            return (
+                                                <label key={id} className="flex items-center gap-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer p-1 rounded">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={formData.recipients?.includes(id)}
+                                                        onChange={() => toggleRecipient(id)}
+                                                        className="w-4 h-4 text-blue-600 rounded"
+                                                    />
+                                                    <span>
+                                                        {student.firstName} {student.lastName}
+                                                        <span className="text-xs text-gray-400 ml-1">
+                                                            ({String(student.class?.name || 'N/A')} - {String(student.section?.section_name || 'N/A')})
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            );
+                                        })
+                                    )}
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Teachers</label>
+                                <div className="max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3 space-y-2">
+                                    {teachers.map((teacher) => {
+                                        const id = String(teacher.email);
+                                        return (
+                                            <label key={id} className="flex items-center gap-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer p-1 rounded">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={formData.recipients?.includes(id)}
+                                                    onChange={() => toggleRecipient(id)}
+                                                    className="w-4 h-4 text-blue-600 rounded"
+                                                />
+                                                <span>{teacher.firstName} {teacher.lastName}</span>
+                                            </label>
+                                        );
+                                    })}
+                                </div>
                             </div>
                         </div>
                     </div>
                 )}
 
-                {/* Send Button */}
                 <div className="flex justify-end pt-4">
                     <button
                         onClick={handleSendNotification}
