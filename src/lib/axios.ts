@@ -1,7 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api/v1",
+  baseURL:
+    import.meta.env.VITE_API_BASE_URL || 'https://gurukulsetu.com/api/v1',
   withCredentials: true,
 });
 
@@ -9,7 +10,7 @@ const api = axios.create({
 // Attaches token to every request automatically
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -25,7 +26,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.clear();
-      window.location.href = "/login"; // hard redirect to reset full app state
+      window.location.href = '/login'; // hard redirect to reset full app state
     }
     return Promise.reject(error);
   }
