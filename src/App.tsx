@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import AdminLandingPage from './pages/LandingPage/AdminLandingPage';
 import UserLandingPage from './pages/LandingPage/UserLandingPage';
 import SupportConsole from './pages/SuperAdmin/support/SupportConsole';
 import SupportTicketDetailPage from './pages/SuperAdmin/support/details/SupportTicketDetail';
@@ -57,7 +56,7 @@ function App() {
                 <Routes>
                     <Route path='/' element={<UserLandingPage />} />
                     <Route path='/plans' element={<PlansSection />} />
-                    <Route path='/admin' element={<AdminLandingPage />} />
+                    {/* <Route path='/admin' element={<AdminLandingPage />} /> */}
                     <Route path='/terms&conditions' element={<TermsAndConditions />} />
                     <Route path='/privacy-policy' element={<PrivacyPolicy />} />
                     <Route path='/delete-account' element={<DeletePolicyPage />} />

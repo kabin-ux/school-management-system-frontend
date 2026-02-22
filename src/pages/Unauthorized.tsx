@@ -8,7 +8,7 @@ const UnauthorizedPage = () => {
   };
 
   const handleGoToLogin = () => {
-    navigate('/admin');
+    navigate('/login');
   };
 
   return (

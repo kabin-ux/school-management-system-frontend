@@ -17,7 +17,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     allowedRoles,
 }) => {
     const { data: user, isLoading } = useAuthUser();
-
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
 
@@ -26,30 +25,29 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     // 1. No token → force logout
     if (!token) {
         localStorage.clear();
-        return <Navigate to="/admin" replace />;
+        return <Navigate to="/login" replace />;
     }
 
     // 2. Token expiry check
     try {
         const { exp } = jwtDecode<DecodedToken>(token);
         const isExpired = Date.now() >= exp * 1000;
-
         if (isExpired) {
             localStorage.clear();
-            return <Navigate to="/admin" replace />;
+            return <Navigate to="/login" replace />;
         }
     } catch {
         localStorage.clear();
-        return <Navigate to="/admin" replace />;
+        return <Navigate to="/login" replace />;
     }
 
-    // 3. Auth API failed
+    // 3. Auth API failed (network/server error)
     if (!user) {
         localStorage.clear();
-        return <Navigate to="/admin" replace />;
+        return <Navigate to="/login" replace />;
     }
 
-    // 4. Role check
+    // 4. Role check → send to /unauthorized, NOT /login
     if (!role || !allowedRoles.includes(role)) {
         return <Navigate to="/unauthorized" replace />;
     }
