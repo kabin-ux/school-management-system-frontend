@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           source: 'dist/**'
-          target: '/var/www/school-management-system-frontend/dist'
+          target: '/var/www/school-management-system-frontend'
 
       # 6. SSH into server & restart PM2
       - name: Restart nginx on Server
