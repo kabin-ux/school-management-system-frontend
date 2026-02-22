@@ -1,20 +1,14 @@
 import React, { useMemo, useState } from "react";
-import { InvoiceOverviewHeader } from "../../../components/SuperAdmin/invoice/InvoiceOverviewHeader";
-import { InvoiceOverviewFilters } from "../../../components/SuperAdmin/invoice/InvoiceOverviewFilters";
-import { InvoiceOverviewTable } from "../../../components/SuperAdmin/invoice/InvoiceOverviewTable";
 import {
-    useClearSubscriptionPaymentMutation,
     useSubscriptionPaymentsQuery,
-    useUpdateSubscriptionPaymentStatusMutation,
     type PartnerSchoolPayment,
-    type PartnerPaymentStatus,
-    type PartnerPaymentMethod,
 } from "../../../hooks/useSubscriptionPayment";
-import toast from "react-hot-toast";
-import { EditStatusModal } from "../../../components/SuperAdmin/invoice/EditStatusModal";
 import { useAuthUser } from "../../../hooks/useAuth";
 import { Sidebar } from "../../../components/Admin/layout/Sidebar";
 import { AdminDashboardHeader } from "../../../components/Admin/layout/AdminDashboardHeader";
+import { InvoiceOverviewTable } from "../../../components/Admin/invoice/InvoiceOverviewTable";
+import { InvoiceOverviewFilters } from "../../../components/Admin/invoice/InvoiceOverviewFilters";
+import { InvoiceOverviewHeader } from "../../../components/Admin/invoice/InvoiceOverviewHeader";
 
 export interface FilterValues {
     search: string;
@@ -29,53 +23,8 @@ const AdminInvoiceOverview: React.FC = () => {
         date: ""
     });
 
-    const [selectedPayment, setSelectedPayment] =
-        useState<PartnerSchoolPayment | null>(null);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
     const { data: invoices = [] } = useSubscriptionPaymentsQuery(filters.date || undefined, user.id);
 
-    const clearSubscriptionPaymentMutation = useClearSubscriptionPaymentMutation();
-    const updateSubscriptionPaymentStatusMutation =
-        useUpdateSubscriptionPaymentStatusMutation();
-
-    const handleUpdateSubscriptionPaymentStatus = async (form: {
-        status: PartnerPaymentStatus;
-        method: PartnerPaymentMethod;
-        remarks?: string;
-    }) => {
-        if (!selectedPayment) return;
-
-        updateSubscriptionPaymentStatusMutation.mutate(
-            {
-                id: selectedPayment.id,
-                status: form.status,
-                method: form.method,
-                remarks: form.remarks,
-            },
-            {
-                onSuccess: () => {
-                    toast.success("Payment status updated successfully");
-                    setIsEditModalOpen(false);
-                    setSelectedPayment(null);
-                },
-                onError: () => {
-                    toast.error("Failed to update payment status");
-                },
-            },
-        );
-    };
-
-    const handleClearSubscriptionPayment = async (schoolId: string) => {
-        clearSubscriptionPaymentMutation.mutate(schoolId, {
-            onSuccess: () => {
-                toast.success("Subscription payment cleared successfully");
-            },
-            onError: () => {
-                toast.error("Failed to clear subscription payment");
-            },
-        });
-    };
 
     const filteredPayments = useMemo(() => {
         return invoices.filter((invoice: PartnerSchoolPayment) => {
@@ -107,25 +56,9 @@ const AdminInvoiceOverview: React.FC = () => {
                     {/* Table */}
                     <InvoiceOverviewTable
                         payments={filteredPayments}
-                        onEditStatus={(payment) => {
-                            setSelectedPayment(payment);
-                            setIsEditModalOpen(true);
-                        }}
-                        onClear={handleClearSubscriptionPayment}
                     />
                 </main>
             </div>
-
-            <EditStatusModal
-                isOpen={isEditModalOpen}
-                onClose={() => {
-                    setIsEditModalOpen(false);
-                    setSelectedPayment(null);
-                }}
-                onSubmit={handleUpdateSubscriptionPaymentStatus}
-                isLoading={updateSubscriptionPaymentStatusMutation.isPending}
-                payment={selectedPayment}
-            />
         </div>
     );
 };

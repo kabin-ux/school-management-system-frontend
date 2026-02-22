@@ -1,19 +1,15 @@
 import React, { useState } from "react";
 import EmptyState from "../../../common/EmptyState";
-import { HandCoins, Edit2 } from "lucide-react";
+import { HandCoins } from "lucide-react";
 import { Pagination } from "../../../common/Pagination";
 import type { PartnerSchoolPayment } from "../../../hooks/useSubscriptionPayment";
 
 interface InvoiceOverviewTableProps {
   payments: PartnerSchoolPayment[];
-  onEditStatus: (payment: PartnerSchoolPayment) => void;
-  onClear: (schoolId: string) => void;
 }
 
 export const InvoiceOverviewTable: React.FC<InvoiceOverviewTableProps> = ({
   payments,
-  onEditStatus,
-  onClear,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
@@ -62,9 +58,6 @@ export const InvoiceOverviewTable: React.FC<InvoiceOverviewTableProps> = ({
                   <th className="text-left p-4 text-sm text-gray-700 uppercase tracking-wider font-extralight">
                     Created At
                   </th>
-                  <th className="text-left p-4 text-sm text-gray-700 uppercase tracking-wider font-extralight">
-                    Actions
-                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -112,23 +105,6 @@ export const InvoiceOverviewTable: React.FC<InvoiceOverviewTableProps> = ({
                     </td>
                     <td className="p-4 text-gray-700">
                       {new Date(payment.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="p-4 space-x-2">
-                      <button
-                        type="button"
-                        onClick={() => onEditStatus(payment)}
-                        className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-blue-50 text-blue-700 hover:bg-blue-100"
-                      >
-                        <Edit2 className="w-3 h-3 mr-1" />
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => onClear(payment.school_id)}
-                        className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-green-50 text-green-700 hover:bg-green-100"
-                      >
-                        Clear
-                      </button>
                     </td>
                   </tr>
                 ))}
