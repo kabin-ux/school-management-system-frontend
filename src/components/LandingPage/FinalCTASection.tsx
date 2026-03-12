@@ -93,15 +93,15 @@ const Footer: React.FC = memo(() => {
               <ul className="space-y-5 text-[13px] font-medium">
                 <li className="flex items-center gap-3">
                   <Phone size={18} fill="white" className="text-[#6149cd]" />
-                  <span>977-9782367262</span>
+                  <span>+977-9817788454</span>
                 </li>
                 <li className="flex items-start gap-3 leading-tight">
                   <MapPin size={18} fill="white" className="text-[#6149cd] shrink-0 mt-0.5" />
-                  <span>4517 Washington Ave. Manchester,<br />Kentucky 39495</span>
+                  <span>New Baneshwor, Kathmandu</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Mail size={18} fill="white" className="text-[#6149cd]" />
-                  <span className="break-all">nepfinitytechnologies@example.com</span>
+                  <span className="break-all">gurukulsetu@nepfinitytechnologies.com</span>
                 </li>
               </ul>
             </div>

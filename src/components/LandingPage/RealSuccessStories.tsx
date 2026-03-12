@@ -75,6 +75,11 @@ const RealSuccessStories: FC = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{
+            duration: 1.2,
+            ease: "easeOut",
+            delay: 0.4
+          }}
           className="text-center mb-16"
         >
           <h2 className="text-4xl font-bold text-[#2D3142] mb-2">Real Success Stories</h2>
@@ -102,6 +107,11 @@ const RealSuccessStories: FC = () => {
                 key={currentIndex}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 1.2,
+                  ease: "easeOut",
+                  delay: 0.4
+                }}
                 src={current.image}
                 alt="Successful Student"
                 className="absolute bottom-0 scale-110 grayscale"

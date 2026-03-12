@@ -35,7 +35,12 @@ const FAQ = () => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.10 }}
+          transition={{
+            delay: 1 * 0.15, // Slightly more stagger time between items
+            duration: 0.9,       // Slower, more elegant entrance
+            ease: [0.215, 0.61, 0.355, 1] // Custom cubic-bezier for a "premium" feel
+          }}
           className="text-center mb-16"
         >
           <h2 className="text-4xl font-bold text-[#2D3142] mb-4">Frequently Asked Questions</h2>
@@ -59,10 +64,14 @@ const FAQ = () => {
             return (
               <motion.div
                 layout
-                initial={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: -30 }} // Increased distance slightly for more visible motion
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true, amount: 0.10 }}
+                transition={{
+                  delay: index * 0.15, // Slightly more stagger time between items
+                  duration: 0.9,       // Slower, more elegant entrance
+                  ease: [0.215, 0.61, 0.355, 1] // Custom cubic-bezier for a "premium" feel
+                }}
                 key={index}
                 className={`overflow-hidden border rounded-2xl transition-colors duration-500 ${isOpen ? 'bg-[#5D3FD3] border-[#5D3FD3] shadow-xl' : 'bg-white border-gray-200'
                   }`}

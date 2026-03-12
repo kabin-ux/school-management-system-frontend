@@ -48,7 +48,7 @@ const ComprehensiveFeatures = () => {
             <motion.div
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
+                viewport={{ once: true, amount: 0.6 }}
                 variants={containerVariants}
                 className="max-w-6xl mx-auto bg-[#F3F0FF] rounded-[40px] p-8 md:p-12 border-2 border-white shadow-sm"
             >

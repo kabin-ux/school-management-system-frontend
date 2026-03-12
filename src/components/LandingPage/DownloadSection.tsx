@@ -46,7 +46,9 @@ const DownloadCTA = () => {
 
         <div className="flex flex-wrap gap-6 mt-8 justify-center items-center">
           <motion.div whileHover={{ scale: 1.05, y: -5 }} whileTap={{ scale: 0.95 }}>
-            <img src={playStore} alt="Play Store" className="w-40 md:w-48 h-auto cursor-pointer" />
+            <img src={playStore} alt="Play Store" className="w-40 md:w-48 h-auto cursor-pointer"
+              onClick={() => window.location.href = 'https://play.google.com/store/apps/details?id=com.nep_infinity.school_mgmt_app'}
+            />
           </motion.div>
 
           <motion.div whileHover={{ scale: 1.05, y: -5 }} whileTap={{ scale: 0.95 }}>

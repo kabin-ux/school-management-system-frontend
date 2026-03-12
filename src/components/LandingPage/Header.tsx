@@ -53,7 +53,7 @@ const Header: FC = () => {
               src={logo}
               alt="logo"
               className={`w-40 md:w-44 h-auto cursor-pointer transition-all `}
-              onClick={() => navigate('/')}
+              onClick={() => window.location.pathname = '/'}
             />
           </motion.div>
 

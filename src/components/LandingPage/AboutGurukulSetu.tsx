@@ -33,17 +33,22 @@ const AboutGurukulSetu = () => {
     return (
         <section ref={containerRef} className="py-20 px-4 overflow-hidden">
             {/* Header Section */}
-            <motion.div 
+            <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
+                transition={{
+                    duration: 1.2,      // Significantly slower entry
+                    ease: "easeOut",    // Smooth landing
+                    delay: 0.3          // Waits 0.3s after it enters the viewport to start
+                }}
                 className="max-w-6xl mx-auto text-center mb-12"
             >
                 <h2 className="text-4xl font-bold text-[#2D3142] mb-2">Learn About GurukulSetu</h2>
                 <p className="text-gray-500 max-w-2xl mx-auto">
                     Gain a deeper understanding of how we unify your entire academic network through superior technology and user-centric design.
                 </p>
-                <motion.div 
+                <motion.div
                     initial={{ width: 0 }}
                     whileInView={{ width: 48 }}
                     transition={{ duration: 0.8 }}
@@ -53,16 +58,16 @@ const AboutGurukulSetu = () => {
 
             {/* Main Content with Parallax Background */}
             <div className="max-w-6xl mx-auto relative">
-                
+
                 {/* Parallax Background Layer */}
-                <motion.div 
+                <motion.div
                     style={{ y: bgY }}
                     className="absolute inset-0 bg-[#EBEBFF] rounded-[40px] z-0"
                 />
 
                 <div className="relative z-10 p-8 md:p-12 flex flex-col lg:flex-row gap-8">
                     {/* Left Stats/Image Column */}
-                    <motion.div 
+                    <motion.div
                         initial={{ x: -50, opacity: 0 }}
                         whileInView={{ x: 0, opacity: 1 }}
                         viewport={{ once: true }}
@@ -70,11 +75,11 @@ const AboutGurukulSetu = () => {
                         className="lg:w-1/3 flex flex-col gap-6"
                     >
                         {/* Purple Stats Card */}
-                        <motion.div 
+                        <motion.div
                             whileHover={{ y: -5, rotate: -1 }}
                             className="bg-[#5D3FD3] text-white p-8 rounded-[30px] flex flex-col items-center text-center shadow-xl"
                         >
-                            <motion.span 
+                            <motion.span
                                 initial={{ scale: 0.5 }}
                                 whileInView={{ scale: 1 }}
                                 className="text-7xl font-bold"
@@ -92,7 +97,7 @@ const AboutGurukulSetu = () => {
                         </motion.div>
 
                         {/* Image Card */}
-                        <motion.div 
+                        <motion.div
                             whileHover={{ scale: 1.02 }}
                             className="rounded-[30px] overflow-hidden bg-white h-full flex items-end group shadow-lg"
                         >
@@ -106,7 +111,7 @@ const AboutGurukulSetu = () => {
                     </motion.div>
 
                     {/* Right Content Column */}
-                    <motion.div 
+                    <motion.div
                         initial={{ x: 50, opacity: 0 }}
                         whileInView={{ x: 0, opacity: 1 }}
                         viewport={{ once: true }}
@@ -117,7 +122,7 @@ const AboutGurukulSetu = () => {
                             <span className="text-[#5D3FD3]">Gurukul-Setu</span> is a comprehensive digital platform engineered to bridge the gap between traditional administration and next-generation technology in Nepal.
                         </h3>
 
-                        <motion.div 
+                        <motion.div
                             variants={containerVariants}
                             initial="hidden"
                             whileInView="visible"
@@ -142,7 +147,7 @@ const AboutGurukulSetu = () => {
                                     desc: "Automating manual processes provides instant analytics, allowing schools to focus on high-quality education."
                                 }
                             ].map((feature, index) => (
-                                <motion.div 
+                                <motion.div
                                     key={index}
                                     variants={itemVariants}
                                     whileHover={{ x: 10 }}
