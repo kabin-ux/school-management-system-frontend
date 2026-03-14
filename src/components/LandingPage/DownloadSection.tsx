@@ -1,6 +1,7 @@
 import { motion, type Variants } from 'framer-motion'; // Import Variants type
 import playStore from '../../assets/Play store.png';
 import appStore from '../../assets/apple store.png';
+import toast from 'react-hot-toast';
 
 const DownloadCTA = () => {
   // Explicitly type the variants object
@@ -52,7 +53,10 @@ const DownloadCTA = () => {
           </motion.div>
 
           <motion.div whileHover={{ scale: 1.05, y: -5 }} whileTap={{ scale: 0.95 }}>
-            <img src={appStore} alt="App Store" className="w-40 md:w-48 h-auto cursor-pointer" />
+            <img src={appStore} alt="App Store" className="w-40 md:w-48 h-auto cursor-pointer"
+              onClick={() => toast("Coming soon to the App Store! 🚀", {
+                icon: '⏳',
+              })} />
           </motion.div>
         </div>
       </motion.div>
