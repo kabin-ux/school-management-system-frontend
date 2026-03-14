@@ -3,22 +3,60 @@ import { Phone, Mail, MapPin } from 'lucide-react';
 import logo from '../../assets/logo onlt with out bg.png';
 
 const Footer: React.FC = memo(() => {
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    // Check if the path is a hash link (starts with /# or #)
+    const isHashLink = path.startsWith('#') || path.startsWith('/#');
+
+    // Get current location
+    const isHomePage = window.location.pathname === '/';
+
+    if (isHashLink && isHomePage) {
+      // We are on Home and it's a hash link: prevent reload and scroll smoothly
+      e.preventDefault();
+      const id = path.replace('/#', '').replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    // Else: Let the default link behavior handle the redirect to "/" or "/plans"
+  };
+
   const footerLinks = [
     {
       title: "Company Info",
-      links: ["About Us", "Echo System", "Features", "Plans"],
+      links: [
+        { name: "About Us", href: "/#about-us" },
+        { name: "Echo System", href: "#" },
+        { name: "Features", href: "/#features" }, // Hash link for homepage section
+        { name: "Plans", href: "/plans" },       // Internal route
+      ],
     },
     {
       title: "Users",
-      links: ["School Admin", "Accountants", "Students & Teachers", "Parents"],
+      links: [
+        { name: "School Admin", href: "#" },
+        { name: "Accountants", href: "#" },
+        { name: "Students & Teachers", href: "#" },
+        { name: "Parents", href: "#" },
+      ],
     },
     {
       title: "Login & Signup",
-      links: ["SETUSuperAdmin", "SETUAdmin", "SETUAccounts"],
+      links: [
+        { name: "SETUSuperAdmin", href: "/login" },
+        { name: "SETUAdmin", href: "/login" },
+        { name: "SETUAccounts", href: "/login" },
+      ],
     },
     {
       title: "Availability",
-      links: ["IOS & Android", "Watch a Demo", "Web Portals", "Websites"],
+      links: [
+        { name: "IOS & Android", href: "#" },
+        { name: "Watch a Demo", href: "#" },
+        { name: "Web Portals", href: "#" },
+        { name: "Websites", href: "#" },
+      ],
     },
   ];
 
@@ -80,7 +118,10 @@ const Footer: React.FC = memo(() => {
                 <ul className="space-y-4 text-[14px] font-medium opacity-90">
                   {section.links.map((link, linkIdx) => (
                     <li key={linkIdx}>
-                      <a href="#" className="hover:text-white/70 transition-colors">{link}</a>
+                      {/* Use 'a' for hash links/external and 'Link' for app routes */}
+                      <a href={link.href} onClick={(e) => scrollToSection(e, link.href)} className="hover:text-white/70 transition-colors">
+                        {link.name}
+                      </a>
                     </li>
                   ))}
                 </ul>
@@ -99,9 +140,9 @@ const Footer: React.FC = memo(() => {
                   <MapPin size={18} fill="white" className="text-[#6149cd] shrink-0 mt-0.5" />
                   <span>New Baneshwor, Kathmandu</span>
                 </li>
-                <li className="flex items-center gap-3">
-                  <Mail size={18} fill="white" className="text-[#6149cd]" />
-                  <span className="break-all">gurukulsetu@nepfinitytechnologies.com</span>
+                <li className="flex items-center gap-3 whitespace-nowrap">
+                  <Mail size={18} fill="white" className="text-[#6149cd] shrink-0" />
+                  <span>gurukulsetu@nepfinitytechnologies.com</span>
                 </li>
               </ul>
             </div>

@@ -31,7 +31,7 @@ const AboutGurukulSetu = () => {
     };
 
     return (
-        <section ref={containerRef} className="py-20 px-4 overflow-hidden">
+        <section id='about-us' ref={containerRef} className="py-20 px-4 overflow-hidden">
             {/* Header Section */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
